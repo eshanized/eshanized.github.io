@@ -33,7 +33,7 @@ colors = getjson(
 
 # all the repos list which i want to show on website
 repos_list = [
-    "vedic-lang/vedic", "vedicscriptures/bhagavad-gita-api",
+    "Snigdha-OS/snigdhaos-assistant", "vedicscriptures/bhagavad-gita-api",
     "PtPrashantTripathi/IPL-2020-Prediction", "PtPrashantTripathi/linkpe",
     "PtPrashantTripathi/movieinfo", "PtPrashantTripathi/Shree-Ganesh",
     "PtPrashantTripathi/Cloud-Storage-System", "PtPrashantTripathi/Adhyatma",
