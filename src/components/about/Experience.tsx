@@ -5,23 +5,23 @@ import { formatDate } from '../../utils/date';
 
 const experiences = [
   {
-    title: 'Senior Frontend Developer',
-    company: 'Tech Corp',
-    location: 'San Francisco, CA',
-    period: { start: '2021-01', end: 'Present' },
-    description: 'Led development of modern web applications using React and TypeScript.',
+    title: 'Chief Executive Officer',
+    company: 'Tonmoy Infrastructure',
+    location: 'Kolkata, INDIA',
+    period: { start: '2018-03', end: '2022-10' },
+    description: 'Led development of the organization with modern application of technologies.',
     achievements: [
-      'Improved application performance by 40%',
-      'Led a team of 5 developers',
-      'Implemented CI/CD pipeline'
+      'Implementing latest technologies',
+      'Led a team of 25 developers',
+      'Usage & development Criteria'
     ]
   },
   {
-    title: 'Full Stack Developer',
-    company: 'Digital Solutions',
-    location: 'New York, NY',
-    period: { start: '2018-06', end: '2020-12' },
-    description: 'Developed full-stack applications using Node.js and React.',
+    title: 'Founder & Lead Maintainer',
+    company: 'Snigdha OS',
+    location: 'Global',
+    period: { start: '2023-06', end: 'Present' },
+    description: 'Developed a full functional operating system.',
     achievements: [
       'Built scalable microservices architecture',
       'Reduced server costs by 30%',

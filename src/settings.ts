@@ -5,11 +5,11 @@ export const settings: UserSettings = {
   devToUsername: 'eshanized',
   personalInfo: {
     name: 'Eshan Roy',
-    title: 'Full Stack Developer',
+    title: 'Founder & Lead Developer at Snigdha OS',
     bio: 'Passionate developer crafting elegant solutions to complex problems',
     avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=400',
-    location: 'San Francisco, CA',
-    email: 'john@example.com',
+    location: 'Andromeda Galaxy',
+    email: 'eshan@snigdhaos.org',
     social: {
       github: 'https://github.com/eshanized',
       linkedin: 'https://linkedin.com/in/eshanized',

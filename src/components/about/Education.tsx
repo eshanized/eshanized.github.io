@@ -4,10 +4,10 @@ import { GraduationCap, Calendar, Award } from 'lucide-react';
 
 const education = [
   {
-    degree: 'Master of Computer Science',
-    school: 'Tech University',
-    year: '2018',
-    description: 'Specialized in Software Engineering and Distributed Systems',
+    degree: 'Associate Bachelor(Assoc. BSc.) in Computer Science',
+    school: 'University of The People',
+    year: '2025',
+    description: 'Specialized in Artificial Intelligence & Cyber Security',
     achievements: [
       'Graduated with Honors',
       'Published research paper on distributed systems',
@@ -15,14 +15,14 @@ const education = [
     ]
   },
   {
-    degree: 'Bachelor of Computer Science',
-    school: 'State University',
-    year: '2016',
-    description: 'Focus on Web Development and Algorithms',
+    degree: 'Bachelor of Technology (B.TECH) in Aerospace Engineering',
+    school: 'Lovely Professional University',
+    year: '2024',
+    description: 'Focus on Aerodynamics & Thermal Engineering',
     achievements: [
-      'Dean\'s List all semesters',
-      'Led Computer Science Club',
-      'Won Hackathon 2015'
+      'Failed in 1st Semester',
+      'Working on Aerodynamics',
+      'Worked in capstone'
     ]
   }
 ];

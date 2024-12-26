@@ -23,15 +23,15 @@ function Biography() {
             <div className="flex flex-wrap gap-6 mt-8">
               <div className="flex items-center gap-2 text-gray-600 dark:text-nord-snow-2">
                 <Code2 className="w-5 h-5 text-primary-500 dark:text-nord-frost-2" />
-                <span>Code with passion</span>
+                <span>I Code with passion</span>
               </div>
               <div className="flex items-center gap-2 text-gray-600 dark:text-nord-snow-2">
                 <Coffee className="w-5 h-5 text-primary-500 dark:text-nord-frost-2" />
-                <span>Fueled by coffee</span>
+                <span>I'm Fueled by coffee</span>
               </div>
               <div className="flex items-center gap-2 text-gray-600 dark:text-nord-snow-2">
                 <Heart className="w-5 h-5 text-primary-500 dark:text-nord-frost-2" />
-                <span>Love what I do</span>
+                <span>I Love what I do</span>
               </div>
             </div>
           </div>
