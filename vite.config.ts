@@ -31,7 +31,7 @@ export default defineConfig({
     port: 3000, // Customize the development server port
     open: true, // Automatically open the browser
   },
-  // define: {
-  //   'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV), // Define environment variables for React
-  // },
+  define: {
+    'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV), // Define environment variables for React
+  },
 });
