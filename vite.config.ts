@@ -8,7 +8,7 @@ export default defineConfig({
     react(),
     ViteSitemap({
       // Specify the base URL for the sitemap
-      hostname: 'https://your-domain.com', // Replace with your actual domain
+      hostname: 'https://eshanized.github.io', // Replace with your actual domain
     }),
   ],
   base: '/', // Ensure the site works when hosted at the root of the domain
