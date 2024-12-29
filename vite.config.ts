@@ -1,9 +1,16 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
+import ViteSitemap from 'vite-plugin-sitemap';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react()],
+  plugins: [
+    react(),
+    ViteSitemap({
+      // Specify the base URL for the sitemap
+      hostname: 'https://your-domain.com', // Replace with your actual domain
+    }),
+  ],
   base: '/', // Ensure the site works when hosted at the root of the domain
   optimizeDeps: {
     exclude: ['lucide-react'], // Exclude lucide-react from optimization
@@ -15,7 +22,6 @@ export default defineConfig({
         entryFileNames: 'script.js', // Main JS file renamed to script.js
         chunkFileNames: 'script.js', // All chunked JS files renamed to script.js
         assetFileNames: 'style.css', // CSS file renamed to style.css
-        // Ensure index.html is still generated
       },
     },
     minify: 'terser', // Enable minification using Terser for better JS minification
