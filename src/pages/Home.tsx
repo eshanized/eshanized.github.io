@@ -1,4 +1,3 @@
-import React from 'react';
 import { motion } from 'framer-motion';
 import { Github, Gitlab as GitlabLogo, ArrowRight, Code, Briefcase, BarChart as ChartBar, Twitter, Linkedin, Instagram, Youtube, Facebook } from 'lucide-react';
 import { Link } from 'react-router-dom';
