@@ -1,0 +1,14 @@
+User-agent: *
+Allow: /
+
+# Sitemaps
+Sitemap: https://eshanized.github.io/sitemap.xml
+Sitemap: https://eshanized.gitlab.io/sitemap.xml
+
+# Crawl-delay
+Crawl-delay: 10
+
+# Additional rules
+Disallow: /api/
+Disallow: /admin/
+Disallow: /private/
