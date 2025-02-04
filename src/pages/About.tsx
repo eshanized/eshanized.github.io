@@ -1,6 +1,5 @@
-import React from 'react';
 import { motion } from 'framer-motion';
-import { MapPin, Globe, Mail, Github, Gitlab as GitlabLogo, Link as LinkIcon, Code, Briefcase, GraduationCap, Award, Terminal, Coffee } from 'lucide-react';
+import { MapPin, Globe, Github, Gitlab as GitlabLogo, Code, Briefcase, GraduationCap, Terminal } from 'lucide-react';
 import { GitHubUser, GitLabUser } from '../types';
 
 interface AboutProps {
@@ -21,41 +20,29 @@ export function About({ githubUser, gitlabUser }: AboutProps) {
 
   const experience = [
     {
-      title: 'Senior Software Engineer',
-      company: 'Tech Innovators Inc.',
-      period: '2020 - Present',
-      description: 'Leading development of scalable web applications using modern technologies.',
-    },
-    {
-      title: 'Full Stack Developer',
-      company: 'Digital Solutions Ltd.',
-      period: '2018 - 2020',
-      description: 'Developed and maintained multiple client projects using React and Node.js.',
-    },
-    {
-      title: 'Software Developer',
-      company: 'StartUp Hub',
-      period: '2016 - 2018',
-      description: 'Worked on innovative startup projects and contributed to open source.',
+      title: 'Chief Executive [Former]',
+      company: 'Tonmoy Infrastructure.',
+      period: '2018 - 2022',
+      description: 'Leading development of scalable applications using modern technologies.',
     },
   ];
 
   const education = [
     {
-      degree: 'Master of Computer Science',
-      school: 'Tech University',
-      period: '2014 - 2016',
+      degree: 'Bachelor of Technology in Aerospace Engineering',
+      school: 'Lovely Professional University',
+      period: '2019 - 2024',
     },
     {
-      degree: 'Bachelor of Software Engineering',
-      school: 'Engineering College',
-      period: '2010 - 2014',
+      degree: 'Associate Bachelor of Science in Computer Science [Artificial Intelligence]',
+      school: 'University of The People',
+      period: '2022 - 2025',
     },
   ];
 
   return (
     <div className="min-h-screen bg-gray-50 py-12 md:py-20 px-4 md:px-8">
-      <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?ixlib=rb-4.0.3&auto=format&fit=crop&q=80')] opacity-5 bg-cover bg-center" />
+      <div className="absolute inset-0 bg-[url('/assets/images/eshanized-bg.jpg?ixlib=rb-4.0.3&auto=format&fit=crop&q=80')] opacity-5 bg-cover bg-center" />
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
