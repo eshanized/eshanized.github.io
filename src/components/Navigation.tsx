@@ -20,8 +20,8 @@ export function Navigation() {
 
   const navVariants = {
     hidden: { opacity: 0, x: 100 },
-    visible: { 
-      opacity: 1, 
+    visible: {
+      opacity: 1,
       x: 0,
       transition: {
         duration: 0.5,
@@ -37,8 +37,8 @@ export function Navigation() {
 
   const mobileMenuVariants = {
     hidden: { opacity: 0, scale: 0.8 },
-    visible: { 
-      opacity: 1, 
+    visible: {
+      opacity: 1,
       scale: 1,
       transition: {
         duration: 0.3,
@@ -62,8 +62,8 @@ export function Navigation() {
         initial="hidden"
         animate="visible"
         variants={navVariants}
-        className="fixed left-1/2 bottom-8 transform -translate-x-1/2 bg-white/90 backdrop-blur-xl rounded-2xl shadow-2xl px-4 py-6 z-50 border border-white/20 hidden lg:block"
-        style={{ 
+        className="fixed right-4 top-1/2 transform -translate-y-1/2 bg-white/90 backdrop-blur-xl rounded-2xl shadow-2xl px-4 py-6 z-50 border border-white/20 hidden lg:block"
+        style={{
           WebkitBackdropFilter: 'blur(12px)',
           backdropFilter: 'blur(12px)',
           boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)'
@@ -85,16 +85,16 @@ export function Navigation() {
                 >
                   <motion.div
                     className={`absolute inset-0 rounded-xl transition-all duration-300 ${
-                      isActive 
-                        ? 'bg-purple-100 scale-100' 
+                      isActive
+                        ? 'bg-purple-100 scale-100'
                         : 'bg-purple-50/0 scale-0 group-hover:scale-100 group-hover:bg-purple-50'
                     }`}
                     layoutId="navBackground"
                   />
                   <motion.span
                     className={`relative z-10 transition-colors duration-200 ${
-                      isActive 
-                        ? 'text-purple-600' 
+                      isActive
+                        ? 'text-purple-600'
                         : 'text-gray-500 group-hover:text-purple-600'
                     }`}
                   >
@@ -104,7 +104,7 @@ export function Navigation() {
                     initial={{ opacity: 0, x: -10 }}
                     whileHover={{ opacity: 1, x: -8 }}
                     transition={{ duration: 0.2 }}
-                    className={`absolute right-full mr-4 px-3 py-2 rounded-lg text-sm font-medium whitespace-nowrap ${
+                    className={`absolute left-full ml-4 px-3 py-2 rounded-lg text-sm font-medium whitespace-nowrap ${
                       isActive
                         ? 'bg-purple-100 text-purple-600'
                         : 'bg-white text-gray-700'
@@ -200,14 +200,14 @@ export function Navigation() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.3 }}
-        className="fixed bottom-8 left-8 z-40 lg:block hidden"
+        className="fixed bottom-8 right-8 z-40 lg:block hidden"
       >
         <AnimatedLink
           href="https://github.com/eshanized"
           target="_blank"
           rel="noopener noreferrer"
           className="px-6 py-3 bg-white/90 backdrop-blur-xl rounded-full shadow-lg border border-purple-100/20 text-sm text-gray-600 hover:text-purple-600 transition-all duration-200 flex items-center gap-2 group"
-          style={{ 
+          style={{
             WebkitBackdropFilter: 'blur(12px)',
             backdropFilter: 'blur(12px)'
           }}
