@@ -19,35 +19,35 @@ export function Home({ githubUser, gitlabUser }: HomeProps) {
     {
       name: 'Twitter',
       icon: Twitter,
-      url: 'https://twitter.com/yourusername',
+      url: 'https://twitter.com/eshanized',
       color: 'bg-[#1DA1F2]',
       hoverColor: 'hover:bg-[#1a8cd8]'
     },
     {
       name: 'LinkedIn',
       icon: Linkedin,
-      url: 'https://linkedin.com/in/yourusername',
+      url: 'https://linkedin.com/in/eshanized',
       color: 'bg-[#0A66C2]',
       hoverColor: 'hover:bg-[#094fb0]'
     },
     {
       name: 'Instagram',
       icon: Instagram,
-      url: 'https://instagram.com/yourusername',
+      url: 'https://instagram.com/eshanized',
       color: 'bg-gradient-to-br from-[#833AB4] via-[#FD1D1D] to-[#F77737]',
       hoverColor: 'hover:opacity-90'
     },
     {
       name: 'YouTube',
       icon: Youtube,
-      url: 'https://youtube.com/@yourusername',
+      url: 'https://youtube.com/@eshanized',
       color: 'bg-[#FF0000]',
       hoverColor: 'hover:bg-[#e50000]'
     },
     {
       name: 'Facebook',
       icon: Facebook,
-      url: 'https://facebook.com/yourusername',
+      url: 'https://facebook.com/eshanized',
       color: 'bg-[#1877F2]',
       hoverColor: 'hover:bg-[#166fe5]'
     }
@@ -58,7 +58,7 @@ export function Home({ githubUser, gitlabUser }: HomeProps) {
       {/* Animated Background */}
       <div className="absolute inset-0 z-0">
         <div className="absolute inset-0 bg-gradient-to-br from-black via-purple-900/20 to-black z-10" />
-        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=2072&q=80')] opacity-30 bg-cover bg-center bg-no-repeat" />
+        <div className="absolute inset-0 bg-[url('/assets/images/eshanized-bg.jpg?ixlib=rb-4.0.3&auto=format&fit=crop&w=2072&q=80')] opacity-30 bg-cover bg-center bg-no-repeat" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,0,0,0)_0%,rgba(0,0,0,0.8)_100%)]" />
       </div>
 
