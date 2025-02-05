@@ -6,16 +6,16 @@
   "type": "module",
   "author": {
     "name": "Eshan Roy",
-    "email": "eshanized@gmail.com",
+    "email": "m.eshanized@gmail.com",
     "url": "https://eshanized.is-a.dev"
   },
   "homepage": "https://eshanized.is-a.dev",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/eshanized/portfolio.git"
+    "url": "git+https://github.com/eshanized/eshanized.github.io.git"
   },
   "bugs": {
-    "url": "https://github.com/eshanized/portfolio/issues"
+    "url": "https://github.com/eshanized/eshanized.github.io/issues"
   },
   "keywords": [
     "portfolio",
@@ -24,6 +24,7 @@
     "snigdha-os",
     "react",
     "typescript",
+    "eshanized",
     "vite"
   ],
   "license": "MIT",
@@ -42,8 +43,7 @@
     "build": "tsc && vite build",
     "// Deployment": "",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist",
-    "// Linting": "",
+    "deploy": "gh-pages -d dist --cname eshanized.is-a.dev",
     "lint": "eslint ."
   },
   "dependencies": {
