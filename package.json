@@ -1,15 +1,50 @@
 {
   "name": "eshanized-portfolio",
-  "private": true,
   "version": "1.0.0",
+  "private": true,
+  "description": "Personal portfolio website of Eshan Roy, Lead Developer of Snigdha OS",
   "type": "module",
+  "author": {
+    "name": "Eshan Roy",
+    "email": "eshanized@gmail.com",
+    "url": "https://eshanized.is-a.dev"
+  },
+  "homepage": "https://eshanized.is-a.dev",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/eshanized/portfolio.git"
+  },
+  "bugs": {
+    "url": "https://github.com/eshanized/portfolio/issues"
+  },
+  "keywords": [
+    "portfolio",
+    "personal-website",
+    "eshan-roy",
+    "snigdha-os",
+    "react",
+    "typescript",
+    "vite"
+  ],
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/sponsors/eshanized"
+  },
   "scripts": {
+    "// Development": "",
     "dev": "vite",
-    "build": "tsc && vite build",
-    "lint": "eslint .",
     "preview": "vite preview",
+    "// Building": "",
+    "build": "tsc && vite build",
+    "// Deployment": "",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist"
+    "deploy": "gh-pages -d dist",
+    "// Linting": "",
+    "lint": "eslint ."
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
