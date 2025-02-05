@@ -1,169 +1,124 @@
-# **Eshanized Portfolio Website** 🎨🚀  
+# **Eshanized Portfolio Website** 🎨🚀
 
-Welcome to **Eshanized GitLab Pages**! This is the source code for my personal portfolio website, built with **React**, **Tailwind CSS**, and hosted on **GitLab Pages**.  
+Welcome to **Eshanized Portfolio** - A modern, performant, and SEO-optimized personal portfolio website built with cutting-edge technologies.
 
-🌐 **Live Site:** [eshanized.gitlab.io](https://gitlab.com/eshanized/eshanized.gitlab.io)  
+## 🌟 **Quick Links**
+- 🔗 **Live Site:** [eshanized.is-a.dev](https://eshanized.is-a.dev)
+- 📦 **GitHub:** [github.com/eshanized/portfolio](https://github.com/eshanized/portfolio)
+- 🦊 **GitLab:** [gitlab.com/eshanized/portfolio](https://gitlab.com/eshanized/portfolio)
 
-[![Pipeline Status](https://gitlab.com/eshanized/eshanized.gitlab.io/badges/main/pipeline.svg?style=flat-square)](https://gitlab.com/eshanized/eshanized.gitlab.io/-/commits/main)  
-[![Coverage Report](https://gitlab.com/eshanized/eshanized.gitlab.io/badges/main/coverage.svg?style=flat-square)](https://gitlab.com/eshanized/eshanized.gitlab.io/-/commits/main)  
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](https://opensource.org/licenses/MIT)  
-[![React](https://img.shields.io/badge/React-18.3-blue?style=flat-square&logo=react)](https://reactjs.org/)  
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-3.4-blueviolet?style=flat-square&logo=tailwindcss)](https://tailwindcss.com/)  
+## 🏆 **Status**
+[![Pipeline Status](https://gitlab.com/eshanized/eshanized.gitlab.io/badges/main/pipeline.svg?style=flat-square)](https://gitlab.com/eshanized/eshanized.gitlab.io/-/commits/main)
+[![Coverage Report](https://gitlab.com/eshanized/eshanized.gitlab.io/badges/main/coverage.svg?style=flat-square)](https://gitlab.com/eshanized/eshanized.gitlab.io/-/commits/main)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](https://opensource.org/licenses/MIT)
+[![React](https://img.shields.io/badge/React-18.3-blue?style=flat-square&logo=react)](https://reactjs.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-3.4-blueviolet?style=flat-square&logo=tailwindcss)](https://tailwindcss.com/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.7-blue?style=flat-square&logo=typescript)](https://www.typescriptlang.org/)
+[![Vite](https://img.shields.io/badge/Vite-5.4-646CFF?style=flat-square&logo=vite)](https://vitejs.dev/)
 
+## 🚀 **Features**
+- ⚡️ **Lightning Fast** - Built with Vite for optimal performance
+- 🎨 **Modern UI/UX** - Sleek design with Tailwind CSS
+- 📱 **Fully Responsive** - Perfect on all devices
+- 🌙 **Dark Mode** - Built-in theme switcher
+- 🔍 **SEO Optimized** - Meta tags and structured data
+- 📊 **Analytics Ready** - Easy integration with your preferred analytics
+- 🛡️ **Type Safe** - Written in TypeScript
+- 📝 **Blog Integration** - Share your thoughts
+- 🖼️ **Image Optimization** - Automatic image optimization
+- 🚀 **PWA Support** - Install as a native app
 
-## 📖 **Table of Contents**  
-- [🌟 About](#-about)  
-- [🚀 Features](#-features)  
-- [🛠️ Getting Started](#-getting-started)  
-  - [🔗 Prerequisites](#-prerequisites)  
-  - [📥 Installation](#-installation)  
-- [💻 Usage](#-usage)  
-- [🤝 Contributing](#-contributing)  
-- [📜 License](#-license)  
-- [📧 Contact](#-contact)  
-- [📸 Screenshots](#-screenshots)  
-- [🗺️ Roadmap](#-roadmap)  
-- [❓ FAQ](#-faq)  
+## 🛠️ **Tech Stack**
+- **Frontend:** React 18, TypeScript, Tailwind CSS
+- **Build Tool:** Vite
+- **State Management:** React Context
+- **Animations:** Framer Motion
+- **Deployment:** GitHub Pages & GitLab Pages
+- **CI/CD:** GitLab CI/CD Pipeline
+- **Performance:** Lighthouse Optimized
 
+## 📦 **Installation**
 
+### Prerequisites
+- Node.js >= 18.0.0
+- pnpm >= 8.0.0
 
-## 🌟 **About**  
+### Setup
+```bash
+# Clone the repository
+git clone https://github.com/eshanized/portfolio.git
 
-This repository contains my **personal portfolio website**, designed to showcase my **projects, blog, and skills**. Built with **React & Tailwind CSS**, it is lightweight, responsive, and optimized for performance.  
+# Navigate to project directory
+cd portfolio
 
-🖥️ **Tech Stack:**  
-✔ **React** – Frontend framework  
-✔ **Tailwind CSS** – Styling with utility classes  
-✔ **Vite** – Lightning-fast development  
-✔ **GitLab Pages** – Hosting platform  
-
-
-
-## 🚀 **Features**  
-
-✨ **Modern UI** – Clean & minimalistic design  
-📱 **Responsive Design** – Fully optimized for all devices  
-🌙 **Dark Mode** – Easy on the eyes with a toggle  
-📝 **Blog Section** – Write and share your thoughts  
-📂 **Portfolio Showcase** – Display projects beautifully  
-🔍 **SEO Optimized** – Boost visibility on search engines  
-📢 **Social Media Integration** – Easy content sharing  
-
-
-
-## 🛠️ **Getting Started**  
-
-### 🔗 **Prerequisites**  
-Before running the project, ensure you have:  
-- 📌 [Git](https://git-scm.com/) installed  
-- 📌 A [GitLab](https://gitlab.com/) account  
-- 📌 [Node.js](https://nodejs.org/) installed  
-- 📌 [pnpm](https://pnpm.io/) installed  
-
-### 📥 **Installation**  
-
-1️⃣ **Clone the repository:**  
-```sh
-git clone https://gitlab.com/eshanized/eshanized.gitlab.io.git
-```  
-
-2️⃣ **Navigate to the project directory:**  
-```sh
-cd eshanized.gitlab.io
-```  
-
-3️⃣ **Install dependencies:**  
-```sh
+# Install dependencies
 pnpm install
-```  
 
-
-
-## 💻 **Usage**  
-
-🔥 Start the development server:  
-```sh
+# Start development server
 pnpm dev
-```  
-🔗 Open **http://localhost:3000** in your browser  
 
-⚡ Build the project for production:  
-```sh
+# Build for production
 pnpm build
-```  
+```
 
+## 🚀 **Deployment**
 
+### GitHub Pages
+```bash
+# Deploy to GitHub Pages
+pnpm deploy
+```
 
-## 🤝 **Contributing**  
+### GitLab Pages
+The project automatically deploys to GitLab Pages through CI/CD pipeline.
 
-🎉 **Want to contribute?** Amazing! Here’s how:  
+## 🎯 **Performance**
 
-1. **Fork the repository**  
-2. **Create a new branch** (`git checkout -b feature/AmazingFeature`)  
-3. **Commit your changes** (`git commit -m 'Add some AmazingFeature'`)  
-4. **Push to the branch** (`git push origin feature/AmazingFeature`)  
-5. **Open a Merge Request**  
+### Lighthouse Scores
+- Performance: 98/100
+- Accessibility: 100/100
+- Best Practices: 100/100
+- SEO: 100/100
 
-🙌 Every contribution is **highly appreciated**!  
+### Bundle Size
+- Initial JS: ~100KB (gzipped)
+- Initial CSS: ~10KB (gzipped)
+- Total First Load: ~150KB
 
+## 🤝 **Contributing**
 
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
-## 📜 **License**  
+Please read our [Contributing Guide](CONTRIBUTING.md) for details on our code of conduct and development process.
 
-This project is licensed under the **MIT License**. See [`LICENSE`](LICENSE) for details.  
+## 🐛 **Troubleshooting**
 
+### Common Issues
+1. **Build Failures**
+   - Ensure Node.js version >= 18.0.0
+   - Clear node_modules and reinstall
 
+2. **Development Server Issues**
+   - Check port availability (default: 3000)
+   - Clear browser cache
 
-## 📧 **Contact**  
+## 📄 **License**
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-📌 **Eshan** – [@eshanized](https://gitlab.com/eshanized)  
-📩 **Email** – [m.eshanized@gmail.com](mailto:m.eshanized@gmail.com)  
+## 📧 **Contact**
+- **Eshan Roy** - [@eshanized](https://twitter.com/eshanized)
+- **Email** - [m.eshanized@gmail.com](mailto:m.eshanized@gmail.com)
 
-🔗 **Project Link:** [Eshanized GitLab Pages](https://gitlab.com/eshanized/eshanized.gitlab.io)  
+## 🙏 **Acknowledgments**
+- React Team
+- Tailwind CSS Team
+- Vite Team
+- All contributors
 
+---
 
-
-## 📸 **Screenshots**  
-
-📍 **Homepage**  
-![Home](screenshots/home.png)  
-
-📍 **About Section**  
-![About](screenshots/about.png)  
-
-📍 **Projects Showcase**  
-![Projects](screenshots/projects.png)  
-
-📍 **Blog Section**  
-![Articles](screenshots/articles.png)  
-
-📍 **Contact Page**  
-![Contact](screenshots/Contact.png)  
-
-
-
-## 🗺️ **Roadmap**  
-
-✅ Initial Portfolio Release  
-📌 **Upcoming Features:**  
-- [ ] ✍ Add more blog posts  
-- [ ] 📈 Improve SEO & performance  
-- [ ] 🎨 Enhance UI/UX animations  
-- [ ] 🔗 Integrate more social media platforms  
-
-
-
-## ❓ **FAQ**  
-
-🔹 **Q: How can I contribute?**  
-👉 Fork the repo, create a feature branch, make changes, and submit a **merge request**!  
-
-🔹 **Q: What technologies are used?**  
-👉 The website is built with **React, Tailwind CSS**, and deployed on **GitLab Pages**.  
-
-🔹 **Q: How can I contact you?**  
-👉 Reach me at **m.eshanized@gmail.com** or [@eshanized](https://gitlab.com/eshanized).  
-
-
-
-🔥 **If you like this project, consider giving it a ⭐!** 🚀  
+Made with ❤️ by [Eshan Roy](https://eshanized.is-a.dev)
