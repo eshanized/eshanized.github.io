@@ -135,15 +135,15 @@ export function Home({ githubUser, gitlabUser }: HomeProps) {
               <Typewriter
                 options={{
                   strings: [
-                    'Full Stack Developer',
+                    'Founder of Snigdha OS',
                     'Open Source Contributor',
-                    'Problem Solver',
+                    'Lead Developer & Core Maintainer',
                     'Tech Enthusiast'
                   ],
                   autoStart: true,
                   loop: true,
                   delay: 50,
-                  deleteSpeed: 30,
+                  deleteSpeed: 5,
                 }}
               />
             </motion.div>

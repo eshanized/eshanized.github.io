@@ -20,7 +20,6 @@ const routes = [
   '/contact'
 ];
 
-// https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
     react(),
@@ -33,20 +32,25 @@ export default defineConfig({
       filename: 'sitemap.xml'
     })
   ],
-  optimizeDeps: {
-    exclude: ['lucide-react'],
-  },
-  base: process.env.DEPLOY_TARGET === 'gitlab' ? '/eshanized/' : '/',
+  base: '/',
   build: {
     rollupOptions: {
       output: {
+        entryFileNames: 'scripts.js',  // JavaScript output as scripts.js
+        chunkFileNames: 'scripts.js',
         assetFileNames: (assetInfo) => {
+          if (assetInfo.name === 'style.css') {
+            return 'style.css';
+          }
           if (assetInfo.name === 'robots.txt') {
             return 'robots.txt';
           }
-          return 'assets/[name]-[hash][extname]';
+          return '[name][extname]';
         }
       }
     }
-  }
+  },
+  optimizeDeps: {
+    exclude: ['lucide-react'],
+  },
 });

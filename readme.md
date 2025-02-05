@@ -1,136 +1,169 @@
-# Eshanized GitLab Pages 🚀
+# **Eshanized Portfolio Website** 🎨🚀  
 
-Welcome to the Eshanized GitLab Pages repository! This repository hosts the source code for my personal website, built using React, Tailwind CSS, and hosted on GitLab Pages.
+Welcome to **Eshanized GitLab Pages**! This is the source code for my personal portfolio website, built with **React**, **Tailwind CSS**, and hosted on **GitLab Pages**.  
 
-[![pipeline status](https://gitlab.com/eshanized/eshanized.gitlab.io/badges/main/pipeline.svg)](https://gitlab.com/eshanized/eshanized.gitlab.io/-/commits/main)
-[![coverage report](https://gitlab.com/eshanized/eshanized.gitlab.io/badges/main/coverage.svg)](https://gitlab.com/eshanized/eshanized.gitlab.io/-/commits/main)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![React](https://img.shields.io/badge/React-17.0.2-blue)](https://reactjs.org/)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-2.2.19-blueviolet)](https://tailwindcss.com/)
+🌐 **Live Site:** [eshanized.gitlab.io](https://gitlab.com/eshanized/eshanized.gitlab.io)  
 
-## Table of Contents
+[![Pipeline Status](https://gitlab.com/eshanized/eshanized.gitlab.io/badges/main/pipeline.svg?style=flat-square)](https://gitlab.com/eshanized/eshanized.gitlab.io/-/commits/main)  
+[![Coverage Report](https://gitlab.com/eshanized/eshanized.gitlab.io/badges/main/coverage.svg?style=flat-square)](https://gitlab.com/eshanized/eshanized.gitlab.io/-/commits/main)  
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](https://opensource.org/licenses/MIT)  
+[![React](https://img.shields.io/badge/React-18.3-blue?style=flat-square&logo=react)](https://reactjs.org/)  
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-3.4-blueviolet?style=flat-square&logo=tailwindcss)](https://tailwindcss.com/)  
 
-- [About](#about)
-- [Features](#features)
-- [Getting Started](#getting-started)
-  - [Prerequisites](#prerequisites)
-  - [Installation](#installation)
-- [Usage](#usage)
-- [Contributing](#contributing)
-- [License](#license)
-- [Contact](#contact)
 
-## About 📝
+## 📖 **Table of Contents**  
+- [🌟 About](#-about)  
+- [🚀 Features](#-features)  
+- [🛠️ Getting Started](#-getting-started)  
+  - [🔗 Prerequisites](#-prerequisites)  
+  - [📥 Installation](#-installation)  
+- [💻 Usage](#-usage)  
+- [🤝 Contributing](#-contributing)  
+- [📜 License](#-license)  
+- [📧 Contact](#-contact)  
+- [📸 Screenshots](#-screenshots)  
+- [🗺️ Roadmap](#-roadmap)  
+- [❓ FAQ](#-faq)  
 
-This repository contains the source code for my personal website. The website is built using React and Tailwind CSS for styling, and it is hosted on GitLab Pages. It serves as a portfolio, blog, and a place to share my projects and thoughts.
 
-## Features ✨
 
-- **React**: A powerful JavaScript library for building user interfaces.
-- **Tailwind CSS**: A utility-first CSS framework for rapid UI development.
-- **Responsive Design**: Optimized for various screen sizes and devices.
-- **Blog**: A section to share articles and thoughts.
-- **Portfolio**: Showcase of my projects and work.
-- **SEO Optimized**: Ensures better visibility on search engines.
-- **Dark Mode**: Support for dark mode to reduce eye strain.
-- **Social Media Integration**: Easy sharing of content on social media platforms.
+## 🌟 **About**  
 
-## Getting Started 🛠️
+This repository contains my **personal portfolio website**, designed to showcase my **projects, blog, and skills**. Built with **React & Tailwind CSS**, it is lightweight, responsive, and optimized for performance.  
 
-### Prerequisites
+🖥️ **Tech Stack:**  
+✔ **React** – Frontend framework  
+✔ **Tailwind CSS** – Styling with utility classes  
+✔ **Vite** – Lightning-fast development  
+✔ **GitLab Pages** – Hosting platform  
 
-Before you begin, ensure you have met the following requirements:
 
-- You have installed the latest version of [Git](https://git-scm.com/).
-- You have a [GitLab](https://gitlab.com/) account.
-- You have [Node.js](https://nodejs.org/) and [pnpm](https://pnpm.io/) installed.
 
-### Installation
+## 🚀 **Features**  
 
-1. Clone the repository:
+✨ **Modern UI** – Clean & minimalistic design  
+📱 **Responsive Design** – Fully optimized for all devices  
+🌙 **Dark Mode** – Easy on the eyes with a toggle  
+📝 **Blog Section** – Write and share your thoughts  
+📂 **Portfolio Showcase** – Display projects beautifully  
+🔍 **SEO Optimized** – Boost visibility on search engines  
+📢 **Social Media Integration** – Easy content sharing  
 
-   ```sh
-   git clone https://gitlab.com/eshanized/eshanized.gitlab.io.git
-   ```
 
-2. Navigate to the project directory:
 
-   ```sh
-   cd eshanized.gitlab.io
-   ```
+## 🛠️ **Getting Started**  
 
-3. Install the necessary dependencies using pnpm:
+### 🔗 **Prerequisites**  
+Before running the project, ensure you have:  
+- 📌 [Git](https://git-scm.com/) installed  
+- 📌 A [GitLab](https://gitlab.com/) account  
+- 📌 [Node.js](https://nodejs.org/) installed  
+- 📌 [pnpm](https://pnpm.io/) installed  
 
-   ```sh
-   pnpm install
-   ```
+### 📥 **Installation**  
 
-## Usage 💻
+1️⃣ **Clone the repository:**  
+```sh
+git clone https://gitlab.com/eshanized/eshanized.gitlab.io.git
+```  
 
-To start the development server:
+2️⃣ **Navigate to the project directory:**  
+```sh
+cd eshanized.gitlab.io
+```  
 
+3️⃣ **Install dependencies:**  
+```sh
+pnpm install
+```  
+
+
+
+## 💻 **Usage**  
+
+🔥 Start the development server:  
 ```sh
 pnpm dev
-```
+```  
+🔗 Open **http://localhost:3000** in your browser  
 
-Open your browser and navigate to `http://localhost:3000` to view your site.
-
-To build the project for production:
-
+⚡ Build the project for production:  
 ```sh
 pnpm build
-```
+```  
 
-## Contributing 🤝
 
-Contributions are what make the open-source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
 
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Merge Request
+## 🤝 **Contributing**  
 
-## License 📜
+🎉 **Want to contribute?** Amazing! Here’s how:  
 
-Distributed under the MIT License. See `LICENSE` for more information.
+1. **Fork the repository**  
+2. **Create a new branch** (`git checkout -b feature/AmazingFeature`)  
+3. **Commit your changes** (`git commit -m 'Add some AmazingFeature'`)  
+4. **Push to the branch** (`git push origin feature/AmazingFeature`)  
+5. **Open a Merge Request**  
 
-## Contact 📧
+🙌 Every contribution is **highly appreciated**!  
 
-Eshan - [@eshanized](https://gitlab.com/eshanized) - m.eshanized@gmail.com
 
-Project Link: [https://gitlab.com/eshanized/eshanized.gitlab.io](https://gitlab.com/eshanized/eshanized.gitlab.io)
 
-## Acknowledgments 🙏
+## 📜 **License**  
 
-- Thanks to the open-source community for their contributions and support.
-- Inspiration and ideas from various personal websites and blogs.
+This project is licensed under the **MIT License**. See [`LICENSE`](LICENSE) for details.  
 
-## Screenshots 📸
 
-![HOME](screenshots/home.png)
-![ABOUT](screenshots/about.png)
-![PROJECTS](screenshots/projects.png)
-![ARTICLES](screenshots/articles.png)
-![CONTACT](screenshots/contact.png)
 
-## Roadmap 🗺️
+## 📧 **Contact**  
 
-- [ ] Add more blog posts
-- [ ] Improve SEO and performance
-- [ ] Add more interactive elements
-- [ ] Integrate with more social media platforms
+📌 **Eshan** – [@eshanized](https://gitlab.com/eshanized)  
+📩 **Email** – [m.eshanized@gmail.com](mailto:m.eshanized@gmail.com)  
 
-## FAQ ❓
+🔗 **Project Link:** [Eshanized GitLab Pages](https://gitlab.com/eshanized/eshanized.gitlab.io)  
 
-**Q: How can I contribute?**
 
-A: You can contribute by forking the repository, creating a feature branch, making your changes, and opening a merge request.
 
-**Q: What technologies are used?**
+## 📸 **Screenshots**  
 
-A: The website is built using React, Tailwind CSS, and hosted on GitLab Pages.
+📍 **Homepage**  
+![Home](screenshots/home.png)  
 
-**Q: How can I contact you?**
+📍 **About Section**  
+![About](screenshots/about.png)  
 
-A: You can reach out to me via email at eshan@example.com or through my GitLab profile [@eshanized](https://gitlab.com/eshanized).
+📍 **Projects Showcase**  
+![Projects](screenshots/projects.png)  
+
+📍 **Blog Section**  
+![Articles](screenshots/articles.png)  
+
+📍 **Contact Page**  
+![Contact](screenshots/Contact.png)  
+
+
+
+## 🗺️ **Roadmap**  
+
+✅ Initial Portfolio Release  
+📌 **Upcoming Features:**  
+- [ ] ✍ Add more blog posts  
+- [ ] 📈 Improve SEO & performance  
+- [ ] 🎨 Enhance UI/UX animations  
+- [ ] 🔗 Integrate more social media platforms  
+
+
+
+## ❓ **FAQ**  
+
+🔹 **Q: How can I contribute?**  
+👉 Fork the repo, create a feature branch, make changes, and submit a **merge request**!  
+
+🔹 **Q: What technologies are used?**  
+👉 The website is built with **React, Tailwind CSS**, and deployed on **GitLab Pages**.  
+
+🔹 **Q: How can I contact you?**  
+👉 Reach me at **m.eshanized@gmail.com** or [@eshanized](https://gitlab.com/eshanized).  
+
+
+
+🔥 **If you like this project, consider giving it a ⭐!** 🚀  
