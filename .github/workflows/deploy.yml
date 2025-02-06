@@ -2,9 +2,9 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [ master ]
+    branches: [master]
   pull_request:
-    branches: [ master ]
+    branches: [master]
   workflow_dispatch:
 
 permissions:
@@ -88,8 +88,27 @@ jobs:
 
       - name: Optimize Assets
         run: |
-          html-minifier-terser --input-dir dist --output-dir dist --file-ext html --collapse-whitespace --remove-comments
-          svgo -f dist -r
+          # HTML Minification
+          html-minifier-terser \
+            --input-dir dist \
+            --output-dir dist \
+            --file-ext html \
+            --collapse-whitespace \
+            --remove-comments \
+            --remove-redundant-attributes \
+            --remove-script-type-attributes \
+            --remove-style-link-type-attributes \
+            --use-short-doctype \
+            --minify-css true \
+            --minify-js true \
+            || echo "HTML minification failed, continuing..."
+
+          # SVG Optimization (only if SVG files exist)
+          if find dist -name "*.svg" -type f -print -quit | grep -q .; then
+            svgo -f dist -r
+          else
+            echo "No SVG files found to optimize"
+          fi
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
