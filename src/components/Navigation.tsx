@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Home, User, BarChart, FolderGit2, Image, BookOpen, Mail, Menu, X } from 'lucide-react';
+import { Home, User, BarChart, FolderGit2, Image, BookOpen, Mail, Menu, X, Heart } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { AnimatedLink } from './AnimatedButton';
 
@@ -16,6 +16,7 @@ export function Navigation() {
     { to: '/stats', icon: BarChart, label: 'Stats' },
     { to: '/gallery', icon: Image, label: 'Gallery' },
     { to: '/contact', icon: Mail, label: 'Contact' },
+    { to: '/donate', icon: Heart, label: 'Donate' },
   ];
 
   const navVariants = {

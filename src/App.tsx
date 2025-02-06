@@ -8,6 +8,7 @@ import { Articles } from './pages/Articles';
 import { Stats } from './pages/Stats';
 import { Gallery } from './pages/Gallery';
 import { Contact } from './pages/Contact';
+import { Donate } from './pages/Donate';
 import { Navigation } from './components/Navigation';
 import { GitHubUser, GitLabUser, Repository } from './types';
 
@@ -125,6 +126,7 @@ function App() {
             <Route path="/stats" element={<Stats githubUser={githubUser} gitlabUser={gitlabUser} />} />
             <Route path="/gallery" element={<Gallery />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="/donate" element={<Donate />} />
           </Routes>
         </AnimatePresence>
         <Navigation />
