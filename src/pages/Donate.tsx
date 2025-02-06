@@ -11,39 +11,39 @@ export function Donate() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-indigo-50 py-20 px-4">
-      <div className="max-w-4xl mx-auto">
+    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-indigo-50 px-4 py-20">
+      <div className="mx-auto max-w-4xl">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-12"
+          className="mb-12 text-center"
         >
-          <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">
+          <h1 className="mb-4 bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-4xl font-bold text-transparent md:text-5xl">
             Support My Work
           </h1>
-          <p className="text-gray-600 text-lg max-w-2xl mx-auto">
+          <p className="mx-auto max-w-2xl text-lg text-gray-600">
             Your support helps me continue creating open-source projects and educational content.
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+        <div className="mb-12 grid grid-cols-1 gap-6 md:grid-cols-2">
           {/* One-time donation */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
-            className="bg-white rounded-2xl shadow-xl p-6 border border-purple-100"
+            className="rounded-2xl border border-purple-100 bg-white p-6 shadow-xl"
           >
-            <div className="flex items-center gap-3 mb-6">
+            <div className="mb-6 flex items-center gap-3">
               <CreditCard className="text-purple-600" size={24} />
               <h2 className="text-xl font-semibold">One-time Donation</h2>
             </div>
             <div className="grid grid-cols-2 gap-4">
-              {donationOptions.map((option) => (
+              {donationOptions.map(option => (
                 <motion.button
                   key={option.amount}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className="flex flex-col items-center gap-2 p-4 rounded-xl border border-purple-100 hover:border-purple-300 hover:bg-purple-50 transition-all duration-200"
+                  className="flex flex-col items-center gap-2 rounded-xl border border-purple-100 p-4 transition-all duration-200 hover:border-purple-300 hover:bg-purple-50"
                 >
                   <option.icon className="text-purple-600" size={20} />
                   <span className="font-semibold text-purple-600">${option.amount}</span>
@@ -57,19 +57,19 @@ export function Donate() {
           <motion.div
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
-            className="bg-white rounded-2xl shadow-xl p-6 border border-purple-100"
+            className="rounded-2xl border border-purple-100 bg-white p-6 shadow-xl"
           >
-            <div className="flex items-center gap-3 mb-6">
+            <div className="mb-6 flex items-center gap-3">
               <Calendar className="text-purple-600" size={24} />
               <h2 className="text-xl font-semibold">Monthly Support</h2>
             </div>
             <div className="space-y-4">
-              {[10, 25, 50].map((amount) => (
+              {[10, 25, 50].map(amount => (
                 <motion.button
                   key={amount}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  className="w-full flex items-center justify-between p-4 rounded-xl border border-purple-100 hover:border-purple-300 hover:bg-purple-50 transition-all duration-200"
+                  className="flex w-full items-center justify-between rounded-xl border border-purple-100 p-4 transition-all duration-200 hover:border-purple-300 hover:bg-purple-50"
                 >
                   <span className="font-semibold text-purple-600">${amount}/month</span>
                   <Heart className="text-purple-600" size={20} />
@@ -82,15 +82,15 @@ export function Donate() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-center bg-white rounded-2xl shadow-xl p-8 border border-purple-100"
+          className="rounded-2xl border border-purple-100 bg-white p-8 text-center shadow-xl"
         >
-          <h2 className="text-2xl font-semibold mb-4">Other Ways to Support</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <h2 className="mb-4 text-2xl font-semibold">Other Ways to Support</h2>
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
             <a
               href="https://github.com/sponsors/eshanized"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex flex-col items-center gap-2 p-4 rounded-xl hover:bg-purple-50 transition-all duration-200"
+              className="flex flex-col items-center gap-2 rounded-xl p-4 transition-all duration-200 hover:bg-purple-50"
             >
               <Heart className="text-purple-600" size={24} />
               <span className="font-medium">GitHub Sponsors</span>
@@ -99,7 +99,7 @@ export function Donate() {
               href="https://www.patreon.com/eshanized"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex flex-col items-center gap-2 p-4 rounded-xl hover:bg-purple-50 transition-all duration-200"
+              className="flex flex-col items-center gap-2 rounded-xl p-4 transition-all duration-200 hover:bg-purple-50"
             >
               <Gift className="text-purple-600" size={24} />
               <span className="font-medium">Patreon</span>
@@ -108,7 +108,7 @@ export function Donate() {
               href="https://ko-fi.com/eshanized"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex flex-col items-center gap-2 p-4 rounded-xl hover:bg-purple-50 transition-all duration-200"
+              className="flex flex-col items-center gap-2 rounded-xl p-4 transition-all duration-200 hover:bg-purple-50"
             >
               <Coffee className="text-purple-600" size={24} />
               <span className="font-medium">Ko-fi</span>

@@ -1,5 +1,14 @@
 import { motion } from 'framer-motion';
-import { MapPin, Globe, Github, Gitlab as GitlabLogo, Code, Briefcase, GraduationCap, Terminal } from 'lucide-react';
+import {
+  MapPin,
+  Globe,
+  Github,
+  Gitlab as GitlabLogo,
+  Code,
+  Briefcase,
+  GraduationCap,
+  Terminal,
+} from 'lucide-react';
 import { GitHubUser, GitLabUser } from '../types';
 
 interface AboutProps {
@@ -41,49 +50,51 @@ export function About({ githubUser, gitlabUser }: AboutProps) {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12 md:py-20 px-4 md:px-8">
-      <div className="absolute inset-0 bg-[url('/assets/images/eshanized-bg.jpg?ixlib=rb-4.0.3&auto=format&fit=crop&q=80')] opacity-5 bg-cover bg-center" />
+    <div className="min-h-screen bg-gray-50 px-4 py-12 md:px-8 md:py-20">
+      <div className="absolute inset-0 bg-[url('/assets/images/eshanized-bg.jpg?ixlib=rb-4.0.3&auto=format&fit=crop&q=80')] bg-cover bg-center opacity-5" />
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5 }}
-        className="container mx-auto relative"
+        className="container relative mx-auto"
       >
         <motion.h1
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
-          className="text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-8 md:mb-12 bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-indigo-600"
+          className="mb-8 bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-center text-3xl font-bold text-transparent md:mb-12 md:text-4xl lg:text-5xl"
         >
           About Me
         </motion.h1>
 
-        <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8 mb-8 md:mb-12">
+        <div className="mx-auto mb-8 grid max-w-6xl grid-cols-1 gap-6 md:mb-12 md:gap-8 lg:grid-cols-2">
           {githubUser && (
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5, delay: 0.4 }}
-              className="bg-white rounded-xl shadow-lg overflow-hidden"
+              className="overflow-hidden rounded-xl bg-white shadow-lg"
             >
-              <div className="bg-gradient-to-r from-purple-600 to-indigo-600 px-4 md:px-6 py-4 flex items-center gap-3">
+              <div className="flex items-center gap-3 bg-gradient-to-r from-purple-600 to-indigo-600 px-4 py-4 md:px-6">
                 <Github className="text-white" size={24} />
-                <h2 className="text-lg md:text-xl font-semibold text-white">GitHub Profile</h2>
+                <h2 className="text-lg font-semibold text-white md:text-xl">GitHub Profile</h2>
               </div>
               <div className="p-4 md:p-6">
-                <div className="flex items-center gap-4 mb-6">
+                <div className="mb-6 flex items-center gap-4">
                   <img
                     src={githubUser.avatar_url}
                     alt={githubUser.name}
-                    className="w-16 h-16 md:w-20 md:h-20 rounded-full border-4 border-white shadow-lg"
+                    className="h-16 w-16 rounded-full border-4 border-white shadow-lg md:h-20 md:w-20"
                   />
                   <div>
-                    <h3 className="text-lg md:text-xl font-semibold text-gray-900">{githubUser.name}</h3>
+                    <h3 className="text-lg font-semibold text-gray-900 md:text-xl">
+                      {githubUser.name}
+                    </h3>
                     <p className="text-gray-600">@{githubUser.login}</p>
                   </div>
                 </div>
                 <div className="space-y-4">
-                  <p className="text-gray-700 text-sm md:text-base">{githubUser.bio}</p>
+                  <p className="text-sm text-gray-700 md:text-base">{githubUser.bio}</p>
                   <div className="flex flex-wrap gap-4 text-gray-600">
                     {githubUser.location && (
                       <div className="flex items-center gap-2">
@@ -103,18 +114,24 @@ export function About({ githubUser, gitlabUser }: AboutProps) {
                       </a>
                     )}
                   </div>
-                  <div className="grid grid-cols-3 gap-4 mt-4">
-                    <div className="bg-purple-50 px-3 py-2 rounded-lg">
-                      <p className="text-xs md:text-sm text-gray-600">Repositories</p>
-                      <p className="text-lg md:text-xl font-semibold text-purple-600">{githubUser.public_repos}</p>
+                  <div className="mt-4 grid grid-cols-3 gap-4">
+                    <div className="rounded-lg bg-purple-50 px-3 py-2">
+                      <p className="text-xs text-gray-600 md:text-sm">Repositories</p>
+                      <p className="text-lg font-semibold text-purple-600 md:text-xl">
+                        {githubUser.public_repos}
+                      </p>
                     </div>
-                    <div className="bg-purple-50 px-3 py-2 rounded-lg">
-                      <p className="text-xs md:text-sm text-gray-600">Followers</p>
-                      <p className="text-lg md:text-xl font-semibold text-purple-600">{githubUser.followers}</p>
+                    <div className="rounded-lg bg-purple-50 px-3 py-2">
+                      <p className="text-xs text-gray-600 md:text-sm">Followers</p>
+                      <p className="text-lg font-semibold text-purple-600 md:text-xl">
+                        {githubUser.followers}
+                      </p>
                     </div>
-                    <div className="bg-purple-50 px-3 py-2 rounded-lg">
-                      <p className="text-xs md:text-sm text-gray-600">Following</p>
-                      <p className="text-lg md:text-xl font-semibold text-purple-600">{githubUser.following}</p>
+                    <div className="rounded-lg bg-purple-50 px-3 py-2">
+                      <p className="text-xs text-gray-600 md:text-sm">Following</p>
+                      <p className="text-lg font-semibold text-purple-600 md:text-xl">
+                        {githubUser.following}
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -127,26 +144,28 @@ export function About({ githubUser, gitlabUser }: AboutProps) {
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5, delay: 0.6 }}
-              className="bg-white rounded-xl shadow-lg overflow-hidden"
+              className="overflow-hidden rounded-xl bg-white shadow-lg"
             >
-              <div className="bg-gradient-to-r from-orange-500 to-red-500 px-4 md:px-6 py-4 flex items-center gap-3">
+              <div className="flex items-center gap-3 bg-gradient-to-r from-orange-500 to-red-500 px-4 py-4 md:px-6">
                 <GitlabLogo className="text-white" size={24} />
-                <h2 className="text-lg md:text-xl font-semibold text-white">GitLab Profile</h2>
+                <h2 className="text-lg font-semibold text-white md:text-xl">GitLab Profile</h2>
               </div>
               <div className="p-4 md:p-6">
-                <div className="flex items-center gap-4 mb-6">
+                <div className="mb-6 flex items-center gap-4">
                   <img
                     src={gitlabUser.avatar_url}
                     alt={gitlabUser.name}
-                    className="w-16 h-16 md:w-20 md:h-20 rounded-full border-4 border-white shadow-lg"
+                    className="h-16 w-16 rounded-full border-4 border-white shadow-lg md:h-20 md:w-20"
                   />
                   <div>
-                    <h3 className="text-lg md:text-xl font-semibold text-gray-900">{gitlabUser.name}</h3>
+                    <h3 className="text-lg font-semibold text-gray-900 md:text-xl">
+                      {gitlabUser.name}
+                    </h3>
                     <p className="text-gray-600">@{gitlabUser.username}</p>
                   </div>
                 </div>
                 <div className="space-y-4">
-                  <p className="text-gray-700 text-sm md:text-base">{gitlabUser.bio}</p>
+                  <p className="text-sm text-gray-700 md:text-base">{gitlabUser.bio}</p>
                   <div className="flex flex-wrap gap-4 text-gray-600">
                     {gitlabUser.location && (
                       <div className="flex items-center gap-2">
@@ -166,18 +185,24 @@ export function About({ githubUser, gitlabUser }: AboutProps) {
                       </a>
                     )}
                   </div>
-                  <div className="grid grid-cols-3 gap-4 mt-4">
-                    <div className="bg-orange-50 px-3 py-2 rounded-lg">
-                      <p className="text-xs md:text-sm text-gray-600">Repositories</p>
-                      <p className="text-lg md:text-xl font-semibold text-orange-600">{gitlabUser.public_repos}</p>
+                  <div className="mt-4 grid grid-cols-3 gap-4">
+                    <div className="rounded-lg bg-orange-50 px-3 py-2">
+                      <p className="text-xs text-gray-600 md:text-sm">Repositories</p>
+                      <p className="text-lg font-semibold text-orange-600 md:text-xl">
+                        {gitlabUser.public_repos}
+                      </p>
                     </div>
-                    <div className="bg-orange-50 px-3 py-2 rounded-lg">
-                      <p className="text-xs md:text-sm text-gray-600">Projects</p>
-                      <p className="text-lg md:text-xl font-semibold text-orange-600">{gitlabUser.projects_count || 0}</p>
+                    <div className="rounded-lg bg-orange-50 px-3 py-2">
+                      <p className="text-xs text-gray-600 md:text-sm">Projects</p>
+                      <p className="text-lg font-semibold text-orange-600 md:text-xl">
+                        {gitlabUser.projects_count || 0}
+                      </p>
                     </div>
-                    <div className="bg-orange-50 px-3 py-2 rounded-lg">
-                      <p className="text-xs md:text-sm text-gray-600">Groups</p>
-                      <p className="text-lg md:text-xl font-semibold text-orange-600">{gitlabUser.groups_count || 0}</p>
+                    <div className="rounded-lg bg-orange-50 px-3 py-2">
+                      <p className="text-xs text-gray-600 md:text-sm">Groups</p>
+                      <p className="text-lg font-semibold text-orange-600 md:text-xl">
+                        {gitlabUser.groups_count || 0}
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -191,24 +216,24 @@ export function About({ githubUser, gitlabUser }: AboutProps) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.8 }}
-          className="max-w-6xl mx-auto mb-8 md:mb-12"
+          className="mx-auto mb-8 max-w-6xl md:mb-12"
         >
-          <div className="bg-white rounded-xl shadow-lg p-6 md:p-8">
-            <div className="flex items-center gap-3 mb-6">
+          <div className="rounded-xl bg-white p-6 shadow-lg md:p-8">
+            <div className="mb-6 flex items-center gap-3">
               <Code className="text-purple-600" size={24} />
-              <h2 className="text-xl md:text-2xl font-semibold">Skills & Technologies</h2>
+              <h2 className="text-xl font-semibold md:text-2xl">Skills & Technologies</h2>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-8 lg:grid-cols-3">
               <div>
-                <h3 className="text-base md:text-lg font-semibold text-purple-600 mb-3 flex items-center gap-2">
+                <h3 className="mb-3 flex items-center gap-2 text-base font-semibold text-purple-600 md:text-lg">
                   <Terminal size={18} />
                   Programming Languages
                 </h3>
                 <div className="flex flex-wrap gap-2">
-                  {skills.languages.map((skill) => (
+                  {skills.languages.map(skill => (
                     <span
                       key={skill}
-                      className="bg-purple-50 text-purple-700 px-3 py-1 rounded-full text-xs md:text-sm"
+                      className="rounded-full bg-purple-50 px-3 py-1 text-xs text-purple-700 md:text-sm"
                     >
                       {skill}
                     </span>
@@ -216,12 +241,14 @@ export function About({ githubUser, gitlabUser }: AboutProps) {
                 </div>
               </div>
               <div>
-                <h3 className="text-base md:text-lg font-semibold text-purple-600 mb-3">Frontend</h3>
+                <h3 className="mb-3 text-base font-semibold text-purple-600 md:text-lg">
+                  Frontend
+                </h3>
                 <div className="flex flex-wrap gap-2">
-                  {skills.frontend.map((skill) => (
+                  {skills.frontend.map(skill => (
                     <span
                       key={skill}
-                      className="bg-blue-50 text-blue-700 px-3 py-1 rounded-full text-xs md:text-sm"
+                      className="rounded-full bg-blue-50 px-3 py-1 text-xs text-blue-700 md:text-sm"
                     >
                       {skill}
                     </span>
@@ -229,12 +256,12 @@ export function About({ githubUser, gitlabUser }: AboutProps) {
                 </div>
               </div>
               <div>
-                <h3 className="text-base md:text-lg font-semibold text-purple-600 mb-3">Backend</h3>
+                <h3 className="mb-3 text-base font-semibold text-purple-600 md:text-lg">Backend</h3>
                 <div className="flex flex-wrap gap-2">
-                  {skills.backend.map((skill) => (
+                  {skills.backend.map(skill => (
                     <span
                       key={skill}
-                      className="bg-green-50 text-green-700 px-3 py-1 rounded-full text-xs md:text-sm"
+                      className="rounded-full bg-green-50 px-3 py-1 text-xs text-green-700 md:text-sm"
                     >
                       {skill}
                     </span>
@@ -242,12 +269,14 @@ export function About({ githubUser, gitlabUser }: AboutProps) {
                 </div>
               </div>
               <div>
-                <h3 className="text-base md:text-lg font-semibold text-purple-600 mb-3">Databases</h3>
+                <h3 className="mb-3 text-base font-semibold text-purple-600 md:text-lg">
+                  Databases
+                </h3>
                 <div className="flex flex-wrap gap-2">
-                  {skills.databases.map((skill) => (
+                  {skills.databases.map(skill => (
                     <span
                       key={skill}
-                      className="bg-yellow-50 text-yellow-700 px-3 py-1 rounded-full text-xs md:text-sm"
+                      className="rounded-full bg-yellow-50 px-3 py-1 text-xs text-yellow-700 md:text-sm"
                     >
                       {skill}
                     </span>
@@ -255,12 +284,14 @@ export function About({ githubUser, gitlabUser }: AboutProps) {
                 </div>
               </div>
               <div>
-                <h3 className="text-base md:text-lg font-semibold text-purple-600 mb-3">Tools & DevOps</h3>
+                <h3 className="mb-3 text-base font-semibold text-purple-600 md:text-lg">
+                  Tools & DevOps
+                </h3>
                 <div className="flex flex-wrap gap-2">
-                  {skills.tools.map((skill) => (
+                  {skills.tools.map(skill => (
                     <span
                       key={skill}
-                      className="bg-red-50 text-red-700 px-3 py-1 rounded-full text-xs md:text-sm"
+                      className="rounded-full bg-red-50 px-3 py-1 text-xs text-red-700 md:text-sm"
                     >
                       {skill}
                     </span>
@@ -276,12 +307,12 @@ export function About({ githubUser, gitlabUser }: AboutProps) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 1 }}
-          className="max-w-6xl mx-auto mb-8 md:mb-12"
+          className="mx-auto mb-8 max-w-6xl md:mb-12"
         >
-          <div className="bg-white rounded-xl shadow-lg p-6 md:p-8">
-            <div className="flex items-center gap-3 mb-6">
+          <div className="rounded-xl bg-white p-6 shadow-lg md:p-8">
+            <div className="mb-6 flex items-center gap-3">
               <Briefcase className="text-purple-600" size={24} />
-              <h2 className="text-xl md:text-2xl font-semibold">Work Experience</h2>
+              <h2 className="text-xl font-semibold md:text-2xl">Work Experience</h2>
             </div>
             <div className="space-y-6 md:space-y-8">
               {experience.map((exp, index) => (
@@ -290,13 +321,13 @@ export function About({ githubUser, gitlabUser }: AboutProps) {
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className="relative pl-6 md:pl-8 before:content-[''] before:absolute before:left-0 before:top-0 before:bottom-0 before:w-0.5 before:bg-purple-200"
+                  className="relative pl-6 before:absolute before:bottom-0 before:left-0 before:top-0 before:w-0.5 before:bg-purple-200 before:content-[''] md:pl-8"
                 >
-                  <div className="absolute left-0 top-0 w-2 h-2 rounded-full bg-purple-600 -translate-x-[3px]" />
-                  <h3 className="text-lg md:text-xl font-semibold text-gray-900">{exp.title}</h3>
-                  <p className="text-purple-600 font-medium text-sm md:text-base">{exp.company}</p>
-                  <p className="text-gray-500 text-xs md:text-sm">{exp.period}</p>
-                  <p className="text-gray-700 mt-2 text-sm md:text-base">{exp.description}</p>
+                  <div className="absolute left-0 top-0 h-2 w-2 -translate-x-[3px] rounded-full bg-purple-600" />
+                  <h3 className="text-lg font-semibold text-gray-900 md:text-xl">{exp.title}</h3>
+                  <p className="text-sm font-medium text-purple-600 md:text-base">{exp.company}</p>
+                  <p className="text-xs text-gray-500 md:text-sm">{exp.period}</p>
+                  <p className="mt-2 text-sm text-gray-700 md:text-base">{exp.description}</p>
                 </motion.div>
               ))}
             </div>
@@ -308,12 +339,12 @@ export function About({ githubUser, gitlabUser }: AboutProps) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 1.2 }}
-          className="max-w-6xl mx-auto"
+          className="mx-auto max-w-6xl"
         >
-          <div className="bg-white rounded-xl shadow-lg p-6 md:p-8">
-            <div className="flex items-center gap-3 mb-6">
+          <div className="rounded-xl bg-white p-6 shadow-lg md:p-8">
+            <div className="mb-6 flex items-center gap-3">
               <GraduationCap className="text-purple-600" size={24} />
-              <h2 className="text-xl md:text-2xl font-semibold">Education</h2>
+              <h2 className="text-xl font-semibold md:text-2xl">Education</h2>
             </div>
             <div className="space-y-6">
               {education.map((edu, index) => (
@@ -324,13 +355,15 @@ export function About({ githubUser, gitlabUser }: AboutProps) {
                   transition={{ duration: 0.5, delay: index * 0.1 }}
                   className="flex items-start gap-4"
                 >
-                  <div className="bg-purple-100 p-2 md:p-3 rounded-lg shrink-0">
-                    <GraduationCap className="text-purple-600 w-5 h-5 md:w-6 md:h-6" />
+                  <div className="shrink-0 rounded-lg bg-purple-100 p-2 md:p-3">
+                    <GraduationCap className="h-5 w-5 text-purple-600 md:h-6 md:w-6" />
                   </div>
                   <div>
-                    <h3 className="text-base md:text-lg font-semibold text-gray-900">{edu.degree}</h3>
-                    <p className="text-purple-600 text-sm md:text-base">{edu.school}</p>
-                    <p className="text-gray-500 text-xs md:text-sm">{edu.period}</p>
+                    <h3 className="text-base font-semibold text-gray-900 md:text-lg">
+                      {edu.degree}
+                    </h3>
+                    <p className="text-sm text-purple-600 md:text-base">{edu.school}</p>
+                    <p className="text-xs text-gray-500 md:text-sm">{edu.period}</p>
                   </div>
                 </motion.div>
               ))}

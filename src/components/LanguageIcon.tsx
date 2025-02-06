@@ -31,11 +31,7 @@ export function LanguageIcon({ language, className = '' }: LanguageIconProps) {
 
   return (
     <div className={`flex items-center gap-2 ${className}`}>
-      <Circle
-        fill={color}
-        size={12}
-        className="stroke-none"
-      />
+      <Circle fill={color} size={12} className="stroke-none" />
       <span>{language}</span>
     </div>
   );

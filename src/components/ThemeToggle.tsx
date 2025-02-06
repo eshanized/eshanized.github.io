@@ -13,7 +13,7 @@ export function ThemeToggle({ isDark, toggle }: ThemeToggleProps) {
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
       onClick={toggle}
-      className="fixed top-4 right-24 z-50 p-3 rounded-full bg-white/10 backdrop-blur-lg shadow-lg border border-white/20 text-white hover:bg-white/20 transition-colors"
+      className="fixed right-24 top-4 z-50 rounded-full border border-white/20 bg-white/10 p-3 text-white shadow-lg backdrop-blur-lg transition-colors hover:bg-white/20"
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}

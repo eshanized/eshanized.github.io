@@ -1,6 +1,17 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Home, User, BarChart, FolderGit2, Image, BookOpen, Mail, Menu, X, Heart } from 'lucide-react';
+import {
+  Home,
+  User,
+  BarChart,
+  FolderGit2,
+  Image,
+  BookOpen,
+  Mail,
+  Menu,
+  X,
+  Heart,
+} from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { AnimatedLink } from './AnimatedButton';
 
@@ -26,14 +37,14 @@ export function Navigation() {
       x: 0,
       transition: {
         duration: 0.5,
-        staggerChildren: 0.1
-      }
-    }
+        staggerChildren: 0.1,
+      },
+    },
   };
 
   const itemVariants = {
     hidden: { opacity: 0, x: 20 },
-    visible: { opacity: 1, x: 0 }
+    visible: { opacity: 1, x: 0 },
   };
 
   const mobileMenuVariants = {
@@ -43,17 +54,17 @@ export function Navigation() {
       scale: 1,
       transition: {
         duration: 0.3,
-        ease: "easeOut"
-      }
+        ease: 'easeOut',
+      },
     },
     exit: {
       opacity: 0,
       scale: 0.8,
       transition: {
         duration: 0.3,
-        ease: "easeIn"
-      }
-    }
+        ease: 'easeIn',
+      },
+    },
   };
 
   return (
@@ -63,11 +74,11 @@ export function Navigation() {
         initial="hidden"
         animate="visible"
         variants={navVariants}
-        className="fixed right-4 top-1/2 transform -translate-y-1/2 bg-white/90 backdrop-blur-xl rounded-2xl shadow-2xl px-4 py-6 z-50 border border-white/20 hidden lg:block"
+        className="fixed right-4 top-1/2 z-50 hidden -translate-y-1/2 transform rounded-2xl border border-white/20 bg-white/90 px-4 py-6 shadow-2xl backdrop-blur-xl lg:block"
         style={{
           WebkitBackdropFilter: 'blur(12px)',
           backdropFilter: 'blur(12px)',
-          boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)'
+          boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)',
         }}
       >
         <motion.ul className="flex flex-col items-center gap-3">
@@ -80,23 +91,18 @@ export function Navigation() {
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
               >
-                <Link
-                  to={to}
-                  className="group relative flex items-center p-2"
-                >
+                <Link to={to} className="group relative flex items-center p-2">
                   <motion.div
                     className={`absolute inset-0 rounded-xl transition-all duration-300 ${
                       isActive
-                        ? 'bg-purple-100 scale-100'
-                        : 'bg-purple-50/0 scale-0 group-hover:scale-100 group-hover:bg-purple-50'
+                        ? 'scale-100 bg-purple-100'
+                        : 'scale-0 bg-purple-50/0 group-hover:scale-100 group-hover:bg-purple-50'
                     }`}
                     layoutId="navBackground"
                   />
                   <motion.span
                     className={`relative z-10 transition-colors duration-200 ${
-                      isActive
-                        ? 'text-purple-600'
-                        : 'text-gray-500 group-hover:text-purple-600'
+                      isActive ? 'text-purple-600' : 'text-gray-500 group-hover:text-purple-600'
                     }`}
                   >
                     <Icon size={24} />
@@ -105,11 +111,9 @@ export function Navigation() {
                     initial={{ opacity: 0, x: -10 }}
                     whileHover={{ opacity: 1, x: -8 }}
                     transition={{ duration: 0.2 }}
-                    className={`absolute left-full ml-4 px-3 py-2 rounded-lg text-sm font-medium whitespace-nowrap ${
-                      isActive
-                        ? 'bg-purple-100 text-purple-600'
-                        : 'bg-white text-gray-700'
-                    } shadow-lg border border-purple-100/50`}
+                    className={`absolute left-full ml-4 whitespace-nowrap rounded-lg px-3 py-2 text-sm font-medium ${
+                      isActive ? 'bg-purple-100 text-purple-600' : 'bg-white text-gray-700'
+                    } border border-purple-100/50 shadow-lg`}
                   >
                     {label}
                   </motion.span>
@@ -129,7 +133,7 @@ export function Navigation() {
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
           onClick={() => setIsOpen(true)}
-          className="fixed right-4 bottom-4 w-14 h-14 bg-purple-600 text-white rounded-full shadow-lg flex items-center justify-center z-50"
+          className="fixed bottom-4 right-4 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-purple-600 text-white shadow-lg"
         >
           <Menu size={24} />
         </motion.button>
@@ -143,22 +147,22 @@ export function Navigation() {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 onClick={() => setIsOpen(false)}
-                className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50"
+                className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm"
               />
               <motion.div
                 variants={mobileMenuVariants}
                 initial="hidden"
                 animate="visible"
                 exit="exit"
-                className="fixed bottom-20 right-4 bg-white rounded-2xl shadow-2xl p-4 z-50 w-[calc(100%-2rem)] max-w-sm border border-purple-100/20"
+                className="fixed bottom-20 right-4 z-50 w-[calc(100%-2rem)] max-w-sm rounded-2xl border border-purple-100/20 bg-white p-4 shadow-2xl"
               >
-                <div className="flex items-center justify-between mb-4 pb-2 border-b border-gray-100">
+                <div className="mb-4 flex items-center justify-between border-b border-gray-100 pb-2">
                   <h2 className="text-lg font-semibold text-purple-600">Navigation</h2>
                   <motion.button
                     whileHover={{ rotate: 90 }}
                     whileTap={{ scale: 0.9 }}
                     onClick={() => setIsOpen(false)}
-                    className="p-1 hover:bg-purple-50 rounded-lg text-gray-500"
+                    className="rounded-lg p-1 text-gray-500 hover:bg-purple-50"
                   >
                     <X size={20} />
                   </motion.button>
@@ -168,15 +172,11 @@ export function Navigation() {
                     {links.map(({ to, icon: Icon, label }) => {
                       const isActive = location.pathname === to;
                       return (
-                        <motion.li
-                          key={to}
-                          whileHover={{ x: 4 }}
-                          whileTap={{ scale: 0.98 }}
-                        >
+                        <motion.li key={to} whileHover={{ x: 4 }} whileTap={{ scale: 0.98 }}>
                           <Link
                             to={to}
                             onClick={() => setIsOpen(false)}
-                            className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 ${
+                            className={`flex items-center gap-3 rounded-xl px-4 py-3 transition-all duration-200 ${
                               isActive
                                 ? 'bg-purple-100 text-purple-600'
                                 : 'text-gray-600 hover:bg-purple-50'
@@ -201,16 +201,16 @@ export function Navigation() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.3 }}
-        className="fixed bottom-8 left-8 z-0 lg:block hidden"
+        className="fixed bottom-8 left-8 z-0 hidden lg:block"
       >
         <AnimatedLink
           href="https://github.com/eshanized"
           target="_blank"
           rel="noopener noreferrer"
-          className="px-6 py-3 bg-white/90 backdrop-blur-xl rounded-full shadow-lg border border-purple-100/20 text-sm text-gray-600 hover:text-purple-600 transition-all duration-200 flex items-center gap-2 group"
+          className="group flex items-center gap-2 rounded-full border border-purple-100/20 bg-white/90 px-6 py-3 text-sm text-gray-600 shadow-lg backdrop-blur-xl transition-all duration-200 hover:text-purple-600"
           style={{
             WebkitBackdropFilter: 'blur(12px)',
-            backdropFilter: 'blur(12px)'
+            backdropFilter: 'blur(12px)',
           }}
         >
           <span className="text-purple-600">designed with ❤️ by</span>

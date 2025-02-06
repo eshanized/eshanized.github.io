@@ -46,15 +46,21 @@ function App() {
         const githubUserData = await githubUserResponse.json();
         setGithubUser(githubUserData);
 
-        const githubReposResponse = await fetch(`https://api.github.com/users/${GITHUB_USERNAME}/repos?sort=updated&per_page=100`);
+        const githubReposResponse = await fetch(
+          `https://api.github.com/users/${GITHUB_USERNAME}/repos?sort=updated&per_page=100`
+        );
         const githubRepos = await githubReposResponse.json();
 
         // Fetch GitLab user and repositories
-        const gitlabUserResponse = await fetch(`https://gitlab.com/api/v4/users?username=${GITLAB_USERNAME}`);
+        const gitlabUserResponse = await fetch(
+          `https://gitlab.com/api/v4/users?username=${GITLAB_USERNAME}`
+        );
         const [gitlabUserData] = await gitlabUserResponse.json();
         setGitlabUser(gitlabUserData);
 
-        const gitlabReposResponse = await fetch(`https://gitlab.com/api/v4/users/${GITLAB_USERNAME}/projects`);
+        const gitlabReposResponse = await fetch(
+          `https://gitlab.com/api/v4/users/${GITLAB_USERNAME}/projects`
+        );
         const gitlabRepos = await gitlabReposResponse.json();
 
         // Combine and format repositories
@@ -80,8 +86,9 @@ function App() {
           updated_at: repo.last_activity_at,
         }));
 
-        const allRepos = [...formattedGithubRepos, ...formattedGitlabRepos]
-          .sort((a, b) => new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime());
+        const allRepos = [...formattedGithubRepos, ...formattedGitlabRepos].sort(
+          (a, b) => new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime()
+        );
 
         setRepositories(allRepos);
         setLoading(false);
@@ -96,17 +103,17 @@ function App() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-purple-700"></div>
+      <div className="flex min-h-screen items-center justify-center">
+        <div className="h-16 w-16 animate-spin rounded-full border-b-2 border-t-2 border-purple-700"></div>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-red-600 text-center">
-          <p className="text-xl font-semibold mb-2">Error</p>
+      <div className="flex min-h-screen items-center justify-center">
+        <div className="text-center text-red-600">
+          <p className="mb-2 text-xl font-semibold">Error</p>
           <p>{error}</p>
         </div>
       </div>
@@ -120,10 +127,19 @@ function App() {
         <AnimatePresence mode="wait">
           <Routes>
             <Route path="/" element={<Home githubUser={githubUser} gitlabUser={gitlabUser} />} />
-            <Route path="/about" element={<About githubUser={githubUser} gitlabUser={gitlabUser} />} />
+            <Route
+              path="/about"
+              element={<About githubUser={githubUser} gitlabUser={gitlabUser} />}
+            />
             <Route path="/projects" element={<Projects repositories={repositories} />} />
-            <Route path="/articles" element={<Articles devtoUsername={DEVTO_USERNAME} mediumUsername={MEDIUM_USERNAME} />} />
-            <Route path="/stats" element={<Stats githubUser={githubUser} gitlabUser={gitlabUser} />} />
+            <Route
+              path="/articles"
+              element={<Articles devtoUsername={DEVTO_USERNAME} mediumUsername={MEDIUM_USERNAME} />}
+            />
+            <Route
+              path="/stats"
+              element={<Stats githubUser={githubUser} gitlabUser={gitlabUser} />}
+            />
             <Route path="/gallery" element={<Gallery />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/donate" element={<Donate />} />

@@ -39,10 +39,10 @@ export function Contact() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="max-w-2xl mx-auto"
+          className="mx-auto max-w-2xl"
         >
-          <div className="text-center mb-12">
-            <h1 className="text-4xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-indigo-600 dark:from-purple-400 dark:to-indigo-400">
+          <div className="mb-12 text-center">
+            <h1 className="mb-4 bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-4xl font-bold text-transparent dark:from-purple-400 dark:to-indigo-400">
               Get in Touch
             </h1>
             <p className="text-gray-600 dark:text-gray-400">
@@ -54,11 +54,11 @@ export function Contact() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className="bg-white rounded-xl shadow-lg p-8"
+            className="rounded-xl bg-white p-8 shadow-lg"
           >
             <form ref={formRef} onSubmit={handleSubmit} className="space-y-6">
               <div>
-                <label className="flex items-center gap-2 text-gray-700 dark:text-gray-300 mb-2">
+                <label className="mb-2 flex items-center gap-2 text-gray-700 dark:text-gray-300">
                   <User size={18} />
                   <span>Your Name</span>
                 </label>
@@ -66,13 +66,13 @@ export function Contact() {
                   type="text"
                   name="user_name"
                   required
-                  className="w-full px-4 py-3 rounded-lg border border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-purple-500 dark:focus:ring-purple-400 focus:border-transparent dark:bg-gray-700 dark:text-white transition-all duration-200"
+                  className="w-full rounded-lg border border-gray-200 px-4 py-3 transition-all duration-200 focus:border-transparent focus:ring-2 focus:ring-purple-500 dark:border-gray-700 dark:bg-gray-700 dark:text-white dark:focus:ring-purple-400"
                   placeholder="John Doe"
                 />
               </div>
 
               <div>
-                <label className="flex items-center gap-2 text-gray-700 dark:text-gray-300 mb-2">
+                <label className="mb-2 flex items-center gap-2 text-gray-700 dark:text-gray-300">
                   <Mail size={18} />
                   <span>Your Email</span>
                 </label>
@@ -80,13 +80,13 @@ export function Contact() {
                   type="email"
                   name="user_email"
                   required
-                  className="w-full px-4 py-3 rounded-lg border border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-purple-500 dark:focus:ring-purple-400 focus:border-transparent dark:bg-gray-700 dark:text-white transition-all duration-200"
+                  className="w-full rounded-lg border border-gray-200 px-4 py-3 transition-all duration-200 focus:border-transparent focus:ring-2 focus:ring-purple-500 dark:border-gray-700 dark:bg-gray-700 dark:text-white dark:focus:ring-purple-400"
                   placeholder="john@example.com"
                 />
               </div>
 
               <div>
-                <label className="flex items-center gap-2 text-gray-700 dark:text-gray-300 mb-2">
+                <label className="mb-2 flex items-center gap-2 text-gray-700 dark:text-gray-300">
                   <MessageSquare size={18} />
                   <span>Message</span>
                 </label>
@@ -94,7 +94,7 @@ export function Contact() {
                   name="message"
                   required
                   rows={5}
-                  className="w-full px-4 py-3 rounded-lg border border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-purple-500 dark:focus:ring-purple-400 focus:border-transparent dark:bg-gray-700 dark:text-white transition-all duration-200 resize-none"
+                  className="w-full resize-none rounded-lg border border-gray-200 px-4 py-3 transition-all duration-200 focus:border-transparent focus:ring-2 focus:ring-purple-500 dark:border-gray-700 dark:bg-gray-700 dark:text-white dark:focus:ring-purple-400"
                   placeholder="Your message here..."
                 />
               </div>
@@ -103,11 +103,13 @@ export function Contact() {
                 type="submit"
                 disabled={isSubmitting}
                 fullWidth
-                icon={isSubmitting ? (
-                  <div className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent" />
-                ) : (
-                  <Send size={18} />
-                )}
+                icon={
+                  isSubmitting ? (
+                    <div className="h-5 w-5 animate-spin rounded-full border-2 border-white border-t-transparent" />
+                  ) : (
+                    <Send size={18} />
+                  )
+                }
               >
                 {isSubmitting ? 'Sending...' : 'Send Message'}
               </AnimatedButton>
@@ -116,10 +118,10 @@ export function Contact() {
                 <motion.div
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className={`flex items-center gap-2 p-4 rounded-lg ${
+                  className={`flex items-center gap-2 rounded-lg p-4 ${
                     submitStatus === 'success'
-                      ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400'
-                      : 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400'
+                      ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400'
+                      : 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400'
                   }`}
                 >
                   {submitStatus === 'success' ? (
