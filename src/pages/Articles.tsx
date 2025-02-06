@@ -14,6 +14,7 @@ export function Articles({ devtoUsername = 'eshanized', mediumUsername = '@eshan
   const [devtoArticles, setDevtoArticles] = useState<DevToArticle[]>([]);
   const [mediumArticles, setMediumArticles] = useState<MediumArticle[]>([]);
   const [loading, setLoading] = useState(true);
+  const [retryCount, setRetryCount] = useState(0);
   const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [activeTab, setActiveTab] = useState<'all' | 'devto' | 'medium'>('all');
@@ -21,27 +22,59 @@ export function Articles({ devtoUsername = 'eshanized', mediumUsername = '@eshan
 
   useEffect(() => {
     async function fetchArticles() {
+      const maxRetries = 3;
       try {
         setLoading(true);
         setError(null);
 
-        const devtoResponse = await fetch(`https://dev.to/api/articles?username=${devtoUsername}`);
-        if (!devtoResponse.ok) throw new Error('Failed to fetch Dev.to articles');
-        const devtoData = await devtoResponse.json();
-        setDevtoArticles(Array.isArray(devtoData) ? devtoData : []);
+        const fetchWithRetry = async (url: string, options = {}) => {
+          try {
+            const response = await fetch(url, options);
+            if (!response.ok) {
+              throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response;
+          } catch (err) {
+            if (retryCount < maxRetries) {
+              setRetryCount(prev => prev + 1);
+              await new Promise(resolve => setTimeout(resolve, 1000 * (retryCount + 1)));
+              return fetchWithRetry(url, options);
+            }
+            throw err;
+          }
+        };
 
-        const mediumResponse = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=https://medium.com/feed/${mediumUsername}`);
-        if (!mediumResponse.ok) throw new Error('Failed to fetch Medium articles');
-        const mediumData = await mediumResponse.json();
+        let devtoData = [];
+        try {
+          const devtoResponse = await fetchWithRetry(`https://dev.to/api/articles?username=${devtoUsername}`);
+          devtoData = await devtoResponse.json();
+        } catch (err) {
+          console.error('Dev.to fetch error:', err);
+        }
+
+        let mediumData = { items: [] };
+        try {
+          const mediumResponse = await fetchWithRetry(
+            `https://api.rss2json.com/v1/api.json?rss_url=https://medium.com/feed/${mediumUsername}`
+          );
+          mediumData = await mediumResponse.json();
+        } catch (err) {
+          console.error('Medium fetch error:', err);
+        }
+
+        setDevtoArticles(Array.isArray(devtoData) ? devtoData : []);
         setMediumArticles(Array.isArray(mediumData.items) ? mediumData.items : []);
 
+        if (devtoData.length === 0 && mediumData.items.length === 0) {
+          setError('Unable to fetch articles. Please check your internet connection and try again.');
+        }
+
       } catch (err) {
-        setError('Failed to fetch articles. Please try again later.');
+        setError('Unable to load articles. Please try refreshing the page.');
         console.error('Error fetching articles:', err);
-        setDevtoArticles([]);
-        setMediumArticles([]);
       } finally {
         setLoading(false);
+        setRetryCount(0);
       }
     }
 
@@ -92,25 +125,35 @@ export function Articles({ devtoUsername = 'eshanized', mediumUsername = '@eshan
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-center"
+          className="text-center max-w-md px-4"
         >
-          <div className="text-red-600 mb-4">
+          <div className="text-red-600 mb-6">
             <motion.div
               animate={{ scale: [1, 1.2, 1] }}
               transition={{ duration: 2, repeat: Infinity }}
-              className="inline-block"
+              className="inline-block text-6xl mb-4"
             >
               ⚠️
             </motion.div>
-            <p className="text-xl font-semibold mt-2">{error}</p>
+            <h2 className="text-xl font-semibold mb-2">Oops! Something went wrong</h2>
+            <p className="text-gray-600 mb-6">{error}</p>
           </div>
-          <AnimatedButton
-            onClick={() => window.location.reload()}
-            variant="secondary"
-            size="sm"
-          >
-            Try Again
-          </AnimatedButton>
+          <div className="space-y-4">
+            <AnimatedButton
+              onClick={() => {
+                setRetryCount(0);
+                window.location.reload();
+              }}
+              variant="primary"
+              size="lg"
+              className="w-full"
+            >
+              Try Again
+            </AnimatedButton>
+            <p className="text-sm text-gray-500">
+              If the problem persists, please try again later or contact support.
+            </p>
+          </div>
         </motion.div>
       </div>
     );
