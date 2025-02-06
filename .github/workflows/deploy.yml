@@ -53,7 +53,7 @@ jobs:
           github_token: ${{ secrets.ESHANIZED_GH_TOKEN }}
           publish_dir: ./dist
           cname: eshanized.is-a.dev
-          user_name: 'github-actions[bot]'
-          user_email: 'github-actions[bot]@users.noreply.github.com'
+          user_name: 'eshanized'
+          user_email: 'm.eshanized@gmail.com'
           commit_message: 'Deploy to GitHub Pages'
           full_commit_message: 'Deploy to GitHub Pages from @ ${{ github.sha }}'

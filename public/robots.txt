@@ -2,8 +2,7 @@ User-agent: *
 Allow: /
 
 # Sitemaps
-Sitemap: https://eshanized.github.io/sitemap.xml
-Sitemap: https://eshanized.gitlab.io/sitemap.xml
+Sitemap: https://eshanized.is-a.dev/sitemap.xml
 
 # Crawl-delay
 Crawl-delay: 10
