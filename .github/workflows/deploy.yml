@@ -50,7 +50,7 @@ jobs:
         uses: peaceiris/actions-gh-pages@v3
         if: github.ref == 'refs/heads/master'
         with:
-          ESHANIZED_GH_TOKEN: ${{ secrets.ESHANIZED_GH_TOKEN }}
+          github_token: ${{ secrets.ESHANIZED_GH_TOKEN }}
           publish_dir: ./dist
           cname: eshanized.is-a.dev
           user_name: 'github-actions[bot]'
