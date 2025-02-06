@@ -11,9 +11,8 @@ permissions:
   contents: write
   pages: write
   id-token: write
-  security-events: write # Required for security scanning
+  security-events: write
 
-# Cancel in-progress runs for pull requests
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
@@ -30,6 +29,9 @@ jobs:
         with:
           languages: javascript, typescript
 
+      - name: Autobuild
+        uses: github/codeql-action/autobuild@v2
+
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v2
 
@@ -44,29 +46,28 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18'
+          node-version: '20'
           cache: 'npm'
 
-      # Cache build outputs
       - name: Cache build
         uses: actions/cache@v3
         with:
           path: |
             dist
-            .cache
-          key: ${{ runner.os }}-build-${{ hashFiles('**/package-lock.json') }}
+            node_modules/.cache
+          key: ${{ runner.os }}-build-${{ hashFiles('**/package-lock.json', '**/src/**') }}
           restore-keys: |
             ${{ runner.os }}-build-
 
       - name: Install Dependencies
         run: |
           npm ci
+          npm install -g html-minifier-terser svgo
           if [ $? -ne 0 ]; then
             echo "::error::Failed to install dependencies"
             exit 1
           fi
 
-      # Validate environment variables
       - name: Validate Environment
         run: |
           if [ -z "${{ secrets.ESHANIZED_GH_TOKEN }}" ]; then
@@ -85,11 +86,10 @@ jobs:
           DEPLOY_TARGET: github
           NODE_ENV: production
 
-      # Optimize build output
       - name: Optimize Assets
         run: |
-          npx html-minifier-terser --input-dir dist --output-dir dist --file-ext html --collapse-whitespace --remove-comments
-          npx svgo -f dist -r
+          html-minifier-terser --input-dir dist --output-dir dist --file-ext html --collapse-whitespace --remove-comments
+          svgo -f dist -r
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
@@ -104,11 +104,11 @@ jobs:
           full_commit_message: 'Deploy to GitHub Pages from @ ${{ github.sha }}'
 
       - name: Report Status
-        if: always()
+        if: always() && github.event_name == 'pull_request'
         uses: actions/github-script@v6
         with:
           script: |
-            const { job, conclusion } = context;
+            const { conclusion } = context;
             const message = conclusion === 'success'
               ? '✅ Deployment successful'
               : '❌ Deployment failed';
