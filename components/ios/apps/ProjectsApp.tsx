@@ -1,21 +1,122 @@
 "use client";
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import BaseIOSApp from './BaseIOSApp';
-import { PROJECTS } from '@/lib/constants';
-import { ExternalLink, Github } from 'lucide-react';
+import { ExternalLink, Github, GitBranch, Star, GitFork, Loader2 } from 'lucide-react';
 import Image from 'next/image';
 
+// Define project type
+interface Project {
+  id: string;
+  title: string;
+  description: string;
+  image: string;
+  link: string;
+  demoLink?: string;
+  tags: string[];
+  source: 'github' | 'gitlab';
+  stars?: number;
+  forks?: number;
+}
+
 export default function ProjectsApp() {
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  // Fetch projects from GitHub and GitLab
+  useEffect(() => {
+    const username = "eshanized";
+    
+    async function fetchProjects() {
+      setIsLoading(true);
+      setError(null);
+      
+      try {
+        // Fetch GitHub repos
+        const githubResponse = await fetch(`https://api.github.com/users/${username}/repos?sort=updated&per_page=10`);
+        if (!githubResponse.ok) {
+          throw new Error(`GitHub API error: ${githubResponse.status}`);
+        }
+        const githubData = await githubResponse.json();
+        
+        // Fetch GitLab projects
+        const gitlabResponse = await fetch(`https://gitlab.com/api/v4/users/${username}/projects?order_by=updated_at&per_page=10`);
+        if (!gitlabResponse.ok) {
+          throw new Error(`GitLab API error: ${gitlabResponse.status}`);
+        }
+        const gitlabData = await gitlabResponse.json();
+        
+        // Transform GitHub data
+        const githubProjects: Project[] = githubData.map((repo: any) => ({
+          id: `github-${repo.id}`,
+          title: repo.name,
+          description: repo.description || 'No description available',
+          image: repo.owner.avatar_url,
+          link: repo.html_url,
+          demoLink: repo.homepage || '',
+          tags: [repo.language, 'GitHub'].filter(Boolean),
+          source: 'github',
+          stars: repo.stargazers_count,
+          forks: repo.forks_count
+        }));
+        
+        // Transform GitLab data
+        const gitlabProjects: Project[] = gitlabData.map((project: any) => ({
+          id: `gitlab-${project.id}`,
+          title: project.name,
+          description: project.description || 'No description available',
+          image: project.avatar_url || 'https://gitlab.com/uploads/-/system/user/avatar/10859775/avatar.png',
+          link: project.web_url,
+          demoLink: '',
+          tags: ['GitLab'].concat(project.tag_list || []),
+          source: 'gitlab',
+          stars: project.star_count,
+          forks: project.forks_count
+        }));
+        
+        // Combine and sort projects by most recently updated
+        const allProjects = [...githubProjects, ...gitlabProjects];
+        setProjects(allProjects);
+      } catch (err: any) {
+        console.error("Error fetching projects:", err);
+        setError(`Error fetching projects: ${err.message}`);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    
+    fetchProjects();
+  }, []);
+
   return (
     <BaseIOSApp title="Projects" rightAction="more">
       <div className="p-4">
         <h1 className="text-2xl font-bold mb-4">My Projects</h1>
         
+        {isLoading && (
+          <div className="flex flex-col items-center justify-center py-12">
+            <Loader2 className="w-8 h-8 animate-spin text-blue-500 mb-2" />
+            <p className="text-gray-600 dark:text-gray-400">Loading projects...</p>
+          </div>
+        )}
+        
+        {error && (
+          <div className="p-4 bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 rounded-lg text-red-600 dark:text-red-300 mb-4">
+            {error}
+          </div>
+        )}
+        
+        {!isLoading && !error && projects.length === 0 && (
+          <div className="text-center py-12">
+            <p className="text-gray-600 dark:text-gray-400">No projects found</p>
+          </div>
+        )}
+        
         <div className="space-y-6">
-          {PROJECTS.map((project, index) => (
+          {projects.map((project) => (
             <div 
-              key={index}
+              key={project.id}
               className="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-sm"
             >
               {/* Project image */}
@@ -26,6 +127,9 @@ export default function ProjectsApp() {
                   layout="fill"
                   objectFit="cover"
                 />
+                <div className="absolute top-2 right-2 bg-black/50 rounded-full px-2 py-1 text-xs text-white">
+                  {project.source === 'github' ? 'GitHub' : 'GitLab'}
+                </div>
               </div>
               
               {/* Project details */}
@@ -35,9 +139,25 @@ export default function ProjectsApp() {
                   {project.description}
                 </p>
                 
+                {/* Project stats */}
+                <div className="flex gap-3 mt-3">
+                  {project.stars !== undefined && (
+                    <div className="flex items-center text-xs text-gray-600 dark:text-gray-400">
+                      <Star className="w-3.5 h-3.5 mr-1 text-yellow-500" />
+                      {project.stars}
+                    </div>
+                  )}
+                  {project.forks !== undefined && (
+                    <div className="flex items-center text-xs text-gray-600 dark:text-gray-400">
+                      <GitFork className="w-3.5 h-3.5 mr-1" />
+                      {project.forks}
+                    </div>
+                  )}
+                </div>
+                
                 {/* Tags */}
                 <div className="flex flex-wrap gap-2 mt-3">
-                  {project.tags.map((tag, tagIndex) => (
+                  {project.tags.filter(Boolean).map((tag, tagIndex) => (
                     <span
                       key={tagIndex}
                       className="px-2.5 py-0.5 bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 rounded-full text-xs"
@@ -59,7 +179,7 @@ export default function ProjectsApp() {
                     <span>Code</span>
                   </a>
                   
-                  {project.demoLink && project.demoLink !== "#" && (
+                  {project.demoLink && (
                     <a
                       href={project.demoLink}
                       target="_blank"
