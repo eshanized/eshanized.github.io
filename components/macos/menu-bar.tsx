@@ -9,7 +9,7 @@ import {
   FolderOpen, ArrowUpRight, Clock, RotateCcw, LogOut, Calendar, MessagesSquare, StickyNote, AppWindow
 } from 'lucide-react';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuSeparator, DropdownMenuShortcut } from '@/components/ui/dropdown-menu';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { MacOSMenuItem, MenuAction } from './menu-item';
 import { useWindowManager } from './window-context';
 
@@ -517,156 +517,387 @@ export const MenuBar = memo(function MenuBar({
   if (!mounted) return null;
 
   return (
-    <motion.div 
-      initial={{ opacity: 0, y: -20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.3 }}
-      className={`menu-bar w-full h-6 ${theme === 'dark' ? 'bg-black/80' : 'bg-white/80'} backdrop-blur-md flex items-center justify-between px-2 z-50 text-xs font-medium`}
-    >
-      {/* Left section: Apple logo and menu items */}
-      <div className="flex items-center h-full">
-        <DropdownMenu>
-          <DropdownMenuTrigger className="h-full px-2 hover:bg-accent/50 transition-colors">
-            <svg viewBox="0 0 1024 1024" className="w-4 h-4 fill-current">
-              <path d="M747.4 535.7c-.4-68.2 30.5-119.6 92.9-157.5-34.9-50-87.7-77.5-149.9-87.7-57.4-9.1-113.4 10.9-147.7 10.9-35.6 0-91.3-11.3-150.5-11.3-77.9 0-149.1 42.7-189.7 110.1-77.9 128.8-20.5 321.1 55.8 426.1 37.9 54.4 82.1 115.5 139.5 113 56.2-2.3 76.7-36.2 144.1-36.2 66.1 0 86.2 36.2 144.1 35 59.6-1.8 97.5-53.5 133.7-107.1 23-35.2 40.6-74.1 51.7-115.8-58.9-25.9-96.8-88.6-96.8-157.5zm-89.5-307.3c32.5-39.8 54.8-95 47.5-150-45.9 2.7-97.5 31.1-128.8 70.1-30 35.6-55.8 91.7-48.1 144.9 47 3.7 97.3-23.1 129.4-65z" />
-            </svg>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="start" className="w-56 p-0 rounded-lg overflow-hidden">
-            <div className="bg-accent/20 p-2">
-              <h4 className="text-sm">About This Mac</h4>
-            </div>
-            <DropdownMenuSeparator className="m-0" />
-            <DropdownMenuItem onClick={() => windowManager.openWindow('settings')}>
-              System Settings...
-              <DropdownMenuShortcut>⌘,</DropdownMenuShortcut>
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => windowManager.openWindow('app-store')}>
-              App Store...
-            </DropdownMenuItem>
-            <DropdownMenuSeparator className="m-0" />
-            <DropdownMenuItem onClick={() => windowManager.openWindow('finder')}>
-              Finder
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => windowManager.openWindow('calendar')}>
-              Calendar
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => windowManager.openWindow('messages')}>
-              Messages
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => windowManager.openWindow('notes')}>
-              Notes
-            </DropdownMenuItem>
-            <DropdownMenuSeparator className="m-0" />
-            <DropdownMenuItem>
-              Recent Items
-            </DropdownMenuItem>
-            <DropdownMenuSeparator className="m-0" />
-            <DropdownMenuItem>
-              Force Quit...
-              <DropdownMenuShortcut>⌥⌘⎋</DropdownMenuShortcut>
-            </DropdownMenuItem>
-            <DropdownMenuSeparator className="m-0" />
-            <DropdownMenuItem>
-              Sleep
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              Restart...
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              Shut Down...
-            </DropdownMenuItem>
-            <DropdownMenuSeparator className="m-0" />
-            <DropdownMenuItem onClick={handleReload}>
-              Log Out {PERSONAL_INFO.name}...
-              <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-
-        <div className="h-full flex items-center">
-          {allMenus.map((item) => (
-            <MacOSMenuItem 
-              key={item.label} 
-              label={item.label} 
-              items={item.items}
-            />
-          ))}
-        </div>
-      </div>
-
-      {/* Title of active app */}
-      <div className="absolute left-1/2 -translate-x-1/2 font-semibold">
-        {activeApp?.title || "Finder"}
-      </div>
-
-      {/* Right section: Status icons */}
-      <div className="flex items-center space-x-2">
-        <div onClick={handleThemeToggle} className="px-1 cursor-pointer">
-          {theme === 'dark' ? <Moon size={14} /> : <Sun size={14} />}
-        </div>
-        
-        <div className="relative px-1">
-          <Battery size={14} className={isCharging ? "animate-pulse" : ""} />
-          {batteryLevel < 20 && (
-            <span className="absolute right-0 bottom-0 w-1 h-1 bg-red-500 rounded-full"></span>
-          )}
-        </div>
-        
-        <div className="px-1">
-          <Wifi size={14} />
-        </div>
-        
-        <div className="px-1 font-medium">
-          {currentTime}
-        </div>
-        
-        {/* Search icon */}
-        <div className="ml-1 px-1">
-          <Search size={14} />
-        </div>
-        
-        {/* Control Center */}
+    <>
+      {/* Add global styling for this component */}
+      <style jsx global>{`
+        .menu-bar, .menu-bar * {
+          font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+          font-feature-settings: "ss01", "ss02", "ss03";
+          letter-spacing: -0.01em;
+          -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;
+        }
+      `}</style>
+      
+      <motion.div 
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ 
+          type: "spring", 
+          stiffness: 300, 
+          damping: 30 
+        }}
+        className={`
+          menu-bar w-full h-7 flex items-center justify-between px-2 z-50 text-xs font-sf-pro
+          ${theme === 'dark' 
+            ? 'bg-[#1D1D1F]/80 text-white border-b border-[#3A3A3C]/30' 
+            : 'bg-[#F5F5F7]/80 text-black border-b border-[#E5E5E7]/50'
+          } 
+          backdrop-blur-xl shadow-sm
+        `}
+      >
+        {/* Left section: Apple logo and menu items */}
+        <div className="flex items-center h-full">
           <DropdownMenu>
-          <DropdownMenuTrigger className="px-1">
-            <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current">
-              <path d="M12,16A4,4 0 0,1 8,12A4,4 0 0,1 12,8A4,4 0 0,1 16,12A4,4 0 0,1 12,16M12,18A6,6 0 0,0 18,12A6,6 0 0,0 12,6A6,6 0 0,0 6,12A6,6 0 0,0 12,18M20,10H22V14H20V10M4,10H6V14H4V10Z" />
-            </svg>
+            <DropdownMenuTrigger 
+              className={`
+                h-full px-2.5 rounded-sm flex items-center justify-center
+                ${theme === 'dark'
+                  ? 'hover:bg-[#3A3A3C]/50 active:bg-[#3A3A3C]/70'
+                  : 'hover:bg-[#E5E5E7]/50 active:bg-[#E5E5E7]/70'
+                }
+                transition-colors duration-150
+              `}
+            >
+              <svg viewBox="0 0 1024 1024" className="w-[14px] h-[14px] fill-current">
+                <path d="M747.4 535.7c-.4-68.2 30.5-119.6 92.9-157.5-34.9-50-87.7-77.5-149.9-87.7-57.4-9.1-113.4 10.9-147.7 10.9-35.6 0-91.3-11.3-150.5-11.3-77.9 0-149.1 42.7-189.7 110.1-77.9 128.8-20.5 321.1 55.8 426.1 37.9 54.4 82.1 115.5 139.5 113 56.2-2.3 76.7-36.2 144.1-36.2 66.1 0 86.2 36.2 144.1 35 59.6-1.8 97.5-53.5 133.7-107.1 23-35.2 40.6-74.1 51.7-115.8-58.9-25.9-96.8-88.6-96.8-157.5zm-89.5-307.3c32.5-39.8 54.8-95 47.5-150-45.9 2.7-97.5 31.1-128.8 70.1-30 35.6-55.8 91.7-48.1 144.9 47 3.7 97.3-23.1 129.4-65z" />
+              </svg>
             </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="p-0 rounded-xl overflow-hidden">
-            <div className="p-3 grid grid-cols-2 gap-3 bg-accent/10 w-[300px]">
-              <div className="flex flex-col items-center justify-center bg-background rounded-xl p-2 hover:bg-accent/20 transition-colors cursor-pointer">
-                <Wifi size={24} className="mb-1" />
-                <span className="text-xs">Wi-Fi</span>
+            <DropdownMenuContent 
+              align="start" 
+              className={`
+                w-64 p-0 rounded-lg overflow-hidden shadow-lg font-sf-pro
+                ${theme === 'dark'
+                  ? 'bg-[#2C2C2E]/90 backdrop-blur-xl border border-[#3A3A3C]/50'
+                  : 'bg-[#F5F5F7]/90 backdrop-blur-xl border border-[#E5E5E7]/70'
+                }
+              `}
+            >
+              <div className={`p-3 border-b ${theme === 'dark' ? 'border-[#3A3A3C]/50' : 'border-[#E5E5E7]/70'}`}>
+                <h4 className="text-sm font-medium">About This Mac</h4>
               </div>
-              <div className="flex flex-col items-center justify-center bg-background rounded-xl p-2 hover:bg-accent/20 transition-colors cursor-pointer">
-                <Battery size={24} className="mb-1" />
-                <span className="text-xs">Battery</span>
-              </div>
-              <div className="flex flex-col items-center justify-center bg-background rounded-xl p-2 hover:bg-accent/20 transition-colors cursor-pointer" onClick={handleThemeToggle}>
-                {theme === 'dark' ? <Moon size={24} className="mb-1" /> : <Sun size={24} className="mb-1" />}
-                <span className="text-xs">Dark Mode</span>
+              <div className="p-1">
+                <DropdownMenuItem 
+                  onClick={() => windowManager.openWindow('settings')}
+                  className="rounded-md px-3"
+                >
+                  System Settings...
+                  <DropdownMenuShortcut className="ml-auto">⌘,</DropdownMenuShortcut>
+                </DropdownMenuItem>
+                <DropdownMenuItem 
+                  onClick={() => windowManager.openWindow('app-store')}
+                  className="rounded-md px-3"  
+                >
+                  App Store...
+                </DropdownMenuItem>
+                <DropdownMenuSeparator className={`my-1 ${theme === 'dark' ? 'bg-[#3A3A3C]/50' : 'bg-[#E5E5E7]/70'}`} />
+                <DropdownMenuItem 
+                  onClick={() => windowManager.openWindow('finder')}
+                  className="rounded-md px-3"
+                >
+                  <div className="flex items-center">
+                    <FolderOpen size={14} className="mr-2" />
+                    Finder
                   </div>
-              <div className="flex flex-col items-center justify-center bg-background rounded-xl p-2 hover:bg-accent/20 transition-colors cursor-pointer">
-                <Command size={24} className="mb-1" />
-                <span className="text-xs">Keyboard</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem 
+                  onClick={() => windowManager.openWindow('calendar')}
+                  className="rounded-md px-3"
+                >
+                  <div className="flex items-center">
+                    <Calendar size={14} className="mr-2" />
+                    Calendar
                   </div>
-                </div>
-            <div className="p-3 space-y-3">
-              <div className="space-y-1">
-                <h4 className="text-xs font-medium text-muted-foreground">Display</h4>
-                <div className="h-1 bg-accent/50 rounded-full"></div>
-              </div>
-                <div className="space-y-1">
-                <h4 className="text-xs font-medium text-muted-foreground">Sound</h4>
-                <div className="h-1 bg-accent/50 rounded-full"></div>
-              </div>
+                </DropdownMenuItem>
+                <DropdownMenuItem 
+                  onClick={() => windowManager.openWindow('messages')}
+                  className="rounded-md px-3"
+                >
+                  <div className="flex items-center">
+                    <MessagesSquare size={14} className="mr-2" />
+                    Messages
+                  </div>
+                </DropdownMenuItem>
+                <DropdownMenuItem 
+                  onClick={() => windowManager.openWindow('notes')}
+                  className="rounded-md px-3"
+                >
+                  <div className="flex items-center">
+                    <StickyNote size={14} className="mr-2" />
+                    Notes
+                  </div>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator className={`my-1 ${theme === 'dark' ? 'bg-[#3A3A3C]/50' : 'bg-[#E5E5E7]/70'}`} />
+                <DropdownMenuItem className="rounded-md px-3">
+                  <div className="flex items-center">
+                    <Clock size={14} className="mr-2" />
+                    Recent Items
+                  </div>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator className={`my-1 ${theme === 'dark' ? 'bg-[#3A3A3C]/50' : 'bg-[#E5E5E7]/70'}`} />
+                <DropdownMenuItem className="rounded-md px-3">
+                  Force Quit...
+                  <DropdownMenuShortcut className="ml-auto">⌥⌘⎋</DropdownMenuShortcut>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator className={`my-1 ${theme === 'dark' ? 'bg-[#3A3A3C]/50' : 'bg-[#E5E5E7]/70'}`} />
+                <DropdownMenuItem className="rounded-md px-3">
+                  <div className="flex items-center">
+                    <svg className="w-3.5 h-3.5 mr-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M12 5C15.87 5 19 8.13 19 12C19 15.87 15.87 19 12 19C8.13 19 5 15.87 5 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                      <path d="M12 2V8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                    Sleep
+                  </div>
+                </DropdownMenuItem>
+                <DropdownMenuItem className="rounded-md px-3">
+                  <div className="flex items-center">
+                    <RotateCcw size={14} className="mr-2" />
+                    Restart...
+                  </div>
+                </DropdownMenuItem>
+                <DropdownMenuItem className="rounded-md px-3">
+                  <div className="flex items-center">
+                    <Power size={14} className="mr-2" />
+                    Shut Down...
+                  </div>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator className={`my-1 ${theme === 'dark' ? 'bg-[#3A3A3C]/50' : 'bg-[#E5E5E7]/70'}`} />
+                <DropdownMenuItem 
+                  onClick={handleReload}
+                  className="rounded-md px-3"
+                >
+                  <div className="flex items-center">
+                    <LogOut size={14} className="mr-2" />
+                    Log Out {PERSONAL_INFO.name}...
+                  </div>
+                  <DropdownMenuShortcut className="ml-auto">⇧⌘Q</DropdownMenuShortcut>
+                </DropdownMenuItem>
               </div>
             </DropdownMenuContent>
           </DropdownMenu>
-      </div>
-    </motion.div>
+
+          <div className="h-full flex items-center">
+            {allMenus.map((item) => (
+              <MacOSMenuItem 
+                key={item.label} 
+                label={item.label} 
+                items={item.items}
+              />
+            ))}
+          </div>
+        </div>
+
+        {/* Title of active app */}
+        <div className="absolute left-1/2 -translate-x-1/2 font-semibold tracking-tight">
+          {activeApp?.title || "Finder"}
+        </div>
+
+        {/* Right section: Status icons */}
+        <div className="flex items-center space-x-1.5">
+          <motion.div 
+            whileTap={{ scale: 0.95 }}
+            onClick={handleThemeToggle} 
+            className={`
+              px-1.5 py-1 rounded-sm cursor-pointer
+              ${theme === 'dark'
+                ? 'hover:bg-[#3A3A3C]/50 active:bg-[#3A3A3C]/70'
+                : 'hover:bg-[#E5E5E7]/50 active:bg-[#E5E5E7]/70'
+              }
+              transition-colors duration-150
+            `}
+          >
+            {theme === 'dark' ? 
+              <Moon size={13} className="text-[#F5F5F7]" /> : 
+              <Sun size={13} className="text-[#1D1D1F]" />
+            }
+          </motion.div>
+          
+          <div className={`
+            relative px-1.5 py-1 rounded-sm
+            ${theme === 'dark'
+              ? 'hover:bg-[#3A3A3C]/50'
+              : 'hover:bg-[#E5E5E7]/50'
+            }
+            transition-colors duration-150
+          `}>
+            <Battery size={13} className={isCharging ? "animate-pulse" : ""} />
+            {batteryLevel < 20 && (
+              <span className="absolute right-0.5 bottom-0.5 w-1.5 h-1.5 bg-[#FF2D55] rounded-full"></span>
+            )}
+            {isCharging && (
+              <span className="absolute right-0.5 bottom-0.5 w-1.5 h-1.5 bg-[#30D158] rounded-full"></span>
+            )}
+          </div>
+          
+          <div className={`
+            px-1.5 py-1 rounded-sm
+            ${theme === 'dark'
+              ? 'hover:bg-[#3A3A3C]/50'
+              : 'hover:bg-[#E5E5E7]/50'
+            }
+            transition-colors duration-150
+          `}>
+            <Wifi size={13} />
+          </div>
+          
+          <div className={`
+            px-1.5 py-1 rounded-sm font-medium
+            ${theme === 'dark'
+              ? 'hover:bg-[#3A3A3C]/50'
+              : 'hover:bg-[#E5E5E7]/50'
+            }
+            transition-colors duration-150
+          `}>
+            {currentTime}
+          </div>
+          
+          {/* Search icon */}
+          <div className={`
+            px-1.5 py-1 rounded-sm
+            ${theme === 'dark'
+              ? 'hover:bg-[#3A3A3C]/50'
+              : 'hover:bg-[#E5E5E7]/50'
+            }
+            transition-colors duration-150
+          `}>
+            <Search size={13} />
+          </div>
+          
+          {/* Control Center */}
+          <DropdownMenu>
+            <DropdownMenuTrigger className={`
+              px-1.5 py-1 rounded-sm
+              ${theme === 'dark'
+                ? 'hover:bg-[#3A3A3C]/50 active:bg-[#3A3A3C]/70'
+                : 'hover:bg-[#E5E5E7]/50 active:bg-[#E5E5E7]/70'
+              }
+              transition-colors duration-150
+            `}>
+              <svg viewBox="0 0 24 24" className="w-[13px] h-[13px] fill-current">
+                <path d="M12,16A4,4 0 0,1 8,12A4,4 0 0,1 12,8A4,4 0 0,1 16,12A4,4 0 0,1 12,16M12,18A6,6 0 0,0 18,12A6,6 0 0,0 12,6A6,6 0 0,0 6,12A6,6 0 0,0 12,18M20,10H22V14H20V10M4,10H6V14H4V10Z" />
+              </svg>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent 
+              align="end" 
+              className={`
+                p-0 rounded-xl overflow-hidden border shadow-lg font-sf-pro
+                ${theme === 'dark'
+                  ? 'bg-[#2C2C2E]/90 backdrop-blur-xl border-[#3A3A3C]/50'
+                  : 'bg-[#F5F5F7]/90 backdrop-blur-xl border-[#E5E5E7]/70'
+                }
+              `}
+            >
+              <div className={`p-3 grid grid-cols-2 gap-2 w-[320px]`}>
+                <motion.div 
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  className={`
+                    flex flex-col items-center justify-center rounded-xl p-3
+                    ${theme === 'dark'
+                      ? 'bg-[#3A3A3C]/50 hover:bg-[#3A3A3C]/70'
+                      : 'bg-white/80 hover:bg-white shadow-sm'
+                    }
+                    transition-all duration-200 cursor-pointer
+                  `}
+                >
+                  <Wifi size={22} className="mb-2" />
+                  <span className="text-xs font-medium">Wi-Fi</span>
+                </motion.div>
+                <motion.div 
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  className={`
+                    flex flex-col items-center justify-center rounded-xl p-3
+                    ${theme === 'dark'
+                      ? 'bg-[#3A3A3C]/50 hover:bg-[#3A3A3C]/70'
+                      : 'bg-white/80 hover:bg-white shadow-sm'
+                    }
+                    transition-all duration-200 cursor-pointer
+                  `}
+                >
+                  <Battery size={22} className="mb-2" />
+                  <span className="text-xs font-medium">Battery</span>
+                </motion.div>
+                <motion.div 
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  onClick={handleThemeToggle}
+                  className={`
+                    flex flex-col items-center justify-center rounded-xl p-3
+                    ${theme === 'dark'
+                      ? 'bg-[#3A3A3C]/50 hover:bg-[#3A3A3C]/70'
+                      : 'bg-white/80 hover:bg-white shadow-sm'
+                    }
+                    transition-all duration-200 cursor-pointer
+                  `}
+                >
+                  {theme === 'dark' ? 
+                    <Moon size={22} className="mb-2" /> : 
+                    <Sun size={22} className="mb-2" />
+                  }
+                  <span className="text-xs font-medium">
+                    {theme === 'dark' ? 'Dark Mode' : 'Light Mode'}
+                  </span>
+                </motion.div>
+                <motion.div 
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  className={`
+                    flex flex-col items-center justify-center rounded-xl p-3
+                    ${theme === 'dark'
+                      ? 'bg-[#3A3A3C]/50 hover:bg-[#3A3A3C]/70'
+                      : 'bg-white/80 hover:bg-white shadow-sm'
+                    }
+                    transition-all duration-200 cursor-pointer
+                  `}
+                >
+                  <Command size={22} className="mb-2" />
+                  <span className="text-xs font-medium">Keyboard</span>
+                </motion.div>
+              </div>
+              <div className="p-3 space-y-4">
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <h4 className="text-xs font-medium text-muted-foreground">Display</h4>
+                    <span className="text-xs font-medium">100%</span>
+                  </div>
+                  <div className={`
+                    h-1.5 w-full rounded-full overflow-hidden
+                    ${theme === 'dark' ? 'bg-[#3A3A3C]/50' : 'bg-[#E5E5E7]/70'}
+                  `}>
+                    <motion.div 
+                      initial={{ width: '0%' }}
+                      animate={{ width: '100%' }}
+                      transition={{ duration: 0.5 }}
+                      className={`h-full rounded-full ${theme === 'dark' ? 'bg-[#0A84FF]' : 'bg-[#0066FF]'}`}
+                    />
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <h4 className="text-xs font-medium text-muted-foreground">Sound</h4>
+                    <span className="text-xs font-medium">85%</span>
+                  </div>
+                  <div className={`
+                    h-1.5 w-full rounded-full overflow-hidden
+                    ${theme === 'dark' ? 'bg-[#3A3A3C]/50' : 'bg-[#E5E5E7]/70'}
+                  `}>
+                    <motion.div 
+                      initial={{ width: '0%' }}
+                      animate={{ width: '85%' }}
+                      transition={{ duration: 0.5 }}
+                      className={`h-full rounded-full ${theme === 'dark' ? 'bg-[#0A84FF]' : 'bg-[#0066FF]'}`}
+                    />
+                  </div>
+                </div>
+              </div>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+      </motion.div>
+    </>
   );
-})
+});
 
 // Add display name
 MenuBar.displayName = 'MenuBar';
