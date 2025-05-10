@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import BaseIOSApp from './BaseIOSApp';
-import { Phone, User, VoicemailIcon, Clock, Star, Info, Plus, Trash2, Search, X, Video, Mic, Volume2 } from 'lucide-react';
+import { Phone, User, VoicemailIcon, Clock, Star, Info, Plus, Trash2, Search, X, Video, Mic, Volume2, ArrowLeft } from 'lucide-react';
 import Image from 'next/image';
 
 interface Contact {
@@ -109,7 +109,7 @@ export default function PhoneApp() {
   ];
   
   // Filter contacts based on tab and search
-  const getFilteredContacts = () => {
+  const getFilteredContacts = useCallback(() => {
     let filtered = contacts;
     
     // Apply search filter if query exists
@@ -132,7 +132,7 @@ export default function PhoneApp() {
       default:
         return filtered;
     }
-  };
+  }, [activeTab, searchQuery, contacts]);
   
   // Format phone number for display
   const formatPhoneNumber = (phone: string) => {
@@ -222,10 +222,35 @@ export default function PhoneApp() {
     { id: "keypad", label: "Keypad", icon: VoicemailIcon }
   ];
 
+  // Get app title based on state
+  const getAppTitle = () => {
+    if (callState.isActive) {
+      return callState.isVideo ? "Video Call" : "Call";
+    }
+    return activeTab.charAt(0).toUpperCase() + activeTab.slice(1);
+  };
+
+  // Get right action for header based on current state
+  const getRightAction = () => {
+    if (activeTab === "contacts") {
+      return <Plus className="w-5 h-5" />;
+    }
+    return undefined;
+  };
+
   // Active Call UI
   const ActiveCall = () => (
-    <div className="flex-1 flex flex-col items-center justify-between p-6 bg-gray-100 dark:bg-gray-900">
-      <div className="flex flex-col items-center mt-12">
+    <div className="flex-1 flex flex-col items-center justify-between p-6 bg-white dark:bg-black">
+      <div className="w-full mt-2 mb-4">
+        <button 
+          className="p-2 rounded-full bg-gray-200 dark:bg-gray-800"
+          onClick={handleEndCall}
+        >
+          <ArrowLeft className="w-5 h-5" />
+        </button>
+      </div>
+      
+      <div className="flex flex-col items-center mt-4 flex-1">
         <div className="w-32 h-32 rounded-full overflow-hidden mb-4">
           {callState.contact?.avatar ? (
             <Image
@@ -244,9 +269,15 @@ export default function PhoneApp() {
         <h2 className="text-2xl font-semibold mb-1">{callState.contact?.name}</h2>
         <p className="text-gray-500 mb-4">{formatPhoneNumber(callState.contact?.phone || '')}</p>
         <p className="text-gray-500">{formatDuration(callState.duration)}</p>
+        
+        {callState.isVideo && (
+          <div className="w-full max-w-sm h-40 rounded-xl bg-gray-800 mt-4 flex items-center justify-center">
+            <Video className="w-12 h-12 text-gray-500" />
+          </div>
+        )}
       </div>
 
-      <div className="grid grid-cols-3 gap-6 mb-12">
+      <div className="grid grid-cols-3 gap-6 mb-8 w-full max-w-sm">
         <button 
           className={`flex flex-col items-center ${
             callState.isMuted ? 'text-red-500' : 'text-gray-700 dark:text-gray-300'
@@ -275,7 +306,7 @@ export default function PhoneApp() {
           <span className="mt-2 text-sm">Speaker</span>
         </button>
 
-        {!callState.isVideo && (
+        {!callState.isVideo ? (
           <button 
             className="flex flex-col items-center text-gray-700 dark:text-gray-300"
             onClick={() => setCallState(prev => ({ ...prev, isVideo: true }))}
@@ -284,6 +315,16 @@ export default function PhoneApp() {
               <Video className="w-8 h-8" />
             </div>
             <span className="mt-2 text-sm">Video</span>
+          </button>
+        ) : (
+          <button 
+            className="flex flex-col items-center text-gray-700 dark:text-gray-300"
+            onClick={() => setCallState(prev => ({ ...prev, isVideo: false }))}
+          >
+            <div className="w-16 h-16 rounded-full bg-gray-200 dark:bg-gray-800 flex items-center justify-center">
+              <Phone className="w-8 h-8" />
+            </div>
+            <span className="mt-2 text-sm">Audio</span>
           </button>
         )}
       </div>
@@ -299,17 +340,17 @@ export default function PhoneApp() {
   
   return (
     <BaseIOSApp 
-      title={activeTab.charAt(0).toUpperCase() + activeTab.slice(1)}
-      rightAction={activeTab === "contacts" ? <Plus className="w-5 h-5" /> : undefined}
+      title={getAppTitle()}
+      rightAction={getRightAction()}
     >
-      <div className="h-full flex flex-col bg-gray-100 dark:bg-gray-900">
+      <div className="h-full flex flex-col bg-white dark:bg-black">
         {callState.isActive ? (
           <ActiveCall />
         ) : (
           <>
             {/* Search bar (for contacts tab) */}
             {activeTab === "contacts" && (
-              <div className="p-3 bg-gray-100 dark:bg-gray-900">
+              <div className="p-3 bg-white dark:bg-black">
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                     <Search className="w-4 h-4 text-gray-500" />
@@ -321,6 +362,14 @@ export default function PhoneApp() {
                     className="w-full py-2 pl-10 pr-4 bg-gray-200 dark:bg-gray-800 rounded-lg text-sm border border-transparent focus:outline-none"
                     placeholder="Search"
                   />
+                  {searchQuery && (
+                    <button 
+                      className="absolute inset-y-0 right-0 flex items-center pr-3"
+                      onClick={() => setSearchQuery("")}
+                    >
+                      <X className="w-4 h-4 text-gray-500" />
+                    </button>
+                  )}
                 </div>
               </div>
             )}
@@ -333,7 +382,7 @@ export default function PhoneApp() {
                     {getFilteredContacts().map((contact) => (
                       <div 
                         key={contact.id}
-                        className="flex items-center p-4 bg-white dark:bg-gray-800"
+                        className="flex items-center p-4 bg-white dark:bg-black"
                       >
                         <div className="w-10 h-10 rounded-full overflow-hidden mr-3">
                           {contact.avatar ? (
@@ -378,7 +427,7 @@ export default function PhoneApp() {
                         </div>
                         
                         <div className="flex space-x-3">
-                          <button className="w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center">
+                          <button className="w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
                             <Info className="w-4 h-4 text-blue-500" />
                           </button>
                           <button 
@@ -415,6 +464,15 @@ export default function PhoneApp() {
                         ? "No recent calls"
                         : "No contacts found"}
                     </p>
+                    {activeTab === "contacts" && (
+                      <button 
+                        className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-full flex items-center"
+                        onClick={() => alert("Add contact function would go here")}
+                      >
+                        <Plus className="w-4 h-4 mr-1" />
+                        <span>Add Contact</span>
+                      </button>
+                    )}
                   </div>
                 )}
               </div>
@@ -424,19 +482,19 @@ export default function PhoneApp() {
             {activeTab === "keypad" && (
               <div className="flex-1 flex flex-col">
                 {/* Display number */}
-                <div className="p-6 flex justify-center items-center bg-white dark:bg-gray-800">
+                <div className="p-6 flex justify-center items-center bg-white dark:bg-black">
                   <h2 className="text-3xl font-light">
                     {dialNumber || <span className="text-gray-400">Enter a number</span>}
                   </h2>
                 </div>
                 
                 {/* Dial pad */}
-                <div className="flex-1 bg-white dark:bg-gray-800 p-2">
+                <div className="flex-1 bg-white dark:bg-black p-2">
                   <div className="grid grid-cols-3 gap-2 h-full">
                     {dialPadKeys.map((key) => (
                       <button
                         key={key.number}
-                        className="flex flex-col items-center justify-center rounded-full hover:bg-gray-100 dark:hover:bg-gray-700"
+                        className="flex flex-col items-center justify-center rounded-full hover:bg-gray-100 dark:hover:bg-gray-800"
                         onClick={() => setDialNumber(prev => prev + key.number)}
                       >
                         <span className="text-2xl font-light">{key.number}</span>
@@ -449,7 +507,7 @@ export default function PhoneApp() {
                 </div>
                 
                 {/* Call button */}
-                <div className="p-4 flex justify-center bg-white dark:bg-gray-800">
+                <div className="p-4 flex justify-center bg-white dark:bg-black relative">
                   <button 
                     className={`w-14 h-14 rounded-full ${
                       dialNumber ? 'bg-green-500' : 'bg-green-500/70'
@@ -472,7 +530,7 @@ export default function PhoneApp() {
             )}
             
             {/* Bottom tabs */}
-            <div className="mt-auto border-t border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 flex justify-around p-2">
+            <div className="mt-auto border-t border-gray-200 dark:border-gray-800 bg-white dark:bg-black flex justify-around p-2">
               {tabs.map((tab) => (
                 <button 
                   key={tab.id}
