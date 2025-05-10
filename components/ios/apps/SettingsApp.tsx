@@ -101,9 +101,9 @@ export default function SettingsApp() {
 
   return (
     <BaseIOSApp title="Settings">
-      <div className="pb-8 bg-[#f2f2f7] dark:bg-black transition-colors duration-300">
+      <div className="pb-8 bg-[#f2f2f7] dark:bg-black min-h-screen">
         {/* User profile section */}
-        <div className="p-4 flex items-center bg-white dark:bg-gray-800/80 border-b border-gray-200 dark:border-gray-700/80 transition-colors duration-300">
+        <div className="p-4 flex items-center bg-white dark:bg-gray-800/80 border-b border-gray-200 dark:border-gray-700/80">
           <div className="w-16 h-16 rounded-full overflow-hidden relative">
             <Image
               src="https://github.com/eshanized.png"
@@ -114,25 +114,25 @@ export default function SettingsApp() {
             />
           </div>
           <div className="ml-4">
-            <h2 className="text-lg font-medium text-black dark:text-white transition-colors duration-300">{PERSONAL_INFO.name}</h2>
-            <p className="text-gray-500 dark:text-gray-400 transition-colors duration-300">Apple ID, iCloud+, App Store</p>
+            <h2 className="text-lg font-medium text-black dark:text-white">{PERSONAL_INFO.name}</h2>
+            <p className="text-gray-500 dark:text-gray-400">Apple ID, iCloud+, App Store</p>
           </div>
-          <ChevronRight className="w-5 h-5 text-gray-400 dark:text-gray-500 ml-auto transition-colors duration-300" />
+          <ChevronRight className="w-5 h-5 text-gray-400 dark:text-gray-500 ml-auto" />
         </div>
         
         {/* Settings groups */}
         <div className="mt-6 space-y-6 px-4">
           {/* Appearance */}
-          <div className="bg-white dark:bg-gray-800/80 rounded-xl overflow-hidden shadow-sm transition-colors duration-300">
+          <div className="bg-white dark:bg-gray-800/80 rounded-xl overflow-hidden shadow-sm">
             <div className="p-4 flex items-center justify-between">
               <div className="flex items-center">
-                <div className="w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-900/60 flex items-center justify-center mr-3 transition-colors duration-300">
+                <div className="w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-900/60 flex items-center justify-center mr-3">
                   {isDarkMode ? 
                     <Moon className="w-4 h-4 text-blue-500 dark:text-blue-400" /> : 
                     <Sun className="w-4 h-4 text-blue-500 dark:text-blue-400" />
                   }
                 </div>
-                <span className="text-black dark:text-white transition-colors duration-300">Dark Mode</span>
+                <span className="text-black dark:text-white">Dark Mode</span>
               </div>
               <label className="relative inline-flex items-center cursor-pointer">
                 <input
@@ -141,13 +141,13 @@ export default function SettingsApp() {
                   checked={isDarkMode}
                   onChange={toggleDarkMode}
                 />
-                <div className="w-11 h-6 bg-gray-300 dark:bg-gray-600 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 dark:after:border-gray-500 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-500 dark:peer-checked:bg-blue-600 transition-colors duration-300"></div>
+                <div className={`w-11 h-6 ${isDarkMode ? 'bg-blue-500' : 'bg-gray-300'} rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all`}></div>
               </label>
             </div>
           </div>
           
           {/* Wi-Fi settings */}
-          <div className="bg-white dark:bg-gray-800/80 rounded-xl overflow-hidden shadow-sm transition-colors duration-300">
+          <div className="bg-white dark:bg-gray-800/80 rounded-xl overflow-hidden shadow-sm">
             <div className="p-4 flex items-center justify-between border-b border-gray-200 dark:border-gray-700/80">
               <div className="flex items-center">
                 <div className="w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-900/60 flex items-center justify-center mr-3">
@@ -162,7 +162,7 @@ export default function SettingsApp() {
                   checked={wifiEnabled}
                   onChange={handleWifiToggle}
                 />
-                <div className="w-11 h-6 bg-gray-300 dark:bg-gray-600 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 dark:after:border-gray-500 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-500 dark:peer-checked:bg-blue-600"></div>
+                <div className={`w-11 h-6 ${wifiEnabled ? 'bg-blue-500' : 'bg-gray-300'} rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all`}></div>
               </label>
             </div>
             {wifiEnabled && (
@@ -190,7 +190,7 @@ export default function SettingsApp() {
           </div>
           
           {/* Notifications */}
-          <div className="bg-white dark:bg-gray-800/80 rounded-xl overflow-hidden shadow-sm transition-colors duration-300">
+          <div className="bg-white dark:bg-gray-800/80 rounded-xl overflow-hidden shadow-sm">
             <div className="p-4 flex items-center justify-between border-b border-gray-200 dark:border-gray-700/80">
               <div className="flex items-center">
                 <div className="w-8 h-8 rounded-full bg-red-100 dark:bg-red-900/60 flex items-center justify-center mr-3">
@@ -205,7 +205,7 @@ export default function SettingsApp() {
                   checked={notifications.enabled}
                   onChange={() => handleNotificationToggle('enabled')}
                 />
-                <div className="w-11 h-6 bg-gray-300 dark:bg-gray-600 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 dark:after:border-gray-500 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-500 dark:peer-checked:bg-blue-600"></div>
+                <div className={`w-11 h-6 ${notifications.enabled ? 'bg-blue-500' : 'bg-gray-300'} rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all`}></div>
               </label>
             </div>
             {notifications.enabled && (
@@ -233,7 +233,7 @@ export default function SettingsApp() {
           </div>
           
           {/* Sounds & Haptics */}
-          <div className="bg-white dark:bg-gray-800/80 rounded-xl overflow-hidden shadow-sm transition-colors duration-300">
+          <div className="bg-white dark:bg-gray-800/80 rounded-xl overflow-hidden shadow-sm">
             <div className="p-4 border-b border-gray-200 dark:border-gray-700/80">
               <div className="flex items-center mb-4">
                 <div className="w-8 h-8 rounded-full bg-purple-100 dark:bg-purple-900/60 flex items-center justify-center mr-3">
@@ -258,7 +258,7 @@ export default function SettingsApp() {
           </div>
           
           {/* Privacy & Security */}
-          <div className="bg-white dark:bg-gray-800/80 rounded-xl overflow-hidden shadow-sm transition-colors duration-300">
+          <div className="bg-white dark:bg-gray-800/80 rounded-xl overflow-hidden shadow-sm">
             <div className="p-4 flex items-center justify-between border-b border-gray-200 dark:border-gray-700/80">
               <div className="flex items-center">
                 <div className="w-8 h-8 rounded-full bg-green-100 dark:bg-green-900/60 flex items-center justify-center mr-3">
@@ -273,13 +273,13 @@ export default function SettingsApp() {
                   checked={privacySettings.locationServices}
                   onChange={() => handlePrivacyToggle('locationServices')}
                 />
-                <div className="w-11 h-6 bg-gray-300 dark:bg-gray-600 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 dark:after:border-gray-500 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-500 dark:peer-checked:bg-blue-600"></div>
+                <div className={`w-11 h-6 ${privacySettings.locationServices ? 'bg-blue-500' : 'bg-gray-300'} rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all`}></div>
               </label>
             </div>
           </div>
           
           {/* Battery */}
-          <div className="bg-white dark:bg-gray-800/80 rounded-xl overflow-hidden shadow-sm transition-colors duration-300">
+          <div className="bg-white dark:bg-gray-800/80 rounded-xl overflow-hidden shadow-sm">
             <div className="p-4">
               <div className="flex items-center mb-4">
                 <div className="w-8 h-8 rounded-full bg-green-100 dark:bg-green-900/60 flex items-center justify-center mr-3">
@@ -303,11 +303,11 @@ export default function SettingsApp() {
           </div>
           
           {/* About */}
-          <div className="bg-white dark:bg-gray-800/80 rounded-xl p-4 transition-colors duration-300">
-            <div className="text-gray-500 dark:text-gray-400 text-sm transition-colors duration-300">
+          <div className="bg-white dark:bg-gray-800/80 rounded-xl p-4">
+            <div className="text-gray-500 dark:text-gray-400 text-sm">
               iOS 16.5.1
             </div>
-            <div className="mt-1 text-center text-xs text-gray-400 dark:text-gray-500 transition-colors duration-300">
+            <div className="mt-1 text-center text-xs text-gray-400 dark:text-gray-500">
               Portfolio iOS Experience
             </div>
           </div>

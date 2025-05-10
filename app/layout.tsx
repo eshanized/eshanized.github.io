@@ -1,7 +1,7 @@
 import './globals.css';
 import './snigdha-theme.css';
 import type { Metadata } from 'next';
-import { ThemeProvider } from '@/components/ios/ThemeContext';
+import { ThemeProvider } from '@/components/providers/theme-provider';
 import { NotificationProvider } from '@/components/ios/NotificationProvider';
 import { MobileCheck } from '@/components/mobile-check';
 
@@ -16,8 +16,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" suppressHydrationWarning className="dark:bg-black">
-      <body className="font-sf-pro dark:bg-black">
+    <html lang="en" suppressHydrationWarning>
+      <body className="font-sf-pro">
         <ThemeProvider>
           <NotificationProvider>
             <MobileCheck>
