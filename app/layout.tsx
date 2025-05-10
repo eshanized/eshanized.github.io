@@ -1,9 +1,16 @@
 import './globals.css';
 import './snigdha-theme.css';
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { ThemeProvider } from '@/components/providers/theme-provider';
 import { NotificationProvider } from '@/components/ios/NotificationProvider';
 import { MobileCheck } from '@/components/mobile-check';
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+};
 
 export const metadata: Metadata = {
   title: {
@@ -83,12 +90,6 @@ export const metadata: Metadata = {
     },
   },
   manifest: '/site.webmanifest',
-  viewport: {
-    width: 'device-width',
-    initialScale: 1,
-    maximumScale: 1,
-    userScalable: false,
-  },
   verification: {
     google: 'your-google-site-verification',
     yandex: 'your-yandex-verification',
