@@ -1,81 +1,228 @@
-# Eshan's Portfolio Website
+# Eshanized Web Portfolio 🚀
 
-This is a personal portfolio website built with Next.js and deployed on GitHub Pages.
+[![Next.js](https://img.shields.io/badge/Next.js-14.1.3-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0.4-blue?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.3.0-38B2AC?style=for-the-badge&logo=tailwind-css)](https://tailwindcss.com/)
+[![Framer Motion](https://img.shields.io/badge/Framer_Motion-10.12.4-ff69b4?style=for-the-badge&logo=framer)](https://www.framer.com/motion/)
+[![GitHub Pages](https://img.shields.io/badge/GitHub_Pages-Deployed-success?style=for-the-badge&logo=github)](https://eshanized.github.io/)
+[![License](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
 
-## Deployment to GitHub Pages
+> An elegant and interactive portfolio website featuring iOS-style design, built with modern web technologies.
 
-This repository is set up to deploy to a GitHub Pages user site (username.github.io) using the `gh-pages` branch, while preserving source code in the `master` branch.
+## 🌟 Features
 
-### Automatic Deployment
+- 📱 iOS-inspired design and interactions
+- 🌓 Dark/Light mode with system preference sync
+- 📊 Interactive app-like components
+- 🎨 Beautiful animations and transitions
+- 📱 Fully responsive design
+- ⚡ Optimized performance
+- 🔒 TypeScript for type safety
+- 🎯 SEO optimized
 
-The GitHub Action workflow in `.github/workflows/deploy.yml` handles the build and deployment process when you push to the main branch. It automatically updates the `gh-pages` branch with the latest build.
+## 🛠️ Tech Stack
 
-### Manual Deployment Options
+### Core Technologies
+- **Framework**: Next.js 14 with App Router
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS
+- **Animations**: Framer Motion
+- **UI Components**: Shadcn UI
+- **State Management**: React Context
+- **Icons**: Lucide Icons
+- **Deployment**: GitHub Pages
 
-#### Option 1: Using gh-pages package (Recommended)
+### Key Features Implementation
+- **Theme Management**: next-themes
+- **Code Formatting**: Prettier
+- **Linting**: ESLint
+- **Git Hooks**: Husky
+- **Package Management**: npm
 
-The simplest way to deploy:
+## 🚀 Getting Started
 
+### Prerequisites
+- Node.js (v18.0.0 or higher)
+- npm (v8.0.0 or higher)
+
+### Installation
+
+1. Clone the repository:
 ```bash
-# Build and deploy to gh-pages branch
-npm run deploy
+git clone https://github.com/eshanized/eshanized_web.git
+cd eshanized_web
 ```
 
-#### Option 2: Using custom deploy script
-
-For more controlled deployment:
-
+2. Install dependencies:
 ```bash
-# Make the deployment script executable (first time only)
-chmod +x deploy.sh
-
-# Run the deployment script
-./deploy.sh
-```
-
-This script:
-1. Builds the Next.js project
-2. Creates or updates the gh-pages branch
-3. Preserves your Git history in the master branch
-4. Pushes the changes to GitHub
-
-### Deployment Configuration
-
-- The site is accessible at https://eshanized.github.io/
-- Custom domain: https://eshanized.is-a.dev/
-
-## Local Development
-
-```bash
-# Install dependencies
 npm install
-
-# Run development server
-npm run dev
-
-# Build for production
-npm run build
 ```
 
-## Technologies Used
+3. Start the development server:
+```bash
+npm run dev
+```
 
-- Next.js
-- TypeScript
-- Tailwind CSS
-- Framer Motion
-- Shadcn UI
+4. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-## Project Structure
+### Production Build
 
-- `app/`: Next.js app directory
-- `components/`: Reusable React components
-- `lib/`: Utility functions and constants
-- `public/`: Static assets
-- `hooks/`: Custom React hooks
+```bash
+# Create optimized production build
+npm run build
 
-## Important Configuration Files
+# Start production server
+npm start
+```
 
-- `next.config.js`: Next.js configuration
-- `build.js`: Custom build script
-- `deploy.sh`: Safe deployment script
-- `.github/workflows/deploy.yml`: GitHub Actions workflow for deployment 
+## 📁 Project Structure
+
+```
+eshanized_web/
+├── app/                   # Next.js app directory
+│   ├── layout.tsx        # Root layout
+│   └── page.tsx          # Home page
+├── components/           # React components
+│   ├── ios/             # iOS-style components
+│   ├── macos/           # macOS-style components
+│   ├── ui/              # Shared UI components
+│   └── providers/       # Context providers
+├── lib/                 # Utility functions
+├── public/              # Static assets
+├── styles/             # Global styles
+└── types/              # TypeScript types
+```
+
+## 🎨 Design System
+
+### iOS Design Implementation
+- Custom iOS-style components
+- System-native animations
+- Authentic iOS interactions
+- Dark mode support
+- Blur effects
+- iOS typography
+
+### Component Categories
+1. **Navigation Components**
+   - iOS-style headers
+   - Tab bars
+   - Navigation bars
+
+2. **Interactive Elements**
+   - Buttons
+   - Switches
+   - Form inputs
+   - Cards
+
+3. **Layout Components**
+   - Grid systems
+   - Lists
+   - Containers
+
+## 📱 Apps Implementation
+
+### Built-in Applications
+1. **Settings App**
+   - Theme management
+   - System preferences
+   - User profile
+
+2. **Social Apps**
+   - Twitter integration
+   - Facebook features
+   - Instagram components
+   - Dev.to articles
+
+3. **Utility Apps**
+   - Clock with multiple features
+   - Calculator
+   - Weather information
+
+## 🔄 State Management
+
+- Context API for global state
+- Theme context for appearance
+- Navigation state management
+- App-specific state handling
+
+## 🚀 Deployment
+
+### GitHub Pages Deployment
+
+1. **Automatic Deployment**
+   ```bash
+   npm run deploy
+   ```
+   This will:
+   - Build the project
+   - Push to gh-pages branch
+   - Update the live site
+
+2. **Manual Deployment**
+   ```bash
+   ./deploy.sh
+   ```
+
+### Custom Domain Setup
+- Primary domain: [eshanized.github.io](https://eshanized.github.io)
+- Custom domain: [eshanized.is-a.dev](https://eshanized.is-a.dev)
+
+## 🔧 Configuration
+
+### Environment Variables
+Create a `.env.local` file:
+```env
+NEXT_PUBLIC_GITHUB_USERNAME=your_username
+NEXT_PUBLIC_SITE_URL=your_site_url
+```
+
+### Next.js Configuration
+```javascript
+// next.config.js
+module.exports = {
+  images: {
+    domains: ['github.com'],
+  },
+  // ... other config
+}
+```
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create your feature branch
+   ```bash
+   git checkout -b feature/AmazingFeature
+   ```
+3. Commit your changes
+   ```bash
+   git commit -m 'Add some AmazingFeature'
+   ```
+4. Push to the branch
+   ```bash
+   git push origin feature/AmazingFeature
+   ```
+5. Open a Pull Request
+
+## 📝 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- [Next.js Team](https://nextjs.org/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [Framer Motion](https://www.framer.com/motion/)
+- [Shadcn UI](https://ui.shadcn.com/)
+- [Lucide Icons](https://lucide.dev/)
+
+## 📞 Contact
+
+Eshan Roy - [@eshanized](https://twitter.com/eshanized)
+
+Project Link: [https://github.com/eshanized/eshanized_web](https://github.com/eshanized/eshanized_web)
+
+---
+
+<p align="center">Made with ❤️ by Eshan Roy</p> 

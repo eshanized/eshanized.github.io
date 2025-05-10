@@ -3,6 +3,34 @@
   "version": "0.1.0",
   "private": true,
   "homepage": "https://eshanized.github.io",
+  "description": "A modern portfolio website built with Next.js, React, and Tailwind CSS featuring iOS-style UI components",
+  "keywords": [
+    "portfolio",
+    "nextjs",
+    "react",
+    "typescript",
+    "tailwindcss",
+    "ios-design",
+    "web-development",
+    "full-stack",
+    "developer-portfolio",
+    "radix-ui",
+    "theme-switcher",
+    "responsive-design",
+    "modern-ui",
+    "personal-website"
+  ],
+  "categories": [
+    "portfolio",
+    "web-development",
+    "frontend",
+    "react-components",
+    "nextjs-application"
+  ],
+  "author": {
+    "name": "Eshan Roy",
+    "url": "https://github.com/eshanized"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "node build.js",
