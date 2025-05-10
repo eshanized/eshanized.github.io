@@ -1,44 +1,80 @@
 "use client";
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import BaseIOSApp from './BaseIOSApp';
 import Image from 'next/image';
 import { Heart, MessageCircle, Bookmark, Tag } from 'lucide-react';
+import axios from 'axios';
 
-const articles = [
-  {
-    id: 1,
-    title: "Building an iOS-Inspired Portfolio with Next.js and TailwindCSS",
-    description: "A detailed guide on how I created an iOS-like interface for my portfolio website using modern web technologies.",
-    tags: ["webdev", "react", "nextjs", "tailwindcss"],
-    reactions: 156,
-    comments: 23,
-    readTime: "8 min read",
-    timestamp: "2 days ago"
-  },
-  {
-    id: 2,
-    title: "Advanced Linux System Optimization Techniques",
-    description: "Deep dive into various methods and tools for optimizing Linux system performance, from kernel tweaks to service management.",
-    tags: ["linux", "performance", "tutorial", "devops"],
-    reactions: 234,
-    comments: 45,
-    readTime: "12 min read",
-    timestamp: "4 days ago"
-  },
-  {
-    id: 3,
-    title: "Creating a Dark Mode Toggle with React and CSS Variables",
-    description: "Learn how to implement a smooth dark mode transition using React hooks and CSS custom properties.",
-    tags: ["javascript", "react", "css", "webdev"],
-    reactions: 189,
-    comments: 28,
-    readTime: "6 min read",
-    timestamp: "1 week ago"
-  }
-];
+interface Article {
+  id: number;
+  title: string;
+  description: string;
+  tag_list: string[];
+  positive_reactions_count: number;
+  comments_count: number;
+  reading_time_minutes: number;
+  published_at: string;
+  user: {
+    name: string;
+    username: string;
+    profile_image: string;
+  };
+}
 
 export default function DevToApp() {
+  const [articles, setArticles] = useState<Article[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchArticles = async () => {
+      try {
+        const response = await axios.get('https://dev.to/api/articles?username=eshanized');
+        const processedArticles = response.data.map((article: any) => ({
+          ...article,
+          tag_list: Array.isArray(article.tag_list) ? article.tag_list : 
+                    typeof article.tags === 'string' ? article.tags.split(',').map((tag: string) => tag.trim()) :
+                    []
+        }));
+        setArticles(processedArticles);
+        setIsLoading(false);
+      } catch (err) {
+        setError('Failed to fetch articles');
+        setIsLoading(false);
+      }
+    };
+
+    fetchArticles();
+  }, []);
+
+  if (isLoading) {
+    return (
+      <BaseIOSApp title="DEV Community" rightAction="new">
+        <div className="flex flex-col items-center justify-center h-full">
+          <div className="animate-spin rounded-full h-8 w-8 border-2 border-gray-300 border-t-blue-500" />
+          <p className="mt-4 text-gray-500 dark:text-gray-400">Loading articles...</p>
+        </div>
+      </BaseIOSApp>
+    );
+  }
+
+  if (error) {
+    return (
+      <BaseIOSApp title="DEV Community" rightAction="new">
+        <div className="flex flex-col items-center justify-center h-full">
+          <p className="text-red-500 dark:text-red-400">{error}</p>
+          <button 
+            className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors"
+            onClick={() => window.location.reload()}
+          >
+            Retry
+          </button>
+        </div>
+      </BaseIOSApp>
+    );
+  }
+
   return (
     <BaseIOSApp title="DEV Community" rightAction="new">
       <div className="flex flex-col divide-y divide-gray-200 dark:divide-gray-700/60">
@@ -57,9 +93,9 @@ export default function DevToApp() {
             <div className="ml-3">
               <h2 className="font-bold text-black dark:text-white">Eshan Roy</h2>
               <div className="flex items-center text-sm text-gray-500 dark:text-gray-400">
-                <span>12 posts</span>
+                <span>{articles.length} posts</span>
                 <span className="mx-2">•</span>
-                <span>583 followers</span>
+                <span>Dev.to Articles</span>
               </div>
             </div>
           </div>
@@ -73,16 +109,22 @@ export default function DevToApp() {
               <div className="flex items-center mb-3">
                 <div className="w-8 h-8 rounded-full overflow-hidden relative">
                   <Image
-                    src="https://github.com/eshanized.png"
-                    alt="Profile"
+                    src={article.user.profile_image}
+                    alt={article.user.name}
                     fill
                     className="object-cover"
                     sizes="32px"
                   />
                 </div>
                 <div className="ml-2">
-                  <span className="text-sm font-medium text-black dark:text-white">Eshan Roy</span>
-                  <span className="text-xs text-gray-500 dark:text-gray-400 ml-2">{article.timestamp}</span>
+                  <span className="text-sm font-medium text-black dark:text-white">{article.user.name}</span>
+                  <span className="text-xs text-gray-500 dark:text-gray-400 ml-2">
+                    {new Date(article.published_at).toLocaleDateString('en-US', {
+                      year: 'numeric',
+                      month: 'short',
+                      day: 'numeric'
+                    })}
+                  </span>
                 </div>
               </div>
 
@@ -96,7 +138,7 @@ export default function DevToApp() {
 
               {/* Tags */}
               <div className="flex flex-wrap gap-2 mb-3">
-                {article.tags.map((tag) => (
+                {article.tag_list.map((tag) => (
                   <span
                     key={tag}
                     className="px-2 py-1 bg-gray-100 dark:bg-gray-800 rounded-md text-sm text-gray-600 dark:text-gray-300 flex items-center"
@@ -112,15 +154,15 @@ export default function DevToApp() {
                 <div className="flex items-center space-x-4">
                   <button className="flex items-center hover:text-red-500 dark:hover:text-red-400 transition-colors">
                     <Heart className="w-5 h-5 mr-1" />
-                    <span>{article.reactions}</span>
+                    <span>{article.positive_reactions_count}</span>
                   </button>
                   <button className="flex items-center hover:text-blue-500 dark:hover:text-blue-400 transition-colors">
                     <MessageCircle className="w-5 h-5 mr-1" />
-                    <span>{article.comments}</span>
+                    <span>{article.comments_count}</span>
                   </button>
                 </div>
                 <div className="flex items-center space-x-4">
-                  <span>{article.readTime}</span>
+                  <span>{article.reading_time_minutes} min read</span>
                   <button className="hover:text-blue-500 dark:hover:text-blue-400 transition-colors">
                     <Bookmark className="w-5 h-5" />
                   </button>
