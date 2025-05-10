@@ -1,0 +1,78 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          persist-credentials: true
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Configure Git
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+
+      - name: Deploy to GitHub Pages (gh-pages branch)
+        run: |
+          # Save current branch name
+          CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+          
+          # Create temporary directory for build files
+          mkdir -p temp_deploy
+          
+          # Copy build output to temporary directory
+          cp -r out/* temp_deploy/
+          
+          # Add .nojekyll file to disable Jekyll processing
+          touch temp_deploy/.nojekyll
+          [ -f "out/CNAME" ] && cp out/CNAME temp_deploy/
+          
+          # Switch to gh-pages branch or create if it doesn't exist
+          if git checkout gh-pages; then
+            echo "Checked out existing gh-pages branch"
+          else
+            echo "Creating new gh-pages branch"
+            git checkout --orphan gh-pages
+            git rm -rf . || true
+          fi
+          
+          # Clean working directory
+          find . -maxdepth 1 -not -path "./.git" -not -path "." | xargs rm -rf 2>/dev/null || true
+          
+          # Copy built files to gh-pages branch
+          cp -r temp_deploy/* .
+          cp -r temp_deploy/.[!.]* . 2>/dev/null || true
+          
+          # Commit and push changes
+          git add -A
+          git commit -m "Deploy website via GitHub Actions - $(date)" || echo "No changes to commit"
+          git push -u origin gh-pages
+          
+          # Return to original branch
+          git checkout $CURRENT_BRANCH
+          
+          # Clean up
+          rm -rf temp_deploy 
