@@ -5,6 +5,9 @@ import BaseIOSApp from './BaseIOSApp';
 import { Phone, User, VoicemailIcon, Clock, Star, Info, Plus, Trash2, Search, X, Video, Mic, Volume2, ArrowLeft } from 'lucide-react';
 import Image from 'next/image';
 
+// Add console log to confirm component is loaded
+console.log('PhoneApp component loading');
+
 interface Contact {
   id: number;
   name: string;
@@ -26,7 +29,7 @@ interface CallState {
   isVideo: boolean;
 }
 
-export default function PhoneApp() {
+const PhoneApp = () => {
   const [activeTab, setActiveTab] = useState<string>("favorites");
   const [dialPad, setDialPad] = useState<boolean>(false);
   const [dialNumber, setDialNumber] = useState<string>("");
@@ -558,4 +561,6 @@ export default function PhoneApp() {
       </div>
     </BaseIOSApp>
   );
-} 
+}
+
+export default PhoneApp; 

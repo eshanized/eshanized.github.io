@@ -204,7 +204,7 @@ export default function IOSLayout({ children }: { children: React.ReactNode }) {
   ];
 
   // All apps for home screen and search
-  const allApps = [...portfolioApps, ...systemApps];
+  const allApps = [...portfolioApps, ...systemApps, ...dockApps];
 
   // Get home screen apps (excluding ones in folders)
   const homeScreenApps = [...systemApps];
@@ -217,7 +217,10 @@ export default function IOSLayout({ children }: { children: React.ReactNode }) {
   // Render app component
   const renderAppComponent = (appId: string) => {
     const app = getAppById(appId);
-    if (!app || !app.component) return null;
+    if (!app || !app.component) {
+      console.error(`App not found or has no component: ${appId}`);
+      return null;
+    }
     
     const AppComponent = app.component;
     return <AppComponent />;
