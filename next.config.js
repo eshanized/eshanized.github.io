@@ -8,8 +8,12 @@ const nextConfig = {
   images: { 
     unoptimized: true 
   },
+  // Simplified basePath configuration
   basePath: process.env.NODE_ENV === 'production' ? '/eshanized_web' : '',
-  // Remove custom webpack config as it may be causing issues
+  // Add distDir to ensure build output is consistent
+  distDir: 'out',
+  // Add trailing slash configuration
+  trailingSlash: true,
 };
 
 module.exports = nextConfig;
