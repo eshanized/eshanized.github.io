@@ -2,35 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
-/* SF Pro Display Font */
+/* Import Allerta Stencil from Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Allerta+Stencil&display=swap');
+
+/* Allerta Stencil Font */
 @font-face {
-  font-family: 'SF Pro Display';
-  src: url('https://applesocial.s3.amazonaws.com/assets/styles/fonts/sanfrancisco/sfprodisplay-regular-webfont.woff') format('woff');
+  font-family: 'Allerta Stencil';
   font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'SF Pro Display';
-  src: url('https://applesocial.s3.amazonaws.com/assets/styles/fonts/sanfrancisco/sfprodisplay-medium-webfont.woff') format('woff');
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'SF Pro Display';
-  src: url('https://applesocial.s3.amazonaws.com/assets/styles/fonts/sanfrancisco/sfprodisplay-semibold-webfont.woff') format('woff');
-  font-weight: 600;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'SF Pro Display';
-  src: url('https://applesocial.s3.amazonaws.com/assets/styles/fonts/sanfrancisco/sfprodisplay-bold-webfont.woff') format('woff');
-  font-weight: 700;
   font-style: normal;
   font-display: swap;
 }
@@ -702,15 +680,14 @@ html {
 
 /* macOS Login Screen Enhancements */
 .font-sf-pro {
-  font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
-  font-feature-settings: "ss01", "ss02", "ss03";
-  letter-spacing: -0.015em;
+  font-family: 'Allerta Stencil', sans-serif;
+  letter-spacing: 0.02em;
 }
 
 /* SF Pro specific font weights for better macOS authenticity */
 .font-sf-pro.font-light {
-  font-weight: 300;
-  letter-spacing: -0.025em;
+  font-weight: 400;
+  letter-spacing: 0.02em;
 }
 
 .font-sf-pro.font-normal {
@@ -718,13 +695,13 @@ html {
 }
 
 .font-sf-pro.font-medium {
-  font-weight: 500;
-  letter-spacing: -0.01em;
+  font-weight: 400;
+  letter-spacing: 0.02em;
 }
 
 .font-sf-pro.font-semibold {
-  font-weight: 600;
-  letter-spacing: -0.01em;
+  font-weight: 400;
+  letter-spacing: 0.02em;
 }
 
 /* macOS style form elements */

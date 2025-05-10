@@ -521,11 +521,20 @@ export const MenuBar = memo(function MenuBar({
       {/* Add global styling for this component */}
       <style jsx global>{`
         .menu-bar, .menu-bar * {
-          font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
-          font-feature-settings: "ss01", "ss02", "ss03";
-          letter-spacing: -0.01em;
+          font-family: 'Allerta Stencil', sans-serif;
           -webkit-font-smoothing: antialiased;
           -moz-osx-font-smoothing: grayscale;
+          letter-spacing: 0.02em;
+        }
+
+        .menu-name {
+          font-family: 'Allerta Stencil', sans-serif;
+          letter-spacing: 0.02em;
+        }
+
+        .menu-bar-item {
+          font-family: 'Allerta Stencil', sans-serif;
+          letter-spacing: 0.02em;
         }
       `}</style>
       
@@ -780,11 +789,11 @@ export const MenuBar = memo(function MenuBar({
             <DropdownMenuContent 
               align="end" 
               className={`
-                p-0 rounded-xl overflow-hidden border shadow-lg font-sf-pro
-                ${theme === 'dark'
-                  ? 'bg-[#2C2C2E]/90 backdrop-blur-xl border-[#3A3A3C]/50'
-                  : 'bg-[#F5F5F7]/90 backdrop-blur-xl border-[#E5E5E7]/70'
-                }
+                absolute z-50 right-0 top-full mt-1 w-80 rounded-lg shadow-lg 
+                ${theme === 'dark' ? 'bg-[#1E1E1E]/90 text-white' : 'bg-white/90 text-black'} 
+                backdrop-blur-md border 
+                ${theme === 'dark' ? 'border-[#3A3A3C]/50' : 'border-[#E5E5E7]/70'}
+                font-sf-pro
               `}
             >
               <div className={`p-3 grid grid-cols-2 gap-2 w-[320px]`}>

@@ -27,6 +27,10 @@
   --chart-3: 211 100% 50%;            /* Blue #0066FF */
   --chart-4: 176 100% 40%;            /* Teal #5AC8FA */
   --chart-5: 35 91% 55%;              /* Orange #FF9500 */
+  
+  /* Adding font family settings */
+  --font-family: 'Allerta Stencil', sans-serif;
+  letter-spacing: 0.02em;
 }
 
 .snigdha-theme.dark {
@@ -261,4 +265,9 @@
 .snigdha-theme .traffic-light-green {
   background-color: #28c840;
   border: 1px solid #24aa36;
+}
+
+/* Adding explicit font styling for consistency */
+.snigdha-theme * {
+  font-family: 'Allerta Stencil', sans-serif;
 } 
