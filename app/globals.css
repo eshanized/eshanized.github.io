@@ -1,0 +1,701 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* SF Pro Display Font */
+@font-face {
+  font-family: 'SF Pro Display';
+  src: url('https://applesocial.s3.amazonaws.com/assets/styles/fonts/sanfrancisco/sfprodisplay-regular-webfont.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'SF Pro Display';
+  src: url('https://applesocial.s3.amazonaws.com/assets/styles/fonts/sanfrancisco/sfprodisplay-medium-webfont.woff') format('woff');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'SF Pro Display';
+  src: url('https://applesocial.s3.amazonaws.com/assets/styles/fonts/sanfrancisco/sfprodisplay-semibold-webfont.woff') format('woff');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'SF Pro Display';
+  src: url('https://applesocial.s3.amazonaws.com/assets/styles/fonts/sanfrancisco/sfprodisplay-bold-webfont.woff') format('woff');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Apple Emoji Font */
+@font-face {
+  font-family: 'Apple Color Emoji';
+  src: url('https://applesocial.s3.amazonaws.com/assets/styles/fonts/sanfrancisco/apple-color-emoji.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+  --animation-timing: cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
+  }
+}
+
+@layer base {
+  :root {
+    /* Light theme colors - more refined Apple-inspired palette */
+    --background: 210 30% 98%;
+    --foreground: 220 20% 15%;
+    --card: 0 0% 100%;
+    --card-foreground: 220 20% 15%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 20% 15%;
+    --primary: 211 100% 50%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 210 15% 95%;
+    --secondary-foreground: 222 20% 20%;
+    --muted: 210 20% 96%;
+    --muted-foreground: 220 10% 55%;
+    --accent: 211 100% 50%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 220 13% 90%;
+    --input: 220 13% 90%;
+    --ring: 211 100% 50%;
+    
+    /* Refined chart colors */
+    --chart-1: 211 100% 50%;   /* Apple Blue */
+    --chart-2: 262 83% 58%;    /* Purple */
+    --chart-3: 173 58% 50%;    /* Teal */
+    --chart-4: 329 100% 56%;   /* Pink */
+    --chart-5: 35 91% 55%;     /* Orange */
+    
+    /* New macOS specific variables */
+    --window-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+    --window-border: rgba(255, 255, 255, 0.1);
+    --dock-bg: rgba(255, 255, 255, 0.25);
+    --dock-border: rgba(255, 255, 255, 0.3);
+    --glass-opacity: 0.7;
+    --menu-bar-bg: rgba(255, 255, 255, 0.8);
+    --window-blur: 16px;
+    
+    --radius: 0.5rem;
+  }
+  
+  .dark {
+    /* Dark theme colors - more refined Apple-inspired palette */
+    --background: 220 20% 5%;
+    --foreground: 210 25% 98%;
+    --card: 220 20% 8%;
+    --card-foreground: 210 25% 98%;
+    --popover: 220 20% 8%;
+    --popover-foreground: 210 25% 98%;
+    --primary: 211 100% 55%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 215 25% 15%;
+    --secondary-foreground: 210 25% 98%;
+    --muted: 215 25% 15%;
+    --muted-foreground: 210 15% 70%;
+    --accent: 211 100% 55%;
+    --accent-foreground: 210 25% 98%;
+    --destructive: 0 70% 45%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 215 20% 20%;
+    --input: 215 20% 20%;
+    --ring: 211 100% 55%;
+    
+    /* Refined chart colors - dark mode */
+    --chart-1: 211 100% 60%;   /* Apple Blue */
+    --chart-2: 262 83% 65%;    /* Purple */
+    --chart-3: 173 58% 55%;    /* Teal */
+    --chart-4: 329 100% 65%;   /* Pink */
+    --chart-5: 35 91% 60%;     /* Orange */
+    
+    /* New macOS specific variables - dark mode */
+    --window-shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
+    --window-border: rgba(255, 255, 255, 0.08);
+    --dock-bg: rgba(30, 30, 30, 0.7);
+    --dock-border: rgba(255, 255, 255, 0.08);
+    --glass-opacity: 0.6;
+    --menu-bar-bg: rgba(30, 30, 30, 0.8);
+    --window-blur: 20px;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground font-sf-pro antialiased selection:bg-primary/20 selection:text-primary;
+  }
+  
+  /* Modern focus styles */
+  :focus-visible {
+    @apply outline-none ring-2 ring-primary/40 ring-offset-2 ring-offset-background transition-shadow duration-200;
+  }
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Modern scrollbar styles */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--muted-foreground) / 0.4);
+  border-radius: 8px;
+  transition: background 0.2s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--muted-foreground) / 0.6);
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: hsl(var(--muted-foreground) / 0.4);
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--muted-foreground) / 0.6);
+}
+
+/* Enhanced Glass morphism effects */
+.glass-effect {
+  backdrop-filter: blur(var(--window-blur)) saturate(180%);
+  background-color: rgba(255, 255, 255, var(--glass-opacity));
+  border: 1px solid var(--window-border);
+  box-shadow: var(--window-shadow);
+  transition: background-color 0.3s ease, backdrop-filter 0.3s ease, box-shadow 0.3s ease;
+}
+
+.glass-effect:hover {
+  --glass-opacity: 0.75;
+  --window-blur: 18px;
+}
+
+.dark .glass-effect {
+  background-color: rgba(17, 17, 17, var(--glass-opacity));
+  border: 1px solid var(--window-border);
+}
+
+.dark .glass-effect:hover {
+  --glass-opacity: 0.65;
+}
+
+/* Window animations - enhanced */
+.window-enter {
+  opacity: 0;
+  transform: scale(0.95) translateY(10px);
+  filter: blur(2px);
+}
+
+.window-enter-active {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+  filter: blur(0);
+  transition: opacity 250ms var(--animation-timing), 
+              transform 300ms var(--animation-timing),
+              filter 200ms var(--animation-timing);
+}
+
+.window-exit {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+  filter: blur(0);
+}
+
+.window-exit-active {
+  opacity: 0;
+  transform: scale(0.95) translateY(10px);
+  filter: blur(2px);
+  transition: opacity 200ms var(--animation-timing), 
+              transform 250ms var(--animation-timing),
+              filter 150ms var(--animation-timing);
+}
+
+/* Improved Apple Menu Bar Styles */
+.menu-bar {
+  backdrop-filter: blur(12px);
+  background-color: var(--menu-bar-bg);
+  border-bottom: 1px solid var(--window-border);
+  transition: background-color 0.3s ease;
+}
+
+.menu-item {
+  @apply flex items-center space-x-1 px-2 py-1 rounded-md transition-all duration-200;
+  position: relative;
+  overflow: hidden;
+}
+
+.menu-item:hover {
+  @apply bg-accent/10;
+}
+
+.menu-item:active {
+  @apply bg-accent/20;
+  transform: scale(0.98);
+}
+
+.menu-item::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background-color: hsl(var(--primary));
+  transition: width 0.2s ease, left 0.2s ease;
+}
+
+.menu-item:hover::after {
+  width: 80%;
+  left: 10%;
+}
+
+.menu-icon {
+  @apply w-4 h-4 text-primary opacity-80 transition-transform duration-200;
+}
+
+.menu-item:hover .menu-icon {
+  transform: translateY(-1px);
+}
+
+.menu-text {
+  @apply text-sm font-medium transition-colors duration-200;
+}
+
+/* Enhanced macOS Dock Styles */
+.dock-container {
+  backdrop-filter: blur(12px);
+  background-color: var(--dock-bg);
+  border: 1px solid var(--dock-border);
+  border-radius: 18px;
+  padding: 6px;
+  transition: transform 0.3s var(--animation-timing), 
+              backdrop-filter 0.3s ease,
+              box-shadow 0.3s ease;
+}
+
+.dock-container:hover {
+  backdrop-filter: blur(16px);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1),
+              0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+.dock-icon {
+  @apply relative flex items-center justify-center rounded-xl;
+  width: 52px;
+  height: 52px;
+  transition: all 0.3s var(--animation-timing);
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1));
+  transform-origin: bottom;
+}
+
+.dock-icon:hover {
+  transform: translateY(-10px) scale(1.1);
+}
+
+.dock-icon:active {
+  transform: translateY(-5px) scale(0.95);
+}
+
+.dark .dock-icon {
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+}
+
+.dock-icon::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.2));
+  -webkit-mask: linear-gradient(#000, #000) content-box, linear-gradient(#000, #000);
+  mask: linear-gradient(#000, #000) content-box, linear-gradient(#000, #000);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0.5;
+  transition: opacity 0.3s ease;
+}
+
+.dock-icon:hover::before {
+  opacity: 1;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.3));
+}
+
+/* Improved icon reflection */
+.dock-icon-reflection {
+  position: absolute;
+  bottom: -14px;
+  left: 10%;
+  right: 10%;
+  height: 14px;
+  border-radius: 50%;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.4), transparent);
+  filter: blur(3px);
+  opacity: 0;
+  transform: scaleY(0.3);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.dock-icon:hover .dock-icon-reflection {
+  opacity: 0.5;
+  transform: scaleY(0.4);
+}
+
+/* Enhanced Shadow glow effect */
+.shadow-glow {
+  box-shadow: 
+    0 0 8px 2px hsl(var(--primary) / 0.3),
+    0 0 2px 0px hsl(var(--primary) / 0.2);
+  animation: pulse-glow 2s infinite alternate;
+}
+
+@keyframes pulse-glow {
+  0% {
+    box-shadow: 0 0 8px 2px hsl(var(--primary) / 0.3),
+                0 0 2px 0px hsl(var(--primary) / 0.2);
+  }
+  100% {
+    box-shadow: 0 0 12px 4px hsl(var(--primary) / 0.4),
+                0 0 4px 0px hsl(var(--primary) / 0.3);
+  }
+}
+
+/* Enhanced MacOS Window Styles */
+.macos-window {
+  backdrop-filter: blur(var(--window-blur)) saturate(180%);
+  background-color: rgba(var(--card), var(--glass-opacity));
+  border: 1px solid var(--window-border);
+  border-radius: 10px;
+  box-shadow: var(--window-shadow);
+  transition: transform 0.3s var(--animation-timing),
+              box-shadow 0.3s ease,
+              border-color 0.3s ease;
+  will-change: transform, opacity;
+  overflow: hidden;
+}
+
+.macos-window.active {
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2),
+              0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  border-color: rgba(var(--primary), 0.1);
+}
+
+.window-title-bar {
+  backdrop-filter: blur(8px);
+  background: linear-gradient(to bottom, 
+              rgba(var(--card), 0.9), 
+              rgba(var(--card), 0.8));
+  border-bottom: 1px solid var(--window-border);
+  transition: background 0.3s ease;
+}
+
+.window-traffic-lights {
+  display: flex;
+  gap: 6px;
+}
+
+.traffic-light {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  position: relative;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.traffic-light:hover {
+  transform: scale(1.1);
+}
+
+.traffic-light:active {
+  transform: scale(0.95);
+  opacity: 0.8;
+}
+
+.traffic-light-red {
+  background-color: #ff5f57;
+  border: 1px solid #e0443e;
+}
+
+.traffic-light-yellow {
+  background-color: #febc2e;
+  border: 1px solid #d89d24;
+}
+
+.traffic-light-green {
+  background-color: #28c840;
+  border: 1px solid #24aa36;
+}
+
+/* Window resize handles */
+.resize-handle {
+  position: absolute;
+  background: transparent;
+  transition: background-color 0.2s ease;
+}
+
+.resize-handle:hover {
+  background-color: rgba(var(--primary), 0.1);
+}
+
+.resize-handle-bottom {
+  height: 6px;
+  bottom: -3px;
+  left: 10px;
+  right: 10px;
+  cursor: ns-resize;
+}
+
+.resize-handle-top {
+  height: 6px;
+  top: -3px;
+  left: 10px;
+  right: 10px;
+  cursor: ns-resize;
+}
+
+.resize-handle-left {
+  width: 6px;
+  left: -3px;
+  top: 10px;
+  bottom: 10px;
+  cursor: ew-resize;
+}
+
+.resize-handle-right {
+  width: 6px;
+  right: -3px;
+  top: 10px;
+  bottom: 10px;
+  cursor: ew-resize;
+}
+
+.resize-handle-corner {
+  width: 10px;
+  height: 10px;
+  z-index: 1;
+}
+
+.resize-handle-corner-nw {
+  top: -3px;
+  left: -3px;
+  cursor: nwse-resize;
+}
+
+.resize-handle-corner-ne {
+  top: -3px;
+  right: -3px;
+  cursor: nesw-resize;
+}
+
+.resize-handle-corner-sw {
+  bottom: -3px;
+  left: -3px;
+  cursor: nesw-resize;
+}
+
+.resize-handle-corner-se {
+  bottom: -3px;
+  right: -3px;
+  cursor: nwse-resize;
+}
+
+/* Additional macOS UI elements */
+.macos-button {
+  background: linear-gradient(to bottom, 
+              rgba(var(--secondary), 1), 
+              rgba(var(--secondary), 0.9));
+  border: 1px solid rgba(var(--border), 0.5);
+  border-radius: 6px;
+  padding: 4px 12px;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.macos-button:hover {
+  background: linear-gradient(to bottom, 
+              rgba(var(--secondary), 0.95), 
+              rgba(var(--secondary), 0.85));
+  transform: translateY(-1px);
+  box-shadow: 0 2px 5px -1px rgba(0, 0, 0, 0.1);
+}
+
+.macos-button:active {
+  background: linear-gradient(to bottom, 
+              rgba(var(--secondary), 0.85), 
+              rgba(var(--secondary), 0.8));
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+.macos-button-primary {
+  background: linear-gradient(to bottom, 
+              rgba(var(--primary), 1), 
+              rgba(var(--primary), 0.9));
+  color: rgba(var(--primary-foreground), 1);
+  border: 1px solid rgba(var(--primary), 0.6);
+}
+
+.macos-button-primary:hover {
+  background: linear-gradient(to bottom, 
+              rgba(var(--primary), 0.95), 
+              rgba(var(--primary), 0.85));
+}
+
+.macos-button-primary:active {
+  background: linear-gradient(to bottom, 
+              rgba(var(--primary), 0.85), 
+              rgba(var(--primary), 0.8));
+}
+
+/* Advanced animations */
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.15s ease-out forwards;
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 0.6; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.05); }
+  100% { opacity: 0.6; transform: scale(1); }
+}
+
+.animate-pulse-slow {
+  animation: pulse 4s ease-in-out infinite;
+}
+
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.animate-spin-slow {
+  animation: spin-slow 12s linear infinite;
+}
+
+/* Text gradients */
+.text-gradient {
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  background-size: 300% 300%;
+  animation: gradient-shift 8s ease infinite;
+}
+
+.text-gradient-blue {
+  background-image: linear-gradient(90deg, #007aff, #5ac8fa, #007aff);
+}
+
+.text-gradient-purple {
+  background-image: linear-gradient(90deg, #5e5ce6, #bf5af2, #5e5ce6);
+}
+
+.text-gradient-pink {
+  background-image: linear-gradient(90deg, #ff2d55, #ff375f, #ff2d55);
+}
+
+@keyframes gradient-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Shimmer effect */
+.shimmer {
+  position: relative;
+  overflow: hidden;
+}
+
+.shimmer::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.3) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% { left: -100%; }
+  100% { left: 200%; }
+}
+
+/* 3D Transform perspective */
+.perspective {
+  transform-style: preserve-3d;
+  perspective: 1000px;
+}
+
+.perspective-child {
+  backface-visibility: hidden;
+  transition: transform 0.3s var(--animation-timing);
+}
+
+.perspective:hover .perspective-child {
+  transform: translateZ(20px);
+}
+
+/* snigdha-theme customizations */
+.snigdha-theme {
+  --primary: 328 85% 62%; /* Pink */
+  --accent: 328 85% 62%;
+  --ring: 328 85% 62%;
+  --chart-1: 328 85% 62%;
+}
+
+.snigdha-theme .text-gradient {
+  background-image: linear-gradient(90deg, #ff3b8d, #ff7eb3, #ff3b8d);
+}
