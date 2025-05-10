@@ -17,7 +17,7 @@ import {
   AlignLeft, 
   AlignCenter, 
   AlignRight, 
-  Image
+  Image as ImageIcon
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 
@@ -304,7 +304,7 @@ export default function NotesApp() {
             
             <div className="flex space-x-1">
               <button className="p-1 rounded hover:bg-accent/30">
-                <Image className="w-4 h-4" />
+                <ImageIcon className="w-4 h-4" />
               </button>
               <button className="p-1 rounded hover:bg-accent/30">
                 <Share className="w-4 h-4" />

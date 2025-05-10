@@ -118,7 +118,7 @@ export default function SkillsApp() {
                     </div>
                     <Progress 
                       value={skill.proficiency} 
-                      className="h-2 bg-muted"
+                      className="h-2"
                     />
                   </motion.div>
                 ))}

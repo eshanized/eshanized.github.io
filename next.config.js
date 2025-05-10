@@ -6,14 +6,14 @@ const nextConfig = {
     ignoreDuringBuilds: true,
   },
   images: { unoptimized: true },
-  // Add basePath for GitHub Pages deployment
-  basePath: process.env.NODE_ENV === 'production' ? '' : '',
-  // Increase memory limit for webpack
-  webpack: (config, { isServer }) => {
-    // Increase memory limit for the build process
+  // Disable basePath in development but set it for production GitHub Pages
+  basePath: process.env.NODE_ENV === 'production' ? '/eshanized_web' : '',
+  // Increase memory limit for the build process
+  webpack: (config) => {
+    // Optimize webpack performance settings
     config.performance = {
       ...config.performance,
-      hints: false, // Disable webpack performance hints
+      hints: false,
       maxEntrypointSize: 512000,
       maxAssetSize: 512000
     };
