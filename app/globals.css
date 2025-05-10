@@ -61,77 +61,77 @@
 
 @layer base {
   :root {
-    /* Light theme colors - more refined Apple-inspired palette */
-    --background: 210 30% 98%;
-    --foreground: 220 20% 15%;
-    --card: 0 0% 100%;
-    --card-foreground: 220 20% 15%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 220 20% 15%;
-    --primary: 211 100% 50%;
-    --primary-foreground: 0 0% 98%;
-    --secondary: 210 15% 95%;
-    --secondary-foreground: 222 20% 20%;
-    --muted: 210 20% 96%;
-    --muted-foreground: 220 10% 55%;
-    --accent: 211 100% 50%;
-    --accent-foreground: 0 0% 98%;
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 220 13% 90%;
-    --input: 220 13% 90%;
-    --ring: 211 100% 50%;
+    /* Light theme colors - authentic macOS palette */
+    --background: 0 0% 100%;         /* Pure white #FFFFFF */
+    --foreground: 0 0% 0%;           /* Pure black #000000 */
+    --card: 0 0% 100%;               /* Pure white #FFFFFF */
+    --card-foreground: 0 0% 0%;      /* Pure black #000000 */
+    --popover: 0 0% 100%;            /* Pure white #FFFFFF */
+    --popover-foreground: 0 0% 0%;   /* Pure black #000000 */
+    --primary: 211 100% 50%;         /* Apple blue #0066FF */
+    --primary-foreground: 0 0% 100%; /* Pure white #FFFFFF */
+    --secondary: 240 5% 96%;         /* Light gray #F2F2F7 */
+    --secondary-foreground: 240 3% 12%; /* Dark gray #1F1F20 */
+    --muted: 240 4% 90%;             /* Muted gray #E5E5EA */
+    --muted-foreground: 240 3% 46%;  /* Medium gray #8E8E93 */
+    --accent: 211 100% 50%;          /* Apple blue #0066FF */
+    --accent-foreground: 0 0% 100%;  /* Pure white #FFFFFF */
+    --destructive: 0 78% 63%;        /* Red #FF3B30 */
+    --destructive-foreground: 0 0% 100%; /* Pure white #FFFFFF */
+    --border: 240 6% 90%;            /* Border gray #E5E5EA */
+    --input: 240 6% 90%;             /* Input gray #E5E5EA */
+    --ring: 211 100% 50%;            /* Apple blue #0066FF */
     
-    /* Refined chart colors */
-    --chart-1: 211 100% 50%;   /* Apple Blue */
-    --chart-2: 262 83% 58%;    /* Purple */
-    --chart-3: 173 58% 50%;    /* Teal */
-    --chart-4: 329 100% 56%;   /* Pink */
-    --chart-5: 35 91% 55%;     /* Orange */
+    /* Authentic macOS chart colors */
+    --chart-1: 211 100% 50%;   /* Apple Blue #0066FF */
+    --chart-2: 262 83% 58%;    /* Purple #5856D6 */
+    --chart-3: 176 100% 40%;   /* Teal #5AC8FA */
+    --chart-4: 329 100% 56%;   /* Pink #FF2D55 */
+    --chart-5: 35 91% 55%;     /* Orange #FF9500 */
     
-    /* New macOS specific variables */
-    --window-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
-    --window-border: rgba(255, 255, 255, 0.1);
+    /* macOS specific variables */
+    --window-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+    --window-border: rgba(0, 0, 0, 0.1);
     --dock-bg: rgba(255, 255, 255, 0.25);
     --dock-border: rgba(255, 255, 255, 0.3);
     --glass-opacity: 0.7;
-    --menu-bar-bg: rgba(255, 255, 255, 0.8);
+    --menu-bar-bg: rgba(255, 255, 255, 0.9);
     --window-blur: 16px;
     
     --radius: 0.5rem;
   }
   
   .dark {
-    /* Dark theme colors - more refined Apple-inspired palette */
-    --background: 220 20% 5%;
-    --foreground: 210 25% 98%;
-    --card: 220 20% 8%;
-    --card-foreground: 210 25% 98%;
-    --popover: 220 20% 8%;
-    --popover-foreground: 210 25% 98%;
-    --primary: 211 100% 55%;
-    --primary-foreground: 0 0% 98%;
-    --secondary: 215 25% 15%;
-    --secondary-foreground: 210 25% 98%;
-    --muted: 215 25% 15%;
-    --muted-foreground: 210 15% 70%;
-    --accent: 211 100% 55%;
-    --accent-foreground: 210 25% 98%;
-    --destructive: 0 70% 45%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 215 20% 20%;
-    --input: 215 20% 20%;
-    --ring: 211 100% 55%;
+    /* Dark theme colors - authentic macOS palette */
+    --background: 0 0% 11%;          /* Dark gray #1C1C1E */
+    --foreground: 0 0% 100%;         /* Pure white #FFFFFF */
+    --card: 240 3% 15%;              /* Card gray #28282A */
+    --card-foreground: 0 0% 100%;    /* Pure white #FFFFFF */
+    --popover: 240 3% 15%;           /* Popover gray #28282A */
+    --popover-foreground: 0 0% 100%; /* Pure white #FFFFFF */
+    --primary: 211 100% 60%;         /* Apple Blue #0A84FF */
+    --primary-foreground: 0 0% 100%; /* Pure white #FFFFFF */
+    --secondary: 240 3% 22%;         /* Secondary gray #38383A */
+    --secondary-foreground: 0 0% 100%; /* Pure white #FFFFFF */
+    --muted: 240 3% 22%;             /* Muted gray #38383A */
+    --muted-foreground: 240 5% 65%;  /* Medium gray #AEAEB2 */
+    --accent: 211 100% 60%;          /* Apple Blue #0A84FF */
+    --accent-foreground: 0 0% 100%;  /* Pure white #FFFFFF */
+    --destructive: 0 73% 58%;        /* Red #FF453A */
+    --destructive-foreground: 0 0% 100%; /* Pure white #FFFFFF */
+    --border: 240 3% 22%;            /* Border gray #38383A */
+    --input: 240 3% 22%;             /* Input gray #38383A */
+    --ring: 211 100% 60%;            /* Apple Blue #0A84FF */
     
-    /* Refined chart colors - dark mode */
-    --chart-1: 211 100% 60%;   /* Apple Blue */
-    --chart-2: 262 83% 65%;    /* Purple */
-    --chart-3: 173 58% 55%;    /* Teal */
-    --chart-4: 329 100% 65%;   /* Pink */
-    --chart-5: 35 91% 60%;     /* Orange */
+    /* Authentic macOS chart colors - dark mode */
+    --chart-1: 211 100% 60%;   /* Apple Blue #0A84FF */
+    --chart-2: 262 83% 65%;    /* Purple #5E5CE6 */
+    --chart-3: 176 100% 50%;   /* Teal #64D2FF */
+    --chart-4: 329 100% 65%;   /* Pink #FF375F */
+    --chart-5: 35 91% 60%;     /* Orange #FF9F0A */
     
-    /* New macOS specific variables - dark mode */
-    --window-shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
+    /* macOS specific variables - dark mode */
+    --window-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
     --window-border: rgba(255, 255, 255, 0.08);
     --dock-bg: rgba(30, 30, 30, 0.7);
     --dock-border: rgba(255, 255, 255, 0.08);
