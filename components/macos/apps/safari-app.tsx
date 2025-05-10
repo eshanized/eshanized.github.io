@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { 
   ChevronLeft, 
   ChevronRight, 
@@ -8,12 +8,49 @@ import {
   Plus, 
   X, 
   Home, 
-  Bookmark,
+  Bookmark as BookmarkIcon,
   Share,
   ShieldCheck,
-  Search
+  Search,
+  Globe,
+  Star,
+  Clock,
+  Settings,
+  PanelLeft,
+  PanelRight,
+  Laptop,
+  Moon,
+  Sun,
+  Airplay,
+  Download
 } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
+
+// Types
+type Tab = {
+  id: string;
+  title: string;
+  url: string;
+  favicon: string;
+  active: boolean;
+};
+
+type Bookmark = {
+  id: string;
+  title: string;
+  url: string;
+  favicon: string;
+  folder?: string;
+};
+
+type HistoryItem = {
+  url: string;
+  title: string;
+  favicon: string;
+  timestamp: Date;
+};
+
+type SidebarView = 'favorites' | 'history' | 'reading-list' | 'none';
 
 // Safari Icon component
 const SafariIcon = () => (
@@ -48,36 +85,49 @@ const SafariIcon = () => (
   </svg>
 );
 
-// Sample bookmarks
-const bookmarks = [
-  { id: 'b1', title: 'GitHub', url: 'https://github.com', favicon: '🐱' },
-  { id: 'b2', title: 'Stack Overflow', url: 'https://stackoverflow.com', favicon: '📚' },
-  { id: 'b3', title: 'MDN Web Docs', url: 'https://developer.mozilla.org', favicon: '📄' },
-  { id: 'b4', title: 'CodePen', url: 'https://codepen.io', favicon: '📝' },
-  { id: 'b5', title: 'Dev.to', url: 'https://dev.to', favicon: '👨‍💻' },
+// Quick access sites (for start page)
+const quickAccessSites = [
+  { id: 'q1', title: 'GitHub', url: 'https://github.com', icon: '🐱', color: 'bg-gradient-to-br from-gray-800 to-gray-900' },
+  { id: 'q2', title: 'LinkedIn', url: 'https://linkedin.com', icon: '💼', color: 'bg-gradient-to-br from-blue-600 to-blue-700' },
+  { id: 'q3', title: 'Twitter/X', url: 'https://twitter.com', icon: '🐦', color: 'bg-gradient-to-br from-black to-gray-800' },
+  { id: 'q4', title: 'YouTube', url: 'https://youtube.com', icon: '📺', color: 'bg-gradient-to-br from-red-600 to-red-700' },
+  { id: 'q5', title: 'Stack Overflow', url: 'https://stackoverflow.com', icon: '📚', color: 'bg-gradient-to-br from-orange-500 to-orange-600' },
+  { id: 'q6', title: 'Dev.to', url: 'https://dev.to', icon: '👨‍💻', color: 'bg-gradient-to-br from-indigo-600 to-indigo-700' },
+  { id: 'q7', title: 'CodePen', url: 'https://codepen.io', icon: '🖋️', color: 'bg-gradient-to-br from-gray-700 to-gray-800' },
+  { id: 'q8', title: 'MDN Docs', url: 'https://developer.mozilla.org', icon: '📘', color: 'bg-gradient-to-br from-blue-700 to-blue-800' },
 ];
 
-// Sample tabs
+// Sample bookmarks (organized by folders)
+const bookmarks: Bookmark[] = [
+  { id: 'b1', title: 'GitHub', url: 'https://github.com', favicon: '🐱', folder: 'Development' },
+  { id: 'b2', title: 'Stack Overflow', url: 'https://stackoverflow.com', favicon: '📚', folder: 'Development' },
+  { id: 'b3', title: 'MDN Web Docs', url: 'https://developer.mozilla.org', favicon: '📄', folder: 'Development' },
+  { id: 'b4', title: 'CodePen', url: 'https://codepen.io', favicon: '📝', folder: 'Development' },
+  { id: 'b5', title: 'Dev.to', url: 'https://dev.to', favicon: '👨‍💻', folder: 'Development' },
+  { id: 'b6', title: 'LinkedIn', url: 'https://linkedin.com', favicon: '💼', folder: 'Social' },
+  { id: 'b7', title: 'Twitter', url: 'https://twitter.com', favicon: '🐦', folder: 'Social' },
+  { id: 'b8', title: 'YouTube', url: 'https://youtube.com', favicon: '📺', folder: 'Entertainment' },
+  { id: 'b9', title: 'Netflix', url: 'https://netflix.com', favicon: '🎬', folder: 'Entertainment' },
+];
+
+// Sample tabs with more realistic data
 const initialTabs = [
   { id: 't1', title: 'Portfolio', url: 'https://my-portfolio.dev', favicon: '👨‍💻', active: true },
   { id: 't2', title: 'GitHub', url: 'https://github.com', favicon: '🐱', active: false },
 ];
 
-// Sample history for back/forward navigation
-const browserHistory = [
-  'https://my-portfolio.dev',
-  'https://github.com/username',
-  'https://github.com/username/repository',
-  'https://github.com'
+// Sample history with more entries and timestamps
+const browserHistoryItems: HistoryItem[] = [
+  { url: 'https://my-portfolio.dev', title: 'Portfolio', favicon: '👨‍💻', timestamp: new Date(Date.now() - 1000 * 60) },
+  { url: 'https://github.com/username', title: 'GitHub Profile', favicon: '🐱', timestamp: new Date(Date.now() - 1000 * 60 * 10) },
+  { url: 'https://github.com/username/repository', title: 'Project Repository', favicon: '🐱', timestamp: new Date(Date.now() - 1000 * 60 * 30) },
+  { url: 'https://linkedin.com/in/username', title: 'LinkedIn Profile', favicon: '💼', timestamp: new Date(Date.now() - 1000 * 60 * 60) },
+  { url: 'https://dev.to/username', title: 'Dev.to Profile', favicon: '👨‍💻', timestamp: new Date(Date.now() - 1000 * 60 * 60 * 3) },
+  { url: 'https://stackoverflow.com/users/123456', title: 'Stack Overflow Profile', favicon: '📚', timestamp: new Date(Date.now() - 1000 * 60 * 60 * 5) },
 ];
 
-type Tab = {
-  id: string;
-  title: string;
-  url: string;
-  favicon: string;
-  active: boolean;
-};
+// Simple array of URLs for navigation history
+const browserHistory = browserHistoryItems.map(item => item.url);
 
 export default function SafariApp() {
   const [tabs, setTabs] = useState<Tab[]>(initialTabs);
@@ -85,9 +135,32 @@ export default function SafariApp() {
   const [historyIndex, setHistoryIndex] = useState(0);
   const [showBookmarks, setShowBookmarks] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [sidebarView, setSidebarView] = useState<SidebarView>('none');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [theme, setTheme] = useState<'light' | 'dark' | 'system'>('system');
+  const [readerMode, setReaderMode] = useState(false);
+  const [showDownloads, setShowDownloads] = useState(false);
+  
+  // Refs
+  const urlInputRef = useRef<HTMLInputElement>(null);
+  const urlBarRef = useRef<HTMLFormElement>(null);
   
   // Get active tab
   const activeTab = tabs.find(tab => tab.active) || tabs[0];
+  
+  // Filter bookmarks for bookmark bar
+  const bookmarkBarItems = bookmarks.filter(bookmark => !bookmark.folder);
+  
+  // Group bookmarks by folder for sidebar
+  const bookmarksByFolder = bookmarks.reduce((acc, bookmark) => {
+    if (bookmark.folder) {
+      if (!acc[bookmark.folder]) {
+        acc[bookmark.folder] = [];
+      }
+      acc[bookmark.folder].push(bookmark);
+    }
+    return acc;
+  }, {} as Record<string, Bookmark[]>);
   
   // Handle navigation
   const navigateBack = () => {
@@ -134,7 +207,7 @@ export default function SafariApp() {
         if (tab.active) {
           return {
             ...tab,
-            title: url.replace('https://', '').split('/')[0],
+            title: url.replace(/^https?:\/\//, '').split('/')[0],
             url
           };
         }
@@ -159,7 +232,11 @@ export default function SafariApp() {
     switchTab(newTab.id);
   };
   
-  const closeTab = (id: string) => {
+  const closeTab = (id: string, e?: React.MouseEvent) => {
+    if (e) {
+      e.stopPropagation();
+    }
+    
     // Don't close if it's the last tab
     if (tabs.length === 1) return;
     
@@ -194,39 +271,103 @@ export default function SafariApp() {
     }
   };
   
+  // Toggle sidebar views
+  const toggleSidebar = (view: SidebarView) => {
+    setSidebarView(currentView => (currentView === view ? 'none' : view));
+  };
+  
+  // Navigation to a URL (used by bookmarks, history, etc.)
+  const navigateToUrl = (targetUrl: string, targetTitle: string, targetFavicon: string) => {
+    setIsLoading(true);
+    setTimeout(() => {
+      setUrl(targetUrl);
+      
+      // Update active tab
+      setTabs(tabs.map(tab => {
+        if (tab.active) {
+          return {
+            ...tab,
+            title: targetTitle,
+            url: targetUrl,
+            favicon: targetFavicon
+          };
+        }
+        return tab;
+      }));
+      
+      setIsLoading(false);
+    }, 500);
+  };
+  
+  // Focus URL bar when pressing Command+L
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'l') {
+        e.preventDefault();
+        urlInputRef.current?.focus();
+        urlInputRef.current?.select();
+      }
+    };
+    
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+  
+  // Animate URL bar on focus
+  const focusUrlBar = () => {
+    urlBarRef.current?.classList.add('ring-2', 'ring-primary/50');
+  };
+  
+  const blurUrlBar = () => {
+    urlBarRef.current?.classList.remove('ring-2', 'ring-primary/50');
+  };
+  
+  // Format timestamp for history
+  const formatTimeAgo = (date: Date) => {
+    const now = new Date();
+    const diffMs = now.getTime() - date.getTime();
+    const diffMins = Math.round(diffMs / (1000 * 60));
+    const diffHours = Math.round(diffMs / (1000 * 60 * 60));
+    const diffDays = Math.round(diffMs / (1000 * 60 * 60 * 24));
+    
+    if (diffMins < 60) return `${diffMins} minutes ago`;
+    if (diffHours < 24) return `${diffHours} hours ago`;
+    return `${diffDays} days ago`;
+  };
+  
   return (
-    <div className="h-full flex flex-col bg-background">
+    <div className="h-full flex flex-col bg-background overflow-hidden">
       {/* Safari toolbar */}
-      <div className="border-b bg-muted/30 backdrop-blur-sm p-2 flex flex-col">
+      <div className="border-b bg-muted/30 backdrop-blur-sm p-2 flex flex-col select-none">
         {/* Tab bar */}
         <div className="flex items-center mb-2">
           <div className="flex-1 flex items-center space-x-1 overflow-x-auto hide-scrollbar">
             {tabs.map(tab => (
-              <div 
+              <motion.div 
                 key={tab.id}
                 className={`flex items-center min-w-[120px] max-w-[180px] px-3 py-1 rounded-t-lg text-xs cursor-pointer ${
-                  tab.active ? 'bg-background' : 'bg-muted hover:bg-muted/70'
+                  tab.active ? 'bg-background shadow-sm' : 'bg-muted/60 hover:bg-muted/80'
                 }`}
                 onClick={() => switchTab(tab.id)}
+                layoutId={`tab-${tab.id}`}
+                transition={{ type: 'spring', stiffness: 300, damping: 30 }}
               >
                 <span className="mr-1">{tab.favicon}</span>
                 <span className="truncate">{tab.title}</span>
                 <button 
                   className="ml-auto p-1 rounded-full hover:bg-accent/30"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    closeTab(tab.id);
-                  }}
+                  onClick={(e) => closeTab(tab.id, e)}
                 >
                   <X className="w-3 h-3" />
                 </button>
-              </div>
+              </motion.div>
             ))}
           </div>
           
           <button 
-            className="ml-2 p-1 rounded-full hover:bg-accent/30"
+            className="ml-2 p-1.5 rounded-full hover:bg-accent/30 transition-colors"
             onClick={addTab}
+            aria-label="Add new tab"
           >
             <Plus className="w-4 h-4" />
           </button>
@@ -236,30 +377,41 @@ export default function SafariApp() {
         <div className="flex items-center">
           <div className="flex space-x-1 mr-2">
             <button 
-              className={`p-1 rounded-full ${historyIndex > 0 ? 'hover:bg-accent/30' : 'opacity-50 cursor-not-allowed'}`}
+              className={`p-1.5 rounded-full transition-colors ${historyIndex > 0 ? 'hover:bg-accent/30 text-foreground' : 'text-muted-foreground/50 cursor-not-allowed'}`}
               onClick={navigateBack}
               disabled={historyIndex <= 0}
+              aria-label="Go back"
             >
               <ChevronLeft className="w-4 h-4" />
             </button>
             <button 
-              className={`p-1 rounded-full ${historyIndex < browserHistory.length - 1 ? 'hover:bg-accent/30' : 'opacity-50 cursor-not-allowed'}`}
+              className={`p-1.5 rounded-full transition-colors ${historyIndex < browserHistory.length - 1 ? 'hover:bg-accent/30 text-foreground' : 'text-muted-foreground/50 cursor-not-allowed'}`}
               onClick={navigateForward}
               disabled={historyIndex >= browserHistory.length - 1}
+              aria-label="Go forward"
             >
               <ChevronRight className="w-4 h-4" />
             </button>
             <button 
-              className="p-1 rounded-full hover:bg-accent/30"
+              className="p-1.5 rounded-full hover:bg-accent/30 transition-colors"
               onClick={reload}
+              aria-label="Reload page"
             >
               <RotateCcw className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} />
+            </button>
+            <button 
+              className={`p-1.5 rounded-full hover:bg-accent/30 transition-colors ${sidebarView === 'favorites' ? 'bg-accent/30' : ''}`}
+              onClick={() => toggleSidebar('favorites')}
+              aria-label="Show bookmarks sidebar"
+            >
+              <PanelLeft className="w-4 h-4" />
             </button>
           </div>
           
           {/* URL bar */}
           <form 
-            className="flex-1 relative group"
+            ref={urlBarRef}
+            className="flex-1 relative group transition-all duration-200"
             onSubmit={handleUrlSubmit}
           >
             <div className="absolute left-3 top-1/2 transform -translate-y-1/2 flex items-center pointer-events-none">
@@ -268,10 +420,13 @@ export default function SafariApp() {
             </div>
             
             <input 
+              ref={urlInputRef}
               type="text"
               value={url}
               onChange={handleUrlChange}
-              className="w-full bg-muted rounded-full pl-12 pr-10 py-1.5 text-sm focus:ring-1 focus:ring-accent"
+              onFocus={focusUrlBar}
+              onBlur={blurUrlBar}
+              className="w-full bg-muted/80 rounded-full pl-12 pr-10 py-1.5 text-sm focus:outline-none transition-colors"
               placeholder="Search or enter website name"
             />
             
@@ -282,82 +437,260 @@ export default function SafariApp() {
           
           <div className="flex space-x-1 ml-2">
             <button 
-              className="p-1 rounded-full hover:bg-accent/30"
+              className={`p-1.5 rounded-full hover:bg-accent/30 transition-colors ${showBookmarks ? 'bg-accent/30' : ''}`}
               onClick={() => setShowBookmarks(!showBookmarks)}
+              aria-label="Toggle bookmarks bar"
             >
-              <Bookmark className={`w-4 h-4 ${showBookmarks ? 'text-primary' : ''}`} />
+              <BookmarkIcon className={`w-4 h-4 ${showBookmarks ? 'text-primary' : ''}`} />
             </button>
-            <button className="p-1 rounded-full hover:bg-accent/30">
+            <button 
+              className="p-1.5 rounded-full hover:bg-accent/30 transition-colors"
+              onClick={() => setShowDownloads(!showDownloads)}
+              aria-label="Show downloads"
+            >
+              <Download className="w-4 h-4" />
+            </button>
+            <button 
+              className={`p-1.5 rounded-full hover:bg-accent/30 transition-colors ${sidebarView === 'history' ? 'bg-accent/30' : ''}`}
+              onClick={() => toggleSidebar('history')}
+              aria-label="Show history sidebar"
+            >
+              <PanelRight className="w-4 h-4" />
+            </button>
+            <button className="p-1.5 rounded-full hover:bg-accent/30 transition-colors">
               <Share className="w-4 h-4" />
+            </button>
+            <button 
+              className="p-1.5 rounded-full hover:bg-accent/30 transition-colors"
+              onClick={() => setReaderMode(!readerMode)}
+              aria-label="Toggle reader mode"
+            >
+              <Settings className={`w-4 h-4 ${readerMode ? 'text-primary' : ''}`} />
             </button>
           </div>
         </div>
       </div>
       
       {/* Bookmarks bar */}
-      {showBookmarks && (
-        <div className="border-b bg-muted/20 py-1 px-2 flex items-center overflow-x-auto hide-scrollbar">
-          {bookmarks.map(bookmark => (
-            <div 
-              key={bookmark.id}
-              className="flex items-center px-3 py-1 rounded text-xs cursor-pointer hover:bg-accent/20 whitespace-nowrap mr-1"
-              onClick={() => {
-                setIsLoading(true);
-                setTimeout(() => {
-                  setUrl(bookmark.url);
-                  // Update tab
-                  setTabs(tabs.map(tab => {
-                    if (tab.active) {
-                      return {
-                        ...tab,
-                        title: bookmark.title,
-                        url: bookmark.url,
-                        favicon: bookmark.favicon
-                      };
-                    }
-                    return tab;
-                  }));
-                  setIsLoading(false);
-                }, 500);
-              }}
-            >
-              <span className="mr-1">{bookmark.favicon}</span>
-              <span>{bookmark.title}</span>
-            </div>
-          ))}
-        </div>
-      )}
-      
-      {/* Browser content */}
-      <div className="flex-1 flex items-center justify-center bg-muted/10 relative overflow-hidden">
-        {isLoading ? (
-          <div className="flex flex-col items-center">
-            <div className="w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin mb-2"></div>
-            <p className="text-sm text-muted-foreground">Loading...</p>
-          </div>
-        ) : (
-          <div className="text-center">
-            <div className="w-16 h-16 mx-auto mb-3">
-              <SafariIcon />
-            </div>
-            <h1 className="text-2xl font-semibold mb-4">Welcome to Safari</h1>
-            <p className="text-muted-foreground mb-8 max-w-md mx-auto">
-              This is a simulated browser experience within this portfolio website. 
-              You can interact with the browser controls at the top.
-            </p>
-            <div className="grid grid-cols-2 gap-4 max-w-lg mx-auto">
-              <div className="p-4 bg-accent/10 rounded-lg hover:bg-accent/20 cursor-pointer transition-colors">
-                <Home className="w-8 h-8 mb-2 mx-auto text-primary" />
-                <h3 className="font-medium">Start Page</h3>
-              </div>
-              <div className="p-4 bg-accent/10 rounded-lg hover:bg-accent/20 cursor-pointer transition-colors">
-                <Bookmark className="w-8 h-8 mb-2 mx-auto text-primary" />
-                <h3 className="font-medium">Bookmarks</h3>
-              </div>
-            </div>
-          </div>
+      <AnimatePresence>
+        {showBookmarks && (
+          <motion.div 
+            className="border-b bg-muted/20 py-1 px-2 flex items-center overflow-x-auto hide-scrollbar"
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.2 }}
+          >
+            {bookmarks.map(bookmark => (
+              <motion.div 
+                key={bookmark.id}
+                className="flex items-center px-3 py-1 rounded text-xs cursor-pointer hover:bg-accent/20 whitespace-nowrap mr-1 transition-colors"
+                initial={{ scale: 0.9, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+                onClick={() => navigateToUrl(bookmark.url, bookmark.title, bookmark.favicon)}
+              >
+                <span className="mr-1">{bookmark.favicon}</span>
+                <span>{bookmark.title}</span>
+              </motion.div>
+            ))}
+          </motion.div>
         )}
+      </AnimatePresence>
+      
+      {/* Main content area with optional sidebar */}
+      <div className="flex-1 flex overflow-hidden">
+        {/* Sidebar */}
+        <AnimatePresence>
+          {sidebarView !== 'none' && (
+            <motion.div 
+              className="w-64 border-r bg-background overflow-y-auto"
+              initial={{ width: 0, opacity: 0 }}
+              animate={{ width: 240, opacity: 1 }}
+              exit={{ width: 0, opacity: 0 }}
+              transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+            >
+              <div className="p-2">
+                <div className="flex justify-between items-center p-2 mb-2">
+                  <h3 className="font-medium">
+                    {sidebarView === 'favorites' ? 'Bookmarks' : 'History'}
+                  </h3>
+                  <button 
+                    className="p-1 rounded-full hover:bg-accent/30"
+                    onClick={() => setSidebarView('none')}
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                </div>
+                
+                {sidebarView === 'favorites' && (
+                  <div className="space-y-2">
+                    {Object.entries(bookmarksByFolder).map(([folder, items]) => (
+                      <div key={folder} className="space-y-1">
+                        <h4 className="text-xs font-medium text-muted-foreground px-2">{folder}</h4>
+                        {items.map(bookmark => (
+                          <div
+                            key={bookmark.id}
+                            className="flex items-center px-2 py-1.5 rounded-md text-sm hover:bg-accent/20 cursor-pointer"
+                            onClick={() => navigateToUrl(bookmark.url, bookmark.title, bookmark.favicon)}
+                          >
+                            <span className="mr-2 text-lg">{bookmark.favicon}</span>
+                            <span className="truncate">{bookmark.title}</span>
+                          </div>
+                        ))}
+                      </div>
+                    ))}
+                  </div>
+                )}
+                
+                {sidebarView === 'history' && (
+                  <div className="space-y-1">
+                    {browserHistoryItems.map((item, index) => (
+                      <div
+                        key={index}
+                        className="flex items-center px-2 py-1.5 rounded-md text-sm hover:bg-accent/20 cursor-pointer"
+                        onClick={() => navigateToUrl(item.url, item.title, item.favicon)}
+                      >
+                        <span className="mr-2 text-lg">{item.favicon}</span>
+                        <div className="flex-1 min-w-0">
+                          <div className="truncate">{item.title}</div>
+                          <div className="text-xs text-muted-foreground truncate">{item.url}</div>
+                        </div>
+                        <div className="text-xs text-muted-foreground whitespace-nowrap ml-2">
+                          {formatTimeAgo(item.timestamp)}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Browser content area */}
+        <div className="flex-1 bg-muted/10 relative overflow-hidden">
+          {isLoading ? (
+            <div className="flex flex-col items-center justify-center h-full">
+              <div className="w-8 h-8 border-3 border-primary border-t-transparent rounded-full animate-spin mb-3"></div>
+              <p className="text-sm text-muted-foreground">Loading...</p>
+            </div>
+          ) : (
+            <div className="h-full flex flex-col items-center justify-center">
+              {/* If this is a "new tab" */}
+              {activeTab.url === 'about:blank' ? (
+                <div className="max-w-3xl w-full p-6">
+                  {/* Search bar */}
+                  <div className="mb-12 max-w-xl mx-auto">
+                    <div className="w-24 h-24 mx-auto mb-6">
+                      <SafariIcon />
+                    </div>
+                    <form className="relative">
+                      <input
+                        type="text"
+                        className="w-full py-3 pl-5 pr-12 rounded-full bg-muted/50 border border-muted-foreground/20 focus:outline-none focus:ring-2 focus:ring-primary/30 shadow-sm"
+                        placeholder="Search the web"
+                        value={searchQuery}
+                        onChange={e => setSearchQuery(e.target.value)}
+                      />
+                      <button
+                        type="submit"
+                        className="absolute right-4 top-1/2 transform -translate-y-1/2 text-muted-foreground"
+                      >
+                        <Search className="w-5 h-5" />
+                      </button>
+                    </form>
+                  </div>
+                  
+                  {/* Quick access grid */}
+                  <div className="grid grid-cols-4 gap-4">
+                    {quickAccessSites.map(site => (
+                      <motion.div
+                        key={site.id}
+                        className={`${site.color} rounded-xl p-4 cursor-pointer shadow-md hover:shadow-lg transition-all`}
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.98 }}
+                        onClick={() => navigateToUrl(site.url, site.title, site.icon)}
+                      >
+                        <div className="bg-white/10 w-12 h-12 rounded-full flex items-center justify-center mb-3 mx-auto">
+                          <span className="text-2xl">{site.icon}</span>
+                        </div>
+                        <p className="text-center text-white text-sm font-medium truncate">{site.title}</p>
+                      </motion.div>
+                    ))}
+                  </div>
+                </div>
+              ) : (
+                <div className="text-center max-w-2xl mx-auto p-8">
+                  <div className="w-16 h-16 mx-auto mb-3">
+                    <SafariIcon />
+                  </div>
+                  <motion.h1 
+                    className="text-2xl font-semibold mb-4"
+                    initial={{ y: 20, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    transition={{ delay: 0.1 }}
+                  >
+                    Welcome to Safari
+                  </motion.h1>
+                  <motion.p 
+                    className="text-muted-foreground mb-8 max-w-md mx-auto"
+                    initial={{ y: 20, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    transition={{ delay: 0.2 }}
+                  >
+                    This is a simulated browser experience within this portfolio website. 
+                    You can interact with all browser controls at the top.
+                  </motion.p>
+                  <motion.div 
+                    className="grid grid-cols-2 gap-4 max-w-md mx-auto"
+                    initial={{ y: 20, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    transition={{ delay: 0.3 }}
+                  >
+                    <div className="p-5 bg-accent/10 rounded-lg hover:bg-accent/20 cursor-pointer transition-colors">
+                      <Home className="w-8 h-8 mb-3 mx-auto text-primary" />
+                      <h3 className="font-medium">Start Page</h3>
+                    </div>
+                    <div className="p-5 bg-accent/10 rounded-lg hover:bg-accent/20 cursor-pointer transition-colors"
+                      onClick={() => toggleSidebar('favorites')}
+                    >
+                      <BookmarkIcon className="w-8 h-8 mb-3 mx-auto text-primary" />
+                      <h3 className="font-medium">Bookmarks</h3>
+                    </div>
+                  </motion.div>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
       </div>
+      
+      {/* Downloads panel */}
+      <AnimatePresence>
+        {showDownloads && (
+          <motion.div 
+            className="absolute bottom-0 right-0 w-80 bg-background border-l border-t rounded-tl-lg shadow-lg"
+            initial={{ y: '100%' }}
+            animate={{ y: 0 }}
+            exit={{ y: '100%' }}
+            transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+          >
+            <div className="flex justify-between items-center p-3 border-b">
+              <h3 className="font-medium">Downloads</h3>
+              <button
+                className="p-1 rounded-full hover:bg-accent/30"
+                onClick={() => setShowDownloads(false)}
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+            <div className="p-4 text-center text-muted-foreground">
+              <p>No recent downloads</p>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 } 
