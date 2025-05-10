@@ -25,7 +25,11 @@ import {
   Grid,
   Phone,
   Moon,
-  Sun
+  Sun,
+  Twitter,
+  Facebook,
+  Instagram,
+  FileCode2
 } from 'lucide-react';
 import { PERSONAL_INFO } from '@/lib/constants';
 import dynamic from 'next/dynamic';
@@ -49,6 +53,10 @@ const ClockApp = dynamic(() => import('@/components/ios/apps/ClockApp'), { ssr: 
 const MessagesApp = dynamic(() => import('@/components/ios/apps/MessagesApp'), { ssr: false });
 const AppStoreApp = dynamic(() => import('@/components/ios/apps/AppStoreApp'), { ssr: false });
 const PhoneApp = dynamic(() => import('@/components/ios/apps/PhoneApp'), { ssr: false });
+const TwitterApp = dynamic(() => import('@/components/ios/apps/TwitterApp'), { ssr: false });
+const FacebookApp = dynamic(() => import('@/components/ios/apps/FacebookApp'), { ssr: false });
+const InstagramApp = dynamic(() => import('@/components/ios/apps/InstagramApp'), { ssr: false });
+const DevToApp = dynamic(() => import('@/components/ios/apps/DevToApp'), { ssr: false });
 
 // Type definitions
 interface IOSApp {
@@ -173,6 +181,10 @@ function IOSLayoutContent({ children }: { children: React.ReactNode }) {
     gradient2: 'bg-gradient-to-br from-green-400 to-cyan-500 dark:from-green-500 dark:to-cyan-600',
     gradient3: 'bg-gradient-to-br from-pink-500 to-red-500 dark:from-pink-600 dark:to-red-600',
     gradient4: 'bg-gradient-to-br from-yellow-400 to-orange-500 dark:from-yellow-500 dark:to-orange-600',
+    twitterBlue: 'bg-[#1DA1F2] dark:bg-[#1DA1F2]',
+    facebookBlue: 'bg-[#1877F2] dark:bg-[#1877F2]',
+    instagramGradient: 'bg-gradient-to-tr from-[#FF7A00] via-[#FE0697] to-[#7638FA]',
+    devtoBlack: 'bg-black dark:bg-white dark:bg-opacity-90',
   };
 
   // Home screen apps
@@ -187,6 +199,10 @@ function IOSLayoutContent({ children }: { children: React.ReactNode }) {
 
   // System apps
   const systemApps: IOSApp[] = [
+    { id: 'twitter', name: 'Twitter', icon: Twitter, color: colors.twitterBlue, component: TwitterApp },
+    { id: 'facebook', name: 'Facebook', icon: Facebook, color: colors.facebookBlue, component: FacebookApp },
+    { id: 'instagram', name: 'Instagram', icon: Instagram, color: colors.instagramGradient, component: InstagramApp },
+    { id: 'devto', name: 'DEV', icon: FileCode2, color: colors.devtoBlack, component: DevToApp },
     { id: 'safari', name: 'Safari', icon: Globe, color: colors.gradient2, component: SafariApp },
     { id: 'photos', name: 'Photos', icon: ImageIcon, color: colors.gradient1, component: PhotosApp },
     { id: 'camera', name: 'Camera', icon: Camera, color: colors.gray, component: CameraApp },

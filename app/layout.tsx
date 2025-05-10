@@ -1,12 +1,13 @@
 import './globals.css';
 import './snigdha-theme.css';
 import type { Metadata } from 'next';
-import { ThemeProvider } from '@/components/theme-provider';
+import { ThemeProvider } from '@/components/ios/ThemeContext';
+import { NotificationProvider } from '@/components/ios/NotificationProvider';
 import { MobileCheck } from '@/components/mobile-check';
 
 export const metadata: Metadata = {
-  title: 'Eshan Roy | Portfolio',
-  description: 'Personal portfolio website of Eshan Roy, showcasing skills, projects and experience',
+  title: 'Eshanized Web',
+  description: 'Personal portfolio and projects showcase',
 };
 
 export default function RootLayout({
@@ -17,15 +18,12 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className="font-sf-pro">
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <MobileCheck>
-            {children}
-          </MobileCheck>
+        <ThemeProvider>
+          <NotificationProvider>
+            <MobileCheck>
+              {children}
+            </MobileCheck>
+          </NotificationProvider>
         </ThemeProvider>
       </body>
     </html>
