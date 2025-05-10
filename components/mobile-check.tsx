@@ -2,8 +2,11 @@
 
 import React from 'react';
 import { useMobileDetector } from '@/hooks/use-mobile-detector';
-import { MobileWarning } from './mobile-warning';
+import dynamic from 'next/dynamic';
 import { TabletLayout } from './tablet-layout';
+
+// Dynamically import the IOSLayout to avoid SSR issues
+const IOSLayout = dynamic(() => import('@/components/ios/IOSLayout'), { ssr: false });
 
 export const MobileCheck: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { isMobile, isTablet, isClient } = useMobileDetector();
@@ -13,9 +16,9 @@ export const MobileCheck: React.FC<{ children: React.ReactNode }> = ({ children 
     return <>{children}</>;
   }
 
-  // On small mobile devices, show the warning
+  // On small mobile devices, show the iOS interface
   if (isMobile && !isTablet) {
-    return <MobileWarning />;
+    return <IOSLayout>{children}</IOSLayout>;
   }
 
   // On tablet devices, use the tablet-optimized layout

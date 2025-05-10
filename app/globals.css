@@ -746,3 +746,41 @@ input.font-sf-pro::placeholder {
 .mac-shake {
   animation: mac-shake 0.4s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
 }
+
+/* Add iOS-specific utility styles */
+
+@layer utilities {
+  /* Text shadow for iOS app names */
+  .text-shadow {
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+  }
+  
+  /* iOS-specific backdrop blur for folders and dock */
+  .ios-blur {
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  }
+  
+  /* iOS app icon sizes */
+  .w-15 {
+    width: 3.75rem;
+  }
+  
+  .h-15 {
+    height: 3.75rem;
+  }
+  
+  /* Notch area styling */
+  .notch-area {
+    background-color: black;
+    width: 40%;
+    height: 28px;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    border-bottom-left-radius: 18px;
+    border-bottom-right-radius: 18px;
+    z-index: 50;
+  }
+}
