@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "node build.js",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "clean": "rm -rf .next out"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
