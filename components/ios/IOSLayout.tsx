@@ -255,68 +255,163 @@ function IOSLayoutContent({ children }: { children: React.ReactNode }) {
   };
 
   // Lock screen component
-  const LockScreen = () => (
-    <motion.div 
-      className="fixed inset-0 z-50 flex flex-col items-center text-white"
-      style={{
-        backgroundImage: 'url(/images/wallpaper.jpg)',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center'
-      }}
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-    >
-      {/* Lock screen status bar */}
-      <div className="w-full px-4 py-2 flex justify-between items-center text-white">
-        <div>{currentTime}</div>
-        <div className="flex items-center gap-1">
-          <Wifi className="w-4 h-4" />
-          <div className="flex items-center">
-            <Battery className="w-4 h-4" />
-            <span className="text-xs ml-1">{batteryLevel}%</span>
+  const LockScreen = () => {
+    const [showPasscode, setShowPasscode] = useState(false);
+    const [passcode, setPasscode] = useState('');
+    const correctPasscode = '5456'; // In a real app, this should be stored securely
+    const [error, setError] = useState('');
+    const [attempts, setAttempts] = useState(0);
+
+    const handlePasscodeInput = (digit: string) => {
+      if (passcode.length < 4) {
+        const newPasscode = passcode + digit;
+        setPasscode(newPasscode);
+        
+        if (newPasscode.length === 4) {
+          if (newPasscode === correctPasscode) {
+            setError('');
+            handleLockToggle();
+          } else {
+            setError('Incorrect passcode');
+            setAttempts(prev => prev + 1);
+            setPasscode('');
+          }
+        }
+      }
+    };
+
+    const handleBackspace = () => {
+      setPasscode(prev => prev.slice(0, -1));
+      setError('');
+    };
+
+    return (
+      <motion.div 
+        className="fixed inset-0 z-50 flex flex-col items-center text-white"
+        style={{
+          backgroundImage: 'url(/images/wallpaper.jpg)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center'
+        }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+      >
+        {/* Lock screen status bar */}
+        <div className="w-full px-4 py-2 flex justify-between items-center text-white">
+          <div>{currentTime}</div>
+          <div className="flex items-center gap-1">
+            <Wifi className="w-4 h-4" />
+            <div className="flex items-center">
+              <Battery className="w-4 h-4" />
+              <span className="text-xs ml-1">{batteryLevel}%</span>
+            </div>
           </div>
         </div>
-      </div>
 
-      {/* Time and Date */}
-      <div className="flex-1 flex flex-col items-center justify-center">
-        <div className="text-6xl font-extralight">{currentTime}</div>
-        <div className="text-xl mt-2">{currentDate}</div>
-        
-        {/* Swipe to unlock indicator */}
-        <motion.div 
-          className="mt-20 flex flex-col items-center"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.5 }}
-        >
-          <Lock className="w-6 h-6 mb-2" />
-          <div className="text-sm">Swipe up to unlock</div>
+        {/* Time and Date */}
+        <div className="flex-1 flex flex-col items-center justify-center">
+          <div className="text-6xl font-extralight">{currentTime}</div>
+          <div className="text-xl mt-2">{currentDate}</div>
           
-          {/* Swipe indicator */}
-          <motion.div 
-            className="mt-3 w-12 h-1 bg-white/80 rounded-full"
-            animate={{ opacity: [0.4, 1, 0.4] }}
-            transition={{ repeat: Infinity, duration: 1.5 }}
-          />
-          
-          {/* Unlock button for demo purposes */}
-          <button 
-            className="mt-8 px-8 py-2 bg-white/20 rounded-full backdrop-blur-md"
-            onClick={handleLockToggle}
-          >
-            Unlock
-          </button>
-        </motion.div>
-      </div>
+          {!showPasscode ? (
+            /* Swipe to unlock indicator */
+            <motion.div 
+              className="mt-20 flex flex-col items-center"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.5 }}
+            >
+              <Lock className="w-6 h-6 mb-2" />
+              <div className="text-sm">Swipe up to unlock</div>
+              
+              {/* Swipe indicator */}
+              <motion.div 
+                className="mt-3 w-12 h-1 bg-white/80 rounded-full"
+                animate={{ opacity: [0.4, 1, 0.4] }}
+                transition={{ repeat: Infinity, duration: 1.5 }}
+              />
+              
+              <button 
+                className="mt-8 px-8 py-2 bg-white/20 rounded-full backdrop-blur-md"
+                onClick={() => setShowPasscode(true)}
+              >
+                Enter Passcode
+              </button>
 
-      {/* Bottom grabber */}
-      <div className="w-full pb-6 flex justify-center">
-        <div className="w-32 h-1 bg-white/40 rounded-full" />
-      </div>
-    </motion.div>
-  );
+              <button 
+                className="mt-4 px-8 py-2 bg-white/10 rounded-full backdrop-blur-md text-sm"
+                onClick={handleLockToggle}
+              >
+                Skip Lock Screen
+              </button>
+            </motion.div>
+          ) : (
+            /* Passcode Screen */
+            <motion.div 
+              className="mt-10 flex flex-col items-center"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+            >
+              <div className="text-xl mb-6">Enter Passcode</div>
+              
+              {/* Passcode dots */}
+              <div className="flex gap-4 mb-6">
+                {[0,1,2,3].map((i) => (
+                  <div 
+                    key={i}
+                    className={`w-3 h-3 rounded-full ${
+                      passcode.length > i ? 'bg-white' : 'bg-white/30'
+                    }`}
+                  />
+                ))}
+              </div>
+
+              {/* Error message */}
+              {error && (
+                <div className="text-red-500 text-sm mb-4">
+                  {error}
+                  {attempts >= 5 && " (Too many attempts. Try again later)"}
+                </div>
+              )}
+
+              {/* Number pad */}
+              <div className="grid grid-cols-3 gap-4">
+                {[1,2,3,4,5,6,7,8,9,'',0,'⌫'].map((num, i) => (
+                  <button
+                    key={i}
+                    className={`w-16 h-16 rounded-full ${
+                      num === '' ? 'cursor-default' :
+                      'bg-white/20 backdrop-blur-md hover:bg-white/30 active:bg-white/40'
+                    } flex items-center justify-center text-2xl font-light`}
+                    onClick={() => {
+                      if (num === '⌫') handleBackspace();
+                      else if (num !== '') handlePasscodeInput(num.toString());
+                    }}
+                    disabled={attempts >= 5 || num === ''}
+                  >
+                    {num}
+                  </button>
+                ))}
+              </div>
+
+              <button 
+                className="mt-6 text-sm text-blue-400"
+                onClick={() => setShowPasscode(false)}
+              >
+                Cancel
+              </button>
+            </motion.div>
+          )}
+        </div>
+
+        {/* Bottom grabber */}
+        <div className="w-full pb-6 flex justify-center">
+          <div className="w-32 h-1 bg-white/40 rounded-full" />
+        </div>
+      </motion.div>
+    );
+  };
 
   // Control Center with dark mode toggle
   const ControlCenter = () => (
