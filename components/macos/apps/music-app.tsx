@@ -519,10 +519,16 @@ export default function MusicApp() {
   const handleUserInteraction = () => {
     if (playerRef.current && currentSong) {
       try {
+        console.log("User interaction - attempting to unlock audio");
         // Try to unmute and play after user interaction
         if (typeof playerRef.current.unMute === 'function') {
           playerRef.current.unMute();
         }
+        // Set volume explicitly
+        if (typeof playerRef.current.setVolume === 'function') {
+          playerRef.current.setVolume(isMuted ? 0 : volume);
+        }
+        // Force playback if playing
         if (isPlaying && typeof playerRef.current.playVideo === 'function') {
           playerRef.current.playVideo();
         }
@@ -599,7 +605,7 @@ export default function MusicApp() {
         width: '1',   // Minimal width for audio-only
         videoId: currentSong.youtubeId,
         playerVars: {
-          autoplay: isPlaying ? 1 : 0,
+          autoplay: 1,
           controls: 0,          // Hide controls for audio-only
           modestbranding: 1,
           rel: 0,
@@ -614,16 +620,19 @@ export default function MusicApp() {
             console.log("YouTube player ready");
             // Ensure volume is set properly
             try {
+              // Set volume first
               if (typeof event.target.setVolume === 'function') {
                 event.target.setVolume(volume);
               }
-              // Ensure playback state is correct
+              
+              // Unmute the player - CRITICAL for sound
+              if (typeof event.target.unMute === 'function') {
+                event.target.unMute();
+              }
+              
+              // Explicitly play video after unmuting
               if (isPlaying && typeof event.target.playVideo === 'function') {
                 event.target.playVideo();
-                // Some browsers block autoplay, try to unmute if needed
-                if (typeof event.target.unMute === 'function') {
-                  event.target.unMute();
-                }
               }
             } catch (e) {
               console.error("Error in onReady handler:", e);
@@ -634,14 +643,27 @@ export default function MusicApp() {
             
             try {
               if (event.data === window.YT.PlayerState.PLAYING) {
+                console.log("✅ YouTube is now PLAYING with sound");
                 setIsPlaying(true);
+                setPlayerState('playing');
               } else if (event.data === window.YT.PlayerState.PAUSED) {
+                console.log("YouTube is now PAUSED");
                 setIsPlaying(false);
+                setPlayerState('paused');
               } else if (event.data === window.YT.PlayerState.ENDED) {
+                console.log("YouTube playback ENDED");
                 if (repeatMode === 'one' && typeof event.target.playVideo === 'function') {
                   event.target.playVideo();
                 } else {
                   nextSong();
+                }
+              } else if (event.data === -1) {
+                console.log("YouTube player is unstarted");
+                // Sometimes YouTube needs another push to play
+                if (isPlaying && typeof event.target.playVideo === 'function') {
+                  setTimeout(() => {
+                    event.target.playVideo();
+                  }, 500);
                 }
               }
             } catch (e) {
@@ -718,6 +740,9 @@ export default function MusicApp() {
   
   return (
     <div ref={containerRef} className="h-full flex flex-col bg-background overflow-hidden" onClick={handleUserInteraction}>
+      {/* Hidden YouTube Player */}
+      <div id="youtube-player" className="hidden"></div>
+      
       {/* Top bar */}
       <div className="border-b bg-muted/30 backdrop-blur-sm px-4 py-3 flex justify-between items-center">
         <div className="flex items-center gap-6">
