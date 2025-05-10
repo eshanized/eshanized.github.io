@@ -11,18 +11,19 @@ interface ThemeContextType {
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const { theme, setTheme } = useNextTheme();
+  const { theme, setTheme, systemTheme } = useNextTheme();
   const [isDarkMode, setIsDarkMode] = useState(false);
 
   useEffect(() => {
-    // Sync with next-themes
-    setIsDarkMode(theme === 'dark');
-  }, [theme]);
+    // Initialize theme based on system preference or saved theme
+    const currentTheme = theme === 'system' ? systemTheme : theme;
+    setIsDarkMode(currentTheme === 'dark');
+  }, [theme, systemTheme]);
 
   const toggleDarkMode = () => {
-    const newTheme = theme === 'dark' ? 'light' : 'dark';
+    const newTheme = isDarkMode ? 'light' : 'dark';
     setTheme(newTheme);
-    setIsDarkMode(newTheme === 'dark');
+    setIsDarkMode(!isDarkMode);
   };
 
   return (

@@ -101,7 +101,7 @@ export default function SettingsApp() {
 
   return (
     <BaseIOSApp title="Settings">
-      <div className="pb-8">
+      <div className="pb-8 bg-[#f2f2f7] dark:bg-black transition-colors duration-300">
         {/* User profile section */}
         <div className="p-4 flex items-center bg-white dark:bg-gray-800/80 border-b border-gray-200 dark:border-gray-700/80 transition-colors duration-300">
           <div className="w-16 h-16 rounded-full overflow-hidden relative">

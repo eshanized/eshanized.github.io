@@ -2,12 +2,25 @@
 
 import React, { useState, useEffect } from 'react';
 import BaseIOSApp from './BaseIOSApp';
-import { Clock, AlarmClock, Timer, Watch, Globe, ChevronRight, Plus, Trash2 } from 'lucide-react';
+import { Clock, AlarmClock, Timer, Watch, Globe, ChevronRight, Plus, Trash2, Play, Pause } from 'lucide-react';
 
 export default function ClockApp() {
   const [activeTab, setActiveTab] = useState<string>("worldclock");
   const [currentTime, setCurrentTime] = useState<Date>(new Date());
   
+  // Stopwatch state
+  const [stopwatchTime, setStopwatchTime] = useState<number>(0);
+  const [isStopwatchRunning, setIsStopwatchRunning] = useState<boolean>(false);
+  const [stopwatchLaps, setStopwatchLaps] = useState<number[]>([]);
+
+  // Timer state
+  const [timerDuration, setTimerDuration] = useState<number>(0); // in seconds
+  const [timerTimeLeft, setTimerTimeLeft] = useState<number>(0);
+  const [isTimerRunning, setIsTimerRunning] = useState<boolean>(false);
+  
+  // Timer presets in minutes
+  const timerPresets = [1, 3, 5, 10, 15, 30, 45, 60];
+
   // Update time every second
   useEffect(() => {
     const timer = setInterval(() => {
@@ -16,8 +29,37 @@ export default function ClockApp() {
     
     return () => clearInterval(timer);
   }, []);
-  
-  // Format time
+
+  // Stopwatch effect
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+    if (isStopwatchRunning) {
+      interval = setInterval(() => {
+        setStopwatchTime(prev => prev + 10); // Update every 10ms
+      }, 10);
+    }
+    return () => clearInterval(interval);
+  }, [isStopwatchRunning]);
+
+  // Timer effect
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+    if (isTimerRunning && timerTimeLeft > 0) {
+      interval = setInterval(() => {
+        setTimerTimeLeft(prev => {
+          if (prev <= 1) {
+            setIsTimerRunning(false);
+            // Could add sound/notification here
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+    }
+    return () => clearInterval(interval);
+  }, [isTimerRunning, timerTimeLeft]);
+
+  // Format time for world clock
   const formatTime = (date: Date): string => {
     return date.toLocaleTimeString('en-US', {
       hour: '2-digit',
@@ -25,7 +67,53 @@ export default function ClockApp() {
       hour12: true
     });
   };
-  
+
+  // Format stopwatch time
+  const formatStopwatchTime = (ms: number): string => {
+    const minutes = Math.floor(ms / 60000);
+    const seconds = Math.floor((ms % 60000) / 1000);
+    const milliseconds = Math.floor((ms % 1000) / 10);
+    return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}.${milliseconds.toString().padStart(2, '0')}`;
+  };
+
+  // Format timer time
+  const formatTimerTime = (seconds: number): string => {
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    const secs = seconds % 60;
+    return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+  };
+
+  // Stopwatch controls
+  const handleStopwatchStart = () => setIsStopwatchRunning(true);
+  const handleStopwatchStop = () => setIsStopwatchRunning(false);
+  const handleStopwatchReset = () => {
+    setIsStopwatchRunning(false);
+    setStopwatchTime(0);
+    setStopwatchLaps([]);
+  };
+  const handleStopwatchLap = () => {
+    setStopwatchLaps(prev => [...prev, stopwatchTime]);
+  };
+
+  // Timer controls
+  const handleTimerStart = () => {
+    if (timerTimeLeft > 0) {
+      setIsTimerRunning(true);
+    }
+  };
+  const handleTimerStop = () => setIsTimerRunning(false);
+  const handleTimerReset = () => {
+    setIsTimerRunning(false);
+    setTimerTimeLeft(timerDuration);
+  };
+  const handleTimerPresetClick = (minutes: number) => {
+    const seconds = minutes * 60;
+    setTimerDuration(seconds);
+    setTimerTimeLeft(seconds);
+    setIsTimerRunning(false);
+  };
+
   // World clocks data
   const worldClocks = [
     { city: "Cupertino", timezone: "America/Los_Angeles", offset: -7 },
@@ -159,17 +247,43 @@ export default function ClockApp() {
         {/* Stopwatch Tab */}
         {activeTab === "stopwatch" && (
           <div className="flex-1 flex flex-col items-center justify-center p-4">
-            <div className="text-center">
-              <div className="text-6xl font-thin mb-8">00:00.00</div>
+            <div className="text-center w-full">
+              <div className="text-6xl font-thin mb-8">{formatStopwatchTime(stopwatchTime)}</div>
               
-              <div className="grid grid-cols-2 gap-4">
-                <button className="w-16 h-16 rounded-full bg-gray-200 dark:bg-gray-800 flex items-center justify-center text-gray-800 dark:text-gray-200">
-                  Reset
+              <div className="flex justify-center gap-4 mb-8">
+                <button 
+                  onClick={isStopwatchRunning ? handleStopwatchStop : handleStopwatchReset}
+                  className="w-16 h-16 rounded-full bg-gray-800 dark:bg-gray-700 flex items-center justify-center text-white text-sm"
+                >
+                  {isStopwatchRunning ? "Stop" : "Reset"}
                 </button>
-                <button className="w-16 h-16 rounded-full bg-green-500 flex items-center justify-center text-white">
-                  Start
+                {stopwatchTime > 0 && !isStopwatchRunning && (
+                  <button 
+                    onClick={handleStopwatchLap}
+                    className="w-16 h-16 rounded-full bg-gray-600 flex items-center justify-center text-white text-sm"
+                  >
+                    Lap
+                  </button>
+                )}
+                <button 
+                  onClick={isStopwatchRunning ? handleStopwatchLap : handleStopwatchStart}
+                  className="w-16 h-16 rounded-full bg-green-500 flex items-center justify-center text-white text-sm"
+                >
+                  {isStopwatchRunning ? "Lap" : "Start"}
                 </button>
               </div>
+
+              {/* Laps */}
+              {stopwatchLaps.length > 0 && (
+                <div className="max-h-48 overflow-y-auto">
+                  {stopwatchLaps.map((lapTime, index) => (
+                    <div key={index} className="flex justify-between py-2 border-b border-gray-200 dark:border-gray-700">
+                      <span>Lap {stopwatchLaps.length - index}</span>
+                      <span>{formatStopwatchTime(lapTime)}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
         )}
@@ -177,19 +291,40 @@ export default function ClockApp() {
         {/* Timer Tab */}
         {activeTab === "timer" && (
           <div className="flex-1 flex flex-col items-center justify-center p-4">
-            <div className="text-center">
-              <div className="text-6xl font-thin mb-8">00:00:00</div>
+            <div className="text-center w-full">
+              <div className="text-6xl font-thin mb-8">{formatTimerTime(timerTimeLeft)}</div>
               
               <div className="flex justify-center space-x-4 mb-6">
-                <button className="w-16 h-16 rounded-full bg-gray-200 dark:bg-gray-800 flex items-center justify-center text-gray-800 dark:text-gray-200 text-sm">
+                <button 
+                  onClick={handleTimerReset}
+                  className="w-16 h-16 rounded-full bg-gray-800 dark:bg-gray-700 flex items-center justify-center text-white text-sm"
+                >
                   Cancel
                 </button>
-                <button className="w-16 h-16 rounded-full bg-green-500 flex items-center justify-center text-white text-sm">
-                  Start
-                </button>
+                {timerTimeLeft > 0 && (
+                  <button 
+                    onClick={isTimerRunning ? handleTimerStop : handleTimerStart}
+                    className="w-16 h-16 rounded-full bg-green-500 flex items-center justify-center text-white text-sm"
+                  >
+                    {isTimerRunning ? "Pause" : "Start"}
+                  </button>
+                )}
               </div>
               
-              <div className="mt-4 text-blue-500">Choose a preset timer</div>
+              <div className="mt-8">
+                <h3 className="text-sm text-gray-500 mb-4">Presets</h3>
+                <div className="grid grid-cols-4 gap-4">
+                  {timerPresets.map((minutes) => (
+                    <button
+                      key={minutes}
+                      onClick={() => handleTimerPresetClick(minutes)}
+                      className="p-2 bg-gray-100 dark:bg-gray-800 rounded-lg text-sm hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+                    >
+                      {minutes} min
+                    </button>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
         )}

@@ -16,8 +16,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className="font-sf-pro">
+    <html lang="en" suppressHydrationWarning className="dark:bg-black">
+      <body className="font-sf-pro dark:bg-black">
         <ThemeProvider>
           <NotificationProvider>
             <MobileCheck>
