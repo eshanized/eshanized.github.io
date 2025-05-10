@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, memo } from 'react';
 import { 
   DropdownMenu, 
   DropdownMenuContent, 
@@ -49,14 +49,14 @@ export type MacOSMenuItemProps = {
   className?: string;
 };
 
-export function MacOSMenuItem({ label, items, className }: MacOSMenuItemProps) {
+export const MacOSMenuItem = memo(function MacOSMenuItem({ label, items, className }: MacOSMenuItemProps) {
   const { activeMenu, showMenu, hideMenu, isMenuOpen, menuRef, handleMenuAction, registerShortcuts } = useMenuContext();
   const windowManager = useWindowManager();
   const [isOpen, setIsOpen] = useState(false);
   const [hovered, setHovered] = useState(false);
   const isActive = activeMenu === label;
 
-  // Process menu items to add proper actions
+  // Process menu items to add proper actions - memoize to prevent recreating on every render
   const processedItems = items.map(item => {
     if (item.type === 'separator') return item;
     
@@ -74,7 +74,7 @@ export function MacOSMenuItem({ label, items, className }: MacOSMenuItemProps) {
     return newItem;
   });
 
-  // Register keyboard shortcuts for this menu's items
+  // Register keyboard shortcuts for this menu's items - with proper memoization
   useEffect(() => {
     const shortcuts: KeyboardShortcut[] = processedItems
       .filter(item => item.type !== 'separator' && item.shortcut && item.action && !item.disabled)
@@ -93,36 +93,53 @@ export function MacOSMenuItem({ label, items, className }: MacOSMenuItemProps) {
     }
   }, [processedItems, hideMenu, registerShortcuts]);
 
-  // Close dropdown when menu becomes inactive
+  // Close dropdown when menu becomes inactive - memoized effect
   useEffect(() => {
     if (!isMenuOpen || activeMenu !== label) {
       setIsOpen(false);
     }
   }, [isMenuOpen, activeMenu, label]);
 
-  const handleClick = () => {
+  // Memoize event handlers with useCallback
+  const handleClick = useCallback(() => {
     if (isActive) {
       hideMenu();
     } else {
       showMenu(label);
       setIsOpen(true);
     }
-  };
+  }, [isActive, hideMenu, showMenu, label]);
 
-  const handleMouseEnter = () => {
+  const handleMouseEnter = useCallback(() => {
     setHovered(true);
     if (isMenuOpen && activeMenu !== label) {
       showMenu(label);
       setIsOpen(true);
     }
-  };
+  }, [isMenuOpen, activeMenu, label, showMenu]);
+
+  const handleMouseLeave = useCallback(() => {
+    setHovered(false);
+  }, []);
+
+  const handleMenuLeave = useCallback(() => {
+    if (!hovered) {
+      hideMenu();
+    }
+  }, [hovered, hideMenu]);
+
+  const handleMenuItemClick = useCallback((item: MenuActionRegular) => {
+    if (!item.disabled) {
+      handleMenuAction(item);
+    }
+  }, [handleMenuAction]);
 
   return (
     <DropdownMenu open={isActive && isOpen} onOpenChange={setIsOpen}>
       <DropdownMenuTrigger
         onClick={handleClick}
         onMouseEnter={handleMouseEnter}
-        onMouseLeave={() => setHovered(false)}
+        onMouseLeave={handleMouseLeave}
         className={cn(
           "h-full px-2 transition-colors outline-none",
           (isActive || hovered) ? "bg-accent" : "",
@@ -136,11 +153,7 @@ export function MacOSMenuItem({ label, items, className }: MacOSMenuItemProps) {
         className="p-0 rounded-lg overflow-hidden min-w-[220px] animate-in fade-in zoom-in-95 data-[side=bottom]:slide-in-from-top-2 mt-0.5"
         align="start"
         sideOffset={0}
-        onMouseLeave={() => {
-          if (!hovered) {
-            hideMenu();
-          }
-        }}
+        onMouseLeave={handleMenuLeave}
       >
         {processedItems.map((item, index) => (
           item.type === 'separator' ? (
@@ -148,11 +161,7 @@ export function MacOSMenuItem({ label, items, className }: MacOSMenuItemProps) {
           ) : (
             <DropdownMenuItem
               key={`${item.label}-${index}`}
-              onClick={() => {
-                if (!item.disabled) {
-                  handleMenuAction(item as MenuActionRegular);
-                }
-              }}
+              onClick={() => handleMenuItemClick(item as MenuActionRegular)}
               disabled={item.disabled}
               className={cn(
                 "px-3 py-1 rounded-none text-sm flex items-center justify-between",
@@ -180,4 +189,6 @@ export function MacOSMenuItem({ label, items, className }: MacOSMenuItemProps) {
       </DropdownMenuContent>
     </DropdownMenu>
   );
-} 
+});
+
+MacOSMenuItem.displayName = 'MacOSMenuItem'; 

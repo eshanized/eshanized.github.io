@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, useMemo, memo } from 'react';
 import { useTheme } from 'next-themes';
 import { PERSONAL_INFO, DESKTOP_APPS } from '@/lib/constants';
 import { 
@@ -45,7 +45,8 @@ type MenuItem = {
   items: MenuSubItem[];
 };
 
-export function MenuBar({
+// Use memo to prevent unnecessary re-renders
+export const MenuBar = memo(function MenuBar({
   openWindows,
   activeWindow,
   minimizedWindows,
@@ -92,11 +93,21 @@ export function MenuBar({
     return () => clearInterval(interval);
   }, []);
 
-  if (!mounted) return null;
+  // Memoized event handlers
+  const handleThemeToggle = useCallback(() => {
+    setTheme(theme === 'dark' ? 'light' : 'dark');
+  }, [theme, setTheme]);
 
-  const activeApp = activeWindow ? DESKTOP_APPS.find(app => app.id === activeWindow) : null;
+  const handleReload = useCallback(() => {
+    window.location.reload();
+  }, []);
 
-  const MENU_ITEMS: MenuItem[] = [
+  const activeApp = useMemo(() => {
+    return activeWindow ? DESKTOP_APPS.find(app => app.id === activeWindow) : null;
+  }, [activeWindow]);
+
+  // Define menu items with memoization to prevent recreation on each render
+  const MENU_ITEMS = useMemo<MenuItem[]>(() => [
     {
       label: 'Finder',
       items: [
@@ -211,10 +222,10 @@ export function MenuBar({
         { label: 'Visit GitHub Repo', action: () => window.open('https://github.com/eshanroy/portfolio', '_blank') },
       ]
     }
-  ];
+  ], [activeWindow, onCloseWindow, onMinimizeWindow, onMaximizeWindow, openWindows, minimizedWindows, onOpenWindow]);
 
-  // Add app-specific menus
-  const appMenus: MenuItem[] = [
+  // Add app-specific menus with memoization
+  const appMenus = useMemo<MenuItem[]>(() => [
     {
       label: 'About',
       items: [
@@ -245,259 +256,265 @@ export function MenuBar({
         { id: 'app-store', label: 'App Store', icon: AppWindow },
       ]
     }
-  ];
+  ], []);
 
   // Combine default menus with app-specific menus
-  const allMenus = [...MENU_ITEMS, ...appMenus];
+  const allMenus = useMemo(() => {
+    let combinedMenus = [...MENU_ITEMS, ...appMenus];
 
-  // Add application-specific menu items based on active window
-  if (activeWindow) {
-    switch (activeWindow) {
-      case 'finder':
-        // Add Finder-specific menu items
-        const finderMenus: MenuItem[] = [
-          {
-            label: 'File',
-            items: [
-              { label: 'New Folder', shortcut: '⇧⌘N' },
-              { label: 'New Finder Window', shortcut: '⌘N' },
-              { type: 'separator' },
-              { label: 'Close Window', shortcut: '⌘W', action: () => windowManager.closeWindow('finder') },
-              { type: 'separator' },
-              { label: 'Get Info', shortcut: '⌘I' },
-              { label: 'Compress', shortcut: '' },
-              { type: 'separator' },
-              { label: 'Move to Trash', shortcut: '⌘⌫' },
-            ]
-          },
-          {
-            label: 'Edit',
-            items: [
-              { label: 'Undo', shortcut: '⌘Z' },
-              { label: 'Redo', shortcut: '⇧⌘Z' },
-              { type: 'separator' },
-              { label: 'Cut', shortcut: '⌘X' },
-              { label: 'Copy', shortcut: '⌘C' },
-              { label: 'Paste', shortcut: '⌘V' },
-              { label: 'Select All', shortcut: '⌘A' },
-            ]
-          },
-          {
-            label: 'View',
-            items: [
-              { label: 'as Icons', shortcut: '⌘1' },
-              { label: 'as List', shortcut: '⌘2' },
-              { type: 'separator' },
-              { label: 'Show Preview', shortcut: '⇧⌘P' },
-              { label: 'Show Path Bar', shortcut: '⌥⌘P' },
-              { label: 'Show Status Bar', shortcut: '⌘/' },
-            ]
-          },
-          {
-            label: 'Go',
-            items: [
-              { label: 'Back', shortcut: '⌘[' },
-              { label: 'Forward', shortcut: '⌘]' },
-              { type: 'separator' },
-              { label: 'Home', shortcut: '⇧⌘H' },
-              { label: 'Documents', shortcut: '⇧⌘O' },
-              { label: 'Downloads', shortcut: '⌥⌘L' },
-              { label: 'Pictures', shortcut: '⇧⌘P' },
-              { label: 'Music', shortcut: '⇧⌘M' },
-            ]
-          }
-        ];
-        // Replace default File/Edit/View menus with Finder-specific ones
-        allMenus.splice(1, 3, ...finderMenus);
-        break;
-        
-      case 'notes':
-        // Add Notes-specific menu items
-        const notesMenus: MenuItem[] = [
-          {
-            label: 'File',
-            items: [
-              { label: 'New Note', shortcut: '⌘N' },
-              { label: 'New Folder', shortcut: '⇧⌘N' },
-              { type: 'separator' },
-              { label: 'Close', shortcut: '⌘W', action: () => windowManager.closeWindow('notes') },
-              { label: 'Save', shortcut: '⌘S' },
-              { type: 'separator' },
-              { label: 'Export as PDF...', shortcut: '' },
-              { label: 'Print...', shortcut: '⌘P' },
-            ]
-          },
-          {
-            label: 'Edit',
-            items: [
-              { label: 'Undo', shortcut: '⌘Z' },
-              { label: 'Redo', shortcut: '⇧⌘Z' },
-              { type: 'separator' },
-              { label: 'Cut', shortcut: '⌘X' },
-              { label: 'Copy', shortcut: '⌘C' },
-              { label: 'Paste', shortcut: '⌘V' },
-              { type: 'separator' },
-              { label: 'Select All', shortcut: '⌘A' },
-              { type: 'separator' },
-              { label: 'Find', shortcut: '⌘F' },
-              { label: 'Replace...', shortcut: '⌥⌘F' },
-            ]
-          },
-          {
-            label: 'Format',
-            items: [
-              { label: 'Bold', shortcut: '⌘B' },
-              { label: 'Italic', shortcut: '⌘I' },
-              { label: 'Underline', shortcut: '⌘U' },
-              { type: 'separator' },
-              { label: 'Bulleted List', shortcut: '⇧⌘7' },
-              { label: 'Numbered List', shortcut: '⇧⌘8' },
-              { label: 'Checklist', shortcut: '⇧⌘L' },
-              { type: 'separator' },
-              { label: 'Align Left', shortcut: '' },
-              { label: 'Align Center', shortcut: '' },
-              { label: 'Align Right', shortcut: '' },
-            ]
-          },
-          {
-            label: 'View',
-            items: [
-              { label: 'Show Folders', shortcut: '⌘⇧F' },
-              { label: 'Show Note List', shortcut: '⌘⇧1' },
-              { type: 'separator' },
-              { label: 'Show Attachment Browser', shortcut: '⌘⇧A' },
-              { type: 'separator' },
-              { label: 'Pin Note', shortcut: '' },
-            ]
-          }
-        ];
-        // Replace default File/Edit/View menus with Notes-specific ones
-        allMenus.splice(1, 3, ...notesMenus);
-        break;
-        
-      case 'calendar':
-        // Add Calendar-specific menu items
-        const calendarMenus: MenuItem[] = [
-          {
-            label: 'File',
-            items: [
-              { label: 'New Event', shortcut: '⌘N' },
-              { label: 'New Calendar', shortcut: '⌥⌘N' },
-              { type: 'separator' },
-              { label: 'Close', shortcut: '⌘W', action: () => windowManager.closeWindow('calendar') },
-              { type: 'separator' },
-              { label: 'Export...', shortcut: '' },
-              { label: 'Print...', shortcut: '⌘P' },
-            ]
-          },
-          {
-            label: 'Edit',
-            items: [
-              { label: 'Undo', shortcut: '⌘Z' },
-              { label: 'Redo', shortcut: '⇧⌘Z' },
-              { type: 'separator' },
-              { label: 'Cut', shortcut: '⌘X' },
-              { label: 'Copy', shortcut: '⌘C' },
-              { label: 'Paste', shortcut: '⌘V' },
-              { label: 'Select All', shortcut: '⌘A' },
-              { type: 'separator' },
-              { label: 'Find', shortcut: '⌘F' },
-            ]
-          },
-          {
-            label: 'View',
-            items: [
-              { label: 'Day', shortcut: '⌘1' },
-              { label: 'Week', shortcut: '⌘2' },
-              { label: 'Month', shortcut: '⌘3' },
-              { label: 'Year', shortcut: '⌘4' },
-              { type: 'separator' },
-              { label: 'Go to Today', shortcut: '⌘T' },
-              { label: 'Go to Date...', shortcut: '⇧⌘T' },
-              { type: 'separator' },
-              { label: 'Show Calendar List', shortcut: '⌘⇧S' },
-              { label: 'Show Sidebar', shortcut: '⌘⇧1' },
-            ]
-          },
-          {
-            label: 'Calendar',
-            items: [
-              { label: 'Add Calendar...', shortcut: '' },
-              { label: 'New Calendar List...', shortcut: '' },
-              { type: 'separator' },
-              { label: 'Refresh Calendars', shortcut: '⌘R' },
-              { type: 'separator' },
-              { label: 'Work', shortcut: '', icon: () => <div className="w-2 h-2 bg-blue-500 rounded-full mr-2" /> },
-              { label: 'Personal', shortcut: '', icon: () => <div className="w-2 h-2 bg-green-500 rounded-full mr-2" /> },
-              { label: 'Deadlines', shortcut: '', icon: () => <div className="w-2 h-2 bg-red-500 rounded-full mr-2" /> },
-              { label: 'Social', shortcut: '', icon: () => <div className="w-2 h-2 bg-purple-500 rounded-full mr-2" /> },
-            ]
-          }
-        ];
-        // Replace default File/Edit/View menus with Calendar-specific ones
-        allMenus.splice(1, 3, ...calendarMenus);
-        break;
-        
-      case 'messages':
-        // Add Messages-specific menu items
-        const messagesMenus: MenuItem[] = [
-          {
-            label: 'File',
-            items: [
-              { label: 'New Message', shortcut: '⌘N' },
-              { label: 'New Conversation', shortcut: '⇧⌘N' },
-              { type: 'separator' },
-              { label: 'Close', shortcut: '⌘W', action: () => windowManager.closeWindow('messages') },
-              { type: 'separator' },
-              { label: 'Save Chat Transcript...', shortcut: '' },
-              { label: 'Print...', shortcut: '⌘P' },
-            ]
-          },
-          {
-            label: 'Edit',
-            items: [
-              { label: 'Undo', shortcut: '⌘Z' },
-              { label: 'Redo', shortcut: '⇧⌘Z' },
-              { type: 'separator' },
-              { label: 'Cut', shortcut: '⌘X' },
-              { label: 'Copy', shortcut: '⌘C' },
-              { label: 'Paste', shortcut: '⌘V' },
-              { label: 'Select All', shortcut: '⌘A' },
-              { type: 'separator' },
-              { label: 'Find', shortcut: '⌘F' },
-              { label: 'Find in Conversation...', shortcut: '⌥⌘F' },
-            ]
-          },
-          {
-            label: 'View',
-            items: [
-              { label: 'Show Sidebar', shortcut: '⇧⌘S' },
-              { type: 'separator' },
-              { label: 'Conversations', shortcut: '⌘1' },
-              { label: 'Media', shortcut: '⌘2' },
-              { label: 'Files', shortcut: '⌘3' },
-              { label: 'Links', shortcut: '⌘4' },
-            ]
-          },
-          {
-            label: 'Conversation',
-            items: [
-              { label: 'Add Contact...', shortcut: '' },
-              { label: 'Add to Group...', shortcut: '' },
-              { type: 'separator' },
-              { label: 'Audio Call', shortcut: '⇧⌘A' },
-              { label: 'Video Call', shortcut: '⇧⌘V' },
-              { type: 'separator' },
-              { label: 'Hide Alerts', shortcut: '' },
-              { label: 'Delete Conversation', shortcut: '⌫' },
-            ]
-          }
-        ];
-        // Replace default File/Edit/View menus with Messages-specific ones
-        allMenus.splice(1, 3, ...messagesMenus);
-        break;
+    // Add application-specific menu items based on active window
+    if (activeWindow) {
+      switch (activeWindow) {
+        case 'finder':
+          // Add Finder-specific menu items
+          const finderMenus: MenuItem[] = [
+            {
+              label: 'File',
+              items: [
+                { label: 'New Folder', shortcut: '⇧⌘N' },
+                { label: 'New Finder Window', shortcut: '⌘N' },
+                { type: 'separator' },
+                { label: 'Close Window', shortcut: '⌘W', action: () => windowManager.closeWindow('finder') },
+                { type: 'separator' },
+                { label: 'Get Info', shortcut: '⌘I' },
+                { label: 'Compress', shortcut: '' },
+                { type: 'separator' },
+                { label: 'Move to Trash', shortcut: '⌘⌫' },
+              ]
+            },
+            {
+              label: 'Edit',
+              items: [
+                { label: 'Undo', shortcut: '⌘Z' },
+                { label: 'Redo', shortcut: '⇧⌘Z' },
+                { type: 'separator' },
+                { label: 'Cut', shortcut: '⌘X' },
+                { label: 'Copy', shortcut: '⌘C' },
+                { label: 'Paste', shortcut: '⌘V' },
+                { label: 'Select All', shortcut: '⌘A' },
+              ]
+            },
+            {
+              label: 'View',
+              items: [
+                { label: 'as Icons', shortcut: '⌘1' },
+                { label: 'as List', shortcut: '⌘2' },
+                { type: 'separator' },
+                { label: 'Show Preview', shortcut: '⇧⌘P' },
+                { label: 'Show Path Bar', shortcut: '⌥⌘P' },
+                { label: 'Show Status Bar', shortcut: '⌘/' },
+              ]
+            },
+            {
+              label: 'Go',
+              items: [
+                { label: 'Back', shortcut: '⌘[' },
+                { label: 'Forward', shortcut: '⌘]' },
+                { type: 'separator' },
+                { label: 'Home', shortcut: '⇧⌘H' },
+                { label: 'Documents', shortcut: '⇧⌘O' },
+                { label: 'Downloads', shortcut: '⌥⌘L' },
+                { label: 'Pictures', shortcut: '⇧⌘P' },
+                { label: 'Music', shortcut: '⇧⌘M' },
+              ]
+            }
+          ];
+          // Replace default File/Edit/View menus with Finder-specific ones
+          combinedMenus.splice(1, 3, ...finderMenus);
+          break;
+          
+        case 'notes':
+          // Add Notes-specific menu items
+          const notesMenus: MenuItem[] = [
+            {
+              label: 'File',
+              items: [
+                { label: 'New Note', shortcut: '⌘N' },
+                { label: 'New Folder', shortcut: '⇧⌘N' },
+                { type: 'separator' },
+                { label: 'Close', shortcut: '⌘W', action: () => windowManager.closeWindow('notes') },
+                { label: 'Save', shortcut: '⌘S' },
+                { type: 'separator' },
+                { label: 'Export as PDF...', shortcut: '' },
+                { label: 'Print...', shortcut: '⌘P' },
+              ]
+            },
+            {
+              label: 'Edit',
+              items: [
+                { label: 'Undo', shortcut: '⌘Z' },
+                { label: 'Redo', shortcut: '⇧⌘Z' },
+                { type: 'separator' },
+                { label: 'Cut', shortcut: '⌘X' },
+                { label: 'Copy', shortcut: '⌘C' },
+                { label: 'Paste', shortcut: '⌘V' },
+                { type: 'separator' },
+                { label: 'Select All', shortcut: '⌘A' },
+                { type: 'separator' },
+                { label: 'Find', shortcut: '⌘F' },
+                { label: 'Replace...', shortcut: '⌥⌘F' },
+              ]
+            },
+            {
+              label: 'Format',
+              items: [
+                { label: 'Bold', shortcut: '⌘B' },
+                { label: 'Italic', shortcut: '⌘I' },
+                { label: 'Underline', shortcut: '⌘U' },
+                { type: 'separator' },
+                { label: 'Bulleted List', shortcut: '⇧⌘7' },
+                { label: 'Numbered List', shortcut: '⇧⌘8' },
+                { label: 'Checklist', shortcut: '⇧⌘L' },
+                { type: 'separator' },
+                { label: 'Align Left', shortcut: '' },
+                { label: 'Align Center', shortcut: '' },
+                { label: 'Align Right', shortcut: '' },
+              ]
+            },
+            {
+              label: 'View',
+              items: [
+                { label: 'Show Folders', shortcut: '⌘⇧F' },
+                { label: 'Show Note List', shortcut: '⌘⇧1' },
+                { type: 'separator' },
+                { label: 'Show Attachment Browser', shortcut: '⌘⇧A' },
+                { type: 'separator' },
+                { label: 'Pin Note', shortcut: '' },
+              ]
+            }
+          ];
+          // Replace default File/Edit/View menus with Notes-specific ones
+          combinedMenus.splice(1, 3, ...notesMenus);
+          break;
+          
+        case 'calendar':
+          // Add Calendar-specific menu items
+          const calendarMenus: MenuItem[] = [
+            {
+              label: 'File',
+              items: [
+                { label: 'New Event', shortcut: '⌘N' },
+                { label: 'New Calendar', shortcut: '⌥⌘N' },
+                { type: 'separator' },
+                { label: 'Close', shortcut: '⌘W', action: () => windowManager.closeWindow('calendar') },
+                { type: 'separator' },
+                { label: 'Export...', shortcut: '' },
+                { label: 'Print...', shortcut: '⌘P' },
+              ]
+            },
+            {
+              label: 'Edit',
+              items: [
+                { label: 'Undo', shortcut: '⌘Z' },
+                { label: 'Redo', shortcut: '⇧⌘Z' },
+                { type: 'separator' },
+                { label: 'Cut', shortcut: '⌘X' },
+                { label: 'Copy', shortcut: '⌘C' },
+                { label: 'Paste', shortcut: '⌘V' },
+                { label: 'Select All', shortcut: '⌘A' },
+                { type: 'separator' },
+                { label: 'Find', shortcut: '⌘F' },
+              ]
+            },
+            {
+              label: 'View',
+              items: [
+                { label: 'Day', shortcut: '⌘1' },
+                { label: 'Week', shortcut: '⌘2' },
+                { label: 'Month', shortcut: '⌘3' },
+                { label: 'Year', shortcut: '⌘4' },
+                { type: 'separator' },
+                { label: 'Go to Today', shortcut: '⌘T' },
+                { label: 'Go to Date...', shortcut: '⇧⌘T' },
+                { type: 'separator' },
+                { label: 'Show Calendar List', shortcut: '⌘⇧S' },
+                { label: 'Show Sidebar', shortcut: '⌘⇧1' },
+              ]
+            },
+            {
+              label: 'Calendar',
+              items: [
+                { label: 'Add Calendar...', shortcut: '' },
+                { label: 'New Calendar List...', shortcut: '' },
+                { type: 'separator' },
+                { label: 'Refresh Calendars', shortcut: '⌘R' },
+                { type: 'separator' },
+                { label: 'Work', shortcut: '', icon: () => <div className="w-2 h-2 bg-blue-500 rounded-full mr-2" /> },
+                { label: 'Personal', shortcut: '', icon: () => <div className="w-2 h-2 bg-green-500 rounded-full mr-2" /> },
+                { label: 'Deadlines', shortcut: '', icon: () => <div className="w-2 h-2 bg-red-500 rounded-full mr-2" /> },
+                { label: 'Social', shortcut: '', icon: () => <div className="w-2 h-2 bg-purple-500 rounded-full mr-2" /> },
+              ]
+            }
+          ];
+          // Replace default File/Edit/View menus with Calendar-specific ones
+          combinedMenus.splice(1, 3, ...calendarMenus);
+          break;
+          
+        case 'messages':
+          // Add Messages-specific menu items
+          const messagesMenus: MenuItem[] = [
+            {
+              label: 'File',
+              items: [
+                { label: 'New Message', shortcut: '⌘N' },
+                { label: 'New Conversation', shortcut: '⇧⌘N' },
+                { type: 'separator' },
+                { label: 'Close', shortcut: '⌘W', action: () => windowManager.closeWindow('messages') },
+                { type: 'separator' },
+                { label: 'Save Chat Transcript...', shortcut: '' },
+                { label: 'Print...', shortcut: '⌘P' },
+              ]
+            },
+            {
+              label: 'Edit',
+              items: [
+                { label: 'Undo', shortcut: '⌘Z' },
+                { label: 'Redo', shortcut: '⇧⌘Z' },
+                { type: 'separator' },
+                { label: 'Cut', shortcut: '⌘X' },
+                { label: 'Copy', shortcut: '⌘C' },
+                { label: 'Paste', shortcut: '⌘V' },
+                { label: 'Select All', shortcut: '⌘A' },
+                { type: 'separator' },
+                { label: 'Find', shortcut: '⌘F' },
+                { label: 'Find in Conversation...', shortcut: '⌥⌘F' },
+              ]
+            },
+            {
+              label: 'View',
+              items: [
+                { label: 'Show Sidebar', shortcut: '⇧⌘S' },
+                { type: 'separator' },
+                { label: 'Conversations', shortcut: '⌘1' },
+                { label: 'Media', shortcut: '⌘2' },
+                { label: 'Files', shortcut: '⌘3' },
+                { label: 'Links', shortcut: '⌘4' },
+              ]
+            },
+            {
+              label: 'Conversation',
+              items: [
+                { label: 'Add Contact...', shortcut: '' },
+                { label: 'Add to Group...', shortcut: '' },
+                { type: 'separator' },
+                { label: 'Audio Call', shortcut: '⇧⌘A' },
+                { label: 'Video Call', shortcut: '⇧⌘V' },
+                { type: 'separator' },
+                { label: 'Hide Alerts', shortcut: '' },
+                { label: 'Delete Conversation', shortcut: '⌫' },
+              ]
+            }
+          ];
+          // Replace default File/Edit/View menus with Messages-specific ones
+          combinedMenus.splice(1, 3, ...messagesMenus);
+          break;
+      }
     }
-  }
+    
+    return combinedMenus;
+  }, [MENU_ITEMS, appMenus, activeWindow, windowManager]);
+
+  if (!mounted) return null;
 
   return (
     <motion.div 
@@ -559,7 +576,7 @@ export function MenuBar({
               Shut Down...
             </DropdownMenuItem>
             <DropdownMenuSeparator className="m-0" />
-            <DropdownMenuItem onClick={() => window.location.reload()}>
+            <DropdownMenuItem onClick={handleReload}>
               Log Out {PERSONAL_INFO.name}...
               <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
             </DropdownMenuItem>
@@ -584,7 +601,7 @@ export function MenuBar({
 
       {/* Right section: Status icons */}
       <div className="flex items-center space-x-2">
-        <div onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')} className="px-1 cursor-pointer">
+        <div onClick={handleThemeToggle} className="px-1 cursor-pointer">
           {theme === 'dark' ? <Moon size={14} /> : <Sun size={14} />}
         </div>
         
@@ -625,7 +642,7 @@ export function MenuBar({
                 <Battery size={24} className="mb-1" />
                 <span className="text-xs">Battery</span>
               </div>
-              <div className="flex flex-col items-center justify-center bg-background rounded-xl p-2 hover:bg-accent/20 transition-colors cursor-pointer" onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}>
+              <div className="flex flex-col items-center justify-center bg-background rounded-xl p-2 hover:bg-accent/20 transition-colors cursor-pointer" onClick={handleThemeToggle}>
                 {theme === 'dark' ? <Moon size={24} className="mb-1" /> : <Sun size={24} className="mb-1" />}
                 <span className="text-xs">Dark Mode</span>
                   </div>
@@ -649,4 +666,7 @@ export function MenuBar({
       </div>
     </motion.div>
   );
-}
+})
+
+// Add display name
+MenuBar.displayName = 'MenuBar';

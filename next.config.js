@@ -1,19 +1,35 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {
+/**
+ * @type {import('next').NextConfig}
+ */
+
+const isProd = process.env.NODE_ENV === 'production';
+const repo = 'eshanized.github.io'; // Your repository name
+
+module.exports = {
   reactStrictMode: true,
+  swcMinify: true,
   output: 'export',
   eslint: {
     ignoreDuringBuilds: true,
   },
-  images: { 
-    unoptimized: true 
+  images: {
+    unoptimized: true,
   },
-  // Simplified basePath configuration
-  basePath: process.env.NODE_ENV === 'production' ? '/eshanized_web' : '',
-  // Add distDir to ensure build output is consistent
+  basePath: isProd ? `/${repo}` : '',
+  assetPrefix: isProd ? `/${repo}/` : '',
   distDir: 'out',
-  // Add trailing slash configuration
   trailingSlash: true,
-};
+  // Additional configuration
+  compiler: {
+    styledComponents: true,
+  },
+  webpack(config) {
+    // Allow SVG imports
+    config.module.rules.push({
+      test: /\.svg$/,
+      use: ['@svgr/webpack'],
+    });
 
-module.exports = nextConfig;
+    return config;
+  },
+};
