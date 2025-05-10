@@ -23,11 +23,14 @@ import {
   Lock,
   Home,
   Grid,
-  Phone
+  Phone,
+  Moon,
+  Sun
 } from 'lucide-react';
 import { PERSONAL_INFO } from '@/lib/constants';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
+import { useTheme, ThemeProvider } from '../ios/ThemeContext';
 
 // Dynamically import app components with SSR disabled
 const AboutApp = dynamic(() => import('@/components/ios/apps/AboutApp'), { ssr: false });
@@ -65,6 +68,15 @@ interface AppFolder {
 
 // iOS Layout Component
 export default function IOSLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <ThemeProvider>
+      <IOSLayoutContent>{children}</IOSLayoutContent>
+    </ThemeProvider>
+  );
+}
+
+function IOSLayoutContent({ children }: { children: React.ReactNode }) {
+  const { isDarkMode, toggleDarkMode } = useTheme();
   // State hooks
   const [currentTime, setCurrentTime] = useState<string>('');
   const [currentDate, setCurrentDate] = useState<string>('');
@@ -144,23 +156,23 @@ export default function IOSLayout({ children }: { children: React.ReactNode }) {
     setOpenFolder(prev => prev === folderId ? null : folderId);
   };
   
-  // Define color palette for app icons
+  // Define color palette for app icons with dark mode support
   const colors = {
-    blue: 'bg-blue-500',
-    green: 'bg-green-500',
-    red: 'bg-red-500',
-    purple: 'bg-purple-500',
-    pink: 'bg-pink-500',
-    orange: 'bg-orange-500',
-    teal: 'bg-teal-500',
-    cyan: 'bg-cyan-500',
-    yellow: 'bg-yellow-500',
-    indigo: 'bg-indigo-500',
-    gray: 'bg-gray-600',
-    gradient1: 'bg-gradient-to-br from-blue-500 to-purple-500',
-    gradient2: 'bg-gradient-to-br from-green-400 to-cyan-500',
-    gradient3: 'bg-gradient-to-br from-pink-500 to-red-500',
-    gradient4: 'bg-gradient-to-br from-yellow-400 to-orange-500',
+    blue: 'bg-blue-500 dark:bg-blue-600',
+    green: 'bg-green-500 dark:bg-green-600',
+    red: 'bg-red-500 dark:bg-red-600',
+    purple: 'bg-purple-500 dark:bg-purple-600',
+    pink: 'bg-pink-500 dark:bg-pink-600',
+    orange: 'bg-orange-500 dark:bg-orange-600',
+    teal: 'bg-teal-500 dark:bg-teal-600',
+    cyan: 'bg-cyan-500 dark:bg-cyan-600',
+    yellow: 'bg-yellow-500 dark:bg-yellow-600',
+    indigo: 'bg-indigo-500 dark:bg-indigo-600',
+    gray: 'bg-gray-600 dark:bg-gray-700',
+    gradient1: 'bg-gradient-to-br from-blue-500 to-purple-500 dark:from-blue-600 dark:to-purple-600',
+    gradient2: 'bg-gradient-to-br from-green-400 to-cyan-500 dark:from-green-500 dark:to-cyan-600',
+    gradient3: 'bg-gradient-to-br from-pink-500 to-red-500 dark:from-pink-600 dark:to-red-600',
+    gradient4: 'bg-gradient-to-br from-yellow-400 to-orange-500 dark:from-yellow-500 dark:to-orange-600',
   };
 
   // Home screen apps
@@ -290,34 +302,46 @@ export default function IOSLayout({ children }: { children: React.ReactNode }) {
     </motion.div>
   );
 
-  // Control Center
+  // Control Center with dark mode toggle
   const ControlCenter = () => (
     <motion.div 
-      className="absolute top-0 right-0 w-full max-w-md bg-black/40 backdrop-blur-xl rounded-bl-3xl p-4 text-white z-40"
+      className="absolute top-0 right-0 w-full max-w-md bg-white/20 dark:bg-black/20 backdrop-blur-xl rounded-bl-3xl p-4 text-black dark:text-white transition-colors duration-300"
       initial={{ opacity: 0, y: -10 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -10 }}
       transition={{ duration: 0.2 }}
     >
       <div className="grid grid-cols-2 gap-3">
-        <div className="p-3 bg-white/10 rounded-xl">
+        <div className="p-3 bg-white/10 dark:bg-white/5 rounded-xl backdrop-blur-lg transition-colors duration-300">
           <h3 className="text-sm font-medium mb-2">Networks</h3>
           <div className="flex items-center justify-between">
             <div className="flex items-center">
               <Wifi className="w-5 h-5 mr-2" />
               <span>Wi-Fi</span>
             </div>
-            <div className="w-10 h-6 bg-green-500 rounded-full relative px-1 flex items-center">
+            <div className="w-10 h-6 bg-green-500 dark:bg-green-600 rounded-full relative px-1 flex items-center transition-colors duration-300">
               <div className="w-4 h-4 bg-white rounded-full ml-auto"></div>
             </div>
           </div>
         </div>
         
-        <div className="p-3 bg-white/10 rounded-xl">
-          <h3 className="text-sm font-medium mb-2">Battery</h3>
-          <div className="flex items-center">
-            <Battery className="w-5 h-5 mr-2" />
-            <span>{batteryLevel}%</span>
+        <div className="p-3 bg-white/10 dark:bg-white/5 rounded-xl backdrop-blur-lg transition-colors duration-300">
+          <h3 className="text-sm font-medium mb-2">Appearance</h3>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center">
+              {isDarkMode ? (
+                <Moon className="w-5 h-5 mr-2" />
+              ) : (
+                <Sun className="w-5 h-5 mr-2" />
+              )}
+              <span>Dark Mode</span>
+            </div>
+            <div 
+              className={`w-10 h-6 ${isDarkMode ? 'bg-green-500 dark:bg-green-600' : 'bg-gray-300 dark:bg-gray-600'} rounded-full relative px-1 flex items-center cursor-pointer transition-colors duration-300`}
+              onClick={toggleDarkMode}
+            >
+              <div className={`w-4 h-4 bg-white rounded-full transform transition-transform duration-300 ${isDarkMode ? 'translate-x-4' : 'translate-x-0'}`}></div>
+            </div>
           </div>
         </div>
       </div>
@@ -342,7 +366,7 @@ export default function IOSLayout({ children }: { children: React.ReactNode }) {
     </motion.div>
   );
 
-  // Main iOS Container
+  // Main iOS Container with dark mode support
   return (
     <div className="fixed inset-0 bg-black overflow-hidden">
       <AnimatePresence>
@@ -360,9 +384,9 @@ export default function IOSLayout({ children }: { children: React.ReactNode }) {
               <div className="text-white">{currentTime}</div>
               <div className="flex items-center gap-2 text-white">
                 <div className="flex gap-1">
-                  <div className="h-2.5 w-2.5 bg-green-500 rounded-full"></div>
-                  <div className="h-2.5 w-2.5 bg-green-500 rounded-full"></div>
-                  <div className="h-2.5 w-2.5 bg-green-500 rounded-full"></div>
+                  <div className="h-2.5 w-2.5 bg-green-500 dark:bg-green-400 rounded-full transition-colors duration-300"></div>
+                  <div className="h-2.5 w-2.5 bg-green-500 dark:bg-green-400 rounded-full transition-colors duration-300"></div>
+                  <div className="h-2.5 w-2.5 bg-green-500 dark:bg-green-400 rounded-full transition-colors duration-300"></div>
                 </div>
                 <Wifi className="w-4 h-4" />
                 <div className="flex items-center">

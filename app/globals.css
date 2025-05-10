@@ -39,26 +39,36 @@
 
 @layer base {
   :root {
+    /* iOS Light Mode Colors */
+    --ios-background: 242 242 247;
+    --ios-text: 0 0 0;
+    --ios-secondary-text: 60 60 67;
+    --ios-tertiary-text: 60 60 67;
+    --ios-system-fill: 120 120 128;
+    --ios-separator: 60 60 67;
+    --ios-grouped-background: 242 242 247;
+    --ios-system-background: 255 255 255;
+
     /* Light theme colors - authentic macOS palette */
     --background: 0 0% 100%;         /* Pure white #FFFFFF */
-    --foreground: 0 0% 0%;           /* Pure black #000000 */
+    --foreground: 222.2 84% 4.9%;
     --card: 0 0% 100%;               /* Pure white #FFFFFF */
-    --card-foreground: 0 0% 0%;      /* Pure black #000000 */
+    --card-foreground: 222.2 84% 4.9%;
     --popover: 0 0% 100%;            /* Pure white #FFFFFF */
-    --popover-foreground: 0 0% 0%;   /* Pure black #000000 */
-    --primary: 211 100% 50%;         /* Apple blue #0066FF */
-    --primary-foreground: 0 0% 100%; /* Pure white #FFFFFF */
-    --secondary: 240 5% 96%;         /* Light gray #F2F2F7 */
-    --secondary-foreground: 240 3% 12%; /* Dark gray #1F1F20 */
-    --muted: 240 4% 90%;             /* Muted gray #E5E5EA */
-    --muted-foreground: 240 3% 46%;  /* Medium gray #8E8E93 */
-    --accent: 211 100% 50%;          /* Apple blue #0066FF */
-    --accent-foreground: 0 0% 100%;  /* Pure white #FFFFFF */
-    --destructive: 0 78% 63%;        /* Red #FF3B30 */
-    --destructive-foreground: 0 0% 100%; /* Pure white #FFFFFF */
-    --border: 240 6% 90%;            /* Border gray #E5E5EA */
-    --input: 240 6% 90%;             /* Input gray #E5E5EA */
-    --ring: 211 100% 50%;            /* Apple blue #0066FF */
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 221.2 83.2% 53.3%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 221.2 83.2% 53.3%;
     
     /* Authentic macOS chart colors */
     --chart-1: 211 100% 50%;   /* Apple Blue #0066FF */
@@ -80,26 +90,36 @@
   }
   
   .dark {
+    /* iOS Dark Mode Colors */
+    --ios-background: 0 0 0;
+    --ios-text: 255 255 255;
+    --ios-secondary-text: 235 235 245;
+    --ios-tertiary-text: 235 235 245;
+    --ios-system-fill: 120 120 128;
+    --ios-separator: 84 84 88;
+    --ios-grouped-background: 0 0 0;
+    --ios-system-background: 28 28 30;
+
     /* Dark theme colors - authentic macOS palette */
-    --background: 0 0% 11%;          /* Dark gray #1C1C1E */
-    --foreground: 0 0% 100%;         /* Pure white #FFFFFF */
-    --card: 240 3% 15%;              /* Card gray #28282A */
-    --card-foreground: 0 0% 100%;    /* Pure white #FFFFFF */
-    --popover: 240 3% 15%;           /* Popover gray #28282A */
-    --popover-foreground: 0 0% 100%; /* Pure white #FFFFFF */
-    --primary: 211 100% 60%;         /* Apple Blue #0A84FF */
-    --primary-foreground: 0 0% 100%; /* Pure white #FFFFFF */
-    --secondary: 240 3% 22%;         /* Secondary gray #38383A */
-    --secondary-foreground: 0 0% 100%; /* Pure white #FFFFFF */
-    --muted: 240 3% 22%;             /* Muted gray #38383A */
-    --muted-foreground: 240 5% 65%;  /* Medium gray #AEAEB2 */
-    --accent: 211 100% 60%;          /* Apple Blue #0A84FF */
-    --accent-foreground: 0 0% 100%;  /* Pure white #FFFFFF */
-    --destructive: 0 73% 58%;        /* Red #FF453A */
-    --destructive-foreground: 0 0% 100%; /* Pure white #FFFFFF */
-    --border: 240 3% 22%;            /* Border gray #38383A */
-    --input: 240 3% 22%;             /* Input gray #38383A */
-    --ring: 211 100% 60%;            /* Apple Blue #0A84FF */
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 217.2 91.2% 59.8%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 224.3 76.3% 48%;
     
     /* Authentic macOS chart colors - dark mode */
     --chart-1: 211 100% 60%;   /* Apple Blue #0A84FF */
@@ -752,13 +772,12 @@ input.font-sf-pro::placeholder {
 @layer utilities {
   /* Text shadow for iOS app names */
   .text-shadow {
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
   }
   
   /* iOS-specific backdrop blur for folders and dock */
   .ios-blur {
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px) saturate(180%);
   }
   
   /* iOS app icon sizes */
@@ -783,4 +802,15 @@ input.font-sf-pro::placeholder {
     border-bottom-right-radius: 18px;
     z-index: 50;
   }
+}
+
+/* iOS System Font */
+@font-face {
+  font-family: 'SF Pro Display';
+  src: local('-apple-system'),
+       local('system-ui'),
+       local('BlinkMacSystemFont');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
 }

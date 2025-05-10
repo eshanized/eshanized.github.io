@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion';
 import React from 'react';
+import { useTheme } from './ThemeContext';
 
 // iOS App Icon component for consistent styling
 export const IOSAppIcon: React.FC<{
@@ -23,10 +24,10 @@ export const IOSAppIcon: React.FC<{
   };
 
   return (
-    <div className={`${sizeClasses[size]} ${color} rounded-2xl flex items-center justify-center relative`}>
+    <div className={`${sizeClasses[size]} ${color} rounded-2xl flex items-center justify-center relative transition-colors duration-300`}>
       <div className={iconSizeClasses[size]}>{icon}</div>
       {badgeCount && (
-        <span className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white rounded-full flex items-center justify-center text-xs font-bold">
+        <span className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 dark:bg-red-600 text-white rounded-full flex items-center justify-center text-xs font-bold transition-colors duration-300">
           {badgeCount}
         </span>
       )}
@@ -41,14 +42,16 @@ export const IOSStatusBar: React.FC<{
   showBattery?: boolean;
   batteryLevel?: number;
 }> = ({ time, showWifi = true, showBattery = true, batteryLevel = 85 }) => {
+  const { isDarkMode } = useTheme();
+  
   return (
-    <div className="w-full px-4 py-2 flex justify-between items-center text-white">
+    <div className="w-full px-4 py-2 flex justify-between items-center text-black dark:text-white transition-colors duration-300">
       <div>{time}</div>
       <div className="flex items-center gap-2">
         <div className="flex gap-1">
-          <div className="h-2.5 w-2.5 bg-green-500 rounded-full"></div>
-          <div className="h-2.5 w-2.5 bg-green-500 rounded-full"></div>
-          <div className="h-2.5 w-2.5 bg-green-500 rounded-full"></div>
+          <div className="h-2.5 w-2.5 bg-green-500 dark:bg-green-400 rounded-full transition-colors duration-300"></div>
+          <div className="h-2.5 w-2.5 bg-green-500 dark:bg-green-400 rounded-full transition-colors duration-300"></div>
+          <div className="h-2.5 w-2.5 bg-green-500 dark:bg-green-400 rounded-full transition-colors duration-300"></div>
         </div>
         {showWifi && (
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -80,13 +83,13 @@ export const IOSButton: React.FC<{
   fullWidth?: boolean;
 }> = ({ children, onClick, variant = 'primary', fullWidth = false }) => {
   const variantClasses = {
-    primary: 'bg-blue-500 text-white',
-    secondary: 'bg-white/10 backdrop-blur-md text-white'
+    primary: 'bg-blue-500 dark:bg-blue-600 text-white',
+    secondary: 'bg-white/10 dark:bg-black/10 backdrop-blur-md text-black dark:text-white'
   };
   
   return (
     <motion.button
-      className={`${variantClasses[variant]} ${fullWidth ? 'w-full' : ''} py-2.5 px-6 rounded-full font-medium text-sm ios-blur`}
+      className={`${variantClasses[variant]} ${fullWidth ? 'w-full' : ''} py-2.5 px-6 rounded-full font-medium text-sm ios-blur transition-colors duration-300`}
       whileTap={{ scale: 0.97 }}
       onClick={onClick}
     >
@@ -102,6 +105,8 @@ export const IOSFolder: React.FC<{
   isOpen: boolean;
   onClose: () => void;
 }> = ({ name, children, isOpen, onClose }) => {
+  const { isDarkMode } = useTheme();
+  
   return (
     <motion.div
       className={`fixed inset-0 z-40 ${isOpen ? 'pointer-events-auto' : 'pointer-events-none'}`}
@@ -110,7 +115,7 @@ export const IOSFolder: React.FC<{
       onClick={onClose}
     >
       <motion.div
-        className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[280px] bg-black/30 backdrop-blur-xl ios-blur rounded-3xl p-4"
+        className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[280px] bg-white/30 dark:bg-black/30 backdrop-blur-xl ios-blur rounded-3xl p-4 transition-colors duration-300"
         initial={{ scale: 0.8, opacity: 0 }}
         animate={{ 
           scale: isOpen ? 1 : 0.8, 
@@ -118,7 +123,7 @@ export const IOSFolder: React.FC<{
         }}
         onClick={(e) => e.stopPropagation()}
       >
-        <h3 className="text-center text-white font-medium mb-3">{name}</h3>
+        <h3 className="text-center text-black dark:text-white font-medium mb-3 transition-colors duration-300">{name}</h3>
         <div className="grid grid-cols-3 gap-4">
           {children}
         </div>
@@ -132,7 +137,7 @@ export const IOSHomeIndicator: React.FC<{ onClick?: () => void }> = ({ onClick }
   return (
     <div className="h-8 flex items-center justify-center">
       <div 
-        className="w-32 h-1 bg-white rounded-full cursor-pointer"
+        className="w-32 h-1 bg-black/20 dark:bg-white/20 rounded-full cursor-pointer transition-colors duration-300"
         onClick={onClick}
       ></div>
     </div>
