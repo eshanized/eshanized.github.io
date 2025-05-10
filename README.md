@@ -10,13 +10,23 @@ This repository is set up to automatically deploy to GitHub Pages using GitHub A
 
 1. The GitHub Action workflow in `.github/workflows/deploy.yml` handles the build and deployment process.
 2. When changes are pushed to the `main` branch, the site is automatically rebuilt and deployed.
-3. The site is accessible at [https://eshanized.github.io/](https://eshanized.github.io/)
+3. The site is accessible at https://eshanized.github.io/
+4. Custom domain: https://eshanized.is-a.dev/
 
-### Manual Setup Steps (if needed):
+### Manual Deployment:
 
-1. In your GitHub repository, go to Settings > Pages
-2. For "Source", select "GitHub Actions"
-3. Make sure your repository has proper permissions set for GitHub Actions
+If you prefer to deploy manually:
+
+```bash
+# Install dependencies
+npm install
+
+# Build the project
+npm run build
+
+# Deploy to GitHub Pages
+npm run deploy
+```
 
 ## Local Development
 
@@ -37,4 +47,18 @@ npm run build
 - TypeScript
 - Tailwind CSS
 - Framer Motion
-- Shadcn UI 
+- Shadcn UI
+
+## Project Structure
+
+- `app/`: Next.js app directory
+- `components/`: Reusable React components
+- `lib/`: Utility functions and constants
+- `public/`: Static assets
+- `hooks/`: Custom React hooks
+
+## Important Configuration Files
+
+- `next.config.js`: Next.js configuration
+- `build.js`: Custom build script
+- `.github/workflows/deploy.yml`: GitHub Actions workflow for deployment 

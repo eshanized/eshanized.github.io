@@ -3,7 +3,8 @@
  */
 
 const isProd = process.env.NODE_ENV === 'production';
-const repo = 'eshanized.github.io'; // Your repository name
+// For user pages (username.github.io), no repo name is needed in the path
+const repo = '';
 
 module.exports = {
   reactStrictMode: true,
@@ -15,8 +16,10 @@ module.exports = {
   images: {
     unoptimized: true,
   },
-  basePath: isProd ? `/${repo}` : '',
-  assetPrefix: isProd ? `/${repo}/` : '',
+  // For username.github.io repos, basePath should be empty
+  basePath: '',
+  // For username.github.io repos, assetPrefix should be empty in production
+  assetPrefix: '',
   distDir: 'out',
   trailingSlash: true,
   // Additional configuration

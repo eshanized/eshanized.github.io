@@ -19,6 +19,10 @@ try {
   // Create .nojekyll file in the out directory for GitHub Pages
   fs.writeFileSync(path.join('out', '.nojekyll'), '');
   
+  // Create CNAME file for custom domain
+  // If you're using a custom domain (eshanized.is-a.dev), uncomment the next line
+  fs.writeFileSync(path.join('out', 'CNAME'), 'eshanized.is-a.dev');
+  
   console.log('Build completed successfully!');
 } catch (error) {
   console.error('Build failed:', error);

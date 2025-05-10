@@ -2,15 +2,16 @@
   "name": "eshan-roy-portfolio",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://eshanized.github.io",
   "scripts": {
     "dev": "next dev",
     "build": "node build.js",
     "start": "next start",
     "lint": "next lint",
     "clean": "rm -rf .next out",
-    "export": "next build && next export",
+    "export": "next build",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d out -b gh-pages"
+    "deploy": "gh-pages -d out -b master"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
