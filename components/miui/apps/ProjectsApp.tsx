@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import BaseIOSApp from './BaseIOSApp';
+import BaseMIUIApp from './BaseMIUIApp';
 import { ExternalLink, Github, GitBranch, Star, GitFork, Loader2 } from 'lucide-react';
 import Image from 'next/image';
 
@@ -90,7 +90,7 @@ export default function ProjectsApp() {
   }, []);
 
   return (
-    <BaseIOSApp title="Projects" rightAction="more">
+    <BaseMIUIApp title="Projects" rightAction="more">
       <div className="p-4">
         <h1 className="text-2xl font-bold mb-4">My Projects</h1>
         
@@ -196,6 +196,6 @@ export default function ProjectsApp() {
           ))}
         </div>
       </div>
-    </BaseIOSApp>
+    </BaseMIUIApp>
   );
 } 

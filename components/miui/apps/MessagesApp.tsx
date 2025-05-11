@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
-import BaseIOSApp from './BaseIOSApp';
+import BaseMIUIApp from './BaseMIUIApp';
 import { Search, Edit, Camera, Mic, Image as ImageIcon, Smile, SendHorizontal } from 'lucide-react';
 import Image from 'next/image';
 
@@ -137,7 +137,7 @@ export default function MessagesApp() {
   };
   
   return (
-    <BaseIOSApp 
+    <BaseMIUIApp 
       title={activeView === "conversations" ? "Messages" : getConversation(activeConversation || 0)?.contact.name || "Chat"} 
       rightAction={activeView === "conversations" ? <Edit className="w-5 h-5" /> : "more"}
       onBack={activeView === "chat" ? goBackToConversations : undefined}
@@ -270,6 +270,6 @@ export default function MessagesApp() {
           </>
         )}
       </div>
-    </BaseIOSApp>
+    </BaseMIUIApp>
   );
 } 

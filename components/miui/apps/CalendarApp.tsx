@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import BaseIOSApp from './BaseIOSApp';
+import BaseMIUIApp from './BaseMIUIApp';
 import { Calendar as CalendarIcon, ChevronLeft, ChevronRight, Plus } from 'lucide-react';
 
 export default function CalendarApp() {
@@ -145,7 +145,7 @@ export default function CalendarApp() {
   const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
   
   return (
-    <BaseIOSApp title="Calendar" rightAction={<Plus className="w-5 h-5" />}>
+    <BaseMIUIApp title="Calendar" rightAction={<Plus className="w-5 h-5" />}>
       <div className="h-full flex flex-col">
         {/* Calendar navigation */}
         <div className="p-4 flex items-center justify-between border-b border-gray-200 dark:border-gray-800">
@@ -259,6 +259,6 @@ export default function CalendarApp() {
           )}
         </div>
       </div>
-    </BaseIOSApp>
+    </BaseMIUIApp>
   );
 } 

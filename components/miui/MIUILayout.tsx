@@ -34,7 +34,7 @@ import {
 import { PERSONAL_INFO } from '@/lib/constants';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
-import { useTheme, ThemeProvider } from '../miui/ThemeContext';
+import { useTheme, ThemeProvider } from './ThemeContext';
 
 // Dynamically import app components with SSR disabled
 const AboutApp = dynamic(() => import('@/components/miui/apps/AboutApp'), { ssr: false });
@@ -51,7 +51,7 @@ const CameraApp = dynamic(() => import('@/components/miui/apps/CameraApp'), { ss
 const CalendarApp = dynamic(() => import('@/components/miui/apps/CalendarApp'), { ssr: false });
 const ClockApp = dynamic(() => import('@/components/miui/apps/ClockApp'), { ssr: false });
 const MessagesApp = dynamic(() => import('@/components/miui/apps/MessagesApp'), { ssr: false });
-const AppStoreApp = dynamic(() => import('@/components/miui/apps/AppStoreApp'), { ssr: false });
+const PlayStore = dynamic(() => import('@/components/miui/apps/PlayStore'), { ssr: false });
 const PhoneApp = dynamic(() => import('@/components/miui/apps/PhoneApp'), { ssr: false });
 const TwitterApp = dynamic(() => import('@/components/miui/apps/TwitterApp'), { ssr: false });
 const FacebookApp = dynamic(() => import('@/components/miui/apps/FacebookApp'), { ssr: false });
@@ -75,7 +75,7 @@ interface AppFolder {
 }
 
 // MIUI Layout Component
-export default function MIUILayout({ children }: { children: React.ReactNode }) {
+export default function MIUILayout({ children }: { children?: React.ReactNode }) {
   return (
     <ThemeProvider>
       <MIUILayoutContent>{children}</MIUILayoutContent>
@@ -83,7 +83,7 @@ export default function MIUILayout({ children }: { children: React.ReactNode }) 
   );
 }
 
-function MIUILayoutContent({ children }: { children: React.ReactNode }) {
+function MIUILayoutContent({ children }: { children?: React.ReactNode }) {
   const { isDarkMode, toggleDarkMode } = useTheme();
   // State hooks
   const [currentTime, setCurrentTime] = useState<string>('');
@@ -187,7 +187,7 @@ function MIUILayoutContent({ children }: { children: React.ReactNode }) {
     devtoBlack: 'bg-black dark:bg-white dark:bg-opacity-90',
   };
 
-  // Home screen apps
+  // Portfolio apps
   const portfolioApps: MIUIApp[] = [
     { id: 'about', name: 'About', icon: User, color: colors.blue, component: AboutApp },
     { id: 'projects', name: 'Projects', icon: Briefcase, color: colors.indigo, component: ProjectsApp },
@@ -210,7 +210,7 @@ function MIUILayoutContent({ children }: { children: React.ReactNode }) {
     { id: 'calendar', name: 'Calendar', icon: Calendar, color: colors.red, component: CalendarApp },
     { id: 'clock', name: 'Clock', icon: Clock, color: colors.gray, component: ClockApp },
     { id: 'messages', name: 'Messages', icon: MessageSquare, color: colors.green, badgeCount: 2, component: MessagesApp },
-    { id: 'appstore', name: 'App Store', icon: AppWindow, color: colors.blue, component: AppStoreApp },
+    { id: 'playstore', name: 'Play Store', icon: AppWindow, color: colors.green, component: PlayStore },
     { id: 'settings', name: 'Settings', icon: Settings, color: colors.gray, component: SettingsApp },
   ];
 
@@ -686,7 +686,6 @@ function MIUILayoutContent({ children }: { children: React.ReactNode }) {
           </div>
         </div>
       )}
-      {children}
     </div>
   );
 } 

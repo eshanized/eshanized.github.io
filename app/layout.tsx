@@ -2,7 +2,7 @@ import './globals.css';
 import './snigdha-theme.css';
 import type { Metadata, Viewport } from 'next';
 import { ThemeProvider } from '@/components/providers/theme-provider';
-import { NotificationProvider } from '@/components/ios/NotificationProvider';
+import { NotificationProvider } from '@/components/miui/NotificationProvider';
 import { MobileCheck } from '@/components/mobile-check';
 
 export const viewport: Viewport = {
@@ -17,7 +17,7 @@ export const metadata: Metadata = {
     default: 'Eshan Roy | Full Stack Developer',
     template: '%s | Eshan Roy'
   },
-  description: 'Full Stack Developer specializing in Next.js, React, and modern web technologies. Explore my portfolio featuring iOS-style web applications and innovative projects.',
+  description: 'Full Stack Developer specializing in Next.js, React, and modern web technologies. Explore my portfolio featuring MIUI-style web applications and innovative projects.',
   keywords: [
     'Eshan Roy',
     'Full Stack Developer',
@@ -48,7 +48,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: 'Eshan Roy | Full Stack Developer',
-    description: 'Full Stack Developer specializing in Next.js, React, and modern web technologies. Explore my portfolio featuring iOS-style web applications and innovative projects.',
+    description: 'Full Stack Developer specializing in Next.js, React, and modern web technologies. Explore my portfolio featuring MIUI-style web applications and innovative projects.',
     url: 'https://eshanized.is-a.dev',
     siteName: 'Eshan Roy Portfolio',
     images: [

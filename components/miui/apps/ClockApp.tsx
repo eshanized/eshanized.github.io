@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import BaseIOSApp from './BaseIOSApp';
+import BaseMIUIApp from './BaseMIUIApp';
 import { Clock, AlarmClock, Timer, Watch, Globe, ChevronRight, Plus, Trash2, Play, Pause } from 'lucide-react';
 
 export default function ClockApp() {
@@ -156,7 +156,7 @@ export default function ClockApp() {
   };
   
   return (
-    <BaseIOSApp title="Clock" rightAction={activeTab === "worldclock" || activeTab === "alarm" ? <Plus className="w-5 h-5" /> : undefined}>
+    <BaseMIUIApp title="Clock" rightAction={activeTab === "worldclock" || activeTab === "alarm" ? <Plus className="w-5 h-5" /> : undefined}>
       <div className="h-full flex flex-col">
         {/* World Clock Tab */}
         {activeTab === "worldclock" && (
@@ -347,6 +347,6 @@ export default function ClockApp() {
           ))}
         </div>
       </div>
-    </BaseIOSApp>
+    </BaseMIUIApp>
   );
 } 

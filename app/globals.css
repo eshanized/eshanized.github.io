@@ -39,15 +39,15 @@
 
 @layer base {
   :root {
-    /* iOS Light Mode Colors */
-    --ios-background: 242 242 247;
-    --ios-text: 0 0 0;
-    --ios-secondary-text: 60 60 67;
-    --ios-tertiary-text: 60 60 67;
-    --ios-system-fill: 120 120 128;
-    --ios-separator: 60 60 67;
-    --ios-grouped-background: 242 242 247;
-    --ios-system-background: 255 255 255;
+    /* MIUI Light Mode Colors */
+    --miui-background: 242 242 247;
+    --miui-text: 0 0 0;
+    --miui-secondary-text: 60 60 67;
+    --miui-tertiary-text: 60 60 67;
+    --miui-system-fill: 120 120 128;
+    --miui-separator: 60 60 67;
+    --miui-grouped-background: 242 242 247;
+    --miui-system-background: 255 255 255;
 
     /* Light theme colors - authentic macOS palette */
     --background: 0 0% 100%;         /* Pure white #FFFFFF */
@@ -90,15 +90,15 @@
   }
   
   .dark {
-    /* iOS Dark Mode Colors */
-    --ios-background: 0 0 0;
-    --ios-text: 255 255 255;
-    --ios-secondary-text: 235 235 245;
-    --ios-tertiary-text: 235 235 245;
-    --ios-system-fill: 120 120 128;
-    --ios-separator: 84 84 88;
-    --ios-grouped-background: 0 0 0;
-    --ios-system-background: 28 28 30;
+    /* MIUI Dark Mode Colors */
+    --miui-background: 0 0 0;
+    --miui-text: 255 255 255;
+    --miui-secondary-text: 235 235 245;
+    --miui-tertiary-text: 235 235 245;
+    --miui-system-fill: 120 120 128;
+    --miui-separator: 84 84 88;
+    --miui-grouped-background: 0 0 0;
+    --miui-system-background: 28 28 30;
 
     /* Dark theme colors - authentic macOS palette */
     --background: 222.2 84% 4.9%;
@@ -767,20 +767,20 @@ input.font-sf-pro::placeholder {
   animation: mac-shake 0.4s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
 }
 
-/* Add iOS-specific utility styles */
+/* Add MIUI-specific utility styles */
 
 @layer utilities {
-  /* Text shadow for iOS app names */
+  /* Text shadow for MIUI app names */
   .text-shadow {
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
   }
   
-  /* iOS-specific backdrop blur for folders and dock */
-  .ios-blur {
+  /* MIUI-specific backdrop blur for folders and dock */
+  .miui-blur {
     backdrop-filter: blur(20px) saturate(180%);
   }
   
-  /* iOS app icon sizes */
+  /* MIUI app icon sizes */
   .w-15 {
     width: 3.75rem;
   }
@@ -804,7 +804,7 @@ input.font-sf-pro::placeholder {
   }
 }
 
-/* iOS System Font */
+/* MIUI System Font */
 @font-face {
   font-family: 'SF Pro Display';
   src: local('-apple-system'),

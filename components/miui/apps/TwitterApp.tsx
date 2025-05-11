@@ -1,7 +1,7 @@
 "use client";
 
 import React from 'react';
-import BaseIOSApp from './BaseIOSApp';
+import BaseMIUIApp from './BaseMIUIApp';
 import Image from 'next/image';
 import { Heart, MessageCircle, Repeat2, Share } from 'lucide-react';
 
@@ -43,7 +43,7 @@ const tweets = [
 
 export default function TwitterApp() {
   return (
-    <BaseIOSApp title="Twitter" rightAction="new">
+    <BaseMIUIApp title="Twitter" rightAction="new">
       <div className="flex flex-col divide-y divide-gray-200 dark:divide-gray-700/60">
         {/* Profile Header */}
         <div className="p-4 bg-white dark:bg-black sticky top-0 z-10 backdrop-blur-xl bg-opacity-70 dark:bg-opacity-70">
@@ -111,6 +111,6 @@ export default function TwitterApp() {
           </article>
         ))}
       </div>
-    </BaseIOSApp>
+    </BaseMIUIApp>
   );
 } 

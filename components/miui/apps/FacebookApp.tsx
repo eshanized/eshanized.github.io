@@ -1,7 +1,7 @@
 "use client";
 
 import React from 'react';
-import BaseIOSApp from './BaseIOSApp';
+import BaseMIUIApp from './BaseMIUIApp';
 import Image from 'next/image';
 import { Heart, MessageCircle, Share2, ThumbsUp } from 'lucide-react';
 
@@ -36,7 +36,7 @@ const posts = [
 
 export default function FacebookApp() {
   return (
-    <BaseIOSApp title="Facebook" rightAction="new">
+    <BaseMIUIApp title="Facebook" rightAction="new">
       <div className="flex flex-col divide-y divide-gray-200 dark:divide-gray-700/60">
         {/* Story Section */}
         <div className="p-4 bg-white dark:bg-black overflow-x-auto">
@@ -143,6 +143,6 @@ export default function FacebookApp() {
           </article>
         ))}
       </div>
-    </BaseIOSApp>
+    </BaseMIUIApp>
   );
 } 

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useCallback } from 'react';
-import BaseIOSApp from './BaseIOSApp';
+import BaseMIUIApp from './BaseMIUIApp';
 import { Phone, User, VoicemailIcon, Clock, Star, Info, Plus, Trash2, Search, X, Video, Mic, Volume2, ArrowLeft } from 'lucide-react';
 import Image from 'next/image';
 
@@ -29,7 +29,7 @@ interface CallState {
   isVideo: boolean;
 }
 
-const PhoneApp = () => {
+export default function PhoneApp() {
   const [activeTab, setActiveTab] = useState<string>("favorites");
   const [dialPad, setDialPad] = useState<boolean>(false);
   const [dialNumber, setDialNumber] = useState<string>("");
@@ -342,7 +342,7 @@ const PhoneApp = () => {
   );
   
   return (
-    <BaseIOSApp 
+    <BaseMIUIApp 
       title={getAppTitle()}
       rightAction={getRightAction()}
     >
@@ -559,8 +559,6 @@ const PhoneApp = () => {
           </>
         )}
       </div>
-    </BaseIOSApp>
+    </BaseMIUIApp>
   );
-}
-
-export default PhoneApp; 
+} 

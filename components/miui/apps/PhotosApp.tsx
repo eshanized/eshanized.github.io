@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
-import BaseIOSApp from './BaseIOSApp';
+import BaseMIUIApp from './BaseMIUIApp';
 import { Grid, Image as ImageIcon, Search, Share, Heart, User, BookOpen } from 'lucide-react';
 import Image from 'next/image';
 
@@ -101,7 +101,7 @@ export default function PhotosApp() {
   ];
   
   return (
-    <BaseIOSApp title="Photos" rightAction="more">
+    <BaseMIUIApp title="Photos" rightAction="more">
       <div className="h-full flex flex-col">
         {/* Photos view (Library tab) */}
         {activeTab === "library" && (
@@ -206,6 +206,6 @@ export default function PhotosApp() {
           ))}
         </div>
       </div>
-    </BaseIOSApp>
+    </BaseMIUIApp>
   );
 }

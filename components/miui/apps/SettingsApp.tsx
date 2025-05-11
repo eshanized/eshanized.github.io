@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
-import BaseIOSApp from './BaseIOSApp';
+import BaseMIUIApp from './BaseMIUIApp';
 import Image from 'next/image';
 import { 
   User, 
@@ -15,7 +15,8 @@ import {
   Lock,
   Battery,
   ChevronRight,
-  Check
+  Check,
+  Info
 } from 'lucide-react';
 import { useTheme } from '../ThemeContext';
 import { PERSONAL_INFO } from '@/lib/constants';
@@ -100,7 +101,7 @@ export default function SettingsApp() {
   };
 
   return (
-    <BaseIOSApp title="Settings">
+    <BaseMIUIApp title="Settings">
       <div className="pb-8 bg-[#f2f2f7] dark:bg-black min-h-screen">
         {/* User profile section */}
         <div className="p-4 flex items-center bg-white dark:bg-gray-800/80 border-b border-gray-200 dark:border-gray-700/80">
@@ -115,7 +116,7 @@ export default function SettingsApp() {
           </div>
           <div className="ml-4">
             <h2 className="text-lg font-medium text-black dark:text-white">{PERSONAL_INFO.name}</h2>
-            <p className="text-gray-500 dark:text-gray-400">Apple ID, iCloud+, App Store</p>
+            <p className="text-gray-500 dark:text-gray-400">MIUI Account, Cloud Storage, App Store</p>
           </div>
           <ChevronRight className="w-5 h-5 text-gray-400 dark:text-gray-500 ml-auto" />
         </div>
@@ -305,14 +306,14 @@ export default function SettingsApp() {
           {/* About */}
           <div className="bg-white dark:bg-gray-800/80 rounded-xl p-4">
             <div className="text-gray-500 dark:text-gray-400 text-sm">
-              iOS 16.5.1
+              MIUI 14
             </div>
             <div className="mt-1 text-center text-xs text-gray-400 dark:text-gray-500">
-              Portfolio iOS Experience
+              Portfolio MIUI Experience
             </div>
           </div>
         </div>
       </div>
-    </BaseIOSApp>
+    </BaseMIUIApp>
   );
 } 

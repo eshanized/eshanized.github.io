@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import BaseIOSApp from './BaseIOSApp';
+import BaseMIUIApp from './BaseMIUIApp';
 import { 
   Play, 
   Pause, 
@@ -79,6 +79,10 @@ export default function MusicApp() {
   const [repeatMode, setRepeatMode] = useState<'off' | 'all' | 'one'>('off');
   const [isShuffleOn, setIsShuffleOn] = useState(false);
   
+  const playerRef = useRef<any>(null);
+  const handleNextSongRef = useRef(() => {});
+  const handleUserInteractionRef = useRef(() => {});
+  
   // Used for YouTube custom songs
   const [customSongs, setCustomSongs] = useState<CustomYouTubeSong[]>([
     { 
@@ -127,8 +131,6 @@ export default function MusicApp() {
       addedAt: new Date(Date.now() - 1000 * 60 * 30)
     }
   ]);
-  
-  const playerRef = useRef<any>(null);
   
   // Convert CustomYouTubeSong to Song
   const songs: Song[] = customSongs.map(song => ({
@@ -193,6 +195,68 @@ export default function MusicApp() {
     }
   }, []);
 
+  // Handle user interaction to unlock audio
+  const handleUserInteraction = useCallback(() => {
+    console.log("User interaction - attempting to unlock audio");
+    if (!playerRef.current || !songs[currentSongIndex]?.youtubeId) return;
+    
+    try {
+      if (typeof playerRef.current.unMute === 'function') {
+        playerRef.current.unMute();
+      }
+      if (typeof playerRef.current.setVolume === 'function') {
+        playerRef.current.setVolume(isMuted ? 0 : volume);
+      }
+      if (isPlaying && typeof playerRef.current.playVideo === 'function') {
+        playerRef.current.playVideo();
+      }
+    } catch (error) {
+      console.error("Error handling user interaction:", error);
+    }
+  }, [currentSongIndex, songs, isPlaying, isMuted, volume]);
+
+  // Update handleUserInteractionRef whenever handleUserInteraction changes
+  useEffect(() => {
+    handleUserInteractionRef.current = handleUserInteraction;
+  }, [handleUserInteraction]);
+
+  const handleNextSong = useCallback(() => {
+    setCurrentSongIndex((prev) => (prev === songs.length - 1 ? 0 : prev + 1));
+    setCurrentTime(0);
+    setIsPlaying(true);
+    handleUserInteractionRef.current();
+  }, [songs.length]);
+
+  // Update handleNextSongRef whenever handleNextSong changes
+  useEffect(() => {
+    handleNextSongRef.current = handleNextSong;
+  }, [handleNextSong]);
+
+  const handlePlayPause = () => {
+    if (!songs.length) return;
+    
+    if (playerRef.current) {
+      try {
+        if (isPlaying) {
+          playerRef.current.pauseVideo();
+        } else {
+          playerRef.current.playVideo();
+        }
+      } catch (error) {
+        console.error("Error controlling playback:", error);
+      }
+    }
+    setIsPlaying(!isPlaying);
+    handleUserInteractionRef.current();
+  };
+
+  const handlePrevSong = () => {
+    setCurrentSongIndex((prev) => (prev === 0 ? songs.length - 1 : prev - 1));
+    setCurrentTime(0);
+    setIsPlaying(true);
+    handleUserInteractionRef.current();
+  };
+
   // Create YouTube player when API is ready
   useEffect(() => {
     if (!youtubeApiReady || !songs[currentSongIndex]?.youtubeId) return;
@@ -254,7 +318,7 @@ export default function MusicApp() {
                 setIsPlaying(false);
               } else if (event.data === window.YT.PlayerState.ENDED) {
                 console.log("YouTube playback ENDED");
-                handleNextSong();
+                handleNextSongRef.current();
               } else if (event.data === -1) {
                 // Unstarted state
                 console.log("YouTube player unstarted");
@@ -272,14 +336,14 @@ export default function MusicApp() {
           },
           onError: (event: any) => {
             console.error("YouTube player error:", event.data);
-            handleNextSong();
+            handleNextSongRef.current();
           }
         }
       });
     } catch (error) {
       console.error("Error initializing YouTube player:", error);
     }
-  }, [currentSongIndex, youtubeApiReady]);
+  }, [currentSongIndex, youtubeApiReady, isPlaying, isMuted, volume]);
 
   // Update playback state when isPlaying changes
   useEffect(() => {
@@ -295,58 +359,6 @@ export default function MusicApp() {
       console.error("Error controlling playback:", error);
     }
   }, [isPlaying]);
-
-  // Handle user interaction to unlock audio
-  const handleUserInteraction = useCallback(() => {
-    console.log("User interaction - attempting to unlock audio");
-    if (!playerRef.current || !songs[currentSongIndex]?.youtubeId) return;
-    
-    try {
-      if (typeof playerRef.current.unMute === 'function') {
-        playerRef.current.unMute();
-      }
-      if (typeof playerRef.current.setVolume === 'function') {
-        playerRef.current.setVolume(isMuted ? 0 : volume);
-      }
-      if (isPlaying && typeof playerRef.current.playVideo === 'function') {
-        playerRef.current.playVideo();
-      }
-    } catch (error) {
-      console.error("Error handling user interaction:", error);
-    }
-  }, [currentSongIndex, songs, isPlaying, isMuted, volume]);
-
-  const handlePlayPause = () => {
-    if (!songs.length) return;
-    
-    if (playerRef.current) {
-      try {
-        if (isPlaying) {
-          playerRef.current.pauseVideo();
-        } else {
-          playerRef.current.playVideo();
-        }
-      } catch (error) {
-        console.error("Error controlling playback:", error);
-      }
-    }
-    setIsPlaying(!isPlaying);
-    handleUserInteraction();
-  };
-
-  const handlePrevSong = () => {
-    setCurrentSongIndex((prev) => (prev === 0 ? songs.length - 1 : prev - 1));
-    setCurrentTime(0);
-    setIsPlaying(true);
-    handleUserInteraction();
-  };
-
-  const handleNextSong = () => {
-    setCurrentSongIndex((prev) => (prev === songs.length - 1 ? 0 : prev + 1));
-    setCurrentTime(0);
-    setIsPlaying(true);
-    handleUserInteraction();
-  };
 
   // Update playback progress
   useEffect(() => {
@@ -443,7 +455,7 @@ export default function MusicApp() {
   // If no songs available, show a message
   if (songs.length === 0) {
     return (
-      <BaseIOSApp title="Music" headerColor="bg-white dark:bg-black">
+      <BaseMIUIApp title="Music" headerColor="bg-white dark:bg-black">
         <div className="h-full flex flex-col items-center justify-center bg-white dark:bg-black text-black dark:text-white">
           <Youtube className="w-16 h-16 text-red-500 mb-4" />
           <h2 className="text-xl font-bold mb-2">No Songs Available</h2>
@@ -455,12 +467,12 @@ export default function MusicApp() {
             Add YouTube Music Songs
           </button>
         </div>
-      </BaseIOSApp>
+      </BaseMIUIApp>
     );
   }
 
   return (
-    <BaseIOSApp title="Music" headerColor="bg-white dark:bg-black">
+    <BaseMIUIApp title="Music" headerColor="bg-white dark:bg-black">
       <div 
         className="h-full flex flex-col bg-white dark:bg-black text-black dark:text-white" 
         onClick={handleUserInteraction}
@@ -474,7 +486,7 @@ export default function MusicApp() {
             className={`p-2 rounded-full transition-colors ${
               isPlaying ? 'text-red-500 bg-red-500/10' : 'hover:bg-gray-100 dark:hover:bg-gray-800'
             }`}
-            onClick={handlePlayPause}
+            onClick={handleUserInteraction}
           >
             <Youtube className="w-5 h-5" />
           </button>
@@ -761,6 +773,6 @@ export default function MusicApp() {
           </div>
         )}
       </div>
-    </BaseIOSApp>
+    </BaseMIUIApp>
   );
 } 

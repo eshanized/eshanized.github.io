@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
-import BaseIOSApp from './BaseIOSApp';
+import BaseMIUIApp from './BaseMIUIApp';
 import { Camera, Zap, ArrowLeft, ArrowRight, Image as ImageIcon } from 'lucide-react';
 
 export default function CameraApp() {
@@ -45,7 +45,7 @@ export default function CameraApp() {
   };
   
   return (
-    <BaseIOSApp title="Camera" headerColor="bg-black" headerTextColor="text-white">
+    <BaseMIUIApp title="Camera" headerColor="bg-black" headerTextColor="text-white">
       <div className="h-full flex flex-col bg-black text-white">
         {/* Camera viewfinder (simulated) */}
         <div className="flex-1 flex items-center justify-center relative">
@@ -131,6 +131,6 @@ export default function CameraApp() {
           </div>
         </div>
       </div>
-    </BaseIOSApp>
+    </BaseMIUIApp>
   );
 } 

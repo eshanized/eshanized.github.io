@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
-import BaseIOSApp from './BaseIOSApp';
+import BaseMIUIApp from './BaseMIUIApp';
 import { PERSONAL_INFO, SOCIAL_LINKS } from '@/lib/constants';
 import { Send, Mail, Phone, MapPin, ExternalLink } from 'lucide-react';
 
@@ -46,7 +46,7 @@ export default function ContactApp() {
   };
   
   return (
-    <BaseIOSApp title="Contact">
+    <BaseMIUIApp title="Contact">
       <div className="p-4">
         <h1 className="text-2xl font-bold mb-4">Get in Touch</h1>
         
@@ -192,6 +192,6 @@ export default function ContactApp() {
           )}
         </div>
       </div>
-    </BaseIOSApp>
+    </BaseMIUIApp>
   );
 } 

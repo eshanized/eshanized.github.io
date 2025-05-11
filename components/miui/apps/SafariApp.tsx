@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
-import BaseIOSApp from './BaseIOSApp';
+import BaseMIUIApp from './BaseMIUIApp';
 import { Search, ArrowLeft, ArrowRight, Share, BookOpen, Plus, GridIcon } from 'lucide-react';
 import { PERSONAL_INFO } from '@/lib/constants';
 
@@ -38,7 +38,7 @@ export default function SafariApp() {
   };
   
   return (
-    <BaseIOSApp title="Safari" onBack={undefined}>
+    <BaseMIUIApp title="Safari" onBack={undefined}>
       <div className="h-full flex flex-col">
         {/* URL/Search bar */}
         <div className="px-4 py-2 bg-gray-100 dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700">
@@ -156,6 +156,6 @@ export default function SafariApp() {
           </button>
         </div>
       </div>
-    </BaseIOSApp>
+    </BaseMIUIApp>
   );
 } 

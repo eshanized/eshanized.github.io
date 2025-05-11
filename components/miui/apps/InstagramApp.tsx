@@ -1,7 +1,7 @@
 "use client";
 
 import React from 'react';
-import BaseIOSApp from './BaseIOSApp';
+import BaseMIUIApp from './BaseMIUIApp';
 import Image from 'next/image';
 import { Heart, MessageCircle, Bookmark, Share2, MoreHorizontal } from 'lucide-react';
 
@@ -42,7 +42,7 @@ const stories = [
 
 export default function InstagramApp() {
   return (
-    <BaseIOSApp title="Instagram" rightAction="new">
+    <BaseMIUIApp title="Instagram" rightAction="new">
       <div className="flex flex-col divide-y divide-gray-200 dark:divide-gray-700/60">
         {/* Stories */}
         <div className="p-4 bg-white dark:bg-black overflow-x-auto">
@@ -149,6 +149,6 @@ export default function InstagramApp() {
           </article>
         ))}
       </div>
-    </BaseIOSApp>
+    </BaseMIUIApp>
   );
 } 
