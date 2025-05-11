@@ -7,11 +7,11 @@
 [![GitHub Pages](https://img.shields.io/badge/GitHub_Pages-Deployed-success?style=for-the-badge&logo=github)](https://eshanized.github.io/)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
 
-> An elegant and interactive portfolio website featuring iOS-style design, built with modern web technologies.
+> An elegant and interactive portfolio website featuring miui-style design, built with modern web technologies.
 
 ## 🌟 Features
 
-- 📱 iOS-inspired design and interactions
+- 📱 MIUI-inspired design and interactions
 - 🌓 Dark/Light mode with system preference sync
 - 📊 Interactive app-like components
 - 🎨 Beautiful animations and transitions
@@ -83,7 +83,7 @@ eshanized_web/
 │   ├── layout.tsx        # Root layout
 │   └── page.tsx          # Home page
 ├── components/           # React components
-│   ├── ios/             # iOS-style components
+│   ├── miui/            # MIUI-style components
 │   ├── macos/           # macOS-style components
 │   ├── ui/              # Shared UI components
 │   └── providers/       # Context providers
@@ -95,17 +95,17 @@ eshanized_web/
 
 ## 🎨 Design System
 
-### iOS Design Implementation
-- Custom iOS-style components
+### MIUI Design Implementation
+- Custom MIUI-style components
 - System-native animations
-- Authentic iOS interactions
+- Authentic MIUI interactions
 - Dark mode support
 - Blur effects
-- iOS typography
+- MIUI typography
 
 ### Component Categories
 1. **Navigation Components**
-   - iOS-style headers
+   - MIUI-style headers
    - Tab bars
    - Navigation bars
 
