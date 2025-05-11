@@ -1,5 +1,5 @@
-import { MacOSDesktop } from '@/components/macos/desktop';
+import { SnigdhaOSDesktop } from '@/components/macos/desktop';
 
 export default function Home() {
-  return <MacOSDesktop />;
+  return <SnigdhaOSDesktop />;
 }

@@ -82,7 +82,7 @@ const HeartParticles = () => {
   return <div className="heart-particles"></div>;
 };
 
-export function MacOSDesktop() {
+export function SnigdhaOSDesktop() {
   const [mounted, setMounted] = useState(false);
   const [isBooting, setIsBooting] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
