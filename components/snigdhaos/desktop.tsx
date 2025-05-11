@@ -283,7 +283,7 @@ export function SnigdhaOSDesktop() {
   const handleContextMenu = (e: React.MouseEvent) => {
     // Show context menu on right-click, unless it's on an app window or UI element
     // Check if the target has a specific class or is inside a Window component
-    const isWindow = (e.target as HTMLElement).closest('.snigdhaOS-window') !== null;
+    const isWindow = (e.target as HTMLElement).closest('.snigdhaos-window') !== null;
     const isDock = (e.target as HTMLElement).closest('.dock-container') !== null;
     const isMenuBar = (e.target as HTMLElement).closest('.menu-bar') !== null;
     const isDesktopIcon = (e.target as HTMLElement).closest('.desktop-icon') !== null;

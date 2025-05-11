@@ -135,7 +135,7 @@ export function Window({
               stiffness: 300,
               damping: 20
             }}
-            className={`rounded-lg overflow-hidden snigdhaOS-window ${
+            className={`rounded-lg overflow-hidden snigdhaos-window ${
               isActive 
                 ? 'shadow-2xl' 
                 : 'shadow-lg'
@@ -268,7 +268,7 @@ export function Window({
   z-index: 1;
 }
 
-.snigdhaOS-window {
+.snigdhaos-window {
   will-change: transform;
 }
 */

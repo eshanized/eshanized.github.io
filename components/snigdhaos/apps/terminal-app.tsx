@@ -43,7 +43,7 @@ const terminalColors = {
     prompt: '#59ff59',
     comment: '#808080',
     selection: 'rgba(255, 255, 255, 0.2)',
-    // macOS neofetch colors
+    // SnigdhaOS neofetch colors
     red: '#FF5F57',
     orange: '#FF9F43',
     yellow: '#FFBD2E',
@@ -58,7 +58,7 @@ const terminalColors = {
     prompt: '#009900',
     comment: '#6a6a6a',
     selection: 'rgba(0, 0, 0, 0.1)',
-    // macOS neofetch colors
+    // SnigdhaOS neofetch colors
     red: '#FF3B30',
     orange: '#FF9500',
     yellow: '#FFCC00',
@@ -113,9 +113,9 @@ export default function TerminalApp() {
     }
   }, [history]);
   
-  // Generate authentic macOS neofetch
+  // Generate authentic SnigdhaOS neofetch
   const generateNeofetch = () => {
-    // Get macOS version name
+    // Get SnigdhaOS version name
     const snigdhaOSVersions = {
       "14": "Sonoma",
       "13": "Ventura",
@@ -158,7 +158,7 @@ export default function TerminalApp() {
       );
     };
     
-    // macOS logo in ASCII art with custom colors
+    // SnigdhaOS logo in ASCII art with custom colors
     return (
       <div className="font-mono whitespace-pre-wrap">
         <div className="flex">
@@ -178,10 +178,10 @@ export default function TerminalApp() {
  /-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.;`}
           </div>
           <div className="flex flex-col ml-1">
-            <div><span className="font-bold" style={{color: terminalColors[termTheme as keyof typeof terminalColors].blue}}>{username}@MacBook-Pro</span></div>
+            <div><span className="font-bold" style={{color: terminalColors[termTheme as keyof typeof terminalColors].blue}}>{username}@SnigdhaOS</span></div>
             <div style={{color: terminalColors[termTheme as keyof typeof terminalColors].blue}}>--------------------</div>
             <div><span style={{color: terminalColors[termTheme as keyof typeof terminalColors].yellow}}>OS:</span> SnigdhaOS {randomVersion}.0 {versionName}</div>
-            <div><span style={{color: terminalColors[termTheme as keyof typeof terminalColors].yellow}}>Host:</span> MacBook Pro (M2, 2023)</div>
+            <div><span style={{color: terminalColors[termTheme as keyof typeof terminalColors].yellow}}>Host:</span> SnigdhaOS Pro (S1, 2023)</div>
             <div><span style={{color: terminalColors[termTheme as keyof typeof terminalColors].yellow}}>Kernel:</span> Darwin 23.1.0</div>
             <div><span style={{color: terminalColors[termTheme as keyof typeof terminalColors].yellow}}>Uptime:</span> {uptimeStr}</div>
             <div><span style={{color: terminalColors[termTheme as keyof typeof terminalColors].yellow}}>Shell:</span> {shellPath}</div>

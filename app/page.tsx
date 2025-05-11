@@ -1,4 +1,4 @@
-import { SnigdhaOSDesktop } from '@/components/macos/desktop';
+import { SnigdhaOSDesktop } from '@/components/snigdhaos/desktop';
 
 export default function Home() {
   return <SnigdhaOSDesktop />;

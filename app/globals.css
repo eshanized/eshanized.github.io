@@ -291,7 +291,7 @@ html {
   @apply text-sm font-medium transition-colors duration-200;
 }
 
-/* Enhanced macOS Dock Styles */
+/* Enhanced SnigdhaOS Dock Styles */
 .dock-container {
   backdrop-filter: blur(12px);
   background-color: var(--dock-bg);
@@ -390,8 +390,8 @@ html {
   }
 }
 
-/* Enhanced MacOS Window Styles */
-.macos-window {
+/* Enhanced SnigdhaOS Window Styles */
+.snigdhaos-window {
   backdrop-filter: blur(var(--window-blur)) saturate(180%);
   background-color: rgba(var(--card), var(--glass-opacity));
   border: 1px solid var(--window-border);
@@ -404,7 +404,7 @@ html {
   overflow: hidden;
 }
 
-.macos-window.active {
+.snigdhaos-window.active {
   box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2),
               0 8px 10px -6px rgba(0, 0, 0, 0.1);
   border-color: rgba(var(--primary), 0.1);
@@ -530,7 +530,7 @@ html {
 }
 
 /* Additional macOS UI elements */
-.macos-button {
+.snigdhaos-button {
   background: linear-gradient(to bottom, 
               rgba(var(--secondary), 1), 
               rgba(var(--secondary), 0.9));
@@ -542,7 +542,7 @@ html {
   transition: all 0.2s ease;
 }
 
-.macos-button:hover {
+.snigdhaos-button:hover {
   background: linear-gradient(to bottom, 
               rgba(var(--secondary), 0.95), 
               rgba(var(--secondary), 0.85));
@@ -550,7 +550,7 @@ html {
   box-shadow: 0 2px 5px -1px rgba(0, 0, 0, 0.1);
 }
 
-.macos-button:active {
+.snigdhaos-button:active {
   background: linear-gradient(to bottom, 
               rgba(var(--secondary), 0.85), 
               rgba(var(--secondary), 0.8));
@@ -558,7 +558,7 @@ html {
   box-shadow: none;
 }
 
-.macos-button-primary {
+.snigdhaos-button-primary {
   background: linear-gradient(to bottom, 
               rgba(var(--primary), 1), 
               rgba(var(--primary), 0.9));
@@ -566,13 +566,13 @@ html {
   border: 1px solid rgba(var(--primary), 0.6);
 }
 
-.macos-button-primary:hover {
+.snigdhaos-button-primary:hover {
   background: linear-gradient(to bottom, 
               rgba(var(--primary), 0.95), 
               rgba(var(--primary), 0.85));
 }
 
-.macos-button-primary:active {
+.snigdhaos-button-primary:active {
   background: linear-gradient(to bottom, 
               rgba(var(--primary), 0.85), 
               rgba(var(--primary), 0.8));
