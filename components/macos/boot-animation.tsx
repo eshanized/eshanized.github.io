@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { AppleLogo } from './apple-logo';
+import { SnigdhaOSLogo } from './snigdhaos-logo';
 
 export function BootAnimation({ onComplete }: { onComplete: () => void }) {
   const [progress, setProgress] = useState(0);
@@ -143,7 +143,7 @@ export function BootAnimation({ onComplete }: { onComplete: () => void }) {
                 }}
                 style={{ perspective: "1000px", transformStyle: "preserve-3d" }}
               >
-                <AppleLogo className="w-24 h-24 text-white drop-shadow-[0_0_15px_rgba(255,255,255,0.5)]" />
+                <SnigdhaOSLogo className="w-24 h-24 text-white drop-shadow-[0_0_15px_rgba(255,255,255,0.5)]" />
               </motion.div>
             </motion.div>
             
