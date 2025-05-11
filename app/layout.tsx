@@ -1,9 +1,15 @@
+"use client";
+
 import './globals.css';
 import './snigdha-theme.css';
 import type { Metadata, Viewport } from 'next';
 import { ThemeProvider } from '@/components/providers/theme-provider';
 import { NotificationProvider } from '@/components/miui/NotificationProvider';
 import { MobileCheck } from '@/components/mobile-check';
+import { Inter } from "next/font/google";
+import { MIUIThemeProvider } from "@/components/miui/MIUIThemeContext";
+
+const inter = Inter({ subsets: ["latin"] });
 
 export const viewport: Viewport = {
   width: 'device-width',
@@ -112,11 +118,13 @@ export default function RootLayout({
       suppressHydrationWarning
       className="scroll-smooth"
     >
-      <body className="font-sf-pro antialiased">
+      <body className={inter.className}>
         <ThemeProvider>
           <NotificationProvider>
             <MobileCheck>
-              {children}
+              <MIUIThemeProvider>
+                {children}
+              </MIUIThemeProvider>
             </MobileCheck>
           </NotificationProvider>
         </ThemeProvider>

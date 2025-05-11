@@ -32,6 +32,7 @@ export const PERSONAL_INFO = {
   twitter: "https://twitter.com/eshanized",
   resume: "/resume.pdf",
   website: "https://eshanized.is-a.dev",
+  avatar: "/avatar.jpg",
   about: `Hi, I'm Eshan Roy, a passionate Full Stack Developer with expertise in building modern web applications using React, Next.js, Node.js, and various other technologies. I enjoy creating elegant solutions to complex problems and am constantly exploring new technologies to enhance my skill set.
 
 When I'm not coding, you might find me reading tech blogs, contributing to open-source projects, or exploring the outdoors. I believe in writing clean, maintainable code and creating intuitive user experiences.`,
