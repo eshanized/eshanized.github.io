@@ -283,7 +283,7 @@ export function SnigdhaOSDesktop() {
   const handleContextMenu = (e: React.MouseEvent) => {
     // Show context menu on right-click, unless it's on an app window or UI element
     // Check if the target has a specific class or is inside a Window component
-    const isWindow = (e.target as HTMLElement).closest('.macOS-window') !== null;
+    const isWindow = (e.target as HTMLElement).closest('.snigdhaOS-window') !== null;
     const isDock = (e.target as HTMLElement).closest('.dock-container') !== null;
     const isMenuBar = (e.target as HTMLElement).closest('.menu-bar') !== null;
     const isDesktopIcon = (e.target as HTMLElement).closest('.desktop-icon') !== null;
@@ -540,13 +540,13 @@ export function SnigdhaOSDesktop() {
                                 <span className="block text-5xl lg:text-7xl mb-3 bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-500 text-transparent bg-clip-text gradient-text">
                                   Portfolio<span className="text-white text-4xl lg:text-6xl">.</span>
                                 </span>
-                                <span className="text-xl lg:text-2xl text-blue-300">macOS Experience</span>
+                                <span className="text-xl lg:text-2xl text-blue-300">SnigdhaOS Experience</span>
                               </h1>
                               
                               <div className="h-1 w-32 bg-gradient-to-r from-blue-400 to-purple-500 rounded-full my-6"></div>
                               
                               <p className="text-base lg:text-xl text-gray-300 mb-6 leading-relaxed max-w-lg">
-                                Explore my work through this interactive macOS-inspired interface with a unique blend of design and functionality. Discover projects, skills, and more through a familiar environment.
+                                Explore my work through this interactive SnigdhaOS-inspired interface with a unique blend of design and functionality. Discover projects, skills, and more through a familiar environment.
                               </p>
                             </motion.div>
                             
@@ -601,7 +601,7 @@ export function SnigdhaOSDesktop() {
                             >
                               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 {[
-                                  { title: "Interactive UI", desc: "Fully functional macOS experience" },
+                                  { title: "Interactive UI", desc: "Fully functional SnigdhaOS experience" },
                                   { title: "Projects", desc: "Explore my work in detail" },
                                   { title: "Skills", desc: "Technical expertise breakdown" },
                                   { title: "Contact", desc: "Get in touch easily" }
@@ -630,7 +630,7 @@ export function SnigdhaOSDesktop() {
                               animate={{ opacity: 1, scale: 1 }}
                               transition={{ duration: 1, delay: 0.5 }}
                             >
-                              {/* 3D Mockup of the macOS interface */}
+                              {/* 3D Mockup of the SnigdhaOS interface */}
                               <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-full blur-3xl scale-75"></div>
                               
                               <div className="relative z-10 w-full h-full flex items-center justify-center">

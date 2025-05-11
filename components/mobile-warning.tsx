@@ -19,7 +19,7 @@ export const MobileWarning: React.FC = () => {
         </div>
         <h2 className="mb-2 text-xl font-bold text-white">Desktop Only Experience</h2>
         <p className="mb-4 text-gray-300">
-          This portfolio is designed exclusively for desktop viewing to provide the best MacOS-inspired experience.
+          This portfolio is designed exclusively for desktop viewing to provide the best SnigdhaOS-inspired experience.
         </p>
         <p className="mb-6 text-gray-400">
           Please visit this site on a desktop or laptop computer for the full interactive experience.

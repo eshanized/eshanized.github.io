@@ -43,13 +43,13 @@ export type MenuActionSeparator = {
 
 export type MenuAction = MenuActionRegular | MenuActionSeparator;
 
-export type MacOSMenuItemProps = {
+export type SnigdhaOSMenuItemProps = {
   label: string;
   items: MenuAction[];
   className?: string;
 };
 
-export const MacOSMenuItem = memo(function MacOSMenuItem({ label, items, className }: MacOSMenuItemProps) {
+export const SnigdhaOSMenuItem = memo(function SnigdhaOSMenuItem({ label, items, className }: SnigdhaOSMenuItemProps) {
   const { activeMenu, showMenu, hideMenu, isMenuOpen, menuRef, handleMenuAction, registerShortcuts } = useMenuContext();
   const windowManager = useWindowManager();
   const [isOpen, setIsOpen] = useState(false);
@@ -191,4 +191,4 @@ export const MacOSMenuItem = memo(function MacOSMenuItem({ label, items, classNa
   );
 });
 
-MacOSMenuItem.displayName = 'MacOSMenuItem'; 
+SnigdhaOSMenuItem.displayName = 'SnigdhaOSMenuItem'; 

@@ -10,7 +10,7 @@ import {
 } from 'lucide-react';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuSeparator, DropdownMenuShortcut } from '@/components/ui/dropdown-menu';
 import { motion, AnimatePresence } from 'framer-motion';
-import { MacOSMenuItem, MenuAction } from './menu-item';
+import { SnigdhaOSMenuItem, MenuAction } from './menu-item';
 import { useWindowManager } from './window-context';
 
 type MenuBarProps = {
@@ -688,7 +688,7 @@ export const MenuBar = memo(function MenuBar({
 
           <div className="h-full flex items-center">
             {allMenus.map((item) => (
-              <MacOSMenuItem 
+              <SnigdhaOSMenuItem 
                 key={item.label} 
                 label={item.label} 
                 items={item.items}

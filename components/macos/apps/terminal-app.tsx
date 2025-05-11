@@ -116,15 +116,15 @@ export default function TerminalApp() {
   // Generate authentic macOS neofetch
   const generateNeofetch = () => {
     // Get macOS version name
-    const macOSVersions = {
+    const snigdhaOSVersions = {
       "14": "Sonoma",
       "13": "Ventura",
       "12": "Monterey",
       "11": "Big Sur",
       "10.15": "Catalina"
     };
-    const randomVersion = Object.keys(macOSVersions)[Math.floor(Math.random() * Object.keys(macOSVersions).length)];
-    const versionName = macOSVersions[randomVersion as keyof typeof macOSVersions];
+    const randomVersion = Object.keys(snigdhaOSVersions)[Math.floor(Math.random() * Object.keys(snigdhaOSVersions).length)];
+  const versionName = snigdhaOSVersions[randomVersion as keyof typeof snigdhaOSVersions];
     
     // Calculate uptime
     const hours = Math.floor(Math.random() * 24);
@@ -180,7 +180,7 @@ export default function TerminalApp() {
           <div className="flex flex-col ml-1">
             <div><span className="font-bold" style={{color: terminalColors[termTheme as keyof typeof terminalColors].blue}}>{username}@MacBook-Pro</span></div>
             <div style={{color: terminalColors[termTheme as keyof typeof terminalColors].blue}}>--------------------</div>
-            <div><span style={{color: terminalColors[termTheme as keyof typeof terminalColors].yellow}}>OS:</span> macOS {randomVersion}.0 {versionName}</div>
+            <div><span style={{color: terminalColors[termTheme as keyof typeof terminalColors].yellow}}>OS:</span> SnigdhaOS {randomVersion}.0 {versionName}</div>
             <div><span style={{color: terminalColors[termTheme as keyof typeof terminalColors].yellow}}>Host:</span> MacBook Pro (M2, 2023)</div>
             <div><span style={{color: terminalColors[termTheme as keyof typeof terminalColors].yellow}}>Kernel:</span> Darwin 23.1.0</div>
             <div><span style={{color: terminalColors[termTheme as keyof typeof terminalColors].yellow}}>Uptime:</span> {uptimeStr}</div>
@@ -229,7 +229,7 @@ export default function TerminalApp() {
           'about             - Display information about this terminal',
           '',
           'Try these fun commands:',
-          'neofetch          - Display system info in macOS style',
+          'neofetch          - Display system info in SnigdhaOS style',
           'fortune           - Display a random quote',
           'banner [text]     - Display text as ASCII art',
           ''
@@ -309,7 +309,7 @@ export default function TerminalApp() {
           'Terminal App',
           'Version 1.0.0',
           '',
-          'A simulated macOS terminal for the portfolio',
+          'A simulated SnigdhaOS terminal for the portfolio',
           `Built with Next.js, React, and TypeScript`,
           '',
           `© ${new Date().getFullYear()} ${PERSONAL_INFO.name}`
