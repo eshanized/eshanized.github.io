@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { motion, AnimatePresence, useAnimation } from 'framer-motion';
 import { PERSONAL_INFO } from '@/lib/constants';
 import { User, Power, Wifi, Battery, ChevronDown, Lock, ArrowRight, Info, Globe, Moon, Sun } from 'lucide-react';
+import { SnigdhaOSLogo } from './snigdhaos-logo';
 
 export function LoginScreen({ onLogin }: { onLogin: (specialUser?: string) => void }) {
   const [currentTime, setCurrentTime] = useState("");
@@ -16,10 +17,9 @@ export function LoginScreen({ onLogin }: { onLogin: (specialUser?: string) => vo
   const [bgPosition, setBgPosition] = useState({ x: 0, y: 0 });
   const [theme, setTheme] = useState<'light' | 'dark'>('dark');
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const githubAvatarUrl = "https://github.com/eshanized.png";
   const controls = useAnimation();
 
-  // MacOS-style dynamic wallpaper effect
+  // SnigdhaOS-style dynamic wallpaper effect
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -38,21 +38,21 @@ export function LoginScreen({ onLogin }: { onLogin: (specialUser?: string) => vo
       velocity: { x: number; y: number };
     }[] = [];
 
-    // macOS authentic colors for Big Sur wallpaper
+    // SnigdhaOS authentic colors - using blue theme to match the logo
     const lightColors = [
-      'rgba(88, 172, 250, 0.5)',    // Blue #58ACFA
-      'rgba(0, 175, 255, 0.5)',     // Teal #00AFFF
-      'rgba(0, 102, 255, 0.5)',     // Default Blue #0066FF
-      'rgba(255, 45, 85, 0.5)',     // Pink #FF2D55
-      'rgba(255, 149, 0, 0.5)',     // Orange #FF9500
+      'rgba(100, 149, 237, 0.5)',   // Cornflower blue #6495ED
+      'rgba(70, 130, 230, 0.5)',    // Blue variant
+      'rgba(30, 144, 255, 0.5)',    // Dodger blue #1E90FF
+      'rgba(0, 119, 182, 0.5)',     // Blue variant
+      'rgba(135, 206, 250, 0.5)',   // Light sky blue #87CEFA
     ];
     
     const darkColors = [
-      'rgba(10, 132, 255, 0.5)',    // Blue #0A84FF
-      'rgba(100, 210, 255, 0.5)',   // Teal #64D2FF
-      'rgba(94, 92, 230, 0.5)',     // Purple #5E5CE6
-      'rgba(255, 55, 95, 0.5)',     // Pink #FF375F
-      'rgba(255, 159, 10, 0.5)',    // Orange #FF9F0A
+      'rgba(70, 130, 230, 0.5)',    // Blue variant
+      'rgba(30, 144, 255, 0.5)',    // Dodger blue #1E90FF
+      'rgba(0, 119, 182, 0.5)',     // Blue variant
+      'rgba(100, 149, 237, 0.5)',   // Cornflower blue #6495ED
+      'rgba(135, 206, 250, 0.4)',   // Light sky blue #87CEFA
     ];
     
     const colors = theme === 'dark' ? darkColors : lightColors;
@@ -78,22 +78,22 @@ export function LoginScreen({ onLogin }: { onLogin: (specialUser?: string) => vo
       requestAnimationFrame(animateParticles);
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       
-      // Create macOS-style gradient background
+      // Create SnigdhaOS-style gradient background
       const gradient = ctx.createRadialGradient(
         canvas.width / 2, canvas.height / 2, 0,
         canvas.width / 2, canvas.height / 2, canvas.height
       );
       
       if (theme === 'dark') {
-        // Dark theme - Big Sur dark colors
-        gradient.addColorStop(0, '#1E1E20');    // Dark gray center
-        gradient.addColorStop(0.5, '#1C1C1E');  // Darker gray
-        gradient.addColorStop(1, '#0C0C0E');    // Nearly black edges
+        // Dark theme - SnigdhaOS dark colors
+        gradient.addColorStop(0, '#1E2030');    // Dark blue center
+        gradient.addColorStop(0.5, '#1A1B2A');  // Darker blue
+        gradient.addColorStop(1, '#141525');    // Nearly black edges with blue tint
       } else {
-        // Light theme - Big Sur light colors
-        gradient.addColorStop(0, '#F2F2F7');    // Light gray center
+        // Light theme - SnigdhaOS light colors
+        gradient.addColorStop(0, '#F0F4FF');    // Very light blue center
         gradient.addColorStop(0.5, '#FFFFFF');  // Pure white
-        gradient.addColorStop(1, '#E5E5EA');    // System gray edges
+        gradient.addColorStop(1, '#E6EEFF');    // Light blue edges
       }
       
       ctx.fillStyle = gradient;
@@ -132,7 +132,7 @@ export function LoginScreen({ onLogin }: { onLogin: (specialUser?: string) => vo
         }
       });
 
-      // Draw macOS-style aurora blur effect (softer, more subtle)
+      // Draw SnigdhaOS-style aurora blur effect (softer, more subtle)
       ctx.filter = 'blur(90px)';
       for (let i = 0; i < 4; i++) {
         ctx.beginPath();
@@ -151,7 +151,7 @@ export function LoginScreen({ onLogin }: { onLogin: (specialUser?: string) => vo
       }
       ctx.filter = 'none';
 
-      // Subtle animated gradients (mimicking macOS dynamic wallpaper)
+      // Subtle animated gradients (mimicking SnigdhaOS dynamic wallpaper)
       const time = Date.now() * 0.0002;
       ctx.globalCompositeOperation = 'soft-light';
       ctx.filter = 'blur(100px)';
@@ -166,13 +166,13 @@ export function LoginScreen({ onLogin }: { onLogin: (specialUser?: string) => vo
       );
       
       if (theme === 'dark') {
-        accentGradient.addColorStop(0, 'rgba(10, 132, 255, 0.15)');  // Apple Blue
-        accentGradient.addColorStop(0.5, 'rgba(94, 92, 230, 0.1)');  // Apple Purple
-        accentGradient.addColorStop(1, 'rgba(255, 55, 95, 0.15)');   // Apple Pink
+        accentGradient.addColorStop(0, 'rgba(100, 149, 237, 0.15)');  // Cornflower blue
+        accentGradient.addColorStop(0.5, 'rgba(30, 144, 255, 0.1)');  // Dodger blue
+        accentGradient.addColorStop(1, 'rgba(70, 130, 230, 0.15)');   // Blue variant
       } else {
-        accentGradient.addColorStop(0, 'rgba(0, 102, 255, 0.1)');    // Apple Blue
-        accentGradient.addColorStop(0.5, 'rgba(88, 86, 214, 0.08)'); // Apple Purple
-        accentGradient.addColorStop(1, 'rgba(255, 45, 85, 0.1)');    // Apple Pink
+        accentGradient.addColorStop(0, 'rgba(100, 149, 237, 0.1)');   // Cornflower blue
+        accentGradient.addColorStop(0.5, 'rgba(135, 206, 250, 0.08)'); // Light sky blue
+        accentGradient.addColorStop(1, 'rgba(30, 144, 255, 0.1)');    // Dodger blue
       }
       
       ctx.fillStyle = accentGradient;
@@ -201,9 +201,9 @@ export function LoginScreen({ onLogin }: { onLogin: (specialUser?: string) => vo
   useEffect(() => {
     const updateDateTime = () => {
       const now = new Date();
-      // Format time in macOS style (no seconds, 12-hour format with AM/PM)
+      // Format time in OS style (no seconds, 12-hour format with AM/PM)
       setCurrentTime(now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true }));
-      // Format date in macOS style (Day, Month Date)
+      // Format date in OS style (Day, Month Date)
       setCurrentDate(now.toLocaleDateString([], { weekday: 'long', month: 'long', day: 'numeric' }));
     };
     
@@ -215,7 +215,7 @@ export function LoginScreen({ onLogin }: { onLogin: (specialUser?: string) => vo
       setShowPasswordHint(true);
     }, 3000);
     
-    // Subtle pulsing animation for avatar (more subtle than before)
+    // Subtle pulsing animation for logo
     controls.start({
       scale: [1, 1.03, 1],
       transition: { 
@@ -263,7 +263,7 @@ export function LoginScreen({ onLogin }: { onLogin: (specialUser?: string) => vo
         transition: { duration: 0.5 }
       }).then(() => onLogin());
     } else {
-      // macOS-style shake animation for empty password
+      // OS-style shake animation for empty password
       setIsShaking(true);
       setTimeout(() => setIsShaking(false), 500);
     }
@@ -284,7 +284,7 @@ export function LoginScreen({ onLogin }: { onLogin: (specialUser?: string) => vo
       {/* Subtle noise texture overlay (more subtle) */}
       <div className="absolute inset-0 bg-[url(https://grainy-gradients.vercel.app/noise.svg)] opacity-[0.08] pointer-events-none"/>
       
-      {/* Status Bar - macOS style with proper SF font */}
+      {/* Status Bar - SnigdhaOS style */}
       <motion.div 
         className="absolute top-0 left-0 right-0 h-7 flex items-center justify-between px-4 z-20"
         initial={{ opacity: 0, y: -10 }}
@@ -292,9 +292,10 @@ export function LoginScreen({ onLogin }: { onLogin: (specialUser?: string) => vo
         transition={{ delay: 0.2, duration: 0.3 }}
       >
         <div className="flex items-center space-x-2">
-          <div className="text-xs font-medium font-sf-pro" 
+          <div className="text-xs font-medium font-sf-pro flex items-center" 
                style={{ color: theme === 'dark' ? 'rgba(255, 255, 255, 0.85)' : 'rgba(0, 0, 0, 0.85)' }}>
-            Eshanized OS
+            <SnigdhaOSLogo className="w-3.5 h-3.5 mr-1.5" />
+            SnigdhaOS
           </div>
         </div>
         <div className="flex items-center space-x-3">
@@ -320,32 +321,32 @@ export function LoginScreen({ onLogin }: { onLogin: (specialUser?: string) => vo
           <p className="text-xl font-sf-pro font-normal opacity-80 drop-shadow-sm">{currentDate}</p>
         </motion.div>
         
-        {/* Glass container - authentic macOS style */}
+        {/* Glass container - authentic SnigdhaOS style */}
         <motion.div 
           className="relative z-10 p-8 rounded-2xl overflow-hidden max-w-md w-full mx-4"
           style={{
             background: theme === 'dark' 
-              ? 'rgba(28, 28, 30, 0.6)' 
+              ? 'rgba(30, 32, 48, 0.6)' 
               : 'rgba(255, 255, 255, 0.5)',
             backdropFilter: 'blur(35px) saturate(180%)',
             WebkitBackdropFilter: 'blur(35px) saturate(180%)',
             boxShadow: theme === 'dark'
-              ? '0 20px 50px -25px rgba(0,0,0,0.3), 0 0 1px 0 rgba(255,255,255,0.1)'
-              : '0 20px 50px -25px rgba(0,0,0,0.1), 0 0 1px 0 rgba(0,0,0,0.1)',
+              ? '0 20px 50px -25px rgba(0,0,0,0.3), 0 0 1px 0 rgba(100, 149, 237,0.1)'
+              : '0 20px 50px -25px rgba(0,0,0,0.1), 0 0 1px 0 rgba(100, 149, 237,0.1)',
             border: theme === 'dark' 
-              ? '1px solid rgba(255, 255, 255, 0.08)' 
-              : '1px solid rgba(255, 255, 255, 0.7)',
+              ? '1px solid rgba(100, 149, 237, 0.08)' 
+              : '1px solid rgba(100, 149, 237, 0.2)',
             transform: `perspective(1000px) rotateX(${bgPosition.y / 30}deg) rotateY(${-bgPosition.x / 30}deg)`,
           }}
           initial={{ opacity: 0, scale: 0.95, y: 10 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           transition={{ duration: 0.6, ease: [0.23, 1, 0.32, 1] }}
         >
-          {/* Theme toggle - macOS-style */}
+          {/* Theme toggle - SnigdhaOS-style */}
           <motion.button
             className="absolute top-3 right-3 p-2 rounded-full z-20"
             style={{ 
-              background: theme === 'dark' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.05)',
+              background: theme === 'dark' ? 'rgba(100, 149, 237, 0.1)' : 'rgba(100, 149, 237, 0.1)',
               color: theme === 'dark' ? 'rgba(255, 255, 255, 0.8)' : 'rgba(0, 0, 0, 0.6)'
             }}
             whileTap={{ scale: 0.92 }}
@@ -354,35 +355,28 @@ export function LoginScreen({ onLogin }: { onLogin: (specialUser?: string) => vo
             {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
           </motion.button>
             
-          {/* GitHub Avatar with macOS style blur effect */}
+          {/* SnigdhaOS Logo with blur effect */}
           <motion.div
-            className="mb-6 w-24 h-24 relative mx-auto"
+            className="mb-8 w-32 h-32 relative mx-auto"
             animate={controls}
           >
-            <div className="absolute inset-0 rounded-full bg-gradient-to-r from-violet-500 via-purple-500 to-indigo-500 opacity-80 blur-lg" 
+            <div className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-500 via-blue-400 to-blue-500 opacity-80 blur-lg" 
                 style={{ animation: "spin 8s linear infinite" }} />
             
-            {/* macOS-style avatar container with subtle reflection */}
+            {/* SnigdhaOS logo container with subtle reflection */}
             <div className="absolute inset-0 rounded-full overflow-hidden flex items-center justify-center"
                 style={{ 
                   boxShadow: theme === 'dark' 
-                    ? '0 15px 35px -12px rgba(79, 70, 229, 0.3), 0 0 1px rgba(255, 255, 255, 0.2)' 
-                    : '0 15px 35px -12px rgba(79, 70, 229, 0.15), 0 0 1px rgba(0, 0, 0, 0.1)',
+                    ? '0 15px 35px -12px rgba(100, 149, 237, 0.3), 0 0 1px rgba(255, 255, 255, 0.2)' 
+                    : '0 15px 35px -12px rgba(100, 149, 237, 0.15), 0 0 1px rgba(0, 0, 0, 0.1)',
                   transform: `perspective(800px) rotateX(${-bgPosition.y / 15}deg) rotateY(${bgPosition.x / 15}deg)`
                 }}
             >
-              {/* Avatar image */}
-              <Image 
-                src={githubAvatarUrl} 
-                alt="User Avatar"
-                width={96}
-                height={96}
-                className="w-full h-full object-cover"
-                style={{ filter: theme === 'dark' ? 'brightness(1.1)' : 'contrast(1.02)' }}
-                priority
-              />
+              <div className="w-28 h-28 flex items-center justify-center bg-white dark:bg-gray-800 rounded-full">
+                <SnigdhaOSLogo className="w-20 h-20 text-cornflower-blue" />
+              </div>
               
-              {/* macOS-style reflection effect */}
+              {/* SnigdhaOS-style reflection effect */}
               <div 
                 className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-b from-transparent to-white opacity-20"
                 style={{
@@ -393,18 +387,32 @@ export function LoginScreen({ onLogin }: { onLogin: (specialUser?: string) => vo
             </div>
           </motion.div>
           
-          {/* User name - macOS style SF font */}
+          {/* Brand name */}
           <motion.h2 
-            className="text-2xl font-sf-pro font-medium mb-2 text-center"
-            style={{ color: theme === 'dark' ? 'white' : '#000000' }}
+            className="text-3xl font-sf-pro font-medium mb-1 text-center"
+            style={{ 
+              color: theme === 'dark' ? 'white' : '#000000',
+              letterSpacing: '0.01em'
+            }}
             initial={{ opacity: 0, y: 5 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5 }}
           >
-            {PERSONAL_INFO.name}
+            SnigdhaOS
           </motion.h2>
           
-          {/* Password hint - macOS style */}
+          {/* User name - under the brand name */}
+          <motion.p 
+            className="text-base font-sf-pro font-normal mb-3 text-center opacity-80"
+            style={{ color: theme === 'dark' ? 'white' : '#000000' }}
+            initial={{ opacity: 0, y: 5 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6 }}
+          >
+            {PERSONAL_INFO.name}
+          </motion.p>
+          
+          {/* Password hint - SnigdhaOS style */}
           <AnimatePresence>
             {showPasswordHint && (
               <motion.div
@@ -412,7 +420,7 @@ export function LoginScreen({ onLogin }: { onLogin: (specialUser?: string) => vo
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0 }}
                 className="text-sm mb-5 text-center font-sf-pro"
-                style={{ color: theme === 'dark' ? 'rgba(255, 55, 95, 0.9)' : 'rgba(255, 45, 85, 0.9)' }}
+                style={{ color: theme === 'dark' ? 'rgba(100, 149, 237, 0.9)' : 'rgba(100, 149, 237, 0.9)' }}
               >
                 <p className="flex items-center justify-center">
                   <Info className="w-3.5 h-3.5 mr-1.5" />
@@ -422,7 +430,7 @@ export function LoginScreen({ onLogin }: { onLogin: (specialUser?: string) => vo
             )}
           </AnimatePresence>
           
-          {/* Password input with macOS glass effect */}
+          {/* Password input with SnigdhaOS glass effect */}
           <motion.form 
             onSubmit={handleSubmit}
             animate={{ x: isShaking ? [-5, 5, -5, 5, -3, 3, 0] : 0 }}
@@ -450,10 +458,10 @@ export function LoginScreen({ onLogin }: { onLogin: (specialUser?: string) => vo
                       : isPasswordFocused ? 'rgba(0, 0, 0, 0.07)' : 'rgba(0, 0, 0, 0.04)',
                     color: theme === 'dark' ? 'white' : '#000000',
                     borderColor: isPasswordFocused 
-                      ? theme === 'dark' ? 'rgba(10, 132, 255, 0.8)' : 'rgba(0, 102, 255, 0.6)'
+                      ? theme === 'dark' ? 'rgba(100, 149, 237, 0.8)' : 'rgba(100, 149, 237, 0.6)'
                       : theme === 'dark' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)',
                     boxShadow: isPasswordFocused 
-                      ? theme === 'dark' ? '0 0 0 4px rgba(10, 132, 255, 0.3)' : '0 0 0 4px rgba(0, 102, 255, 0.15)'
+                      ? theme === 'dark' ? '0 0 0 4px rgba(100, 149, 237, 0.3)' : '0 0 0 4px rgba(100, 149, 237, 0.15)'
                       : 'none'
                   }}
                   className="w-full h-11 rounded-xl pl-11 pr-12 border focus:outline-none transition-all font-sf-pro text-sm"
@@ -462,7 +470,7 @@ export function LoginScreen({ onLogin }: { onLogin: (specialUser?: string) => vo
                 <motion.button
                   type="submit"
                   style={{
-                    background: theme === 'dark' ? '#0A84FF' : '#0066FF'
+                    background: theme === 'dark' ? '#6495ED' : '#6495ED'
                   }}
                   className="absolute right-1.5 top-1.5 bottom-1.5 px-2.5 aspect-square rounded-lg text-white flex items-center justify-center"
                   whileHover={{ scale: 1.05 }}
@@ -476,14 +484,14 @@ export function LoginScreen({ onLogin }: { onLogin: (specialUser?: string) => vo
             <div className="mt-3 text-sm flex justify-center">
               <motion.button 
                 style={{
-                  background: theme === 'dark' ? 'rgba(255, 255, 255, 0.06)' : 'rgba(0, 0, 0, 0.03)',
-                  borderColor: theme === 'dark' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.06)',
+                  background: theme === 'dark' ? 'rgba(100, 149, 237, 0.06)' : 'rgba(100, 149, 237, 0.06)',
+                  borderColor: theme === 'dark' ? 'rgba(100, 149, 237, 0.2)' : 'rgba(100, 149, 237, 0.2)',
                   color: theme === 'dark' ? 'rgba(255, 255, 255, 0.8)' : 'rgba(0, 0, 0, 0.6)'
                 }}
                 className="px-5 py-2 transition-colors flex items-center justify-center rounded-lg backdrop-blur-sm border font-sf-pro text-sm"
                 whileHover={{ 
                   scale: 1.02, 
-                  background: theme === 'dark' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.05)'
+                  background: theme === 'dark' ? 'rgba(100, 149, 237, 0.1)' : 'rgba(100, 149, 237, 0.1)'
                 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={(e) => {
@@ -503,7 +511,7 @@ export function LoginScreen({ onLogin }: { onLogin: (specialUser?: string) => vo
         </motion.div>
       </div>
       
-      {/* Bottom power controls - macOS style */}
+      {/* Bottom power controls - SnigdhaOS style */}
       <motion.div 
         className="absolute bottom-8 left-0 right-0 flex justify-center z-10"
         initial={{ opacity: 0, y: 20 }}
@@ -514,8 +522,8 @@ export function LoginScreen({ onLogin }: { onLogin: (specialUser?: string) => vo
           className="flex items-center space-x-8 py-2 px-6 rounded-2xl backdrop-blur-md"
           style={{ 
             color: theme === 'dark' ? 'rgba(255, 255, 255, 0.8)' : 'rgba(0, 0, 0, 0.6)',
-            background: theme === 'dark' ? 'rgba(28, 28, 30, 0.5)' : 'rgba(255, 255, 255, 0.3)',
-            borderColor: theme === 'dark' ? 'rgba(255, 255, 255, 0.06)' : 'rgba(0, 0, 0, 0.05)',
+            background: theme === 'dark' ? 'rgba(30, 32, 48, 0.5)' : 'rgba(255, 255, 255, 0.3)',
+            borderColor: theme === 'dark' ? 'rgba(100, 149, 237, 0.06)' : 'rgba(100, 149, 237, 0.1)',
             border: '1px solid',
             boxShadow: theme === 'dark' 
               ? '0 4px 20px rgba(0, 0, 0, 0.2)' 
@@ -546,7 +554,7 @@ export function LoginScreen({ onLogin }: { onLogin: (specialUser?: string) => vo
         </div>
       </motion.div>
       
-      {/* Language selector - macOS style */}
+      {/* Language selector - SnigdhaOS style */}
       <motion.div 
         className="absolute bottom-8 right-8 z-10"
         initial={{ opacity: 0, x: 20 }}
@@ -556,8 +564,8 @@ export function LoginScreen({ onLogin }: { onLogin: (specialUser?: string) => vo
         <motion.button 
           className="flex items-center text-xs backdrop-blur-md px-4 py-2 rounded-lg border font-sf-pro"
           style={{ 
-            background: theme === 'dark' ? 'rgba(28, 28, 30, 0.5)' : 'rgba(255, 255, 255, 0.3)',
-            borderColor: theme === 'dark' ? 'rgba(255, 255, 255, 0.06)' : 'rgba(0, 0, 0, 0.05)',
+            background: theme === 'dark' ? 'rgba(30, 32, 48, 0.5)' : 'rgba(255, 255, 255, 0.3)',
+            borderColor: theme === 'dark' ? 'rgba(100, 149, 237, 0.06)' : 'rgba(100, 149, 237, 0.1)',
             color: theme === 'dark' ? 'rgba(255, 255, 255, 0.8)' : 'rgba(0, 0, 0, 0.6)'
           }}
           whileHover={{ scale: 1.03 }}
@@ -569,7 +577,7 @@ export function LoginScreen({ onLogin }: { onLogin: (specialUser?: string) => vo
         </motion.button>
       </motion.div>
       
-      {/* Accessibility - macOS style */}
+      {/* Accessibility - SnigdhaOS style */}
       <motion.div 
         className="absolute bottom-8 left-8 z-10"
         initial={{ opacity: 0, x: -20 }}
@@ -579,8 +587,8 @@ export function LoginScreen({ onLogin }: { onLogin: (specialUser?: string) => vo
         <motion.button 
           className="flex items-center text-xs backdrop-blur-md px-4 py-2 rounded-lg border font-sf-pro"
           style={{ 
-            background: theme === 'dark' ? 'rgba(28, 28, 30, 0.5)' : 'rgba(255, 255, 255, 0.3)',
-            borderColor: theme === 'dark' ? 'rgba(255, 255, 255, 0.06)' : 'rgba(0, 0, 0, 0.05)',
+            background: theme === 'dark' ? 'rgba(30, 32, 48, 0.5)' : 'rgba(255, 255, 255, 0.3)',
+            borderColor: theme === 'dark' ? 'rgba(100, 149, 237, 0.06)' : 'rgba(100, 149, 237, 0.1)',
             color: theme === 'dark' ? 'rgba(255, 255, 255, 0.8)' : 'rgba(0, 0, 0, 0.6)'
           }}
           whileHover={{ scale: 1.03 }}
@@ -615,8 +623,8 @@ function PowerButton({ icon, label, theme }: { icon: React.ReactNode, label: str
       <div 
         className="w-10 h-10 rounded-lg flex items-center justify-center mb-1 transition-colors border"
         style={{ 
-          background: theme === 'dark' ? 'rgba(44, 44, 46, 0.7)' : 'rgba(255, 255, 255, 0.5)',
-          borderColor: theme === 'dark' ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.06)',
+          background: theme === 'dark' ? 'rgba(30, 32, 48, 0.7)' : 'rgba(255, 255, 255, 0.5)',
+          borderColor: theme === 'dark' ? 'rgba(100, 149, 237, 0.08)' : 'rgba(100, 149, 237, 0.1)',
           backdropFilter: 'blur(8px)'
         }}
       >
