@@ -166,23 +166,23 @@ function MIUILayoutContent({ children }: { children?: React.ReactNode }) {
   
   // Define color palette for app icons with dark mode support
   const colors = {
-    blue: 'bg-blue-500 dark:bg-blue-600',
-    green: 'bg-green-500 dark:bg-green-600',
-    red: 'bg-red-500 dark:bg-red-600',
-    purple: 'bg-purple-500 dark:bg-purple-600',
-    pink: 'bg-pink-500 dark:bg-pink-600',
-    orange: 'bg-orange-500 dark:bg-orange-600',
-    teal: 'bg-teal-500 dark:bg-teal-600',
-    cyan: 'bg-cyan-500 dark:bg-cyan-600',
-    yellow: 'bg-yellow-500 dark:bg-yellow-600',
-    indigo: 'bg-indigo-500 dark:bg-indigo-600',
-    gray: 'bg-gray-600 dark:bg-gray-700',
-    gradient1: 'bg-gradient-to-br from-blue-500 to-purple-500 dark:from-blue-600 dark:to-purple-600',
-    gradient2: 'bg-gradient-to-br from-green-400 to-cyan-500 dark:from-green-500 dark:to-cyan-600',
-    gradient3: 'bg-gradient-to-br from-pink-500 to-red-500 dark:from-pink-600 dark:to-red-600',
-    gradient4: 'bg-gradient-to-br from-yellow-400 to-orange-500 dark:from-yellow-500 dark:to-orange-600',
-    twitterBlue: 'bg-[#1DA1F2] dark:bg-[#1DA1F2]',
-    facebookBlue: 'bg-[#1877F2] dark:bg-[#1877F2]',
+    blue: 'bg-blue-600 dark:bg-blue-500',
+    green: 'bg-green-600 dark:bg-green-500',
+    red: 'bg-red-600 dark:bg-red-500',
+    purple: 'bg-purple-600 dark:bg-purple-500',
+    pink: 'bg-pink-600 dark:bg-pink-500',
+    orange: 'bg-orange-600 dark:bg-orange-500',
+    teal: 'bg-teal-600 dark:bg-teal-500',
+    cyan: 'bg-cyan-600 dark:bg-cyan-500',
+    yellow: 'bg-yellow-600 dark:bg-yellow-500',
+    indigo: 'bg-indigo-600 dark:bg-indigo-500',
+    gray: 'bg-gray-700 dark:bg-gray-600',
+    gradient1: 'bg-gradient-to-br from-blue-600 to-purple-600 dark:from-blue-500 dark:to-purple-500',
+    gradient2: 'bg-gradient-to-br from-green-500 to-cyan-600 dark:from-green-400 dark:to-cyan-500',
+    gradient3: 'bg-gradient-to-br from-pink-600 to-red-600 dark:from-pink-500 dark:to-red-500',
+    gradient4: 'bg-gradient-to-br from-yellow-500 to-orange-600 dark:from-yellow-400 dark:to-orange-500',
+    twitterBlue: 'bg-[#1DA1F2]',
+    facebookBlue: 'bg-[#1877F2]',
     instagramGradient: 'bg-gradient-to-tr from-[#FF7A00] via-[#FE0697] to-[#7638FA]',
     devtoBlack: 'bg-black dark:bg-white dark:bg-opacity-90',
   };
@@ -272,7 +272,7 @@ function MIUILayoutContent({ children }: { children?: React.ReactNode }) {
             setError('');
             handleLockToggle();
           } else {
-            setError('Incorrect passcode');
+            setError('Wrong PIN. Try again.');
             setAttempts(prev => prev + 1);
             setPasscode('');
           }
@@ -285,9 +285,19 @@ function MIUILayoutContent({ children }: { children?: React.ReactNode }) {
       setError('');
     };
 
+    // Format time for Pixel-style display
+    const getFormattedTime = () => {
+      const now = new Date();
+      const hours = now.getHours();
+      const minutes = now.getMinutes().toString().padStart(2, '0');
+      return { hours, minutes };
+    };
+
+    const { hours, minutes } = getFormattedTime();
+
     return (
       <motion.div 
-        className="fixed inset-0 z-50 flex flex-col items-center text-white"
+        className="fixed inset-0 z-50 flex flex-col text-white"
         style={{
           backgroundImage: 'url(/images/wallpaper.jpg)',
           backgroundSize: 'cover',
@@ -297,117 +307,131 @@ function MIUILayoutContent({ children }: { children?: React.ReactNode }) {
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
       >
-        {/* Lock screen status bar */}
-        <div className="w-full px-4 py-2 flex justify-between items-center text-white">
-          <div>{currentTime}</div>
+        {/* Status bar */}
+        <div className="w-full px-4 py-2 flex justify-between items-center text-sm">
           <div className="flex items-center gap-1">
-            <Wifi className="w-4 h-4" />
-            <div className="flex items-center">
-              <Battery className="w-4 h-4" />
-              <span className="text-xs ml-1">{batteryLevel}%</span>
+            <div className="flex gap-[2px]">
+              <div className="h-3 w-[3px] bg-white rounded-sm"></div>
+              <div className="h-3 w-[3px] bg-white rounded-sm"></div>
+              <div className="h-3 w-[3px] bg-white rounded-sm"></div>
+              <div className="h-3 w-[3px] bg-white rounded-sm"></div>
             </div>
+            <Wifi className="w-4 h-4" />
+          </div>
+          <div className="flex items-center gap-1">
+            <Battery className="w-4 h-4" />
+            <span className="text-xs">{batteryLevel}%</span>
           </div>
         </div>
 
-        {/* Time and Date */}
-        <div className="flex-1 flex flex-col items-center justify-center">
-          <div className="text-6xl font-extralight">{currentTime}</div>
-          <div className="text-xl mt-2">{currentDate}</div>
-          
-          {!showPasscode ? (
-            /* Swipe to unlock indicator */
-            <motion.div 
-              className="mt-20 flex flex-col items-center"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.5 }}
-            >
-              <Lock className="w-6 h-6 mb-2" />
-              <div className="text-sm">Swipe up to unlock</div>
-              
-              {/* Swipe indicator */}
-              <motion.div 
-                className="mt-3 w-12 h-1 bg-white/80 rounded-full"
-                animate={{ opacity: [0.4, 1, 0.4] }}
-                transition={{ repeat: Infinity, duration: 1.5 }}
-              />
-              
-              <button 
-                className="mt-8 px-8 py-2 bg-white/20 rounded-full backdrop-blur-md"
-                onClick={() => setShowPasscode(true)}
+        {/* Main content */}
+        <div className="flex-1 flex flex-col">
+          {/* Centered clock */}
+          <div className="flex-1 flex flex-col items-center justify-center -mt-16">
+            {!showPasscode ? (
+              <motion.div
+                className="text-center"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 }}
               >
-                Enter Passcode
-              </button>
-
-              <button 
-                className="mt-4 px-8 py-2 bg-white/10 rounded-full backdrop-blur-md text-sm"
-                onClick={handleLockToggle}
-              >
-                Skip Lock Screen
-              </button>
-            </motion.div>
-          ) : (
-            /* Passcode Screen */
-            <motion.div 
-              className="mt-10 flex flex-col items-center"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-            >
-              <div className="text-xl mb-6">Enter Passcode</div>
-              
-              {/* Passcode dots */}
-              <div className="flex gap-4 mb-6">
-                {[0,1,2,3].map((i) => (
-                  <div 
-                    key={i}
-                    className={`w-3 h-3 rounded-full ${
-                      passcode.length > i ? 'bg-white' : 'bg-white/30'
-                    }`}
-                  />
-                ))}
-              </div>
-
-              {/* Error message */}
-              {error && (
-                <div className="text-red-500 text-sm mb-4">
-                  {error}
-                  {attempts >= 5 && " (Too many attempts. Try again later)"}
+                <div className="flex items-baseline justify-center mb-2">
+                  <span className="text-[96px] font-light tracking-tight leading-none">{hours}</span>
+                  <span className="text-[96px] font-light tracking-tight leading-none">:</span>
+                  <span className="text-[96px] font-light tracking-tight leading-none">{minutes}</span>
                 </div>
-              )}
-
-              {/* Number pad */}
-              <div className="grid grid-cols-3 gap-4">
-                {[1,2,3,4,5,6,7,8,9,'',0,'⌫'].map((num, i) => (
-                  <button
-                    key={i}
-                    className={`w-16 h-16 rounded-full ${
-                      num === '' ? 'cursor-default' :
-                      'bg-white/20 backdrop-blur-md hover:bg-white/30 active:bg-white/40'
-                    } flex items-center justify-center text-2xl font-light`}
-                    onClick={() => {
-                      if (num === '⌫') handleBackspace();
-                      else if (num !== '') handlePasscodeInput(num.toString());
-                    }}
-                    disabled={attempts >= 5 || num === ''}
+                <div className="text-xl font-normal tracking-wide mb-8">{currentDate}</div>
+                
+                {/* Press to unlock text */}
+                <motion.div
+                  className="mt-8 flex flex-col items-center"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.5 }}
+                >
+                  <Lock className="w-5 h-5 mb-2 opacity-80" />
+                  <button 
+                    className="text-sm tracking-wide opacity-80"
+                    onClick={() => setShowPasscode(true)}
                   >
-                    {num}
+                    Press to unlock
                   </button>
-                ))}
-              </div>
-
-              <button 
-                className="mt-6 text-sm text-blue-400"
-                onClick={() => setShowPasscode(false)}
+                </motion.div>
+              </motion.div>
+            ) : (
+              <motion.div 
+                className="w-full px-6"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
               >
-                Cancel
-              </button>
-            </motion.div>
-          )}
-        </div>
+                <div className="text-center mb-8">
+                  <h2 className="text-xl font-normal mb-2">Enter PIN</h2>
+                  {error && (
+                    <p className="text-red-400 text-sm">{error}</p>
+                  )}
+                </div>
 
-        {/* Bottom grabber */}
-        <div className="w-full pb-6 flex justify-center">
-          <div className="w-32 h-1 bg-white/40 rounded-full" />
+                {/* PIN dots */}
+                <div className="flex justify-center gap-4 mb-8">
+                  {[0,1,2,3].map((i) => (
+                    <div 
+                      key={i}
+                      className={`w-3.5 h-3.5 rounded-full border-2 ${
+                        passcode.length > i 
+                          ? 'bg-white border-white' 
+                          : 'border-white/60 bg-transparent'
+                      }`}
+                    />
+                  ))}
+                </div>
+
+                {/* Number pad */}
+                <div className="grid grid-cols-3 gap-6 max-w-xs mx-auto">
+                  {[1,2,3,4,5,6,7,8,9,'',0,'⌫'].map((num, i) => (
+                    <button
+                      key={i}
+                      className={`w-16 h-16 rounded-full ${
+                        num === '' ? 'cursor-default' :
+                        'hover:bg-white/10 active:bg-white/20 transition-colors'
+                      } flex items-center justify-center text-2xl font-light`}
+                      onClick={() => {
+                        if (num === '⌫') handleBackspace();
+                        else if (num !== '') handlePasscodeInput(num.toString());
+                      }}
+                      disabled={attempts >= 5 || num === ''}
+                    >
+                      {num}
+                    </button>
+                  ))}
+                </div>
+
+                <div className="text-center mt-8">
+                  <button 
+                    className="text-sm text-white/80 hover:text-white transition-colors"
+                    onClick={() => setShowPasscode(false)}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </motion.div>
+            )}
+          </div>
+
+          {/* Bottom shortcuts */}
+          <div className="pb-12 px-6 flex justify-between">
+            <motion.button
+              className="w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center"
+              whileTap={{ scale: 0.95 }}
+            >
+              <Phone className="w-5 h-5" />
+            </motion.button>
+            <motion.button
+              className="w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center"
+              whileTap={{ scale: 0.95 }}
+            >
+              <Camera className="w-5 h-5" />
+            </motion.button>
+          </div>
         </div>
       </motion.div>
     );
@@ -488,20 +512,21 @@ function MIUILayoutContent({ children }: { children?: React.ReactNode }) {
         <div className="relative h-full w-full flex flex-col">
           {/* Status Bar */}
           <div className="relative z-30">
-            {/* Notch (for newer phones) */}
-            <div className="absolute top-0 left-1/2 transform -translate-x-1/2 bg-black w-1/3 h-7 rounded-b-3xl z-50"></div>
-            
-            <div className="flex justify-between items-center px-5 py-2.5 text-sm font-medium">
-              <div className="text-white">{currentTime}</div>
+            <div className="flex justify-between items-center px-4 py-1 text-sm font-medium bg-transparent">
+              <div className="text-white flex items-center space-x-1">
+                <span>{currentTime}</span>
+              </div>
               <div className="flex items-center gap-2 text-white">
                 <div className="flex gap-1">
-                  <div className="h-2.5 w-2.5 bg-green-500 dark:bg-green-400 rounded-full transition-colors duration-300"></div>
-                  <div className="h-2.5 w-2.5 bg-green-500 dark:bg-green-400 rounded-full transition-colors duration-300"></div>
-                  <div className="h-2.5 w-2.5 bg-green-500 dark:bg-green-400 rounded-full transition-colors duration-300"></div>
+                  <div className="h-3 w-[3px] bg-white rounded-sm"></div>
+                  <div className="h-3 w-[3px] bg-white rounded-sm"></div>
+                  <div className="h-3 w-[3px] bg-white rounded-sm"></div>
+                  <div className="h-3 w-[3px] bg-white rounded-sm"></div>
                 </div>
                 <Wifi className="w-4 h-4" />
-                <div className="flex items-center">
+                <div className="flex items-center space-x-1">
                   <Battery className="w-4 h-4" />
+                  <span className="text-xs">{batteryLevel}%</span>
                 </div>
               </div>
             </div>
@@ -519,30 +544,31 @@ function MIUILayoutContent({ children }: { children?: React.ReactNode }) {
                   backgroundPosition: 'center'
                 }}
               >
-                {/* Date display */}
-                <div className="text-center mt-3 text-white text-lg font-light">
-                  {currentDate}
+                {/* Weather widget */}
+                <div className="text-center mt-3 text-white">
+                  <div className="text-5xl font-light mb-1">{currentTime}</div>
+                  <div className="text-lg font-normal">{currentDate}</div>
                 </div>
                 
                 {/* App Grid */}
-                <div className="p-6 pt-3 grid grid-cols-4 gap-y-7 gap-x-3">
+                <div className="p-6 pt-8 grid grid-cols-4 gap-y-8 gap-x-4">
                   {/* Render home screen apps */}
                   {homeScreenApps.map((app) => (
                     <motion.button
                       key={app.id}
                       className="flex flex-col items-center"
-                      whileTap={{ scale: 0.95 }}
+                      whileTap={{ scale: 0.9 }}
                       onClick={() => handleOpenApp(app.id)}
                     >
-                      <div className={`w-15 h-15 rounded-2xl flex items-center justify-center ${app.color} relative`}>
-                        <app.icon className="w-9 h-9 text-white" strokeWidth={1.5} />
+                      <div className={`w-16 h-16 ${app.color} rounded-[22px] flex items-center justify-center relative shadow-lg`}>
+                        <app.icon className="w-8 h-8 text-white" strokeWidth={1.5} />
                         {app.badgeCount && (
-                          <span className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white rounded-full flex items-center justify-center text-xs font-bold">
+                          <span className="absolute -top-1 -right-1 min-w-[20px] h-5 bg-red-500 text-white rounded-full flex items-center justify-center text-xs font-medium px-1">
                             {app.badgeCount}
                           </span>
                         )}
                       </div>
-                      <span className="mt-1 text-xs text-white text-shadow">{app.name}</span>
+                      <span className="mt-2 text-sm text-white font-medium drop-shadow-md">{app.name}</span>
                     </motion.button>
                   ))}
                   
@@ -551,35 +577,23 @@ function MIUILayoutContent({ children }: { children?: React.ReactNode }) {
                     <motion.button
                       key={folder.id}
                       className="flex flex-col items-center"
-                      whileTap={{ scale: 0.95 }}
+                      whileTap={{ scale: 0.9 }}
                       onClick={() => handleOpenFolder(folder.id)}
                     >
-                      <div className="w-15 h-15 bg-white/20 backdrop-blur-xl rounded-2xl p-1.5 grid grid-cols-2 gap-1">
+                      <div className="w-16 h-16 bg-white/20 backdrop-blur-xl rounded-[22px] p-1.5 grid grid-cols-2 gap-1 shadow-lg">
                         {folder.apps.slice(0, 4).map((app, index) => (
-                          <div key={index} className={`rounded-lg ${app.color} flex items-center justify-center`}>
+                          <div key={index} className={`rounded-[14px] ${app.color} flex items-center justify-center`}>
                             <app.icon className="w-5 h-5 text-white" strokeWidth={1.5} />
                           </div>
                         ))}
                       </div>
-                      <span className="mt-1 text-xs text-white text-shadow">{folder.name}</span>
+                      <span className="mt-2 text-sm text-white font-medium drop-shadow-md">{folder.name}</span>
                     </motion.button>
                   ))}
                 </div>
                 
-                {/* Page indicators */}
-                <div className="absolute bottom-24 left-1/2 transform -translate-x-1/2 flex space-x-1">
-                  {[0, 1].map((page) => (
-                    <div
-                      key={page}
-                      className={`h-1.5 rounded-full ${
-                        currentPage === page ? 'w-5 bg-white' : 'w-1.5 bg-white/40'
-                      }`}
-                    />
-                  ))}
-                </div>
-                
                 {/* Dock */}
-                <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 w-72 h-16 rounded-3xl bg-white/20 backdrop-blur-xl flex items-center justify-around px-2">
+                <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 w-[85%] h-[76px] rounded-[28px] bg-white/15 backdrop-blur-xl flex items-center justify-around px-3 border border-white/20">
                   {dockApps.map((app) => (
                     <motion.button
                       key={app.id}
@@ -587,11 +601,11 @@ function MIUILayoutContent({ children }: { children?: React.ReactNode }) {
                       whileTap={{ scale: 0.9 }}
                       onClick={() => handleOpenApp(app.id)}
                     >
-                      <div className={`w-12 h-12 ${app.color} rounded-xl flex items-center justify-center`}>
+                      <div className={`w-14 h-14 ${app.color} rounded-[20px] flex items-center justify-center shadow-lg`}>
                         <app.icon className="w-7 h-7 text-white" strokeWidth={1.5} />
                       </div>
                       {app.badgeCount && (
-                        <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white rounded-full flex items-center justify-center text-xs font-bold">
+                        <span className="absolute -top-1 -right-1 min-w-[20px] h-5 bg-red-500 text-white rounded-full flex items-center justify-center text-xs font-medium px-1">
                           {app.badgeCount}
                         </span>
                       )}
@@ -605,28 +619,13 @@ function MIUILayoutContent({ children }: { children?: React.ReactNode }) {
             <AnimatePresence>
               {openApp && (
                 <motion.div 
-                  className="absolute inset-0 bg-white"
-                  initial={{ y: '100%' }}
-                  animate={{ y: 0 }}
-                  exit={{ y: '100%' }}
-                  transition={{ type: 'tween', duration: 0.3 }}
+                  className="absolute inset-0 bg-white dark:bg-gray-900"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 20 }}
+                  transition={{ type: 'spring', stiffness: 300, damping: 30 }}
                 >
-                  {/* App header */}
-                  <div className="bg-gray-100 py-2 px-4 flex items-center justify-between border-b border-gray-300">
-                    <button 
-                      className="text-blue-500 text-sm py-1"
-                      onClick={handleGoHome}
-                    >
-                      Home
-                    </button>
-                    <div className="font-medium">{getAppById(openApp)?.name}</div>
-                    <div className="w-10"></div>
-                  </div>
-                  
-                  {/* App content */}
-                  <div className="h-[calc(100%-54px)] overflow-auto">
-                    {renderAppComponent(openApp)}
-                  </div>
+                  {renderAppComponent(openApp)}
                 </motion.div>
               )}
             </AnimatePresence>
@@ -635,32 +634,32 @@ function MIUILayoutContent({ children }: { children?: React.ReactNode }) {
             <AnimatePresence>
               {openFolder && (
                 <motion.div
-                  className="absolute inset-0 bg-black/70"
+                  className="absolute inset-0 bg-black/50 backdrop-blur-sm"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                   onClick={handleGoHome}
                 >
                   <motion.div
-                    className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[280px] bg-white/20 backdrop-blur-xl rounded-3xl p-4"
-                    initial={{ scale: 0.8 }}
-                    animate={{ scale: 1 }}
-                    exit={{ scale: 0.8 }}
+                    className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[320px] bg-white/20 backdrop-blur-xl rounded-[32px] p-6"
+                    initial={{ scale: 0.9, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    exit={{ scale: 0.9, opacity: 0 }}
                     onClick={(e) => e.stopPropagation()}
                   >
-                    <h3 className="text-center text-white font-medium mb-3">{folders.find(f => f.id === openFolder)?.name}</h3>
-                    <div className="grid grid-cols-3 gap-4">
+                    <h3 className="text-center text-white text-lg font-medium mb-6">{folders.find(f => f.id === openFolder)?.name}</h3>
+                    <div className="grid grid-cols-3 gap-6">
                       {folders.find(f => f.id === openFolder)?.apps.map((app) => (
                         <motion.button
                           key={app.id}
                           className="flex flex-col items-center"
-                          whileTap={{ scale: 0.95 }}
+                          whileTap={{ scale: 0.9 }}
                           onClick={() => handleOpenApp(app.id)}
                         >
-                          <div className={`w-12 h-12 ${app.color} rounded-xl flex items-center justify-center`}>
-                            <app.icon className="w-7 h-7 text-white" strokeWidth={1.5} />
+                          <div className={`w-16 h-16 ${app.color} rounded-[22px] flex items-center justify-center shadow-lg`}>
+                            <app.icon className="w-8 h-8 text-white" strokeWidth={1.5} />
                           </div>
-                          <span className="mt-1 text-xs text-white">{app.name}</span>
+                          <span className="mt-2 text-sm text-white font-medium">{app.name}</span>
                         </motion.button>
                       ))}
                     </div>
@@ -672,18 +671,20 @@ function MIUILayoutContent({ children }: { children?: React.ReactNode }) {
             {/* Control Center */}
             <AnimatePresence>
               {showControlCenter && (
-                <ControlCenter />
+                <motion.div
+                  className="absolute inset-x-0 top-0 bg-white/20 dark:bg-black/20 backdrop-blur-xl rounded-b-[32px] p-6"
+                  initial={{ opacity: 0, y: -50 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -50 }}
+                >
+                  <ControlCenter />
+                </motion.div>
               )}
             </AnimatePresence>
           </div>
           
           {/* Home Indicator */}
-          <div className="h-8 flex items-center justify-center">
-            <div 
-              className="w-32 h-1 bg-white/40 rounded-full cursor-pointer"
-              onClick={handleGoHome}
-            ></div>
-          </div>
+          <div className="h-1.5 w-32 mx-auto bg-white/30 rounded-full my-2" onClick={handleGoHome} />
         </div>
       )}
     </div>

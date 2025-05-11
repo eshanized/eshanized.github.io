@@ -2,272 +2,258 @@
 
 import React, { useState } from 'react';
 import BaseMIUIApp from './BaseMIUIApp';
-import { Search, Edit, Camera, Mic, Image as ImageIcon, Smile, SendHorizontal } from 'lucide-react';
+import { Search, MoreVertical, Send, Image as ImageIcon, Smile, Paperclip, User } from 'lucide-react';
 import Image from 'next/image';
 
 interface Message {
-  id: number;
+  id: string;
   text: string;
-  sent: boolean;
-  time: string;
+  sender: string;
+  timestamp: string;
+  isMe?: boolean;
+  avatar?: string;
+  unread?: boolean;
 }
 
 interface Conversation {
-  id: number;
-  contact: {
-    name: string;
-    avatar: string;
-  };
+  id: string;
+  name: string;
   lastMessage: string;
-  time: string;
-  unread: number;
-  messages: Message[];
+  timestamp: string;
+  avatar?: string;
+  unread?: number;
 }
 
 export default function MessagesApp() {
-  const [activeView, setActiveView] = useState<string>("conversations");
-  const [activeConversation, setActiveConversation] = useState<number | null>(null);
-  const [messageText, setMessageText] = useState<string>("");
-  
-  // Sample conversations
+  const [activeConversation, setActiveConversation] = useState<string | null>(null);
+  const [newMessage, setNewMessage] = useState('');
+  const [searchQuery, setSearchQuery] = useState('');
+
   const conversations: Conversation[] = [
     {
-      id: 1,
-      contact: {
-        name: "Sarah Johnson",
-        avatar: "https://randomuser.me/api/portraits/women/44.jpg"
-      },
-      lastMessage: "See you at the meetup tomorrow!",
-      time: "11:42 AM",
-      unread: 2,
-      messages: [
-        { id: 1, text: "Hey, how's it going?", sent: false, time: "11:30 AM" },
-        { id: 2, text: "Pretty good! Working on that project we discussed.", sent: true, time: "11:32 AM" },
-        { id: 3, text: "Great! Are you coming to the meetup tomorrow?", sent: false, time: "11:35 AM" },
-        { id: 4, text: "Yes, I'll be there around 6pm", sent: true, time: "11:40 AM" },
-        { id: 5, text: "See you at the meetup tomorrow!", sent: false, time: "11:42 AM" }
-      ]
+      id: '1',
+      name: 'John Doe',
+      lastMessage: 'Hey, how are you?',
+      timestamp: '10:30 AM',
+      avatar: 'https://i.pravatar.cc/150?img=1',
+      unread: 2
     },
     {
-      id: 2,
-      contact: {
-        name: "Mike Chen",
-        avatar: "https://randomuser.me/api/portraits/men/32.jpg"
-      },
-      lastMessage: "Did you check out that article I sent?",
-      time: "Yesterday",
-      unread: 0,
-      messages: [
-        { id: 1, text: "Hey, check out this article:", sent: false, time: "Yesterday" },
-        { id: 2, text: "https://example.com/interesting-tech-article", sent: false, time: "Yesterday" },
-        { id: 3, text: "Did you check out that article I sent?", sent: false, time: "Yesterday" }
-      ]
+      id: '2',
+      name: 'Jane Smith',
+      lastMessage: 'The meeting is at 3 PM',
+      timestamp: 'Yesterday',
+      avatar: 'https://i.pravatar.cc/150?img=2'
     },
     {
-      id: 3,
-      contact: {
-        name: "Emma Wilson",
-        avatar: "https://randomuser.me/api/portraits/women/22.jpg"
-      },
-      lastMessage: "The presentation looks great! Nice work.",
-      time: "Yesterday",
-      unread: 0,
-      messages: [
-        { id: 1, text: "Hi Emma, I've sent you the presentation for review", sent: true, time: "Yesterday" },
-        { id: 2, text: "Got it, I'll take a look", sent: false, time: "Yesterday" },
-        { id: 3, text: "The presentation looks great! Nice work.", sent: false, time: "Yesterday" }
-      ]
-    },
-    {
-      id: 4,
-      contact: {
-        name: "David Taylor",
-        avatar: "https://randomuser.me/api/portraits/men/67.jpg"
-      },
-      lastMessage: "I'll bring the equipment for the project.",
-      time: "Monday",
-      unread: 0,
-      messages: [
-        { id: 1, text: "Hey, what are you bringing to the project meeting?", sent: true, time: "Monday" },
-        { id: 2, text: "I'll bring the equipment for the project.", sent: false, time: "Monday" }
-      ]
-    },
-    {
-      id: 5,
-      contact: {
-        name: "Jennifer Lee",
-        avatar: "https://randomuser.me/api/portraits/women/56.jpg"
-      },
-      lastMessage: "Are we still meeting for coffee on Friday?",
-      time: "Monday",
-      unread: 0,
-      messages: [
-        { id: 1, text: "Hi Jennifer! How's your week going?", sent: true, time: "Monday" },
-        { id: 2, text: "Pretty busy with deadlines, but managing. How about you?", sent: false, time: "Monday" },
-        { id: 3, text: "Same here. It's been hectic!", sent: true, time: "Monday" },
-        { id: 4, text: "Are we still meeting for coffee on Friday?", sent: false, time: "Monday" }
-      ]
+      id: '3',
+      name: 'Mike Johnson',
+      lastMessage: 'Thanks for your help!',
+      timestamp: 'Wed',
+      avatar: 'https://i.pravatar.cc/150?img=3'
     }
   ];
-  
-  // Get active conversation
-  const getConversation = (id: number) => {
-    return conversations.find(conv => conv.id === id);
+
+  const messages: Record<string, Message[]> = {
+    '1': [
+      {
+        id: '1',
+        text: 'Hey, how are you?',
+        sender: 'John Doe',
+        timestamp: '10:30 AM',
+        avatar: 'https://i.pravatar.cc/150?img=1'
+      },
+      {
+        id: '2',
+        text: "I'm good, thanks! How about you?",
+        sender: 'Me',
+        timestamp: '10:31 AM',
+        isMe: true
+      },
+      {
+        id: '3',
+        text: "I'm doing great! Just wanted to catch up.",
+        sender: 'John Doe',
+        timestamp: '10:32 AM',
+        avatar: 'https://i.pravatar.cc/150?img=1'
+      }
+    ]
   };
-  
-  // Handle sending a message
+
   const handleSendMessage = () => {
-    if (messageText.trim() === "") return;
-    
-    // In a real app, you would add the message to the conversation
-    // and then clear the input
-    setMessageText("");
+    if (!newMessage.trim() || !activeConversation) return;
+
+    const newMsg: Message = {
+      id: Date.now().toString(),
+      text: newMessage,
+      sender: 'Me',
+      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      isMe: true
+    };
+
+    messages[activeConversation] = [...(messages[activeConversation] || []), newMsg];
+    setNewMessage('');
   };
-  
-  // Open a conversation
-  const openConversation = (id: number) => {
-    setActiveConversation(id);
-    setActiveView("chat");
-  };
-  
-  // Go back to conversations list
-  const goBackToConversations = () => {
-    setActiveView("conversations");
-    setActiveConversation(null);
-  };
-  
+
+  const filteredConversations = conversations.filter(conv =>
+    conv.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    conv.lastMessage.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
     <BaseMIUIApp 
-      title={activeView === "conversations" ? "Messages" : getConversation(activeConversation || 0)?.contact.name || "Chat"} 
-      rightAction={activeView === "conversations" ? <Edit className="w-5 h-5" /> : "more"}
-      onBack={activeView === "chat" ? goBackToConversations : undefined}
+      title={activeConversation ? conversations.find(c => c.id === activeConversation)?.name || 'Messages' : 'Messages'}
+      headerColor="bg-gray-50 dark:bg-gray-900"
+      onBack={activeConversation ? () => setActiveConversation(null) : undefined}
+      rightAction="more"
     >
-      <div className="h-full flex flex-col">
-        {/* Conversations List */}
-        {activeView === "conversations" && (
+      <div className="h-full bg-gray-100 dark:bg-black">
+        {!activeConversation ? (
           <>
             {/* Search bar */}
-            <div className="p-4 pb-2">
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                  <Search className="w-4 h-4 text-gray-500" />
-                </div>
+            <div className="p-4 bg-white dark:bg-gray-900">
+              <div className="flex items-center bg-gray-100 dark:bg-gray-800 rounded-full px-4 py-2">
+                <Search className="w-5 h-5 text-gray-500 dark:text-gray-400" />
                 <input
                   type="text"
-                  className="w-full py-2 pl-10 pr-4 bg-gray-200 dark:bg-gray-800 rounded-lg text-sm border border-transparent focus:outline-none"
-                  placeholder="Search"
+                  placeholder="Search messages"
+                  className="ml-2 bg-transparent w-full focus:outline-none text-gray-900 dark:text-white"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
                 />
               </div>
             </div>
-            
-            {/* Conversations */}
-            <div className="flex-1 overflow-y-auto">
-              {conversations.map((conversation) => (
-                <button
+
+            {/* Conversations list */}
+            <div className="divide-y divide-gray-200 dark:divide-gray-800">
+              {filteredConversations.map((conversation) => (
+                <div
                   key={conversation.id}
-                  className="w-full flex items-center p-3 hover:bg-gray-50 dark:hover:bg-gray-900 border-b border-gray-200 dark:border-gray-800"
-                  onClick={() => openConversation(conversation.id)}
+                  className="flex items-center p-4 bg-white dark:bg-gray-900 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800/50"
+                  onClick={() => setActiveConversation(conversation.id)}
                 >
-                  <div className="relative">
-                    <div className="w-12 h-12 rounded-full overflow-hidden mr-3">
+                  <div className="w-12 h-12 rounded-full overflow-hidden bg-gray-200 dark:bg-gray-800 relative">
+                    {conversation.avatar ? (
                       <Image
-                        src={conversation.contact.avatar}
-                        alt={conversation.contact.name}
-                        width={48}
-                        height={48}
-                        className="w-full h-full object-cover"
+                        src={conversation.avatar}
+                        alt={conversation.name}
+                        layout="fill"
+                        objectFit="cover"
                       />
-                    </div>
-                    {conversation.unread > 0 && (
-                      <div className="absolute -top-1 -right-1 w-5 h-5 bg-blue-500 rounded-full flex items-center justify-center">
-                        <span className="text-xs text-white font-bold">{conversation.unread}</span>
-                      </div>
+                    ) : (
+                      <User className="w-6 h-6 text-gray-400 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" />
                     )}
                   </div>
-                  
-                  <div className="flex-1 min-w-0 text-left">
-                    <div className="flex justify-between items-center">
-                      <h3 className={`font-semibold truncate ${conversation.unread > 0 ? 'text-black dark:text-white' : 'text-gray-700 dark:text-gray-300'}`}>
-                        {conversation.contact.name}
+                  <div className="ml-4 flex-1">
+                    <div className="flex justify-between items-baseline">
+                      <h3 className="text-base font-medium text-gray-900 dark:text-white">
+                        {conversation.name}
                       </h3>
-                      <span className="text-xs text-gray-500">
-                        {conversation.time}
+                      <span className="text-sm text-gray-500 dark:text-gray-400">
+                        {conversation.timestamp}
                       </span>
                     </div>
-                    <p className={`text-sm truncate ${
-                      conversation.unread > 0 
-                        ? 'text-black dark:text-white font-medium' 
-                        : 'text-gray-500 dark:text-gray-400'
-                    }`}>
+                    <p className="text-sm text-gray-500 dark:text-gray-400 line-clamp-1">
                       {conversation.lastMessage}
                     </p>
                   </div>
-                </button>
+                  {conversation.unread && (
+                    <div className="ml-2 w-5 h-5 bg-blue-500 rounded-full flex items-center justify-center">
+                      <span className="text-xs text-white font-medium">
+                        {conversation.unread}
+                      </span>
+                    </div>
+                  )}
+                </div>
               ))}
             </div>
           </>
-        )}
-        
-        {/* Chat View */}
-        {activeView === "chat" && activeConversation && (
-          <>
+        ) : (
+          <div className="h-full flex flex-col">
             {/* Messages */}
-            <div className="flex-1 overflow-y-auto p-4 bg-gray-100 dark:bg-gray-900">
-              <div className="space-y-4">
-                {getConversation(activeConversation)?.messages.map((message) => (
-                  <div
-                    key={message.id}
-                    className={`flex ${message.sent ? 'justify-end' : 'justify-start'}`}
-                  >
-                    <div className={`max-w-[75%] rounded-2xl px-4 py-2 ${
-                      message.sent
-                        ? 'bg-blue-500 text-white rounded-tr-none'
-                        : 'bg-white dark:bg-gray-800 text-black dark:text-white rounded-tl-none'
-                    }`}>
-                      <p>{message.text}</p>
-                      <div className={`text-xs mt-1 ${
-                        message.sent ? 'text-blue-100' : 'text-gray-500'
+            <div className="flex-1 overflow-y-auto p-4 space-y-4">
+              {messages[activeConversation]?.map((message) => (
+                <div
+                  key={message.id}
+                  className={`flex ${message.isMe ? 'justify-end' : 'justify-start'}`}
+                >
+                  <div className={`flex items-end max-w-[75%] ${message.isMe ? 'flex-row-reverse' : 'flex-row'}`}>
+                    {!message.isMe && (
+                      <div className="w-8 h-8 rounded-full overflow-hidden flex-shrink-0 mb-1 mx-2">
+                        {message.avatar ? (
+                          <Image
+                            src={message.avatar}
+                            alt={message.sender}
+                            width={32}
+                            height={32}
+                            className="w-full h-full object-cover"
+                          />
+                        ) : (
+                          <div className="w-full h-full bg-gray-200 dark:bg-gray-800 flex items-center justify-center">
+                            <User className="w-4 h-4 text-gray-400" />
+                          </div>
+                        )}
+                      </div>
+                    )}
+                    <div>
+                      <div className={`rounded-2xl px-4 py-2 ${
+                        message.isMe 
+                          ? 'bg-blue-500 text-white' 
+                          : 'bg-white dark:bg-gray-800 text-gray-900 dark:text-white'
                       }`}>
-                        {message.time}
+                        {message.text}
+                      </div>
+                      <div className={`text-xs mt-1 ${
+                        message.isMe ? 'text-right' : ''
+                      } text-gray-500`}>
+                        {message.timestamp}
                       </div>
                     </div>
                   </div>
-                ))}
-              </div>
+                </div>
+              ))}
             </div>
-            
+
             {/* Message input */}
-            <div className="p-3 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800">
-              <div className="flex items-center">
-                <button className="p-2 text-gray-500 dark:text-gray-400">
-                  <Camera className="w-6 h-6" />
+            <div className="p-4 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800">
+              <div className="flex items-center gap-2">
+                <button className="p-2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200">
+                  <Smile className="w-6 h-6" />
                 </button>
-                <div className="flex-1 relative mx-2">
+                <div className="flex-1 flex items-center bg-gray-100 dark:bg-gray-800 rounded-full px-4 py-2">
                   <input
                     type="text"
-                    value={messageText}
-                    onChange={(e) => setMessageText(e.target.value)}
-                    className="w-full py-2 px-4 bg-gray-200 dark:bg-gray-800 rounded-full border-none focus:outline-none"
-                    placeholder="iMessage"
+                    placeholder="Type a message"
+                    className="flex-1 bg-transparent focus:outline-none text-gray-900 dark:text-white"
+                    value={newMessage}
+                    onChange={(e) => setNewMessage(e.target.value)}
+                    onKeyPress={(e) => {
+                      if (e.key === 'Enter') handleSendMessage();
+                    }}
                   />
-                  <button className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500">
-                    <Smile className="w-5 h-5" />
-                  </button>
+                  <div className="flex items-center gap-2 ml-2">
+                    <button className="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200">
+                      <ImageIcon className="w-5 h-5" />
+                    </button>
+                    <button className="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200">
+                      <Paperclip className="w-5 h-5" />
+                    </button>
+                  </div>
                 </div>
-                <button 
-                  className="p-2 text-blue-500"
+                <button
+                  className={`p-2 rounded-full ${
+                    newMessage.trim() 
+                      ? 'text-blue-500 hover:text-blue-600' 
+                      : 'text-gray-400'
+                  }`}
                   onClick={handleSendMessage}
-                  disabled={messageText.trim() === ""}
+                  disabled={!newMessage.trim()}
                 >
-                  {messageText.trim() === "" ? (
-                    <Mic className="w-6 h-6" />
-                  ) : (
-                    <SendHorizontal className="w-6 h-6" />
-                  )}
+                  <Send className="w-6 h-6" />
                 </button>
               </div>
             </div>
-          </>
+          </div>
         )}
       </div>
     </BaseMIUIApp>
