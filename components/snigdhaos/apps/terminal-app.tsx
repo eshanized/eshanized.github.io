@@ -76,7 +76,7 @@ export default function TerminalApp() {
       input: '',
       output: [
         `Last login: ${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()} on ttys001`,
-        `${PERSONAL_INFO.name.toLowerCase().replace(' ', '')}@MacBook-Pro ~ % `,
+        `${PERSONAL_INFO.name.toLowerCase().replace(' ', '')}@SnigdhaOS ~ % `,
         `Type 'help' to see available commands.`,
         ``
       ],
@@ -186,7 +186,7 @@ export default function TerminalApp() {
             <div><span style={{color: terminalColors[termTheme as keyof typeof terminalColors].yellow}}>Uptime:</span> {uptimeStr}</div>
             <div><span style={{color: terminalColors[termTheme as keyof typeof terminalColors].yellow}}>Shell:</span> {shellPath}</div>
             <div><span style={{color: terminalColors[termTheme as keyof typeof terminalColors].yellow}}>Terminal:</span> Portfolio Terminal</div>
-            <div><span style={{color: terminalColors[termTheme as keyof typeof terminalColors].yellow}}>CPU:</span> Apple M2 Pro (10-core)</div>
+            <div><span style={{color: terminalColors[termTheme as keyof typeof terminalColors].yellow}}>CPU:</span> Snigdha S1 Pro (10-core)</div>
             <div><span style={{color: terminalColors[termTheme as keyof typeof terminalColors].yellow}}>Memory:</span> {memUsed}MB / {memTotal}MB</div>
             <div><span style={{color: terminalColors[termTheme as keyof typeof terminalColors].yellow}}>Resolution:</span> Browser × Browser</div>
             <div><span style={{color: terminalColors[termTheme as keyof typeof terminalColors].yellow}}>DE:</span> Aqua</div>
@@ -726,7 +726,7 @@ export default function TerminalApp() {
                   input: '',
                   output: [
                     `Last login: ${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()} on ttys001`,
-                    `${PERSONAL_INFO.name.toLowerCase().replace(' ', '')}@MacBook-Pro ~ % `,
+                    `${PERSONAL_INFO.name.toLowerCase().replace(' ', '')}@SnigdhaOS ~ % `,
                     `Type 'help' to see available commands.`,
                     ``
                   ],
