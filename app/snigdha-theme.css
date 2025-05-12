@@ -29,7 +29,7 @@
   --chart-5: 35 91% 55%;              /* Orange #FF9500 */
   
   /* Adding font family settings */
-  --font-family: 'Allerta Stencil', sans-serif;
+  --font-family: 'Dosis', sans-serif;
   letter-spacing: 0.02em;
 }
 
@@ -269,5 +269,5 @@
 
 /* Adding explicit font styling for consistency */
 .snigdha-theme * {
-  font-family: 'Allerta Stencil', sans-serif;
+  font-family: 'Dosis', sans-serif;
 } 

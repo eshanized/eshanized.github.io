@@ -521,19 +521,19 @@ export const MenuBar = memo(function MenuBar({
       {/* Add global styling for this component */}
       <style jsx global>{`
         .menu-bar, .menu-bar * {
-          font-family: 'Allerta Stencil', sans-serif;
+          font-family: 'Dosis', sans-serif;
           -webkit-font-smoothing: antialiased;
           -moz-osx-font-smoothing: grayscale;
           letter-spacing: 0.02em;
         }
 
         .menu-name {
-          font-family: 'Allerta Stencil', sans-serif;
+          font-family: 'Dosis', sans-serif;
           letter-spacing: 0.02em;
         }
 
         .menu-bar-item {
-          font-family: 'Allerta Stencil', sans-serif;
+          font-family: 'Dosis', sans-serif;
           letter-spacing: 0.02em;
         }
       `}</style>
@@ -547,7 +547,7 @@ export const MenuBar = memo(function MenuBar({
           damping: 30 
         }}
         className={`
-          menu-bar w-full h-7 flex items-center justify-between px-2 z-50 text-xs font-sf-pro
+          menu-bar w-full h-7 flex items-center justify-between px-2 z-50 text-xs font-sans
           ${theme === 'dark' 
             ? 'bg-[#1D1D1F]/80 text-white border-b border-[#3A3A3C]/30' 
             : 'bg-[#F5F5F7]/80 text-black border-b border-[#E5E5E7]/50'
@@ -576,7 +576,7 @@ export const MenuBar = memo(function MenuBar({
             <DropdownMenuContent 
               align="start" 
               className={`
-                w-64 p-0 rounded-lg overflow-hidden shadow-lg font-sf-pro
+                w-64 p-0 rounded-lg overflow-hidden shadow-lg font-sans
                 ${theme === 'dark'
                   ? 'bg-[#2C2C2E]/90 backdrop-blur-xl border border-[#3A3A3C]/50'
                   : 'bg-[#F5F5F7]/90 backdrop-blur-xl border border-[#E5E5E7]/70'
@@ -794,7 +794,7 @@ export const MenuBar = memo(function MenuBar({
                 ${theme === 'dark' ? 'bg-[#1E1E1E]/90 text-white' : 'bg-white/90 text-black'} 
                 backdrop-blur-md border 
                 ${theme === 'dark' ? 'border-[#3A3A3C]/50' : 'border-[#E5E5E7]/70'}
-                font-sf-pro
+                font-sans
               `}
             >
               <div className={`p-3 grid grid-cols-2 gap-2 w-[320px]`}>

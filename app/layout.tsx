@@ -1,10 +1,13 @@
 import './globals.css';
 import './snigdha-theme.css';
 import type { Metadata, Viewport } from 'next';
-import { Inter } from "next/font/google";
+import { Dosis } from "next/font/google";
 import ClientLayout from '@/components/ClientLayout';
 
-const inter = Inter({ subsets: ["latin"] });
+const dosis = Dosis({ 
+  subsets: ["latin"],
+  weight: ["200", "300", "400", "500", "600", "700", "800"]
+});
 
 export const viewport: Viewport = {
   width: 'device-width',
@@ -113,7 +116,7 @@ export default function RootLayout({
       suppressHydrationWarning
       className="scroll-smooth"
     >
-      <body className={inter.className}>
+      <body className={dosis.className}>
         <ClientLayout>
           {children}
         </ClientLayout>

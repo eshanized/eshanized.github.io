@@ -10,8 +10,9 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        'sf-pro': ['SF Pro Display', 'system-ui', 'sans-serif'],
-        'apple-emoji': ['Apple Color Emoji', 'system-ui', 'emoji'],
+        'sans': ['Dosis', 'system-ui', 'sans-serif'],
+        'sf-pro': ['Dosis', 'system-ui', 'sans-serif'],
+        'apple-emoji': ['Dosis', 'system-ui', 'sans-serif'],
       },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',

@@ -2,25 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Import Allerta Stencil from Google Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Allerta+Stencil&display=swap');
-
-/* Allerta Stencil Font */
-@font-face {
-  font-family: 'Allerta Stencil';
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-/* Apple Emoji Font */
-@font-face {
-  font-family: 'Apple Color Emoji';
-  src: url('https://applesocial.s3.amazonaws.com/assets/styles/fonts/sanfrancisco/apple-color-emoji.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
-}
+/* Import Dosis from Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Dosis:wght@200;300;400;500;600;700;800&display=swap');
 
 :root {
   --foreground-rgb: 0, 0, 0;
@@ -144,7 +127,7 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground font-sf-pro antialiased selection:bg-primary/20 selection:text-primary;
+    @apply bg-background text-foreground font-sans antialiased selection:bg-primary/20 selection:text-primary;
   }
   
   /* Modern focus styles */
@@ -700,7 +683,7 @@ html {
 
 /* macOS Login Screen Enhancements */
 .font-sf-pro {
-  font-family: 'Allerta Stencil', sans-serif;
+  font-family: 'Dosis', sans-serif;
   letter-spacing: 0.02em;
 }
 
@@ -804,12 +787,11 @@ input.font-sf-pro::placeholder {
   }
 }
 
-/* MIUI System Font */
+/* System Font */
 @font-face {
   font-family: 'SF Pro Display';
-  src: local('-apple-system'),
-       local('system-ui'),
-       local('BlinkMacSystemFont');
+  src: local('Dosis'),
+       local('system-ui');
   font-weight: 100 900;
   font-style: normal;
   font-display: swap;
