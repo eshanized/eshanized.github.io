@@ -243,18 +243,42 @@ export function BootAnimation({ onComplete }: { onComplete: () => void }) {
             </motion.div>
           </div>
           
-          {/* Mac OS Version Info at bottom with reveal animation */}
+          {/* Credits and Version Info at bottom with reveal animation */}
           <motion.div 
             className="absolute bottom-8 flex flex-col items-center"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1, duration: 0.8 }}
           >
-            <p className="text-white/60 text-sm font-light">
-              Eshan&apos;s Portfolio
-            </p>
+            <div className="flex flex-col items-center gap-1.5">
+              <p className="text-white/80 text-sm font-medium bg-gradient-to-r from-primary/80 to-purple-400/80 bg-clip-text text-transparent">
+                Snigdha OS
+              </p>
+              <div className="flex items-center gap-2">
+                <p className="text-white/60 text-xs">
+                  Created by
+                </p>
+                <a 
+                  href="https://github.com/Snigdha-OS" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-primary/80 hover:text-primary transition-colors text-xs font-medium"
+                >
+                  Snigdha
+                </a>
+                <span className="text-white/40">×</span>
+                <a 
+                  href="https://github.com/eshanized" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-purple-400/80 hover:text-purple-400 transition-colors text-xs font-medium"
+                >
+                  Eshan Roy
+                </a>
+              </div>
+            </div>
             <motion.div
-              className="flex items-center gap-2 mt-1"
+              className="flex items-center gap-2 mt-2"
               initial={{ scale: 0.8 }}
               animate={{ scale: 1 }}
               transition={{ delay: 1.2, duration: 0.5 }}
