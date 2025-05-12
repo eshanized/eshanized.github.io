@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect, type CSSProperties } from 'react';
 import { useTheme } from 'next-themes';
 import { MenuBar } from './menu-bar';
 import { Dock } from './dock';
@@ -37,41 +37,109 @@ import RomanticWelcome from './romantic-welcome';
 import { DesktopContextMenu } from './desktop-context-menu';
 import WelcomeWindow from './welcome-window';
 
-// Heart Particles Component for the romantic theme
+// Enhanced animated background component
+const AnimatedBackground = () => {
+  return (
+    <div className="fixed inset-0 -z-10 overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-br from-background/80 to-background/40 backdrop-blur-sm" />
+      <div className="absolute top-0 -left-4 w-72 h-72 bg-purple-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob" />
+      <div className="absolute top-0 -right-4 w-72 h-72 bg-yellow-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-2000" />
+      <div className="absolute -bottom-8 left-20 w-72 h-72 bg-pink-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-4000" />
+      <div className="absolute -bottom-8 right-20 w-72 h-72 bg-blue-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-6000" />
+    </div>
+  );
+};
+
+interface ParticlesEffectProps {
+  theme: string;
+}
+
+// Enhanced particles component
+const ParticlesEffect = ({ theme }: ParticlesEffectProps) => {
+  useEffect(() => {
+    const createParticle = () => {
+      const particle = document.createElement('div');
+      particle.classList.add('particle');
+      
+      const size = Math.random() * 4 + 2;
+      const color = theme === 'dark' 
+        ? `rgba(255, 255, 255, ${Math.random() * 0.3})`
+        : `rgba(0, 0, 0, ${Math.random() * 0.2})`;
+      
+      particle.style.cssText = `
+        position: fixed;
+        width: ${size}px;
+        height: ${size}px;
+        background: ${color};
+        border-radius: 50%;
+        pointer-events: none;
+        left: ${Math.random() * 100}vw;
+        top: -10px;
+        z-index: 0;
+      `;
+      
+      document.querySelector('.particles-container')?.appendChild(particle);
+      
+      const animation = particle.animate(
+        [
+          { transform: 'translateY(0) rotate(0deg)', opacity: 1 },
+          { 
+            transform: `translateY(${window.innerHeight + 10}px) rotate(${Math.random() * 360}deg)`, 
+            opacity: 0 
+          }
+        ], 
+        {
+          duration: Math.random() * 3000 + 3000,
+          easing: 'linear'
+        }
+      );
+      
+      animation.onfinish = () => particle.remove();
+    };
+    
+    const interval = setInterval(createParticle, 200);
+    return () => clearInterval(interval);
+  }, [theme]);
+  
+  return <div className="particles-container fixed inset-0 pointer-events-none" />;
+};
+
+// Enhanced heart particles for romantic theme
 const HeartParticles = () => {
   useEffect(() => {
     const createHeart = () => {
       const heart = document.createElement('div');
       heart.classList.add('heart');
       heart.innerHTML = '♥';
-      heart.style.left = Math.random() * 100 + 'vw';
-      heart.style.animationDuration = Math.random() * 3 + 2 + 's';
-      heart.style.position = 'fixed';
-      heart.style.fontSize = Math.random() * 20 + 10 + 'px';
-      heart.style.color = `hsla(${Math.random() * 60 + 320}, 100%, 70%, ${Math.random() * 0.5 + 0.3})`;
-      heart.style.zIndex = '0';
-      heart.style.pointerEvents = 'none';
-      heart.style.top = '-10vh';
-      heart.style.transform = 'translateY(0)';
-      heart.style.animation = 'fall linear forwards';
+      const cssText = `
+        position: fixed;
+        left: ${Math.random() * 100}vw;
+        top: -10vh;
+        font-size: ${Math.random() * 20 + 10}px;
+        color: hsla(${Math.random() * 60 + 320}, 100%, 70%, ${Math.random() * 0.5 + 0.3});
+        z-index: 0;
+        pointer-events: none;
+        animation: fall ${Math.random() * 3 + 2}s linear forwards;
+        text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+      `;
+      heart.style.cssText = cssText;
       
       document.querySelector('.heart-particles')?.appendChild(heart);
       
-      setTimeout(() => {
-        heart.remove();
-      }, 5000);
+      setTimeout(() => heart.remove(), 5000);
     };
     
     const heartInterval = setInterval(createHeart, 300);
     
     const style = document.createElement('style');
-    style.innerHTML = `
+    const styleText = `
       @keyframes fall {
         to {
           transform: translateY(110vh) rotate(${Math.random() * 360}deg);
         }
       }
     `;
+    style.innerHTML = styleText;
     document.head.appendChild(style);
     
     return () => {
@@ -80,7 +148,7 @@ const HeartParticles = () => {
     };
   }, []);
   
-  return <div className="heart-particles"></div>;
+  return <div className="heart-particles" />;
 };
 
 export function SnigdhaOSDesktop() {
@@ -88,7 +156,7 @@ export function SnigdhaOSDesktop() {
   const [isBooting, setIsBooting] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [specialUser, setSpecialUser] = useState<string | undefined>(undefined);
-  const { theme } = useTheme();
+  const { theme = 'light' } = useTheme();
   const [openWindows, setOpenWindows] = useState<string[]>([]);
   const [activeWindow, setActiveWindow] = useState<string | null>(null);
   const [minimizedWindows, setMinimizedWindows] = useState<string[]>([]);
@@ -254,15 +322,13 @@ export function SnigdhaOSDesktop() {
     quitApp: handleCloseApp,
   };
 
-  if (!mounted) return null;
-
-  if (isBooting) {
-    return <BootAnimation onComplete={handleBootComplete} />;
-  }
-
-  if (!isLoggedIn) {
-    return <LoginScreen onLogin={handleLogin} />;
-  }
+  // Enhanced window animations
+  const windowVariants = {
+    initial: { scale: 0.9, opacity: 0 },
+    animate: { scale: 1, opacity: 1 },
+    exit: { scale: 0.9, opacity: 0 },
+    minimized: { scale: 0.8, opacity: 0, y: 100 }
+  };
 
   // Different wallpapers based on user
   const getWallpaperUrl = () => {
@@ -277,8 +343,26 @@ export function SnigdhaOSDesktop() {
       : '/images/wallpaper.jpg';
   };
 
+  // Enhanced wallpaper effect
+  const getWallpaperStyle = (): CSSProperties => ({
+    backgroundImage: `url(${getWallpaperUrl()})`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    backgroundAttachment: 'fixed'
+  } as const);
+
+  if (!mounted) return null;
+
+  if (isBooting) {
+    return <BootAnimation onComplete={handleBootComplete} />;
+  }
+
+  if (!isLoggedIn) {
+    return <LoginScreen onLogin={handleLogin} />;
+  }
+
   // Apply romantic theme class if special user
-  const themeClasses = specialUser === 'snigdha' ? `snigdha-theme ${theme === 'dark' ? 'dark' : ''}` : '';
+  const themeClasses = specialUser === 'snigdha' ? 'snigdha-theme ' + (theme === 'dark' ? 'dark' : '') : '';
 
   // Desktop context menu handlers
   const handleContextMenu = (e: React.MouseEvent) => {
@@ -306,147 +390,68 @@ export function SnigdhaOSDesktop() {
   return (
     <WindowContext.Provider value={windowManagerValue}>
       <MenuProvider>
-        <div 
-          className={`h-screen w-screen overflow-hidden relative bg-cover bg-center bg-fixed ${themeClasses}`}
-          style={{ backgroundImage: `url(${getWallpaperUrl()})` }}
+        <motion.div 
+          className={`h-screen w-screen overflow-hidden relative ${themeClasses}`}
+          style={getWallpaperStyle()}
           onContextMenu={handleContextMenu}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
         >
-          <div className="absolute inset-0 bg-background/20 backdrop-blur-[2px]" />
+          {/* Enhanced background effects */}
+          <AnimatedBackground />
+          <ParticlesEffect theme={theme} />
           
-          {/* Romantic welcome message when logging in with special password */}
-          {specialUser === 'snigdha' && <RomanticWelcome />}
-          
-          {/* Heart particles for romantic theme */}
-          {specialUser === 'snigdha' && <HeartParticles />}
-          
-          {/* Context Menu */}
-          {contextMenu && (
-            <DesktopContextMenu
-              x={contextMenu.x}
-              y={contextMenu.y}
-              onClose={handleCloseContextMenu}
-              onOpenTerminal={handleOpenTerminalFromMenu}
-              onCreateNewFolder={() => console.log("Create folder not implemented")}
-              onChangeBackground={() => console.log("Change background not implemented")}
-            />
+          {/* Romantic theme effects */}
+          {specialUser === 'snigdha' && (
+            <>
+              <HeartParticles />
+              <div className="fixed inset-0 bg-gradient-to-br from-pink-500/10 to-purple-500/10 pointer-events-none" />
+            </>
           )}
           
-          {/* CSS for animations */}
-          <style jsx global>{`
-            @keyframes blob {
-              0% { transform: translate(0px, 0px) scale(1); }
-              33% { transform: translate(30px, -50px) scale(1.1); }
-              66% { transform: translate(-20px, 20px) scale(0.9); }
-              100% { transform: translate(0px, 0px) scale(1); }
-            }
-            @keyframes float {
-              0% { transform: translateY(0px); }
-              50% { transform: translateY(-20px); }
-              100% { transform: translateY(0px); }
-            }
-            @keyframes pulse {
-              0% { opacity: 0.6; transform: scale(1); }
-              50% { opacity: 1; transform: scale(1.05); }
-              100% { opacity: 0.6; transform: scale(1); }
-            }
-            @keyframes spin-slow {
-              from { transform: rotate(0deg); }
-              to { transform: rotate(360deg); }
-            }
-            @keyframes gradient-shift {
-              0% { background-position: 0% 50%; }
-              50% { background-position: 100% 50%; }
-              100% { background-position: 0% 50%; }
-            }
-            .animate-blob {
-              animation: blob 7s infinite;
-            }
-            .animation-delay-2000 {
-              animation-delay: 2s;
-            }
-            .animation-delay-4000 {
-              animation-delay: 4s;
-            }
-            .float {
-              animation: float 6s ease-in-out infinite;
-            }
-            .pulse {
-              animation: pulse 4s ease-in-out infinite;
-            }
-            .spin-slow {
-              animation: spin-slow 12s linear infinite;
-            }
-            .gradient-text {
-              background-size: 300% 300%;
-              animation: gradient-shift 8s ease infinite;
-            }
-            .shimmer {
-              background: linear-gradient(
-                90deg,
-                rgba(255, 255, 255, 0) 0%,
-                rgba(255, 255, 255, 0.2) 50%,
-                rgba(255, 255, 255, 0) 100%
-              );
-              background-size: 200% 100%;
-              animation: shimmer 2s infinite;
-            }
-            @keyframes shimmer {
-              0% { background-position: 100% 0; }
-              100% { background-position: -100% 0; }
-            }
-          `}</style>
-          
-          {/* Desktop icons - only visible for special user */}
-          {specialUser === 'snigdha' && DESKTOP_NOTES.map((note) => (
-            <DesktopIcon
-              key={note.id}
-              id={note.id}
-              title={note.title}
-              type={note.type}
-              content={note.content}
-              position={note.position}
-              onOpen={handleOpenNote}
-            />
-          ))}
-          
-          <MenuBar 
-            openWindows={openWindows}
-            activeWindow={activeWindow}
-            minimizedWindows={minimizedWindows}
-            onOpenWindow={handleOpenApp}
-            onCloseWindow={handleCloseApp}
-            onMinimizeWindow={handleMinimizeApp}
-            onMaximizeWindow={handleMaximizeApp}
-          />
-          
-          {/* Note windows - rendered separately from app windows */}
-          <AnimatePresence>
-            {openNotes.map((noteId) => {
-              const note = DESKTOP_NOTES.find(note => note.id === noteId);
-              if (!note) return null;
-              
-              return (
-                <Window
-                  key={noteId}
-                  id={noteId}
-                  title={note.title}
-                  icon={StickyNote}
-                  defaultPosition={note.position}
-                  defaultSize={{ width: 500, height: 400 }}
-                  isActive={activeWindow === noteId}
-                  isMinimized={false}
-                  isMaximized={false}
-                  onClose={() => handleCloseNote(noteId)}
-                  onMinimize={() => {}}
-                  onMaximize={() => {}}
-                  onFocus={() => setActiveWindow(noteId)}
+          {/* Desktop icons with enhanced animations */}
+          <div className="fixed inset-0 p-4 grid grid-cols-6 gap-4 pointer-events-none">
+            <AnimatePresence>
+              {specialUser === 'snigdha' && DESKTOP_NOTES.map((note, index) => (
+                <motion.div
+                  key={note.id}
+                  className="pointer-events-auto"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.1 }}
                 >
-                  <NoteWindow title={note.title} content={note.content} />
-                </Window>
-              );
-            })}
-          </AnimatePresence>
-          
+                  <DesktopIcon
+                    id={note.id}
+                    title={note.title}
+                    type={note.type}
+                    content={note.content}
+                    position={note.position}
+                    onOpen={handleOpenNote}
+                  />
+                </motion.div>
+              ))}
+            </AnimatePresence>
+          </div>
+
+          {/* Enhanced MenuBar */}
+          <motion.div
+            initial={{ y: -50, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.2, type: "spring", stiffness: 100 }}
+          >
+            <MenuBar 
+              openWindows={openWindows}
+              activeWindow={activeWindow}
+              minimizedWindows={minimizedWindows}
+              onOpenWindow={handleOpenApp}
+              onCloseWindow={handleCloseApp}
+              onMinimizeWindow={handleMinimizeApp}
+              onMaximizeWindow={handleMaximizeApp}
+            />
+          </motion.div>
+
+          {/* Enhanced window animations */}
           <AnimatePresence>
             {openWindows.map((appId) => {
               const app = DESKTOP_APPS.find(app => app.id === appId);
@@ -457,58 +462,120 @@ export function SnigdhaOSDesktop() {
               const isActive = activeWindow === appId;
               
               return (
-                <Window
+                <motion.div
                   key={appId}
-                  id={appId}
-                  title={app.title}
-                  icon={app.icon}
-                  defaultPosition={app.defaultPosition}
-                  defaultSize={app.defaultSize}
-                  isActive={isActive}
-                  isMinimized={isMinimized}
-                  isMaximized={isMaximized}
-                  onClose={() => handleCloseApp(appId)}
-                  onMinimize={() => handleMinimizeApp(appId)}
-                  onMaximize={() => handleMaximizeApp(appId)}
-                  onFocus={() => handleWindowFocus(appId)}
+                  variants={windowVariants}
+                  initial="initial"
+                  animate={isMinimized ? "minimized" : "animate"}
+                  exit="exit"
+                  transition={{ type: "spring", stiffness: 300, damping: 30 }}
                 >
-                  {getAppComponent(appId)}
-                </Window>
+                  <Window
+                    id={appId}
+                    title={app.title}
+                    icon={app.icon}
+                    defaultPosition={app.defaultPosition}
+                    defaultSize={app.defaultSize}
+                    isActive={isActive}
+                    isMinimized={isMinimized}
+                    isMaximized={isMaximized}
+                    onClose={() => handleCloseApp(appId)}
+                    onMinimize={() => handleMinimizeApp(appId)}
+                    onMaximize={() => handleMaximizeApp(appId)}
+                    onFocus={() => handleWindowFocus(appId)}
+                  >
+                    {getAppComponent(appId)}
+                  </Window>
+                </motion.div>
               );
             })}
           </AnimatePresence>
-          
-          <AnimatePresence>
-            {mounted && showWelcome && (
-              <Window
-                id="welcome"
-                title="Welcome"
-                icon={Terminal}
-                isActive={true}
-                isMinimized={false}
-                isMaximized={false}
-                defaultPosition={{ x: window.innerWidth / 2 - 400, y: window.innerHeight / 2 - 300 }}
-                defaultSize={{ width: 800, height: 600 }}
-                onClose={() => setShowWelcome(false)}
-                onMinimize={() => {}}
-                onMaximize={() => {}}
-                onFocus={() => {}}
-              >
-                <WelcomeWindow
-                  onCloseWelcome={() => setShowWelcome(false)}
-                  onOpenApp={handleOpenApp}
-                />
-              </Window>
-            )}
-          </AnimatePresence>
-          
-          <Dock 
-            openWindows={openWindows}
-            activeWindow={activeWindow}
-            minimizedWindows={minimizedWindows}
-            onAppClick={handleOpenApp}
-          />
-        </div>
+
+          {/* Enhanced Dock */}
+          <motion.div
+            initial={{ y: 100, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.3, type: "spring", stiffness: 100 }}
+            className="absolute bottom-0 w-full"
+          >
+            <Dock 
+              openWindows={openWindows}
+              activeWindow={activeWindow}
+              minimizedWindows={minimizedWindows}
+              onAppClick={handleOpenApp}
+            />
+          </motion.div>
+
+          {/* Enhanced global animations */}
+          <style jsx global>
+            {`
+              @keyframes blob {
+                0% { transform: translate(0, 0) scale(1); }
+                33% { transform: translate(30px, -50px) scale(1.1); }
+                66% { transform: translate(-20px, 20px) scale(0.9); }
+                100% { transform: translate(0, 0) scale(1); }
+              }
+              @keyframes float {
+                0% { transform: translateY(0); }
+                50% { transform: translateY(-20px); }
+                100% { transform: translateY(0); }
+              }
+              @keyframes pulse {
+                0% { opacity: 0.6; transform: scale(1); }
+                50% { opacity: 1; transform: scale(1.05); }
+                100% { opacity: 0.6; transform: scale(1); }
+              }
+              @keyframes spin-slow {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+              }
+              @keyframes gradient-shift {
+                0% { background-position: 0% 50%; }
+                50% { background-position: 100% 50%; }
+                100% { background-position: 0% 50%; }
+              }
+              .animate-blob {
+                animation: blob 7s infinite;
+              }
+              .animation-delay-2000 {
+                animation-delay: 2s;
+              }
+              .animation-delay-4000 {
+                animation-delay: 4s;
+              }
+              .animation-delay-6000 {
+                animation-delay: 6s;
+              }
+              .float {
+                animation: float 6s ease-in-out infinite;
+              }
+              .pulse {
+                animation: pulse 4s ease-in-out infinite;
+              }
+              .spin-slow {
+                animation: spin-slow 12s linear infinite;
+              }
+              .gradient-text {
+                background-size: 300% 300%;
+                animation: gradient-shift 8s ease infinite;
+              }
+              .shimmer {
+                background: linear-gradient(
+                  90deg,
+                  rgba(255, 255, 255, 0) 0%,
+                  rgba(255, 255, 255, 0.2) 50%,
+                  rgba(255, 255, 255, 0) 100%
+                );
+                background-size: 200% 100%;
+                animation: shimmer 2s infinite;
+              }
+              @keyframes shimmer {
+                0% { background-position: 100% 0; }
+                100% { background-position: -100% 0; }
+              }
+            `}
+          </style>
+        </motion.div>
       </MenuProvider>
     </WindowContext.Provider>
   );
