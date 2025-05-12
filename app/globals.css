@@ -6,118 +6,118 @@
 @import url('https://fonts.googleapis.com/css2?family=Dosis:wght@200;300;400;500;600;700;800&display=swap');
 
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+  --foreground-rgb: 76, 79, 105;   /* Catppuccin Frappe Text */
+  --background-start-rgb: 239, 241, 245; /* Catppuccin Frappe Base */
+  --background-end-rgb: 239, 241, 245;   /* Catppuccin Frappe Base */
   --animation-timing: cubic-bezier(0.19, 1, 0.22, 1);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+    --foreground-rgb: 205, 214, 244; /* Catppuccin Mocha Text */
+    --background-start-rgb: 30, 30, 46; /* Catppuccin Mocha Base */
+    --background-end-rgb: 30, 30, 46; /* Catppuccin Mocha Base */
   }
 }
 
 @layer base {
   :root {
-    /* MIUI Light Mode Colors */
-    --miui-background: 242 242 247;
-    --miui-text: 0 0 0;
-    --miui-secondary-text: 60 60 67;
-    --miui-tertiary-text: 60 60 67;
-    --miui-system-fill: 120 120 128;
-    --miui-separator: 60 60 67;
-    --miui-grouped-background: 242 242 247;
-    --miui-system-background: 255 255 255;
+    /* MIUI Light Mode Colors - using Catppuccin Frappe */
+    --miui-background: 239 241 245; /* Base #EFF1F5 */
+    --miui-text: 76 79 105;       /* Text #4C4F69 */
+    --miui-secondary-text: 108 111 133; /* Subtext0 #6C6F85 */
+    --miui-tertiary-text: 108 111 133; /* Subtext0 #6C6F85 */
+    --miui-system-fill: 172 176 190; /* Surface2 #ACB0BE */
+    --miui-separator: 140 143 161; /* Overlay0 #8C8FA1 */
+    --miui-grouped-background: 239 241 245; /* Base #EFF1F5 */
+    --miui-system-background: 204 208 218; /* Surface0 #CCD0DA */
 
-    /* Light theme colors - authentic macOS palette */
-    --background: 0 0% 100%;         /* Pure white #FFFFFF */
-    --foreground: 222.2 84% 4.9%;
-    --card: 0 0% 100%;               /* Pure white #FFFFFF */
-    --card-foreground: 222.2 84% 4.9%;
-    --popover: 0 0% 100%;            /* Pure white #FFFFFF */
-    --popover-foreground: 222.2 84% 4.9%;
-    --primary: 221.2 83.2% 53.3%;
-    --primary-foreground: 210 40% 98%;
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 221.2 83.2% 53.3%;
+    /* Light theme colors - Catppuccin Frappe */
+    --background: 229 23% 88%;          /* Base #EFF1F5 */
+    --foreground: 240 10% 16%;          /* Text #4C4F69 */
+    --card: 231 18% 91%;                /* Surface0 #CCD0DA */
+    --card-foreground: 240 10% 16%;     /* Text #4C4F69 */
+    --popover: 231 18% 91%;             /* Surface0 #CCD0DA */
+    --popover-foreground: 240 10% 16%;  /* Text #4C4F69 */
+    --primary: 320 70% 75%;             /* Mauve #8839EF */
+    --primary-foreground: 229 23% 88%;  /* Base #EFF1F5 */
+    --secondary: 227 35% 80%;           /* Surface1 #BCC0CC */
+    --secondary-foreground: 240 10% 16%; /* Text #4C4F69 */
+    --muted: 227 35% 80%;               /* Surface1 #BCC0CC */
+    --muted-foreground: 249 12% 47%;    /* Subtext0 #6C6F85 */
+    --accent: 340 82% 85%;              /* Pink #F4B8E4 */
+    --accent-foreground: 240 10% 16%;   /* Text #4C4F69 */
+    --destructive: 0 78% 63%;           /* Red #D20F39 */
+    --destructive-foreground: 229 23% 88%; /* Base #EFF1F5 */
+    --border: 233 25% 65%;              /* Surface2 #ACB0BE */
+    --input: 233 25% 65%;               /* Surface2 #ACB0BE */
+    --ring: 320 70% 75%;                /* Mauve #8839EF */
     
-    /* Authentic macOS chart colors */
-    --chart-1: 211 100% 50%;   /* Apple Blue #0066FF */
-    --chart-2: 262 83% 58%;    /* Purple #5856D6 */
-    --chart-3: 176 100% 40%;   /* Teal #5AC8FA */
-    --chart-4: 329 100% 56%;   /* Pink #FF2D55 */
-    --chart-5: 35 91% 55%;     /* Orange #FF9500 */
+    /* Catppuccin Frappe chart colors */
+    --chart-1: 320 70% 75%;             /* Mauve #8839EF */
+    --chart-2: 182 43% 76%;             /* Teal #81C8BE */
+    --chart-3: 209 66% 74%;             /* Blue #8CAAEE */
+    --chart-4: 268 56% 70%;             /* Lavender #BABBF1 */
+    --chart-5: 30 100% 65%;             /* Peach #EF9F76 */
     
-    /* macOS specific variables */
-    --window-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
-    --window-border: rgba(0, 0, 0, 0.1);
-    --dock-bg: rgba(255, 255, 255, 0.25);
-    --dock-border: rgba(255, 255, 255, 0.3);
+    /* macOS specific variables - with Catppuccin Frappe */
+    --window-shadow: 0 8px 32px rgba(76, 79, 105, 0.12);
+    --window-border: rgba(76, 79, 105, 0.1);
+    --dock-bg: rgba(239, 241, 245, 0.25);
+    --dock-border: rgba(239, 241, 245, 0.3);
     --glass-opacity: 0.7;
-    --menu-bar-bg: rgba(255, 255, 255, 0.9);
+    --menu-bar-bg: rgba(239, 241, 245, 0.9);
     --window-blur: 16px;
     
     --radius: 0.5rem;
   }
   
   .dark {
-    /* MIUI Dark Mode Colors */
-    --miui-background: 0 0 0;
-    --miui-text: 255 255 255;
-    --miui-secondary-text: 235 235 245;
-    --miui-tertiary-text: 235 235 245;
-    --miui-system-fill: 120 120 128;
-    --miui-separator: 84 84 88;
-    --miui-grouped-background: 0 0 0;
-    --miui-system-background: 28 28 30;
+    /* MIUI Dark Mode Colors - using Catppuccin Mocha */
+    --miui-background: 30 30 46;      /* Base #1E1E2E */
+    --miui-text: 205 214 244;        /* Text #CDD6F4 */
+    --miui-secondary-text: 166 173 200;  /* Subtext0 #A6ADC8 */
+    --miui-tertiary-text: 166 173 200;  /* Subtext0 #A6ADC8 */
+    --miui-system-fill: 88 91 112;    /* Surface2 #585B70 */
+    --miui-separator: 127 132 156;    /* Overlay0 #7F849C */
+    --miui-grouped-background: 30 30 46;  /* Base #1E1E2E */
+    --miui-system-background: 49 50 68;    /* Surface0 #313244 */
 
-    /* Dark theme colors - authentic macOS palette */
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-    --primary: 217.2 91.2% 59.8%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 224.3 76.3% 48%;
+    /* Dark theme colors - Catppuccin Mocha */
+    --background: 240 21% 15%;          /* Base #1E1E2E */
+    --foreground: 226 64% 88%;          /* Text #CDD6F4 */
+    --card: 240 23% 9%;                 /* Surface0 #313244 */
+    --card-foreground: 226 64% 88%;     /* Text #CDD6F4 */
+    --popover: 240 23% 9%;              /* Surface0 #313244 */
+    --popover-foreground: 226 64% 88%;  /* Text #CDD6F4 */
+    --primary: 267 84% 81%;             /* Mauve #CBA6F7 */
+    --primary-foreground: 240 21% 15%;  /* Base #1E1E2E */
+    --secondary: 240 24% 30%;           /* Surface1 #45475A */
+    --secondary-foreground: 226 64% 88%; /* Text #CDD6F4 */
+    --muted: 240 24% 30%;               /* Surface1 #45475A */
+    --muted-foreground: 228 39% 75%;    /* Subtext0 #A6ADC8 */
+    --accent: 316 72% 86%;              /* Pink #F5C2E7 */
+    --accent-foreground: 240 21% 15%;   /* Base #1E1E2E */
+    --destructive: 347 87% 69%;         /* Red #F38BA8 */
+    --destructive-foreground: 240 21% 15%; /* Base #1E1E2E */
+    --border: 240 21% 38%;              /* Surface2 #585B70 */
+    --input: 240 21% 38%;               /* Surface2 #585B70 */
+    --ring: 267 84% 81%;                /* Mauve #CBA6F7 */
     
-    /* Authentic macOS chart colors - dark mode */
-    --chart-1: 211 100% 60%;   /* Apple Blue #0A84FF */
-    --chart-2: 262 83% 65%;    /* Purple #5E5CE6 */
-    --chart-3: 176 100% 50%;   /* Teal #64D2FF */
-    --chart-4: 329 100% 65%;   /* Pink #FF375F */
-    --chart-5: 35 91% 60%;     /* Orange #FF9F0A */
+    /* Catppuccin Mocha chart colors */
+    --chart-1: 267 84% 81%;             /* Mauve #CBA6F7 */
+    --chart-2: 180 55% 76%;             /* Teal #94E2D5 */
+    --chart-3: 203 92% 75%;             /* Blue #89B4FA */
+    --chart-4: 233 75% 85%;             /* Lavender #B4BEFE */
+    --chart-5: 16 93% 79%;              /* Peach #FAB387 */
     
-    /* macOS specific variables - dark mode */
+    /* macOS specific variables - dark mode with Catppuccin Mocha */
     --window-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
-    --window-border: rgba(255, 255, 255, 0.08);
-    --dock-bg: rgba(30, 30, 30, 0.7);
-    --dock-border: rgba(255, 255, 255, 0.08);
+    --window-border: rgba(205, 214, 244, 0.08);
+    --dock-bg: rgba(30, 30, 46, 0.7);
+    --dock-border: rgba(205, 214, 244, 0.08);
     --glass-opacity: 0.6;
-    --menu-bar-bg: rgba(30, 30, 30, 0.8);
+    --menu-bar-bg: rgba(30, 30, 46, 0.8);
     --window-blur: 20px;
   }
 }
@@ -669,16 +669,27 @@ html {
   transform: translateZ(20px);
 }
 
-/* snigdha-theme customizations */
+/* snigdha-theme customizations with Catppuccin */
 .snigdha-theme {
-  --primary: 328 85% 62%; /* Pink */
-  --accent: 328 85% 62%;
-  --ring: 328 85% 62%;
-  --chart-1: 328 85% 62%;
+  --primary: 320 70% 75%; /* Catppuccin Frappe Mauve */
+  --accent: 340 82% 85%; /* Catppuccin Frappe Pink */
+  --ring: 320 70% 75%; /* Catppuccin Frappe Mauve */
+  --chart-1: 320 70% 75%; /* Catppuccin Frappe Mauve */
+}
+
+.snigdha-theme.dark {
+  --primary: 267 84% 81%; /* Catppuccin Mocha Mauve */
+  --accent: 316 72% 86%; /* Catppuccin Mocha Pink */
+  --ring: 267 84% 81%; /* Catppuccin Mocha Mauve */
+  --chart-1: 267 84% 81%; /* Catppuccin Mocha Mauve */
 }
 
 .snigdha-theme .text-gradient {
-  background-image: linear-gradient(90deg, #ff3b8d, #ff7eb3, #ff3b8d);
+  background-image: linear-gradient(90deg, #8839EF, #F4B8E4, #8839EF);
+}
+
+.snigdha-theme.dark .text-gradient {
+  background-image: linear-gradient(90deg, #CBA6F7, #F5C2E7, #CBA6F7);
 }
 
 /* macOS Login Screen Enhancements */
