@@ -1,36 +1,44 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
+import { useTheme } from 'next-themes';
 import { 
   Search, 
-  Video, 
-  Mic, 
-  Image as ImageIcon, 
-  Paperclip, 
-  Heart, 
-  Laugh, 
-  ThumbsUp, 
-  MoreHorizontal,
+  MoreVertical,
   Send,
+  Paperclip,
+  Mic,
+  ChevronDown,
   Phone,
-  User,
+  Video,
+  Smile,
+  Camera,
   Users,
-  Plus,
-  ChevronDown
+  Check,
+  Filter,
+  ArrowLeft,
+  Clock
 } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { PERSONAL_INFO } from '@/lib/constants';
+import { flavors } from "@catppuccin/palette";
 
-// Messages Icon component
-const MessagesIcon = () => (
+// WhatsApp Icon component
+const WhatsAppIcon = () => (
   <svg viewBox="0 0 100 100" className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
-    <linearGradient gradientTransform="matrix(60 0 0 -60 25311 44901)" gradientUnits="userSpaceOnUse" id="Background_13_" x1="-421.0169" x2="-421.0169" y1="748.2662" y2="746.7667">
-      <stop offset="0" style={{stopColor:"#67FF81"}}/>
-      <stop offset="1" style={{stopColor:"#01B41F"}}/>
+    <linearGradient id="whatsapp-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style={{ stopColor: "#25D366" }} />
+      <stop offset="100%" style={{ stopColor: "#128C7E" }} />
     </linearGradient>
-    <path className="st0" d="M63.6,5c9,0,13.5,0,18.4,1.5c5.3,1.9,9.5,6.1,11.4,11.4C95,22.8,95,27.4,95,36.4v27.2c0,9,0,13.5-1.5,18.4c-1.9,5.3-6.1,9.5-11.4,11.4C77.1,95,72.6,95,63.6,95H36.4c-9,0-13.5,0-18.4-1.5C12.6,91.5,8.5,87.4,6.5,82C5,77.2,5,72.7,5,63.6V36.4c0-9,0-13.5,1.5-18.4C8.5,12.7,12.6,8.5,18,6.6C22.8,5,27.3,5,36.4,5H63.6z" fill="url(#Background_13_)"/>
-    <path d="M43.5,75.7c2.1,0.3,4.2,0.5,6.4,0.5c18.2,0,33-12.3,33-27.4S68.2,21.5,50,21.5c-18.2,0-33,12.3-33,27.4c0,9.9,6.3,18.5,15.7,23.3c0,0.3,0,0.6,0,1c0,2.9-4.8,6.7-4.5,6.7c4.8,0,8.2-3,10.5-3.7C40.6,75.7,41.7,75.6,43.5,75.7z" fill="#FFFFFF"/>
+    <circle cx="50" cy="50" r="45" fill="url(#whatsapp-gradient)" />
+    <path d="M69.7,30.3c-5.2-5.2-12.1-8.1-19.5-8.1c-15.2,0-27.6,12.4-27.6,27.6c0,4.9,1.3,9.6,3.7,13.8l-4,14.5l14.8-3.9
+      c4,2.2,8.6,3.3,13.1,3.3c15.2,0,27.6-12.4,27.6-27.6C77.8,42.4,74.9,35.5,69.7,30.3z M50.2,72.6c-4.1,0-8.2-1.1-11.7-3.2l-0.8-0.5
+      l-8.7,2.3l2.3-8.4l-0.5-0.8c-2.2-3.5-3.4-7.6-3.4-11.8c0-12.3,10-22.3,22.3-22.3c6,0,11.6,2.3,15.8,6.5c4.2,4.2,6.5,9.8,6.5,15.8
+      C72.1,62.6,62.1,72.6,50.2,72.6z M63.3,55.2c-0.7-0.3-4-2-4.6-2.2c-0.6-0.2-1.1-0.3-1.5,0.3c-0.4,0.7-1.7,2.2-2.1,2.7
+      c-0.4,0.4-0.8,0.5-1.5,0.2c-0.7-0.3-2.9-1.1-5.5-3.4c-2-1.8-3.4-4-3.8-4.7c-0.4-0.7,0-1,0.3-1.3c0.3-0.3,0.7-0.7,1-1.1
+      c0.3-0.4,0.4-0.6,0.7-1.1c0.2-0.4,0.1-0.8-0.1-1.1c-0.2-0.3-1.5-3.7-2.1-5c-0.6-1.3-1.1-1.1-1.5-1.1c-0.4,0-0.9,0-1.3,0
+      c-0.4,0-1.2,0.2-1.7,0.9c-0.6,0.7-2.1,2.1-2.1,5c0,3,2.2,5.9,2.5,6.3c0.3,0.4,4.6,7,11.1,9.8c1.6,0.7,2.8,1.1,3.8,1.4
+      c1.6,0.5,3,0.4,4.2,0.3c1.3-0.2,4-1.6,4.6-3.2c0.6-1.6,0.6-3,0.4-3.3C64.4,55.7,64,55.5,63.3,55.2z" fill="white"/>
   </svg>
 );
 
@@ -40,8 +48,9 @@ type Message = {
   content: string;
   sender: 'me' | 'them';
   timestamp: Date;
-  status?: 'sent' | 'delivered' | 'read';
-  reactions?: { emoji: string; count: number }[];
+  status?: 'sent' | 'delivered' | 'read' | 'pending';
+  type?: 'text' | 'image' | 'audio' | 'video';
+  media?: string;
 };
 
 // Contact type
@@ -49,239 +58,223 @@ type Contact = {
   id: string;
   name: string;
   avatar?: string;
-  status?: 'online' | 'offline' | 'away';
+  status?: 'online' | 'offline';
+  statusText?: string;
   lastSeen?: Date;
   messages: Message[];
   typing?: boolean;
+  unreadCount?: number;
 };
 
-interface MessagesAppProps {
+interface WhatsAppProps {
   specialUser?: string;
 }
 
-export default function MessagesApp({ specialUser }: MessagesAppProps = {}) {
+export default function WhatsAppApp({ specialUser }: WhatsAppProps = {}) {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedContact, setSelectedContact] = useState<string | null>(null);
   const [messageText, setMessageText] = useState('');
-  const isSnigdha = specialUser === 'snigdha';
+  const { theme } = useTheme();
+  const isDark = theme === 'dark';
   
-  // Regular contacts
-  const regularContacts: Contact[] = [
+  // Get theme colors from Catppuccin palette
+  const colors = isDark ? flavors.mocha : flavors.frappe;
+  
+  // Contacts data
+  const contacts: Contact[] = [
     {
       id: 'contact1',
-      name: 'Abhiraj',
-      avatar: 'https://randomuser.me/api/portraits/men/24.jpg',
+      name: 'Family Group',
+      avatar: undefined,
       status: 'online',
+      statusText: "Mom's birthday tomorrow!",
       messages: [
         {
           id: 'm1',
-          content: 'Hey, have you checked out that new design tool?',
+          content: 'Has everyone bought gifts for mom?',
           sender: 'them',
-          timestamp: new Date(Date.now() - 24 * 60 * 60 * 1000), // 1 day ago
+          timestamp: new Date(Date.now() - 24 * 60 * 60 * 1000),
           status: 'read'
         },
         {
           id: 'm2',
-          content: 'Yeah, it looks promising! I especially like the collaboration features.',
+          content: 'Yes, I got her that watch she wanted',
           sender: 'me',
           timestamp: new Date(Date.now() - 23 * 60 * 60 * 1000),
           status: 'read'
         },
         {
           id: 'm3',
-          content: 'Do you think we should use it for the upcoming project?',
+          content: "I'm getting the cake 🎂",
           sender: 'them',
           timestamp: new Date(Date.now() - 22 * 60 * 60 * 1000),
           status: 'read'
         },
         {
           id: 'm4',
-          content: 'Definitely. Let\'s discuss it in our next team meeting.',
-          sender: 'me',
+          content: "Don't forget we're meeting at 7pm",
+          sender: 'them',
           timestamp: new Date(Date.now() - 20 * 60 * 60 * 1000),
           status: 'read'
         },
         {
           id: 'm5',
-          content: 'Perfect! I\'ll prepare some examples to show the team.',
-          sender: 'them',
+          content: "I'll be there! 👍",
+          sender: 'me',
           timestamp: new Date(Date.now() - 18 * 60 * 60 * 1000),
           status: 'read'
         }
       ],
-      typing: true
+      typing: true,
+      unreadCount: 2
     },
     {
       id: 'contact2',
-      name: 'Ashfaq',
-      avatar: 'https://randomuser.me/api/portraits/men/32.jpg',
-      status: 'offline',
-      lastSeen: new Date(Date.now() - 2 * 60 * 60 * 1000), // 2 hours ago
+      name: 'Work Team',
+      avatar: undefined,
+      status: 'online',
+      statusText: "Project deadline: Friday",
       messages: [
         {
           id: 'm6',
-          content: 'Are we still meeting for coffee tomorrow?',
+          content: 'Team meeting at 10am tomorrow',
           sender: 'them',
-          timestamp: new Date(Date.now() - 5 * 60 * 60 * 1000), // 5 hours ago
+          timestamp: new Date(Date.now() - 5 * 60 * 60 * 1000),
           status: 'read'
         },
         {
           id: 'm7',
-          content: 'Yes, 10am at the usual place works for me!',
+          content: "I'll prepare the slides for the presentation",
           sender: 'me',
           timestamp: new Date(Date.now() - 4.8 * 60 * 60 * 1000),
-          status: 'read',
-          reactions: [{ emoji: '👍', count: 1 }]
+          status: 'read'
         },
         {
           id: 'm8',
-          content: 'Great, see you then!',
+          content: 'Great! Also, the client wants to review the latest mockups',
           sender: 'them',
           timestamp: new Date(Date.now() - 4.5 * 60 * 60 * 1000),
           status: 'read'
+        },
+        {
+          id: 'm9',
+          content: "I'll send them over this evening",
+          sender: 'me',
+          timestamp: new Date(Date.now() - 4.2 * 60 * 60 * 1000),
+          status: 'delivered'
         }
-      ]
+      ],
+      unreadCount: 5
     },
     {
       id: 'contact3',
-      name: 'Anamika',
-      avatar: 'https://randomuser.me/api/portraits/women/18.jpg',
-      status: 'away',
-      lastSeen: new Date(Date.now() - 30 * 60 * 1000), // 30 minutes ago
+      name: 'Rahul',
+      avatar: 'https://randomuser.me/api/portraits/men/32.jpg',
+      status: 'online',
+      statusText: "At the gym 💪",
+      lastSeen: new Date(Date.now() - 30 * 60 * 1000),
       messages: [
         {
-          id: 'm9',
-          content: 'Can you send me the files for the presentation?',
+          id: 'm10',
+          content: 'Are we still on for the game tonight?',
           sender: 'them',
-          timestamp: new Date(Date.now() - 3 * 60 * 60 * 1000), // 3 hours ago
+          timestamp: new Date(Date.now() - 3 * 60 * 60 * 1000),
           status: 'read'
         },
         {
-          id: 'm10',
-          content: 'Just sent them to your email!',
+          id: 'm11',
+          content: 'Yes, 8pm at my place. Bringing snacks?',
           sender: 'me',
           timestamp: new Date(Date.now() - 2.5 * 60 * 60 * 1000),
-          status: 'delivered'
+          status: 'read'
         },
         {
-          id: 'm11',
-          content: 'Thanks! Got them.',
+          id: 'm12',
+          content: "Sure! I'll bring chips and drinks",
           sender: 'them',
           timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000),
+          status: 'read'
+        },
+        {
+          id: 'm13',
+          content: 'Perfect! See you then',
+          sender: 'me',
+          timestamp: new Date(Date.now() - 1.5 * 60 * 60 * 1000),
           status: 'read'
         }
       ]
     },
     {
       id: 'contact4',
-      name: 'TIVision',
-      avatar: undefined, // Group chat has no avatar
+      name: 'Priya',
+      avatar: 'https://randomuser.me/api/portraits/women/33.jpg',
+      status: 'offline',
+      statusText: "Living life one day at a time ✨",
+      lastSeen: new Date(Date.now() - 2 * 60 * 60 * 1000),
       messages: [
-        {
-          id: 'm12',
-          content: 'Let\'s discuss the timeline for the next phase',
-          sender: 'them',
-          timestamp: new Date(Date.now() - 48 * 60 * 60 * 1000), // 2 days ago
-          status: 'read'
-        },
-        {
-          id: 'm13',
-          content: 'I think we need to adjust some of the milestones',
-          sender: 'me',
-          timestamp: new Date(Date.now() - 47 * 60 * 60 * 1000),
-          status: 'read'
-        },
         {
           id: 'm14',
-          content: 'Agreed. The current schedule is too tight.',
+          content: 'Did you watch the new movie I recommended?',
+          sender: 'them',
+          timestamp: new Date(Date.now() - 48 * 60 * 60 * 1000),
+          status: 'read'
+        },
+        {
+          id: 'm15',
+          content: 'Not yet! Planning to watch it this weekend',
+          sender: 'me',
+          timestamp: new Date(Date.now() - 47 * 60 * 60 * 1000),
+          status: 'read'
+        },
+        {
+          id: 'm16',
+          content: 'Let me know what you think, the ending is amazing!',
           sender: 'them',
           timestamp: new Date(Date.now() - 47 * 60 * 60 * 1000),
           status: 'read'
-        }
-      ]
-    }
-  ];
-  
-  // Love messages for special user
-  const loveContacts: Contact[] = [
-    {
-      id: 'love1',
-      name: 'My Love ❤️',
-      avatar: 'https://randomuser.me/api/portraits/women/33.jpg',
-      status: 'online',
-      messages: [
+        },
         {
-          id: 'l1',
-          content: 'Good morning, beautiful! Hope you slept well 💕',
+          id: 'm17',
+          content: 'Will do! 🍿',
           sender: 'me',
-          timestamp: new Date(Date.now() - 8 * 60 * 60 * 1000),
-          status: 'read',
-          reactions: [{ emoji: '❤️', count: 1 }]
-        },
-        {
-          id: 'l2',
-          content: 'Morning! I had the sweetest dream about us 🥰',
-          sender: 'them',
-          timestamp: new Date(Date.now() - 7.8 * 60 * 60 * 1000),
-          status: 'read'
-        },
-        {
-          id: 'l3',
-          content: 'Oh really? Tell me about it!',
-          sender: 'me',
-          timestamp: new Date(Date.now() - 7.7 * 60 * 60 * 1000),
-          status: 'read'
-        },
-        {
-          id: 'l4',
-          content: "We were on a beach watching the sunset together, it was perfect.",
-          sender: 'them',
-          timestamp: new Date(Date.now() - 7.5 * 60 * 60 * 1000),
-          status: 'read'
-        },
-        {
-          id: 'l5',
-          content: "Can't wait to see you tonight ❤️",
-          sender: 'them',
-          timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000),
+          timestamp: new Date(Date.now() - 46 * 60 * 60 * 1000),
           status: 'read'
         }
       ],
-      typing: true
+      unreadCount: 1
     },
     {
-      id: 'love2',
-      name: 'Date Plans',
-      avatar: undefined,
-      status: 'online',
+      id: 'contact5',
+      name: 'Vikram',
+      avatar: 'https://randomuser.me/api/portraits/men/57.jpg',
+      status: 'offline',
+      statusText: "Busy with work",
+      lastSeen: new Date(Date.now() - 5 * 60 * 60 * 1000),
       messages: [
         {
-          id: 'd1',
-          content: 'Ideas for our next date:',
-          sender: 'me',
-          timestamp: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000),
+          id: 'm18',
+          content: 'Can you send me the files for the project?',
+          sender: 'them',
+          timestamp: new Date(Date.now() - 6 * 60 * 60 * 1000),
           status: 'read'
         },
         {
-          id: 'd2',
-          content: 'Picnic in the park with your favorite foods',
+          id: 'm19',
+          content: 'Just emailed them to you!',
           sender: 'me',
-          timestamp: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000 + 1 * 60 * 1000),
+          timestamp: new Date(Date.now() - 5.5 * 60 * 60 * 1000),
           status: 'read'
         },
         {
-          id: 'd3',
-          content: "Don't forget our anniversary next month! 📅 ❤️",
-          sender: 'me',
-          timestamp: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000),
+          id: 'm20',
+          content: 'Got them, thanks!',
+          sender: 'them',
+          timestamp: new Date(Date.now() - 5 * 60 * 60 * 1000),
           status: 'read'
         }
       ]
     }
   ];
-  
-  // Use the appropriate contacts based on specialUser status
-  const contacts = isSnigdha ? loveContacts : regularContacts;
   
   // Filter contacts based on search query
   const filteredContacts = contacts.filter(contact => 
@@ -319,142 +312,225 @@ export default function MessagesApp({ specialUser }: MessagesAppProps = {}) {
       return date.toLocaleDateString([], { month: 'short', day: 'numeric' });
     }
   };
+
+  // Create chat background pattern
+  const chatPattern = isDark 
+    ? `data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M100 0H0V100H100V0Z' fill='%23${colors.colors.base.hex.replace('#', '')}'/%3E%3Cpath opacity='0.03' d='M100 0H0V100H100V0Z' fill='%23${colors.colors.text.hex.replace('#', '')}'/%3E%3C/svg%3E`
+    : `data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M100 0H0V100H100V0Z' fill='%23${colors.colors.base.hex.replace('#', '')}'/%3E%3Cpath opacity='0.03' d='M100 0H0V100H100V0Z' fill='%23${colors.colors.text.hex.replace('#', '')}'/%3E%3C/svg%3E`;
+
+  // Render message status indicators
+  const renderMessageStatus = (status: string) => {
+    switch(status) {
+      case 'sent':
+        return <Check className="w-3 h-3 text-muted-foreground" />;
+      case 'delivered':
+        return (
+          <div className="flex">
+            <Check className="w-3 h-3 text-muted-foreground" />
+            <Check className="w-3 h-3 text-muted-foreground -ml-1" />
+          </div>
+        );
+      case 'read':
+        return (
+          <div className="flex">
+            <Check className="w-3 h-3 text-blue-500" />
+            <Check className="w-3 h-3 text-blue-500 -ml-1" />
+          </div>
+        );
+      case 'pending':
+        return <Clock className="w-3 h-3 text-muted-foreground" />;
+      default:
+        return null;
+    }
+  };
   
   return (
-    <div className="h-full flex bg-background">
-      {/* Sidebar */}
-      <div className="w-72 border-r flex flex-col">
-        <div className="p-3 border-b bg-muted/30 backdrop-blur-sm">
-          <div className="relative">
-            <input
-              type="text"
-              placeholder="Search"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-muted rounded-full pl-8 pr-3 py-1.5 text-sm"
-            />
-            <Search className="absolute left-2.5 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+    <div className="h-full flex flex-col bg-[#f0f2f5] dark:bg-[#111b21]">
+      {/* Main interface */}
+      <div className="flex flex-1 overflow-hidden">
+        {/* Sidebar */}
+        <div className="w-80 flex flex-col border-r border-[#d1d7db] dark:border-[#222e35]">
+          {/* Sidebar header */}
+          <div className="px-4 py-3 flex justify-between items-center bg-[#f0f2f5] dark:bg-[#202c33]">
+            <div className="flex items-center">
+              <div className="w-10 h-10 rounded-full overflow-hidden">
+                <Image 
+                  src="https://github.com/eshanized.png"
+                  alt="Profile"
+                  width={40}
+                  height={40}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            </div>
+            <div className="flex space-x-3">
+              <button className="p-1 rounded-full text-[#54656f] dark:text-[#aebac1] hover:bg-[#d9dbdf] dark:hover:bg-[#374045]">
+                <Users className="w-5 h-5" />
+              </button>
+              <button className="p-1 rounded-full text-[#54656f] dark:text-[#aebac1] hover:bg-[#d9dbdf] dark:hover:bg-[#374045]">
+                <Check className="w-5 h-5" />
+              </button>
+              <button className="p-1 rounded-full text-[#54656f] dark:text-[#aebac1] hover:bg-[#d9dbdf] dark:hover:bg-[#374045]">
+                <MoreVertical className="w-5 h-5" />
+              </button>
+            </div>
           </div>
-        </div>
-        
-        <div className="flex-1 overflow-y-auto">
-          {filteredContacts.map(contact => {
-            const lastMessage = contact.messages[contact.messages.length - 1];
-            
-            return (
-              <div 
-                key={contact.id}
-                className={`p-3 border-b cursor-pointer hover:bg-accent/10 transition-colors ${
-                  selectedContact === contact.id ? 'bg-accent/20' : ''
-                }`}
-                onClick={() => setSelectedContact(contact.id)}
-              >
-                <div className="flex items-center">
+          
+          {/* Search bar */}
+          <div className="p-2 bg-[#f0f2f5] dark:bg-[#202c33]">
+            <div className="flex items-center bg-white dark:bg-[#2a3942] rounded-lg px-3 py-1.5">
+              <Search className="w-5 h-5 text-[#54656f] dark:text-[#aebac1] mr-2" />
+              <input
+                type="text"
+                placeholder="Search or start new chat"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="bg-transparent w-full text-sm outline-none text-[#111b21] dark:text-[#e9edef]"
+              />
+              <Filter className="w-5 h-5 text-[#54656f] dark:text-[#aebac1] ml-1" />
+            </div>
+          </div>
+          
+          {/* Chats list */}
+          <div className="flex-1 overflow-y-auto">
+            {filteredContacts.map(contact => {
+              const lastMessage = contact.messages[contact.messages.length - 1];
+              
+              return (
+                <div 
+                  key={contact.id}
+                  className={`px-3 py-3 flex cursor-pointer ${
+                    selectedContact === contact.id 
+                      ? 'bg-[#f0f2f5] dark:bg-[#2a3942]' 
+                      : 'hover:bg-[#f5f6f6] dark:hover:bg-[#222e35]'
+                  }`}
+                  onClick={() => setSelectedContact(contact.id)}
+                >
                   <div className="relative mr-3">
                     {contact.avatar ? (
                       <Image 
                         src={contact.avatar} 
                         alt={contact.name}
-                        width={40}
-                        height={40}
-                        className="w-10 h-10 rounded-full object-cover"
+                        width={49}
+                        height={49}
+                        className="w-12 h-12 rounded-full object-cover"
                       />
                     ) : (
-                      <div className="w-10 h-10 rounded-full bg-accent/50 flex items-center justify-center">
-                        <Users className="w-5 h-5 text-accent-foreground" />
+                      <div className="w-12 h-12 rounded-full bg-[#00a884] dark:bg-[#6a7175] flex items-center justify-center">
+                        <Users className="w-6 h-6 text-white" />
                       </div>
                     )}
                     {contact.status === 'online' && (
-                      <div className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-500 rounded-full border-2 border-background"></div>
-                    )}
-                    {contact.status === 'away' && (
-                      <div className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-yellow-500 rounded-full border-2 border-background"></div>
+                      <div className="absolute bottom-0 right-0 w-3 h-3 bg-[#00a884] rounded-full border-2 border-[#f0f2f5] dark:border-[#111b21]"></div>
                     )}
                   </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="flex justify-between items-center mb-0.5">
-                      <h3 className="font-medium text-sm truncate">{contact.name}</h3>
-                      <span className="text-xs text-muted-foreground">
+                  
+                  <div className="flex-1 min-w-0 border-b border-[#e9edef] dark:border-[#222d34] pb-2">
+                    <div className="flex justify-between items-center">
+                      <h3 className="font-medium truncate text-[#111b21] dark:text-[#e9edef]">
+                        {contact.name}
+                      </h3>
+                      <span className="text-xs text-[#667781] dark:text-[#8696a0]">
                         {lastMessage && formatTime(lastMessage.timestamp)}
                       </span>
                     </div>
-                    <div className="flex items-center">
-                      {contact.typing ? (
-                        <span className="text-xs text-primary">typing...</span>
-                      ) : (
-                        <p className="text-xs text-muted-foreground truncate">
-                          {lastMessage && 
-                            (lastMessage.sender === 'me' ? 'You: ' : '') + 
-                            lastMessage.content}
-                        </p>
+                    
+                    <div className="flex justify-between items-center mt-1">
+                      <p className="text-sm truncate text-[#667781] dark:text-[#8696a0] flex items-center">
+                        {contact.typing ? (
+                          <span className="text-[#00a884]">typing...</span>
+                        ) : (
+                          <>
+                            {lastMessage && lastMessage.sender === 'me' && (
+                              <span className="flex items-center mr-1">
+                                {renderMessageStatus(lastMessage.status || 'sent')}
+                              </span>
+                            )}
+                            <span>
+                              {lastMessage && 
+                                (lastMessage.content.length > 30 
+                                  ? lastMessage.content.substring(0, 30) + '...' 
+                                  : lastMessage.content)}
+                            </span>
+                          </>
+                        )}
+                      </p>
+                      
+                      {contact.unreadCount && contact.unreadCount > 0 && (
+                        <div className="flex-shrink-0 w-5 h-5 rounded-full bg-[#25d366] flex items-center justify-center">
+                          <span className="text-xs text-white font-medium">
+                            {contact.unreadCount}
+                          </span>
+                        </div>
                       )}
                     </div>
                   </div>
                 </div>
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
         </div>
         
-        <div className="p-3 border-t bg-muted/30 backdrop-blur-sm">
-          <button className="w-full flex items-center justify-center py-1.5 bg-primary rounded-full text-primary-foreground text-sm">
-            <Plus className="w-4 h-4 mr-1" />
-            New Message
-          </button>
-        </div>
-      </div>
-      
-      {/* Chat area */}
-      {selectedContact && activeContact ? (
-        <div className="flex-1 flex flex-col">
-          {/* Chat header */}
-          <div className="p-3 border-b bg-muted/30 backdrop-blur-sm flex items-center justify-between">
-            <div className="flex items-center">
-              {activeContact.avatar ? (
-                <Image 
-                  src={activeContact.avatar} 
-                  alt={activeContact.name}
-                  width={40}
-                  height={40}
-                  className="w-8 h-8 rounded-full object-cover mr-3"
-                />
-              ) : (
-                <div className="w-8 h-8 rounded-full bg-accent/50 flex items-center justify-center mr-3">
-                  <Users className="w-4 h-4 text-accent-foreground" />
+        {/* Chat area */}
+        {selectedContact && activeContact ? (
+          <div className="flex-1 flex flex-col">
+            {/* Chat header */}
+            <div className="px-4 py-2 flex justify-between items-center bg-[#f0f2f5] dark:bg-[#202c33] border-b border-[#d1d7db] dark:border-[#222e35]">
+              <div className="flex items-center">
+                <div className="mr-1 md:hidden">
+                  <ArrowLeft className="w-5 h-5 text-[#54656f] dark:text-[#aebac1]" />
                 </div>
-              )}
-              <div>
-                <h2 className="font-medium text-sm">{activeContact.name}</h2>
-                {activeContact.status && (
-                  <p className="text-xs text-muted-foreground">
-                    {activeContact.status === 'online' 
-                      ? 'Active Now' 
-                      : activeContact.status === 'away'
-                        ? 'Away'
-                        : activeContact.lastSeen 
-                          ? `Last seen ${formatTime(activeContact.lastSeen)}`
-                          : 'Offline'}
-                  </p>
+                {activeContact.avatar ? (
+                  <Image 
+                    src={activeContact.avatar} 
+                    alt={activeContact.name}
+                    width={40}
+                    height={40}
+                    className="w-10 h-10 rounded-full object-cover mr-3"
+                  />
+                ) : (
+                  <div className="w-10 h-10 rounded-full bg-[#00a884] dark:bg-[#6a7175] flex items-center justify-center mr-3">
+                    <Users className="w-5 h-5 text-white" />
+                  </div>
                 )}
+                <div>
+                  <h2 className="font-medium text-[#111b21] dark:text-[#e9edef]">
+                    {activeContact.name}
+                  </h2>
+                  <p className="text-xs text-[#667781] dark:text-[#8696a0]">
+                    {activeContact.status === 'online' 
+                      ? 'online' 
+                      : activeContact.lastSeen 
+                        ? `last seen ${formatTime(activeContact.lastSeen)}`
+                        : 'offline'}
+                  </p>
+                </div>
+              </div>
+              
+              <div className="flex space-x-3">
+                <button className="p-1 rounded-full text-[#54656f] dark:text-[#aebac1] hover:bg-[#d9dbdf] dark:hover:bg-[#374045]">
+                  <Search className="w-5 h-5" />
+                </button>
+                <button className="p-1 rounded-full text-[#54656f] dark:text-[#aebac1] hover:bg-[#d9dbdf] dark:hover:bg-[#374045]">
+                  <Phone className="w-5 h-5" />
+                </button>
+                <button className="p-1 rounded-full text-[#54656f] dark:text-[#aebac1] hover:bg-[#d9dbdf] dark:hover:bg-[#374045]">
+                  <Video className="w-5 h-5" />
+                </button>
+                <button className="p-1 rounded-full text-[#54656f] dark:text-[#aebac1] hover:bg-[#d9dbdf] dark:hover:bg-[#374045]">
+                  <MoreVertical className="w-5 h-5" />
+                </button>
               </div>
             </div>
             
-            <div className="flex space-x-2">
-              <button className="p-1.5 rounded-full hover:bg-accent/30">
-                <Phone className="w-4 h-4" />
-              </button>
-              <button className="p-1.5 rounded-full hover:bg-accent/30">
-                <Video className="w-4 h-4" />
-              </button>
-              <button className="p-1.5 rounded-full hover:bg-accent/30">
-                <MoreHorizontal className="w-4 h-4" />
-              </button>
-            </div>
-          </div>
-          
-          {/* Messages */}
-          <div className="flex-1 p-4 overflow-y-auto flex flex-col-reverse bg-[#f5f5f7] dark:bg-zinc-900">
-            <div className="space-y-4">
+            {/* Messages area */}
+            <div 
+              className="flex-1 overflow-y-auto p-3 bg-[#efeae2] dark:bg-[#0b141a]"
+              style={{
+                backgroundImage: `url("${chatPattern}")`,
+                backgroundSize: '200px 200px'
+              }}
+            >
               {/* Group messages by date */}
               {(() => {
                 const messagesByDate: Record<string, Message[]> = {};
@@ -468,79 +544,48 @@ export default function MessagesApp({ specialUser }: MessagesAppProps = {}) {
                 });
                 
                 return Object.entries(messagesByDate).map(([date, messages]) => (
-                  <div key={date}>
-                    <div className="text-center mb-3">
-                      <span className="text-xs bg-white/70 dark:bg-zinc-800/70 px-2 py-1 rounded-full text-muted-foreground backdrop-blur-sm">
-                        {date}
-                      </span>
+                  <div key={date} className="mb-6">
+                    <div className="flex justify-center mb-3">
+                      <div className="bg-[#ffffff] dark:bg-[#1f2c33] px-3 py-1 rounded-lg shadow-sm">
+                        <span className="text-xs text-[#54656f] dark:text-[#8696a0] font-medium">
+                          {date}
+                        </span>
+                      </div>
                     </div>
-                    <div className="space-y-2">
+                    
+                    <div className="space-y-1">
                       {messages.map(message => (
                         <div 
                           key={message.id}
-                          className={`flex ${message.sender === 'me' ? 'justify-end' : 'justify-start'} items-end mb-2`}
+                          className={`flex ${message.sender === 'me' ? 'justify-end' : 'justify-start'}`}
                         >
-                          {message.sender === 'them' && (
-                            <div className="mr-2 flex-shrink-0">
-                              {activeContact.avatar ? (
-                                <Image 
-                                  src={activeContact.avatar} 
-                                  alt={activeContact.name}
-                                  width={32}
-                                  height={32}
-                                  className="w-8 h-8 rounded-full object-cover"
-                                />
-                              ) : (
-                                <div className="w-8 h-8 rounded-full bg-accent/50 flex items-center justify-center">
-                                  <Users className="w-4 h-4 text-accent-foreground" />
-                                </div>
-                              )}
-                            </div>
-                          )}
-                          <div>
-                            <div 
-                              className={`p-3 rounded-2xl max-w-[300px] shadow-sm ${
-                                message.sender === 'me' 
-                                  ? 'bg-blue-500 text-white rounded-br-sm' 
-                                  : 'bg-white dark:bg-zinc-800 dark:text-zinc-100 rounded-bl-sm'
-                              }`}
-                            >
-                              <p className="text-sm">{message.content}</p>
-                            </div>
+                          <div 
+                            className={`max-w-[65%] rounded-lg px-2 py-1.5 shadow-sm relative ${
+                              message.sender === 'me' 
+                                ? 'bg-[#d9fdd3] dark:bg-[#005c4b]' 
+                                : 'bg-[#ffffff] dark:bg-[#1f2c33]'
+                            }`}
+                          >
+                            <p className={`text-sm ${
+                              message.sender === 'me' 
+                                ? 'text-[#111b21] dark:text-[#e9edef]' 
+                                : 'text-[#111b21] dark:text-[#e9edef]'
+                            }`}>
+                              {message.content}
+                            </p>
                             
-                            <div className={`mt-1 flex items-center ${message.sender === 'me' ? 'justify-end' : 'justify-start'}`}>
-                              <span className="text-xs text-muted-foreground">
+                            <div className="flex items-center justify-end gap-1 -mb-1 mt-0.5">
+                              <span className="text-[10px] text-[#667781] dark:text-[#8696a0]">
                                 {formatTime(message.timestamp)}
                               </span>
+                              
                               {message.sender === 'me' && message.status && (
-                                <span className="ml-1 text-xs text-muted-foreground">
-                                  {message.status === 'sent' ? '✓' : message.status === 'delivered' ? '✓✓' : '✓✓'}
+                                <span className="ml-1">
+                                  {renderMessageStatus(message.status)}
                                 </span>
                               )}
                             </div>
-                            
-                            {message.reactions && message.reactions.length > 0 && (
-                              <div className={`mt-1 flex ${message.sender === 'me' ? 'justify-end' : 'justify-start'}`}>
-                                {message.reactions.map((reaction, index) => (
-                                  <div key={index} className="flex items-center bg-white/70 dark:bg-zinc-700/70 rounded-full px-1.5 py-0.5 backdrop-blur-sm">
-                                    <span className="text-xs mr-1">{reaction.emoji}</span>
-                                    <span className="text-xs text-muted-foreground">{reaction.count}</span>
-                                  </div>
-                                ))}
-                              </div>
-                            )}
                           </div>
-                          {message.sender === 'me' && (
-                            <div className="ml-2 flex-shrink-0">
-                              <Image 
-                                src="https://github.com/eshanized.png"
-                                alt="Me"
-                                width={32}
-                                height={32}
-                                className="w-8 h-8 rounded-full object-cover"
-                              />
-                            </div>
-                          )}
                         </div>
                       ))}
                     </div>
@@ -549,92 +594,73 @@ export default function MessagesApp({ specialUser }: MessagesAppProps = {}) {
               })()}
               
               {activeContact.typing && (
-                <div className="flex justify-start items-end">
-                  {activeContact.avatar && (
-                    <div className="mr-2 flex-shrink-0">
-                      <Image 
-                        src={activeContact.avatar} 
-                        alt={activeContact.name}
-                        width={32}
-                        height={32}
-                        className="w-8 h-8 rounded-full object-cover"
-                      />
-                    </div>
-                  )}
-                  <div className="p-3 bg-white dark:bg-zinc-800 rounded-2xl rounded-bl-sm shadow-sm">
+                <div className="flex justify-start">
+                  <div className="max-w-[65%] bg-[#ffffff] dark:bg-[#1f2c33] rounded-lg px-3 py-2 shadow-sm">
                     <div className="flex space-x-1">
-                      <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></span>
-                      <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></span>
-                      <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.4s' }}></span>
+                      <span className="w-2 h-2 bg-[#667781] dark:bg-[#8696a0] rounded-full animate-bounce"></span>
+                      <span className="w-2 h-2 bg-[#667781] dark:bg-[#8696a0] rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></span>
+                      <span className="w-2 h-2 bg-[#667781] dark:bg-[#8696a0] rounded-full animate-bounce" style={{ animationDelay: '0.4s' }}></span>
                     </div>
                   </div>
                 </div>
               )}
             </div>
-          </div>
-          
-          {/* Message input */}
-          <div className="px-4 py-3 border-t bg-white dark:bg-zinc-800/90 backdrop-blur-sm">
-            <div className="flex items-center space-x-2">
-              <div className="flex space-x-1">
-                <button className="p-1.5 rounded-full hover:bg-accent/20">
-                  <Paperclip className="w-4 h-4 text-muted-foreground" />
+            
+            {/* Message input */}
+            <div className="px-4 py-2 bg-[#f0f2f5] dark:bg-[#202c33] flex items-center">
+              <div className="flex space-x-3 mr-2">
+                <button className="p-1 rounded-full text-[#54656f] dark:text-[#aebac1] hover:bg-[#d9dbdf] dark:hover:bg-[#374045]">
+                  <Smile className="w-6 h-6" />
                 </button>
-                <button className="p-1.5 rounded-full hover:bg-accent/20">
-                  <ImageIcon className="w-4 h-4 text-muted-foreground" />
+                <button className="p-1 rounded-full text-[#54656f] dark:text-[#aebac1] hover:bg-[#d9dbdf] dark:hover:bg-[#374045]">
+                  <Paperclip className="w-6 h-6" />
                 </button>
               </div>
               
-              <div className="flex-1 flex items-center bg-muted/50 rounded-full px-3 py-2 border border-muted focus-within:border-blue-200 dark:focus-within:border-blue-700 transition-colors">
+              <div className="flex-1 bg-white dark:bg-[#2a3942] rounded-lg px-3 py-2">
                 <input
                   type="text"
-                  placeholder="Message"
+                  placeholder="Type a message"
                   value={messageText}
                   onChange={(e) => setMessageText(e.target.value)}
-                  className="bg-transparent w-full text-sm outline-none"
+                  className="bg-transparent w-full text-sm outline-none text-[#111b21] dark:text-[#e9edef]"
                 />
-                
-                <div className="flex ml-2 space-x-1">
-                  <button className="p-1 rounded-full hover:bg-accent/20">
-                    <Heart className="w-4 h-4 text-muted-foreground" />
-                  </button>
-                  <button className="p-1 rounded-full hover:bg-accent/20">
-                    <Laugh className="w-4 h-4 text-muted-foreground" />
-                  </button>
-                  <button className="p-1 rounded-full hover:bg-accent/20">
-                    <ThumbsUp className="w-4 h-4 text-muted-foreground" />
-                  </button>
-                  <button className="p-1 rounded-full hover:bg-accent/20">
-                    <ChevronDown className="w-4 h-4 text-muted-foreground" />
-                  </button>
-                </div>
               </div>
               
-              <button 
-                className={`p-2 rounded-full ${messageText.trim() ? 'text-blue-500 hover:bg-blue-100 dark:hover:bg-blue-900/30' : 'text-muted-foreground'}`}
-                onClick={handleSendMessage}
-                disabled={!messageText.trim()}
-              >
-                <Send className="w-5 h-5" />
-              </button>
+              <div className="flex ml-2">
+                {messageText.trim() ? (
+                  <button 
+                    className="p-2 rounded-full text-[#54656f] dark:text-[#aebac1] hover:bg-[#d9dbdf] dark:hover:bg-[#374045]"
+                    onClick={handleSendMessage}
+                  >
+                    <Send className="w-6 h-6" />
+                  </button>
+                ) : (
+                  <button className="p-2 rounded-full text-[#54656f] dark:text-[#aebac1] hover:bg-[#d9dbdf] dark:hover:bg-[#374045]">
+                    <Mic className="w-6 h-6" />
+                  </button>
+                )}
+              </div>
             </div>
           </div>
-        </div>
-      ) : (
-        <div className="flex-1 flex flex-col items-center justify-center">
-          <div className="w-16 h-16 rounded-full bg-accent/20 flex items-center justify-center mb-4">
-            <MessagesIcon />
+        ) : (
+          <div className="flex-1 flex flex-col items-center justify-center bg-[#f0f2f5] dark:bg-[#222e35]">
+            <div className="text-center max-w-md px-6">
+              <div className="w-72 h-72 mx-auto mb-8 opacity-20">
+                <WhatsAppIcon />
+              </div>
+              <h1 className="text-3xl font-light text-[#41525d] dark:text-[#e9edef] mb-4">WhatsApp Web</h1>
+              <p className="text-sm text-[#667781] dark:text-[#8696a0] mb-6">
+                Send and receive messages without keeping your phone online.
+                Use WhatsApp on up to 4 linked devices and 1 phone at the same time.
+              </p>
+              <p className="text-sm text-[#8696a0] dark:text-[#8696a0] mt-40">
+                <span className="border-t border-[#e9edef] dark:border-[#222d34] pt-4">End-to-end encrypted</span>
+              </p>
+            </div>
           </div>
-          <h2 className="text-xl font-semibold mb-2">Select a conversation</h2>
-          <p className="text-sm text-muted-foreground max-w-[300px] text-center">
-            Choose from an existing conversation or start a new one
-          </p>
-          <button className="mt-6 px-4 py-2 bg-primary rounded-full text-primary-foreground text-sm font-medium flex items-center">
-            <Plus className="w-4 h-4 mr-1" />
-            New Message
-          </button>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 }
