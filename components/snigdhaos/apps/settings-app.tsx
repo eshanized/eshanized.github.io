@@ -29,7 +29,8 @@ import {
   Volume2,
   VolumeX,
   Mail,
-  Calendar
+  Calendar,
+  Github
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTheme } from 'next-themes';
@@ -119,17 +120,43 @@ export default function SettingsApp() {
               </h3>
               <div className="bg-card p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow border">
                 <div className="flex items-center gap-4">
-                  <div className="w-16 h-16 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
-                    <span className="text-white text-2xl font-bold">OS</span>
+                  <div className="w-16 h-16 bg-gradient-to-br from-[#00A9A5] to-[#7B4397] rounded-xl flex items-center justify-center shadow-lg transform hover:scale-105 transition-transform">
+                    <span className="text-white text-2xl font-bold">S</span>
                   </div>
                   <div>
-                    <p className="text-base font-semibold">Portfolio OS</p>
-                    <p className="text-sm text-muted-foreground">Version 1.0</p>
-                    <p className="text-xs mt-1 text-muted-foreground">Build 2023.05</p>
+                    <p className="text-base font-semibold bg-gradient-to-r from-[#00A9A5] to-[#7B4397] bg-clip-text text-transparent">Snigdha OS</p>
+                    <p className="text-sm text-muted-foreground">Version 2.0</p>
+                    <p className="text-xs mt-1 text-muted-foreground">Build 2024.03</p>
                   </div>
                 </div>
                 <div className="mt-4 pt-4 border-t">
-                  <button className="text-sm text-primary hover:text-primary/80 transition-colors flex items-center">
+                  <div className="flex flex-col space-y-2">
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm text-muted-foreground">Created by</span>
+                      <div className="flex items-center gap-2">
+                        <a 
+                          href="https://github.com/Snigdha-OS" 
+                          target="_blank" 
+                          rel="noopener noreferrer" 
+                          className="text-sm text-primary hover:text-primary/80 transition-colors flex items-center gap-1"
+                        >
+                          <Github className="w-4 h-4" />
+                          Snigdha OS
+                        </a>
+                        <span className="text-muted-foreground">×</span>
+                        <a 
+                          href="https://github.com/eshanized" 
+                          target="_blank" 
+                          rel="noopener noreferrer" 
+                          className="text-sm text-purple-400 hover:text-purple-500 transition-colors flex items-center gap-1"
+                        >
+                          <Github className="w-4 h-4" />
+                          Eshanized
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                  <button className="mt-4 text-sm text-primary hover:text-primary/80 transition-colors flex items-center">
                     Check for updates
                     <ChevronRight className="ml-1 h-4 w-4" />
                   </button>
@@ -149,18 +176,14 @@ export default function SettingsApp() {
               </h3>
               <div className="bg-card p-4 rounded-xl shadow-sm hover:shadow-md transition-shadow border">
                 <div className="flex items-center space-x-3">
-                  <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-700 rounded-xl flex items-center justify-center shadow-md">
-                    <svg className="w-7 h-7 text-white" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8z"/>
-                      <path d="M12 6c-3.309 0-6 2.691-6 6s2.691 6 6 6 6-2.691 6-6-2.691-6-6-6zm0 10c-2.206 0-4-1.794-4-4s1.794-4 4-4 4 1.794 4 4-1.794 4-4 4z"/>
-                      <path d="M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8zm0 6a2 2 0 1 1 0-4 2 2 0 0 1 0 4z"/>
-                    </svg>
+                  <div className="w-12 h-12 bg-gradient-to-br from-[#00A9A5] to-[#7B4397] rounded-xl flex items-center justify-center shadow-md transform hover:scale-105 transition-transform">
+                    <Globe className="w-7 h-7 text-white" />
                   </div>
                   <div>
-                    <p className="text-base font-medium">Portfolio Browser</p>
+                    <p className="text-base font-medium">Snigdha Browser</p>
                     <p className="text-sm text-muted-foreground">Default web browser</p>
                   </div>
-                  <button className="ml-auto text-sm px-3 py-1.5 bg-primary/10 hover:bg-primary/20 text-primary rounded-lg transition-colors">
+                  <button className="ml-auto text-sm px-3 py-1.5 bg-gradient-to-r from-[#00A9A5]/10 to-[#7B4397]/10 hover:from-[#00A9A5]/20 hover:to-[#7B4397]/20 text-primary rounded-lg transition-colors">
                     Change
                   </button>
                 </div>
@@ -623,9 +646,9 @@ export default function SettingsApp() {
                   </div>
                 </div>
                 
-                <div className="mt-4 p-3 bg-accent/50 rounded-lg">
+                <div className="mt-4 p-3 bg-gradient-to-r from-[#00A9A5]/5 to-[#7B4397]/5 rounded-lg">
                   <div className="flex items-center gap-2">
-                    <svg className="h-5 w-5 text-amber-500" viewBox="0 0 24 24" fill="none">
+                    <svg className="h-5 w-5 text-[#00A9A5]" viewBox="0 0 24 24" fill="none">
                       <path d="M12 8V12L14 14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
                       <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="2" />
                     </svg>
@@ -709,16 +732,16 @@ export default function SettingsApp() {
                   <div className="mt-6">
                     <h4 className="text-sm font-medium mb-3">Notification Style</h4>
                     <div className="grid grid-cols-2 gap-3">
-                      <button className="p-4 rounded-lg border hover:bg-accent/50 transition-colors flex flex-col items-center gap-2">
-                        <div className="w-full h-16 rounded bg-accent/60 p-2 flex flex-col justify-center">
+                      <button className="p-4 rounded-lg border hover:border-[#00A9A5] hover:bg-gradient-to-r from-[#00A9A5]/5 to-[#7B4397]/5 transition-all flex flex-col items-center gap-2">
+                        <div className="w-full h-16 rounded bg-gradient-to-r from-[#00A9A5]/10 to-[#7B4397]/10 p-2 flex flex-col justify-center">
                           <div className="h-2 w-4/5 bg-muted-foreground/30 rounded mb-1"></div>
                           <div className="h-2 w-3/5 bg-muted-foreground/30 rounded"></div>
                         </div>
                         <span className="text-xs text-muted-foreground">Banners</span>
                       </button>
                       
-                      <button className="p-4 rounded-lg border hover:bg-accent/50 transition-colors flex flex-col items-center gap-2">
-                        <div className="w-full h-16 rounded bg-accent/60 p-2 flex flex-col justify-center">
+                      <button className="p-4 rounded-lg border hover:border-[#7B4397] hover:bg-gradient-to-r from-[#00A9A5]/5 to-[#7B4397]/5 transition-all flex flex-col items-center gap-2">
+                        <div className="w-full h-16 rounded bg-gradient-to-r from-[#00A9A5]/10 to-[#7B4397]/10 p-2 flex flex-col justify-center">
                           <div className="h-2 w-4/5 bg-muted-foreground/30 rounded mb-1"></div>
                           <div className="h-2 w-3/5 bg-muted-foreground/30 rounded mb-1"></div>
                           <div className="h-2 w-1/2 bg-muted-foreground/30 rounded"></div>
