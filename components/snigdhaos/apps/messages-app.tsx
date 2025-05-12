@@ -80,11 +80,11 @@ export default function WhatsAppApp({ specialUser }: WhatsAppProps = {}) {
   // Get theme colors from Catppuccin palette
   const colors = isDark ? flavors.mocha : flavors.frappe;
   
-  // Contacts data
+  // Contacts data - WhatsApp style
   const contacts: Contact[] = [
     {
       id: 'contact1',
-      name: 'Family Group',
+      name: 'Family Group 👨‍👩‍👧‍👦',
       avatar: undefined,
       status: 'online',
       statusText: "Mom's birthday tomorrow!",
@@ -313,10 +313,10 @@ export default function WhatsAppApp({ specialUser }: WhatsAppProps = {}) {
     }
   };
 
-  // Create chat background pattern
+  // Create chat background pattern - WhatsApp style
   const chatPattern = isDark 
-    ? `data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M100 0H0V100H100V0Z' fill='%23${colors.colors.base.hex.replace('#', '')}'/%3E%3Cpath opacity='0.03' d='M100 0H0V100H100V0Z' fill='%23${colors.colors.text.hex.replace('#', '')}'/%3E%3C/svg%3E`
-    : `data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M100 0H0V100H100V0Z' fill='%23${colors.colors.base.hex.replace('#', '')}'/%3E%3Cpath opacity='0.03' d='M100 0H0V100H100V0Z' fill='%23${colors.colors.text.hex.replace('#', '')}'/%3E%3C/svg%3E`;
+    ? "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAAFHGlUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4gPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iQWRvYmUgWE1QIENvcmUgNS42LWMxNDIgNzkuMTYwOTI0LCAyMDE3LzA3LzEzLTAxOjA2OjM5ICAgICAgICAiPiA8cmRmOlJERiB4bWxuczpyZGY9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkvMDIvMjItcmRmLXN5bnRheC1ucyMiPiA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtbG5zOmRjPSJodHRwOi8vcHVybC5vcmcvZGMvZWxlbWVudHMvMS4xLyIgeG1sbnM6cGhvdG9zaG9wPSJodHRwOi8vbnMuYWRvYmUuY29tL3Bob3Rvc2hvcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RFdnQ9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZUV2ZW50IyIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ0MgKFdpbmRvd3MpIiB4bXA6Q3JlYXRlRGF0ZT0iMjAyMC0wNy0wNlQxMToxOTozOCswNTozMCIgeG1wOk1vZGlmeURhdGU9IjIwMjAtMDctMDZUMTE6MzE6NDErMDU6MzAiIHhtcDpNZXRhZGF0YURhdGU9IjIwMjAtMDctMDZUMTE6MzE6NDErMDU6MzAiIGRjOmZvcm1hdD0iaW1hZ2UvcG5nIiBwaG90b3Nob3A6Q29sb3JNb2RlPSIzIiBwaG90b3Nob3A6SUNDUHJvZmlsZT0ic1JHQiBJRUM2MTk2Ni0yLjEiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6MzBiNWQ5NzUtNzg3ZC01ZDQ3LWJkODQtMjcwMWJkMzUwYjBjIiB4bXBNTTpEb2N1bWVudElEPSJ4bXAuZGlkOjMwYjVkOTc1LTc4N2QtNWQ0Ny1iZDg0LTI3MDFiZDM1MGIwYyIgeG1wTU06T3JpZ2luYWxEb2N1bWVudElEPSJ4bXAuZGlkOjMwYjVkOTc1LTc4N2QtNWQ0Ny1iZDg0LTI3MDFiZDM1MGIwYyIgeG1wTU06T3JpZ2luYWxEb2N1bWVudElEPSJ4bXAuZGlkOjMwYjVkOTc1LTc4N2QtNWQ0Ny1iZDg0LTI3MDFiZDM1MGIwYyI+IDx4bXBNTTpIaXN0b3J5PiA8cmRmOlNlcT4gPHJkZjpsaSBzdEV2dDphY3Rpb249ImNyZWF0ZWQiIHN0RXZ0Omluc3RhbmNlSUQ9InhtcC5paWQ6MzBiNWQ5NzUtNzg3ZC01ZDQ3LWJkODQtMjcwMWJkMzUwYjBjIiBzdEV2dDp3aGVuPSIyMDIwLTA3LTA2VDExOjE5OjM4KzA1OjMwIiBzdEV2dDpzb2Z0d2FyZUFnZW50PSJBZG9iZSBQaG90b3Nob3AgQ0MgKFdpbmRvd3MpIi8+IDwvcmRmOlNlcT4gPC94bXBNTTpIaXN0b3J5PiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/Pq37MjkAAAFCSURBVGiB7ZcxjoQwDEVfRkNDQ88txnMknIZTUKdgpafgFMyFKJgbUFAxOQXNFJQUFBshJJA29ChgRbHnL1lJ8S/86QcHDIRCoeGKHLiRgZGQC0aicYwJRGUpozPlHdDBcpRRzDZCLkZCLsY5C384hPf1/SOCE2VGdFLfHgVQPg3DCTUjOqE2ke0RQJK+Dk6oEWUiIwXw+5G/Px2dpvr7K1HeiNawdvdE8gvkQssw1WwCu+cogbXe9Y1Q2v4/PZKfI7nTAH+wGJmYDKNaJ/L9+WoA8Dk33X4iOVG3TyRnf4xo13J85yuqfaJZxCjXcg72+lKdEyUC/2SLdU7ULQIt59G1llsjWh1OjbOW90TfFCyx2TiRYq0uTHNDQn0jSrA45YGVuCN2LeBwJU6c+B9Eh1PAI4aCHyN+AKTOYAGybQgJAAAAAElFTkSuQmCC"
+    : "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAAFHGlUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4gPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iQWRvYmUgWE1QIENvcmUgNS42LWMxNDIgNzkuMTYwOTI0LCAyMDE3LzA3LzEzLTAxOjA2OjM5ICAgICAgICAiPiA8cmRmOlJERiB4bWxuczpyZGY9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkvMDIvMjItcmRmLXN5bnRheC1ucyMiPiA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtbG5zOmRjPSJodHRwOi8vcHVybC5vcmcvZGMvZWxlbWVudHMvMS4xLyIgeG1sbnM6cGhvdG9zaG9wPSJodHRwOi8vbnMuYWRvYmUuY29tL3Bob3Rvc2hvcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RFdnQ9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZUV2ZW50IyIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ0MgKFdpbmRvd3MpIiB4bXA6Q3JlYXRlRGF0ZT0iMjAyMC0wNy0wNlQxMToxOTozOCswNTozMCIgeG1wOk1vZGlmeURhdGU9IjIwMjAtMDctMDZUMTE6MzE6NDErMDU6MzAiIHhtcDpNZXRhZGF0YURhdGU9IjIwMjAtMDctMDZUMTE6MzE6NDErMDU6MzAiIGRjOmZvcm1hdD0iaW1hZ2UvcG5nIiBwaG90b3Nob3A6Q29sb3JNb2RlPSIzIiBwaG90b3Nob3A6SUNDUHJvZmlsZT0ic1JHQiBJRUM2MTk2Ni0yLjEiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6MzBiNWQ5NzUtNzg3ZC01ZDQ3LWJkODQtMjcwMWJkMzUwYjBjIiB4bXBNTTpEb2N1bWVudElEPSJ4bXAuZGlkOjMwYjVkOTc1LTc4N2QtNWQ0Ny1iZDg0LTI3MDFiZDM1MGIwYyIgeG1wTU06T3JpZ2luYWxEb2N1bWVudElEPSJ4bXAuZGlkOjMwYjVkOTc1LTc4N2QtNWQ0Ny1iZDg0LTI3MDFiZDM1MGIwYyIgeG1wTU06T3JpZ2luYWxEb2N1bWVudElEPSJ4bXAuZGlkOjMwYjVkOTc1LTc4N2QtNWQ0Ny1iZDg0LTI3MDFiZDM1MGIwYyI+IDx4bXBNTTpIaXN0b3J5PiA8cmRmOlNlcT4gPHJkZjpsaSBzdEV2dDphY3Rpb249ImNyZWF0ZWQiIHN0RXZ0Omluc3RhbmNlSUQ9InhtcC5paWQ6MzBiNWQ5NzUtNzg3ZC01ZDQ3LWJkODQtMjcwMWJkMzUwYjBjIiBzdEV2dDp3aGVuPSIyMDIwLTA3LTA2VDExOjE5OjM4KzA1OjMwIiBzdEV2dDpzb2Z0d2FyZUFnZW50PSJBZG9iZSBQaG90b3Nob3AgQ0MgKFdpbmRvd3MpIi8+IDwvcmRmOlNlcT4gPC94bXBNTTpIaXN0b3J5PiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/Pq37MjkAAAFCSURBVGiB7ZcxjoQwDEVfRkNDQ88txnMknIZTUKdgpafgFMyFKJgbUFAxOQXNFJQUFBshJJA29ChgRbHnL1lJ8S/86QcHDIRCoeGKHLiRgZGQC0aicYwJRGUpozPlHdDBcpRRzDZCLkZCLsY5C384hPf1/SOCE2VGdFLfHgVQPg3DCTUjOqE2ke0RQJK+Dk6oEWUiIwXw+5G/Px2dpvr7K1HeiNawdvdE8gvkQssw1WwCu+cogbXe9Y1Q2v4/PZKfI7nTAH+wGJmYDKNaJ/L9+WoA8Dk33X4iOVG3TyRnf4xo13J85yuqfaJZxCjXcg72+lKdEyUC/2SLdU7ULQIt59G1llsjWh1OjbOW90TfFCyx2TiRYq0uTHNDQn0jSrA45YGVuCN2LeBwJU6c+B9Eh1PAI4aCHyN+AKTOYAGybQgJAAAAAElFTkSuQmCC";
 
   // Render message status indicators
   const renderMessageStatus = (status: string) => {
@@ -345,13 +345,13 @@ export default function WhatsAppApp({ specialUser }: WhatsAppProps = {}) {
   };
   
   return (
-    <div className="h-full flex flex-col bg-[#f0f2f5] dark:bg-[#111b21]">
+    <div className="h-full flex flex-col bg-[#ffffff] dark:bg-[#111b21]">
       {/* Main interface */}
       <div className="flex flex-1 overflow-hidden">
-        {/* Sidebar */}
-        <div className="w-80 flex flex-col border-r border-[#d1d7db] dark:border-[#222e35]">
+      {/* Sidebar */}
+        <div className="w-80 flex flex-col border-r border-[#e9edef] dark:border-[#222e35]">
           {/* Sidebar header */}
-          <div className="px-4 py-3 flex justify-between items-center bg-[#f0f2f5] dark:bg-[#202c33]">
+          <div className="px-4 py-3 flex justify-between items-center bg-[#00a884] dark:bg-[#00a884]">
             <div className="flex items-center">
               <div className="w-10 h-10 rounded-full overflow-hidden">
                 <Image 
@@ -363,22 +363,24 @@ export default function WhatsAppApp({ specialUser }: WhatsAppProps = {}) {
                 />
               </div>
             </div>
-            <div className="flex space-x-3">
-              <button className="p-1 rounded-full text-[#54656f] dark:text-[#aebac1] hover:bg-[#d9dbdf] dark:hover:bg-[#374045]">
+            <div className="flex space-x-3 text-white">
+              <button className="p-1 rounded-full hover:bg-[#0c967a]">
                 <Users className="w-5 h-5" />
               </button>
-              <button className="p-1 rounded-full text-[#54656f] dark:text-[#aebac1] hover:bg-[#d9dbdf] dark:hover:bg-[#374045]">
-                <Check className="w-5 h-5" />
+              <button className="p-1 rounded-full hover:bg-[#0c967a]">
+                <svg viewBox="0 0 24 24" width="20" height="20" className="fill-current">
+                  <path d="M12 20.664a9.163 9.163 0 0 1-6.521-2.702.977.977 0 0 1 1.381-1.381 7.269 7.269 0 0 0 10.024.244.977.977 0 0 1 1.313 1.445A9.192 9.192 0 0 1 12 20.664zm7.965-6.112a.977.977 0 0 1-.944-1.229 7.26 7.26 0 0 0-4.8-8.804.977.977 0 0 1 .594-1.86 9.212 9.212 0 0 1 6.092 11.169.976.976 0 0 1-.942.724zm-16.025-.39a.977.977 0 0 1-.953-.769 9.21 9.21 0 0 1 6.626-10.86.975.975 0 1 1 .52 1.882l-.015.004a7.259 7.259 0 0 0-5.223 8.558.978.978 0 0 1-.955 1.185z"></path>
+                </svg>
               </button>
-              <button className="p-1 rounded-full text-[#54656f] dark:text-[#aebac1] hover:bg-[#d9dbdf] dark:hover:bg-[#374045]">
+              <button className="p-1 rounded-full hover:bg-[#0c967a]">
                 <MoreVertical className="w-5 h-5" />
               </button>
             </div>
           </div>
           
           {/* Search bar */}
-          <div className="p-2 bg-[#f0f2f5] dark:bg-[#202c33]">
-            <div className="flex items-center bg-white dark:bg-[#2a3942] rounded-lg px-3 py-1.5">
+          <div className="p-2 bg-[#ffffff] dark:bg-[#111b21]">
+            <div className="flex items-center bg-[#f0f2f5] dark:bg-[#202c33] rounded-lg px-3 py-1.5">
               <Search className="w-5 h-5 text-[#54656f] dark:text-[#aebac1] mr-2" />
               <input
                 type="text"
@@ -390,7 +392,7 @@ export default function WhatsAppApp({ specialUser }: WhatsAppProps = {}) {
               <Filter className="w-5 h-5 text-[#54656f] dark:text-[#aebac1] ml-1" />
             </div>
           </div>
-          
+        
           {/* Chats list */}
           <div className="flex-1 overflow-y-auto">
             {filteredContacts.map(contact => {
@@ -399,75 +401,75 @@ export default function WhatsAppApp({ specialUser }: WhatsAppProps = {}) {
               return (
                 <div 
                   key={contact.id}
-                  className={`px-3 py-3 flex cursor-pointer ${
-                    selectedContact === contact.id 
-                      ? 'bg-[#f0f2f5] dark:bg-[#2a3942]' 
-                      : 'hover:bg-[#f5f6f6] dark:hover:bg-[#222e35]'
+                    className={`px-3 py-3 flex cursor-pointer ${
+                      selectedContact === contact.id 
+                        ? 'bg-[#f0f2f5] dark:bg-[#2a3942]' 
+                        : 'hover:bg-[#f5f6f6] dark:hover:bg-[#222e35]'
                   }`}
                   onClick={() => setSelectedContact(contact.id)}
                 >
-                  <div className="relative mr-3">
-                    {contact.avatar ? (
-                      <Image 
-                        src={contact.avatar} 
-                        alt={contact.name}
-                        width={49}
-                        height={49}
-                        className="w-12 h-12 rounded-full object-cover"
-                      />
-                    ) : (
-                      <div className="w-12 h-12 rounded-full bg-[#00a884] dark:bg-[#6a7175] flex items-center justify-center">
-                        <Users className="w-6 h-6 text-white" />
-                      </div>
-                    )}
-                    {contact.status === 'online' && (
-                      <div className="absolute bottom-0 right-0 w-3 h-3 bg-[#00a884] rounded-full border-2 border-[#f0f2f5] dark:border-[#111b21]"></div>
-                    )}
-                  </div>
-                  
-                  <div className="flex-1 min-w-0 border-b border-[#e9edef] dark:border-[#222d34] pb-2">
-                    <div className="flex justify-between items-center">
-                      <h3 className="font-medium truncate text-[#111b21] dark:text-[#e9edef]">
-                        {contact.name}
-                      </h3>
-                      <span className="text-xs text-[#667781] dark:text-[#8696a0]">
-                        {lastMessage && formatTime(lastMessage.timestamp)}
-                      </span>
-                    </div>
-                    
-                    <div className="flex justify-between items-center mt-1">
-                      <p className="text-sm truncate text-[#667781] dark:text-[#8696a0] flex items-center">
-                        {contact.typing ? (
-                          <span className="text-[#00a884]">typing...</span>
-                        ) : (
-                          <>
-                            {lastMessage && lastMessage.sender === 'me' && (
-                              <span className="flex items-center mr-1">
-                                {renderMessageStatus(lastMessage.status || 'sent')}
-                              </span>
-                            )}
-                            <span>
-                              {lastMessage && 
-                                (lastMessage.content.length > 30 
-                                  ? lastMessage.content.substring(0, 30) + '...' 
-                                  : lastMessage.content)}
-                            </span>
-                          </>
-                        )}
-                      </p>
-                      
-                      {contact.unreadCount && contact.unreadCount > 0 && (
-                        <div className="flex-shrink-0 w-5 h-5 rounded-full bg-[#25d366] flex items-center justify-center">
-                          <span className="text-xs text-white font-medium">
-                            {contact.unreadCount}
-                          </span>
+                    <div className="relative mr-3">
+                      {contact.avatar ? (
+                        <Image 
+                          src={contact.avatar} 
+                          alt={contact.name}
+                          width={49}
+                          height={49}
+                          className="w-12 h-12 rounded-full object-cover"
+                        />
+                      ) : (
+                        <div className="w-12 h-12 rounded-full bg-[#DFE5E7] dark:bg-[#6a7175] flex items-center justify-center">
+                          <Users className="w-6 h-6 text-[#54656f] dark:text-white" />
                         </div>
                       )}
+                      {contact.status === 'online' && (
+                        <div className="absolute bottom-0 right-0 w-3 h-3 bg-[#00a884] rounded-full border-2 border-[#ffffff] dark:border-[#111b21]"></div>
+                      )}
+                    </div>
+                    
+                    <div className="flex-1 min-w-0 border-b border-[#e9edef] dark:border-[#222d34] pb-2">
+                      <div className="flex justify-between items-center">
+                        <h3 className="font-medium truncate text-[#111b21] dark:text-[#e9edef]">
+                          {contact.name}
+                        </h3>
+                        <span className="text-xs text-[#667781] dark:text-[#8696a0]">
+                          {lastMessage && formatTime(lastMessage.timestamp)}
+                        </span>
+                      </div>
+                      
+                      <div className="flex justify-between items-center mt-1">
+                        <p className="text-sm truncate text-[#667781] dark:text-[#8696a0] flex items-center">
+                        {contact.typing ? (
+                            <span className="text-[#00a884]">typing...</span>
+                        ) : (
+                            <>
+                              {lastMessage && lastMessage.sender === 'me' && (
+                                <span className="flex items-center mr-1">
+                                  {renderMessageStatus(lastMessage.status || 'sent')}
+                                </span>
+                              )}
+                              <span>
+                            {lastMessage && 
+                                  (lastMessage.content.length > 30 
+                                    ? lastMessage.content.substring(0, 30) + '...' 
+                                    : lastMessage.content)}
+                              </span>
+                            </>
+                        )}
+                        </p>
+                        
+                        {contact.unreadCount && contact.unreadCount > 0 && (
+                          <div className="flex-shrink-0 w-5 h-5 rounded-full bg-[#25d366] flex items-center justify-center">
+                            <span className="text-xs text-white font-medium">
+                              {contact.unreadCount}
+                            </span>
+                          </div>
+                        )}
+                      </div>
                     </div>
                   </div>
-                </div>
-              );
-            })}
+                );
+              })}
           </div>
         </div>
         
@@ -475,128 +477,141 @@ export default function WhatsAppApp({ specialUser }: WhatsAppProps = {}) {
         {selectedContact && activeContact ? (
           <div className="flex-1 flex flex-col">
             {/* Chat header */}
-            <div className="px-4 py-2 flex justify-between items-center bg-[#f0f2f5] dark:bg-[#202c33] border-b border-[#d1d7db] dark:border-[#222e35]">
+            <div className="px-4 py-2 flex justify-between items-center bg-[#f0f2f5] dark:bg-[#202c33] border-b border-[#e9edef] dark:border-[#222e35]">
               <div className="flex items-center">
-                <div className="mr-1 md:hidden">
-                  <ArrowLeft className="w-5 h-5 text-[#54656f] dark:text-[#aebac1]" />
-                </div>
+                  <div className="mr-1 md:hidden">
+                    <ArrowLeft className="w-5 h-5 text-[#54656f] dark:text-[#aebac1]" />
+                  </div>
                 {activeContact.avatar ? (
                   <Image 
                     src={activeContact.avatar} 
                     alt={activeContact.name}
                     width={40}
                     height={40}
-                    className="w-10 h-10 rounded-full object-cover mr-3"
+                      className="w-10 h-10 rounded-full object-cover mr-3"
                   />
                 ) : (
-                  <div className="w-10 h-10 rounded-full bg-[#00a884] dark:bg-[#6a7175] flex items-center justify-center mr-3">
-                    <Users className="w-5 h-5 text-white" />
-                  </div>
+                    <div className="w-10 h-10 rounded-full bg-[#DFE5E7] dark:bg-[#6a7175] flex items-center justify-center mr-3">
+                      <Users className="w-5 h-5 text-[#54656f] dark:text-white" />
+                    </div>
                 )}
                 <div>
-                  <h2 className="font-medium text-[#111b21] dark:text-[#e9edef]">
-                    {activeContact.name}
-                  </h2>
-                  <p className="text-xs text-[#667781] dark:text-[#8696a0]">
-                    {activeContact.status === 'online' 
-                      ? 'online' 
-                      : activeContact.lastSeen 
-                        ? `last seen ${formatTime(activeContact.lastSeen)}`
-                        : 'offline'}
-                  </p>
+                    <h2 className="font-medium text-[#111b21] dark:text-[#e9edef]">
+                      {activeContact.name}
+                    </h2>
+                    <p className="text-xs text-[#667781] dark:text-[#8696a0]">
+                      {activeContact.status === 'online' 
+                        ? 'online' 
+                          : activeContact.lastSeen 
+                          ? `last seen ${formatTime(activeContact.lastSeen)}`
+                          : 'offline'}
+                    </p>
                 </div>
               </div>
               
-              <div className="flex space-x-3">
-                <button className="p-1 rounded-full text-[#54656f] dark:text-[#aebac1] hover:bg-[#d9dbdf] dark:hover:bg-[#374045]">
-                  <Search className="w-5 h-5" />
+                <div className="flex space-x-3">
+                  <button className="p-1 rounded-full text-[#54656f] dark:text-[#aebac1] hover:bg-[#d9dbdf] dark:hover:bg-[#374045]">
+                    <Search className="w-5 h-5" />
+                  </button>
+                  <button className="p-1 rounded-full text-[#54656f] dark:text-[#aebac1] hover:bg-[#d9dbdf] dark:hover:bg-[#374045]">
+                    <Phone className="w-5 h-5" />
                 </button>
-                <button className="p-1 rounded-full text-[#54656f] dark:text-[#aebac1] hover:bg-[#d9dbdf] dark:hover:bg-[#374045]">
-                  <Phone className="w-5 h-5" />
+                  <button className="p-1 rounded-full text-[#54656f] dark:text-[#aebac1] hover:bg-[#d9dbdf] dark:hover:bg-[#374045]">
+                    <Video className="w-5 h-5" />
                 </button>
-                <button className="p-1 rounded-full text-[#54656f] dark:text-[#aebac1] hover:bg-[#d9dbdf] dark:hover:bg-[#374045]">
-                  <Video className="w-5 h-5" />
+                  <button className="p-1 rounded-full text-[#54656f] dark:text-[#aebac1] hover:bg-[#d9dbdf] dark:hover:bg-[#374045]">
+                    <MoreVertical className="w-5 h-5" />
                 </button>
-                <button className="p-1 rounded-full text-[#54656f] dark:text-[#aebac1] hover:bg-[#d9dbdf] dark:hover:bg-[#374045]">
-                  <MoreVertical className="w-5 h-5" />
-                </button>
-              </div>
+                </div>
             </div>
             
-            {/* Messages area */}
-            <div 
-              className="flex-1 overflow-y-auto p-3 bg-[#efeae2] dark:bg-[#0b141a]"
-              style={{
-                backgroundImage: `url("${chatPattern}")`,
-                backgroundSize: '200px 200px'
-              }}
-            >
-              {/* Group messages by date */}
-              {(() => {
-                const messagesByDate: Record<string, Message[]> = {};
-                
-                activeContact.messages.forEach(message => {
-                  const dateKey = formatMessageDate(message.timestamp);
-                  if (!messagesByDate[dateKey]) {
-                    messagesByDate[dateKey] = [];
-                  }
-                  messagesByDate[dateKey].push(message);
-                });
-                
-                return Object.entries(messagesByDate).map(([date, messages]) => (
-                  <div key={date} className="mb-6">
-                    <div className="flex justify-center mb-3">
-                      <div className="bg-[#ffffff] dark:bg-[#1f2c33] px-3 py-1 rounded-lg shadow-sm">
-                        <span className="text-xs text-[#54656f] dark:text-[#8696a0] font-medium">
+              {/* Messages area - updated background pattern to match WhatsApp */}
+              <div 
+                className="flex-1 overflow-y-auto p-3 bg-[#e9ebde] dark:bg-[#0b141a]"
+                style={{
+                  backgroundImage: `url("${chatPattern}")`,
+                  backgroundSize: '100px 100px'
+                }}
+              >
+                {/* Group messages by date */}
+                {(() => {
+                  const messagesByDate: Record<string, Message[]> = {};
+                  
+                  activeContact.messages.forEach(message => {
+                    const dateKey = formatMessageDate(message.timestamp);
+                    if (!messagesByDate[dateKey]) {
+                      messagesByDate[dateKey] = [];
+                    }
+                    messagesByDate[dateKey].push(message);
+                  });
+                  
+                  return Object.entries(messagesByDate).map(([date, messages]) => (
+                    <div key={date} className="mb-6">
+                      <div className="flex justify-center mb-3">
+                        <div className="bg-[#ffffff] dark:bg-[#1f2c33] px-3 py-1 rounded-lg shadow-sm">
+                          <span className="text-xs text-[#54656f] dark:text-[#8696a0] font-medium">
                           {date}
                         </span>
+                        </div>
                       </div>
-                    </div>
-                    
-                    <div className="space-y-1">
-                      {messages.map(message => (
-                        <div 
-                          key={message.id}
-                          className={`flex ${message.sender === 'me' ? 'justify-end' : 'justify-start'}`}
-                        >
+                      
+                      <div className="space-y-1">
+                        {messages.map(message => (
                           <div 
-                            className={`max-w-[65%] rounded-lg px-2 py-1.5 shadow-sm relative ${
-                              message.sender === 'me' 
-                                ? 'bg-[#d9fdd3] dark:bg-[#005c4b]' 
-                                : 'bg-[#ffffff] dark:bg-[#1f2c33]'
-                            }`}
+                            key={message.id}
+                            className={`flex ${message.sender === 'me' ? 'justify-end' : 'justify-start'}`}
                           >
-                            <p className={`text-sm ${
-                              message.sender === 'me' 
-                                ? 'text-[#111b21] dark:text-[#e9edef]' 
-                                : 'text-[#111b21] dark:text-[#e9edef]'
-                            }`}>
-                              {message.content}
-                            </p>
-                            
-                            <div className="flex items-center justify-end gap-1 -mb-1 mt-0.5">
-                              <span className="text-[10px] text-[#667781] dark:text-[#8696a0]">
-                                {formatTime(message.timestamp)}
-                              </span>
-                              
-                              {message.sender === 'me' && message.status && (
-                                <span className="ml-1">
-                                  {renderMessageStatus(message.status)}
-                                </span>
+                            <div 
+                              className={`max-w-[65%] rounded-lg px-2 py-1.5 shadow-sm relative ${
+                                message.sender === 'me' 
+                                  ? 'bg-[#d9fdd3] dark:bg-[#005c4b] rounded-tr-none' 
+                                  : 'bg-[#ffffff] dark:bg-[#1f2c33] rounded-tl-none'
+                              }`}
+                            >
+                              {/* Triangle for sent messages */}
+                              {message.sender === 'me' && (
+                                <div className="absolute -right-1.5 top-0 w-0 h-0 border-t-[8px] border-t-transparent border-l-[8px] border-l-[#d9fdd3] dark:border-l-[#005c4b] border-b-[6px] border-b-transparent"></div>
                               )}
+                              
+                              {/* Triangle for received messages */}
+                              {message.sender === 'them' && (
+                                <div className="absolute -left-1.5 top-0 w-0 h-0 border-t-[8px] border-t-transparent border-r-[8px] border-r-[#ffffff] dark:border-r-[#1f2c33] border-b-[6px] border-b-transparent"></div>
+                              )}
+                              
+                              <p className={`text-sm ${
+                                message.sender === 'me' 
+                                  ? 'text-[#111b21] dark:text-[#e9edef]' 
+                                  : 'text-[#111b21] dark:text-[#e9edef]'
+                              }`}>
+                                {message.content}
+                              </p>
+                              
+                              <div className="flex items-center justify-end gap-1 -mb-1 mt-0.5">
+                                <span className="text-[10px] text-[#667781] dark:text-[#8696a0]">
+                                  {formatTime(message.timestamp)}
+                                </span>
+                                
+                                {message.sender === 'me' && message.status && (
+                                  <span className="ml-1">
+                                    {renderMessageStatus(message.status)}
+                                  </span>
+                                )}
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      ))}
+                        ))}
+                      </div>
                     </div>
-                  </div>
-                ));
-              })()}
-              
-              {activeContact.typing && (
+                  ));
+                })()}
+                
+                              {activeContact.typing && (
                 <div className="flex justify-start">
-                  <div className="max-w-[65%] bg-[#ffffff] dark:bg-[#1f2c33] rounded-lg px-3 py-2 shadow-sm">
-                    <div className="flex space-x-1">
+                  <div className="max-w-[95px] bg-[#ffffff] dark:bg-[#1f2c33] rounded-lg rounded-tl-none px-3 py-2 shadow-sm relative">
+                    {/* Triangle for typing indicator */}
+                    <div className="absolute -left-1.5 top-0 w-0 h-0 border-t-[8px] border-t-transparent border-r-[8px] border-r-[#ffffff] dark:border-r-[#1f2c33] border-b-[6px] border-b-transparent"></div>
+                    
+                    <div className="flex space-x-1 py-1">
                       <span className="w-2 h-2 bg-[#667781] dark:bg-[#8696a0] rounded-full animate-bounce"></span>
                       <span className="w-2 h-2 bg-[#667781] dark:bg-[#8696a0] rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></span>
                       <span className="w-2 h-2 bg-[#667781] dark:bg-[#8696a0] rounded-full animate-bounce" style={{ animationDelay: '0.4s' }}></span>
@@ -606,7 +621,7 @@ export default function WhatsAppApp({ specialUser }: WhatsAppProps = {}) {
               )}
             </div>
             
-            {/* Message input */}
+            {/* Message input - WhatsApp style */}
             <div className="px-4 py-2 bg-[#f0f2f5] dark:bg-[#202c33] flex items-center">
               <div className="flex space-x-3 mr-2">
                 <button className="p-1 rounded-full text-[#54656f] dark:text-[#aebac1] hover:bg-[#d9dbdf] dark:hover:bg-[#374045]">
@@ -626,17 +641,17 @@ export default function WhatsAppApp({ specialUser }: WhatsAppProps = {}) {
                   className="bg-transparent w-full text-sm outline-none text-[#111b21] dark:text-[#e9edef]"
                 />
               </div>
-              
+                
               <div className="flex ml-2">
                 {messageText.trim() ? (
                   <button 
-                    className="p-2 rounded-full text-[#54656f] dark:text-[#aebac1] hover:bg-[#d9dbdf] dark:hover:bg-[#374045]"
+                    className="p-2 rounded-full bg-[#00a884] text-white hover:bg-[#06876c]"
                     onClick={handleSendMessage}
                   >
                     <Send className="w-6 h-6" />
                   </button>
                 ) : (
-                  <button className="p-2 rounded-full text-[#54656f] dark:text-[#aebac1] hover:bg-[#d9dbdf] dark:hover:bg-[#374045]">
+                  <button className="p-2 rounded-full bg-[#00a884] text-white hover:bg-[#06876c]">
                     <Mic className="w-6 h-6" />
                   </button>
                 )}
@@ -644,9 +659,9 @@ export default function WhatsAppApp({ specialUser }: WhatsAppProps = {}) {
             </div>
           </div>
         ) : (
-          <div className="flex-1 flex flex-col items-center justify-center bg-[#f0f2f5] dark:bg-[#222e35]">
+          <div className="flex-1 flex flex-col items-center justify-center bg-[#f7f8fa] dark:bg-[#222e35]">
             <div className="text-center max-w-md px-6">
-              <div className="w-72 h-72 mx-auto mb-8 opacity-20">
+              <div className="w-72 h-72 mx-auto mb-8 opacity-25">
                 <WhatsAppIcon />
               </div>
               <h1 className="text-3xl font-light text-[#41525d] dark:text-[#e9edef] mb-4">WhatsApp Web</h1>
@@ -654,9 +669,22 @@ export default function WhatsAppApp({ specialUser }: WhatsAppProps = {}) {
                 Send and receive messages without keeping your phone online.
                 Use WhatsApp on up to 4 linked devices and 1 phone at the same time.
               </p>
-              <p className="text-sm text-[#8696a0] dark:text-[#8696a0] mt-40">
-                <span className="border-t border-[#e9edef] dark:border-[#222d34] pt-4">End-to-end encrypted</span>
-              </p>
+              <div className="flex items-center justify-center mt-6 mb-6">
+                <div className="w-4 h-4 border-2 border-[#e9edef] dark:border-[#222d34] rounded-full flex items-center justify-center">
+                  <span className="block w-2 h-2 bg-[#00a884]"></span>
+                </div>
+                <span className="text-sm text-[#8696a0] dark:text-[#8696a0] ml-2">
+                  Your personal messages are end-to-end encrypted
+                </span>
+              </div>
+              <div className="flex justify-center space-x-1 mt-40">
+                <svg viewBox="0 0 10 12" height="12" width="10" preserveAspectRatio="xMidYMid meet" className="text-[#8696a0] fill-current">
+                  <path d="M5 1.6c1.4 0 2.5 1.1 2.5 2.5V6H7V4.1c0-1.1-.9-2-2-2s-2 .9-2 2V6H1.5V4.1c0-1.4 1.1-2.5 2.5-2.5zM0 6h10v6H0V6z"></path>
+                </svg>
+                <span className="text-xs text-[#8696a0] dark:text-[#8696a0]">
+                  Your personal messages are end-to-end encrypted
+                </span>
+              </div>
             </div>
           </div>
         )}
