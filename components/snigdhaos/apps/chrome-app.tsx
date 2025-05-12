@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from 'react';
+import { useTheme } from 'next-themes';
 import { 
   ChevronLeft, 
   ChevronRight, 
@@ -106,6 +107,7 @@ const browserHistoryItems: HistoryItem[] = [
 const browserHistory = browserHistoryItems.map(item => item.url);
 
 export default function ChromeApp() {
+  const { theme } = useTheme();
   const [tabs, setTabs] = useState<Tab[]>(initialTabs);
   const [url, setUrl] = useState('https://my-portfolio.dev');
   const [historyIndex, setHistoryIndex] = useState(0);
@@ -307,351 +309,329 @@ export default function ChromeApp() {
     }
   };
   
+  // Theme-aware styles
+  const isDark = theme === 'dark';
+  
+  // Window color based on theme
+  const chromeWindowStyle = {
+    background: isDark ? 'var(--background)' : 'var(--background)',
+    color: isDark ? 'var(--foreground)' : 'var(--foreground)',
+  };
+  
+  // Tab colors based on theme
+  const tabStyle = (isActive: boolean) => ({
+    background: isActive 
+      ? isDark ? 'var(--card)' : 'var(--card)'
+      : isDark ? 'var(--muted)' : 'var(--muted)',
+    color: isActive
+      ? isDark ? 'var(--card-foreground)' : 'var(--card-foreground)'
+      : isDark ? 'var(--muted-foreground)' : 'var(--muted-foreground)',
+  });
+  
+  // URL bar colors
+  const urlBarStyle = {
+    background: isDark ? 'var(--input)' : 'var(--input)',
+    color: isDark ? 'var(--foreground)' : 'var(--foreground)',
+  };
+
   return (
-    <div className="h-full flex flex-col bg-[#f1f3f4] overflow-hidden">
-      {/* Chrome toolbar */}
-      <div className="bg-[#f1f3f4] p-1 flex flex-col select-none">
-        {/* Tab bar */}
-        <div className="flex items-center mb-1">
-          <div className="flex-1 flex items-center space-x-1 overflow-x-auto hide-scrollbar">
-            {tabs.map((tab, index) => (
-              <motion.div 
-                key={tab.id}
-                className={`flex items-center min-w-[180px] max-w-[240px] h-9 rounded-t-lg text-xs cursor-pointer relative
-                  ${tab.active 
-                    ? 'bg-white text-gray-800 z-10' 
-                    : 'bg-[#dee1e6] text-gray-600 hover:bg-[#e9ecf0]'
-                  }
-                  ${index === 0 ? '' : '-ml-2'}
-                `}
-                onClick={() => switchTab(tab.id)}
-                layoutId={`tab-${tab.id}`}
-                transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-              >
-                <div className={`absolute left-0 top-0 bottom-0 w-3 rounded-tl-lg
-                  ${tab.active 
-                    ? 'bg-white' 
-                    : index === 0 
-                      ? 'bg-[#dee1e6]' 
-                      : 'bg-transparent'
-                  }`}
-                />
-                
-                <div className="flex items-center px-3 pl-5 w-full h-full">
-                  <span className="mr-2">{tab.favicon}</span>
-                  <span className="truncate">{tab.title}</span>
-                  
-                  <button 
-                    className="ml-auto p-1 rounded-full hover:bg-gray-200"
-                    onClick={(e) => closeTab(tab.id, e)}
-                  >
-                    <X className="w-3.5 h-3.5" />
-                  </button>
-                </div>
-                
-                <div className={`absolute right-0 top-0 bottom-0 w-3 rounded-tr-lg
-                  ${tab.active 
-                    ? 'bg-white' 
-                    : 'bg-[#dee1e6]'
-                  }`}
-                />
-              </motion.div>
-            ))}
-          </div>
-          
+    <div className="flex flex-col w-full h-full overflow-hidden rounded-lg" style={chromeWindowStyle}>
+      {/* Chrome window header with tabs */}
+      <div className="bg-gray-100 dark:bg-gray-800 flex items-center p-1 pl-2">
+        {/* Navigation buttons */}
+        <div className="flex space-x-1 mr-2">
           <button 
-            className="p-1.5 rounded-full hover:bg-gray-200 transition-colors ml-1 mr-2"
-            onClick={addTab}
-            aria-label="Add new tab"
+            onClick={navigateBack}
+            disabled={historyIndex <= 0}
+            className={`p-1 rounded-full ${historyIndex <= 0 ? 'text-gray-400' : 'hover:bg-gray-200 dark:hover:bg-gray-700'}`}
           >
-            <Plus className="w-4 h-4" />
+            <ChevronLeft size={16} />
+          </button>
+          <button 
+            onClick={navigateForward}
+            disabled={historyIndex >= browserHistory.length - 1}
+            className={`p-1 rounded-full ${historyIndex >= browserHistory.length - 1 ? 'text-gray-400' : 'hover:bg-gray-200 dark:hover:bg-gray-700'}`}
+          >
+            <ChevronRight size={16} />
+          </button>
+          <button 
+            onClick={reload}
+            className="p-1 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700"
+          >
+            <RotateCcw size={16} className={isLoading ? 'animate-spin' : ''} />
           </button>
         </div>
         
-        {/* Navigation controls and URL bar */}
-        <div className="flex items-center bg-white h-10 px-2 rounded-t-lg shadow-sm">
-          <div className="flex space-x-1 mr-2">
-            <button 
-              className={`p-1.5 rounded-full transition-colors ${historyIndex > 0 ? 'hover:bg-gray-200 text-gray-600' : 'text-gray-300 cursor-not-allowed'}`}
-              onClick={navigateBack}
-              disabled={historyIndex <= 0}
-              aria-label="Go back"
+        {/* Tabs */}
+        <div className="flex-1 flex items-center min-w-0 h-8">
+          {tabs.map(tab => (
+            <div 
+              key={tab.id}
+              onClick={() => switchTab(tab.id)}
+              style={tabStyle(tab.active)}
+              className={`
+                flex items-center px-3 py-1 rounded-t-lg mr-1 cursor-pointer relative min-w-0 max-w-[180px]
+                ${tab.active ? 'bg-white dark:bg-gray-900' : 'bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600'}
+              `}
             >
-              <ChevronLeft className="w-4 h-4" />
-            </button>
-            <button 
-              className={`p-1.5 rounded-full transition-colors ${historyIndex < browserHistory.length - 1 ? 'hover:bg-gray-200 text-gray-600' : 'text-gray-300 cursor-not-allowed'}`}
-              onClick={navigateForward}
-              disabled={historyIndex >= browserHistory.length - 1}
-              aria-label="Go forward"
-            >
-              <ChevronRight className="w-4 h-4" />
-            </button>
-            <button 
-              className="p-1.5 rounded-full hover:bg-gray-200 transition-colors text-gray-600"
-              onClick={reload}
-              aria-label="Reload page"
-            >
-              <RotateCcw className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} />
-            </button>
-          </div>
-          
-          {/* URL bar (Omnibox) */}
-          <div className="flex-1 relative">
-            <form 
-              ref={urlBarRef}
-              className="flex items-center h-8 bg-[#f1f3f4] hover:bg-[#f8f9fa] focus-within:bg-white rounded-full px-3 border border-transparent focus-within:border-[#dfe1e5] focus-within:shadow-sm"
-              onSubmit={handleUrlSubmit}
-            >
-              <div className="flex items-center text-gray-500 mr-2">
-                <Lock className="w-3.5 h-3.5" />
-              </div>
-              
-              <input 
-                ref={urlInputRef}
-                type="text"
-                value={url}
-                onChange={handleUrlChange}
-                className="flex-1 bg-transparent text-sm text-gray-800 outline-none"
-                placeholder="Search Google or type a URL"
-              />
-              
-              <button type="button" className="ml-2 text-gray-500 hover:text-gray-700">
-                <Star className="w-4 h-4" />
-              </button>
-            </form>
-          </div>
-          
-          {/* Browser controls */}
-          <div className="flex items-center ml-2 space-x-1">
-            <button 
-              className={`p-2 rounded-full hover:bg-gray-200 transition-colors text-gray-600 ${showBookmarks ? 'bg-gray-200' : ''}`}
-              onClick={() => togglePanel('bookmarks')}
-              aria-label="Toggle bookmarks"
-            >
-              <BookmarkIcon className="w-4 h-4" />
-            </button>
-            
-            <button 
-              className={`p-2 rounded-full hover:bg-gray-200 transition-colors text-gray-600 ${showHistory ? 'bg-gray-200' : ''}`}
-              onClick={() => togglePanel('history')}
-              aria-label="History"
-            >
-              <History className="w-4 h-4" />
-            </button>
-            
-            <button 
-              className={`p-2 rounded-full hover:bg-gray-200 transition-colors text-gray-600 ${showDownloads ? 'bg-gray-200' : ''}`}
-              onClick={() => togglePanel('downloads')}
-              aria-label="Downloads"
-            >
-              <Download className="w-4 h-4" />
-            </button>
-            
-            <div className="relative">
+              <span className="mr-2 text-sm">{tab.favicon}</span>
+              <span className="truncate text-sm">{tab.title}</span>
               <button 
-                className={`p-2 rounded-full hover:bg-gray-200 transition-colors text-gray-600 ${showMenu ? 'bg-gray-200' : ''}`}
-                onClick={() => togglePanel('menu')}
-                aria-label="Menu"
+                onClick={(e) => closeTab(tab.id, e)}
+                className="ml-2 p-0.5 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700"
               >
-                <MoreVertical className="w-4 h-4" />
+                <X size={14} />
               </button>
               
-              {/* Menu dropdown */}
-              {showMenu && (
-                <div className="absolute right-0 top-full mt-1 w-64 bg-white rounded-lg shadow-lg z-50 py-2">
-                  <div className="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center">
-                    <User className="w-4 h-4 mr-3 text-gray-500" />
-                    <span className="text-sm">Profile</span>
-                  </div>
-                  <div className="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center">
-                    <BookmarkIcon className="w-4 h-4 mr-3 text-gray-500" />
-                    <span className="text-sm">Bookmarks</span>
-                  </div>
-                  <div className="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center">
-                    <History className="w-4 h-4 mr-3 text-gray-500" />
-                    <span className="text-sm">History</span>
-                  </div>
-                  <div className="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center">
-                    <Download className="w-4 h-4 mr-3 text-gray-500" />
-                    <span className="text-sm">Downloads</span>
-                  </div>
-                  <div className="border-t my-1"></div>
-                  <div className="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center">
-                    <Settings className="w-4 h-4 mr-3 text-gray-500" />
-                    <span className="text-sm">Settings</span>
-                  </div>
-                  <div className="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center">
-                    <Info className="w-4 h-4 mr-3 text-gray-500" />
-                    <span className="text-sm">About Chrome</span>
-                  </div>
-                </div>
+              {tab.active && (
+                <motion.div 
+                  layoutId="activeTab"
+                  className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-500 dark:bg-blue-400"
+                />
               )}
             </div>
-            
-            {/* User profile icon */}
-            <button className="w-8 h-8 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center">
-              <span className="text-sm font-medium">E</span>
-            </button>
-          </div>
+          ))}
+          
+          {/* New Tab button */}
+          <button 
+            onClick={addTab}
+            className="p-1 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 flex-shrink-0"
+          >
+            <Plus size={16} />
+          </button>
         </div>
       </div>
       
-      {/* Bookmarks bar */}
-      <AnimatePresence>
-        {showBookmarks && (
-          <motion.div 
-            className="border-b bg-white py-1 px-2 flex items-center overflow-x-auto hide-scrollbar"
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: 'auto', opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.2 }}
-          >
-            {bookmarks.map(bookmark => (
-              <motion.div 
-                key={bookmark.id}
-                className="flex items-center px-3 py-1 rounded text-xs cursor-pointer hover:bg-gray-100 whitespace-nowrap mr-1 transition-colors"
-                initial={{ scale: 0.9, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                transition={{ type: 'spring', stiffness: 500, damping: 30 }}
-                onClick={() => navigateToUrl(bookmark.url, bookmark.title, bookmark.favicon)}
-              >
-                <span className="mr-1.5">{bookmark.favicon}</span>
-                <span className="text-gray-700">{bookmark.title}</span>
-              </motion.div>
-            ))}
-          </motion.div>
-        )}
-      </AnimatePresence>
-      
-      {/* Browser content area */}
-      <div className="flex-1 bg-white relative overflow-hidden">
-        {isLoading ? (
-          <div className="flex flex-col items-center justify-center h-full">
-            <div className="w-8 h-8 mb-3">
-              <ChromeIcon />
-              <div className="w-full h-0.5 bg-gray-200 mt-4 rounded-full overflow-hidden">
-                <div className="h-full w-1/2 bg-blue-500 rounded-full animate-bounce-x"></div>
-              </div>
-            </div>
-          </div>
-        ) : (
-          <div className="h-full flex flex-col items-center">
-            {/* If this is a "new tab" */}
-            {activeTab.url === 'about:blank' ? (
-              <div className="w-full h-full flex flex-col items-center justify-center">
-                <div className="max-w-lg w-full px-4">
-                  <div className="w-28 h-28 mx-auto mb-8">
-                    <ChromeIcon />
-                  </div>
-                  
-                  <div className="relative mb-8">
-                    <input
-                      type="text"
-                      className="w-full py-3 px-5 pr-12 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 shadow-sm text-gray-800"
-                      placeholder="Search Google or type a URL"
-                      value={searchQuery}
-                      onChange={e => setSearchQuery(e.target.value)}
-                    />
-                    <button
-                      type="submit"
-                      className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400"
-                    >
-                      <Search className="w-5 h-5" />
-                    </button>
-                  </div>
-                  
-                  {/* Shortcuts */}
-                  <div className="grid grid-cols-4 gap-4">
-                    {quickAccessSites.map(site => (
-                      <motion.div
-                        key={site.id}
-                        className="flex flex-col items-center cursor-pointer group"
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.98 }}
-                        onClick={() => navigateToUrl(site.url, site.title, site.icon)}
-                      >
-                        <div className={`w-12 h-12 rounded-full ${site.color} flex items-center justify-center mb-2 group-hover:shadow-md transition-all`}>
-                          <span className="text-xl text-white">{site.icon}</span>
-                        </div>
-                        <p className="text-center text-xs text-gray-600">{site.title}</p>
-                      </motion.div>
-                    ))}
-                  </div>
-                </div>
-              </div>
+      {/* URL bar and tools */}
+      <div className="bg-gray-200 dark:bg-gray-700 px-2 py-1.5 flex items-center space-x-2">
+        <form ref={urlBarRef} className="flex-1 relative" onSubmit={handleUrlSubmit}>
+          <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 dark:text-gray-400">
+            {isLoading ? (
+              <div className="w-4 h-4 border-2 border-gray-500 dark:border-gray-400 border-t-transparent rounded-full animate-spin" />
             ) : (
-              <div className="text-center max-w-2xl mx-auto p-8 pt-12">
-                <div className="w-24 h-24 mx-auto mb-8">
-                  <ChromeIcon />
-                </div>
-                <motion.h1 
-                  className="text-2xl font-semibold mb-4 text-gray-800"
-                  initial={{ y: 20, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  transition={{ delay: 0.1 }}
-                >
-                  Welcome to Chrome
-                </motion.h1>
-                <motion.p 
-                  className="text-gray-600 mb-8"
-                  initial={{ y: 20, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  transition={{ delay: 0.2 }}
-                >
-                  This is a simulated browser experience within this portfolio website. 
-                  You can interact with the browser controls just like in Google Chrome.
-                </motion.p>
-                <motion.div 
-                  className="grid grid-cols-2 gap-5 max-w-md mx-auto"
-                  initial={{ y: 20, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  transition={{ delay: 0.3 }}
-                >
-                  <button className="p-4 bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors">
-                    <Globe className="w-8 h-8 mb-2 mx-auto text-blue-500" />
-                    <h3 className="font-medium text-gray-700">New Tab</h3>
-                  </button>
-                  <button 
-                    className="p-4 bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors"
-                    onClick={() => togglePanel('bookmarks')}
-                  >
-                    <BookmarkIcon className="w-8 h-8 mb-2 mx-auto text-blue-500" />
-                    <h3 className="font-medium text-gray-700">Bookmarks</h3>
-                  </button>
-                </motion.div>
-              </div>
+              url.startsWith('https') ? <Lock size={14} /> : <Globe size={14} />
             )}
           </div>
-        )}
+          
+          <input
+            ref={urlInputRef}
+            type="text"
+            value={url}
+            onChange={handleUrlChange}
+            style={urlBarStyle}
+            className="w-full rounded-full py-1.5 pl-9 pr-3 text-sm bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            onFocus={(e) => e.target.select()}
+          />
+        </form>
+        
+        {/* Bookmark button */}
+        <button 
+          onClick={() => togglePanel('bookmarks')}
+          className={`p-1.5 rounded-full ${showBookmarks ? 'bg-gray-300 dark:bg-gray-600' : 'hover:bg-gray-300 dark:hover:bg-gray-600'}`}
+        >
+          <BookmarkIcon size={16} className="text-gray-700 dark:text-gray-300" />
+        </button>
+        
+        {/* Menu button */}
+        <button 
+          onClick={() => togglePanel('menu')}
+          className={`p-1.5 rounded-full ${showMenu ? 'bg-gray-300 dark:bg-gray-600' : 'hover:bg-gray-300 dark:hover:bg-gray-600'}`}
+        >
+          <MoreVertical size={16} className="text-gray-700 dark:text-gray-300" />
+        </button>
       </div>
       
-      {/* History panel */}
+      {/* Bookmarks bar */}
+      <div className="bg-gray-100 dark:bg-gray-800 px-2 py-1 flex items-center text-xs border-b border-gray-200 dark:border-gray-700">
+        {bookmarks.filter(b => !b.folder).slice(0, 8).map((bookmark) => (
+          <div 
+            key={bookmark.id}
+            onClick={() => navigateToUrl(bookmark.url, bookmark.title, bookmark.favicon)}
+            className="flex items-center px-2 py-1 rounded hover:bg-gray-200 dark:hover:bg-gray-700 cursor-pointer mr-1"
+          >
+            <span className="mr-1.5">{bookmark.favicon}</span>
+            <span className="truncate max-w-[80px]">{bookmark.title}</span>
+          </div>
+        ))}
+      </div>
+      
+      {/* Content area */}
+      <div className="flex-1 bg-white dark:bg-gray-900 overflow-hidden relative">
+        {/* Loading bar animation */}
+        {isLoading && (
+          <div className="absolute top-0 left-0 right-0 h-1 bg-gray-200 dark:bg-gray-700 overflow-hidden">
+            <motion.div 
+              className="h-full bg-blue-500"
+              initial={{ width: "0%" }}
+              animate={{ width: "100%" }}
+              transition={{ duration: 0.8, ease: "easeInOut" }}
+            />
+          </div>
+        )}
+        
+        {/* Page content - simplified for demo */}
+        <div className="w-full h-full flex items-center justify-center text-center p-6">
+          {/* This would be the actual web page - simplified for the demo */}
+          {url === 'about:blank' ? (
+            <div className="w-full max-w-2xl mx-auto">
+              <div className="mb-8">
+                <div className="w-28 h-28 mx-auto">
+                  <ChromeIcon />
+                </div>
+              </div>
+              
+              <div className="relative mb-6">
+                <input
+                  type="text"
+                  placeholder="Search Google or type a URL"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full py-3 px-4 pr-10 rounded-full border border-gray-300 dark:border-gray-600 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+                />
+                <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
+                  <Search className="text-gray-500 dark:text-gray-400" size={20} />
+                </div>
+              </div>
+              
+              <div className="grid grid-cols-4 gap-4 md:grid-cols-4">
+                {quickAccessSites.map((site) => (
+                  <div 
+                    key={site.id}
+                    onClick={() => navigateToUrl(site.url, site.title, site.icon)}
+                    className="flex flex-col items-center p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer transition duration-100"
+                  >
+                    <div className={`w-12 h-12 rounded-full ${site.color} flex items-center justify-center text-white text-xl mb-2`}>
+                      {site.icon}
+                    </div>
+                    <div className="text-sm text-gray-800 dark:text-gray-200">{site.title}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ) : (
+            <div className="w-full h-full flex items-center justify-center text-gray-500 dark:text-gray-400">
+              <p className="text-center max-w-md">
+                {!isLoading && (
+                  <>
+                    <span className="block text-lg font-medium mb-2">Content for: {url}</span>
+                    <span className="block text-sm">This is a simplified browser simulation. Real page content would appear here.</span>
+                  </>
+                )}
+              </p>
+            </div>
+          )}
+        </div>
+      </div>
+      
+      {/* Dropdowns and menus */}
       <AnimatePresence>
+        {/* Bookmarks panel */}
+        {showBookmarks && (
+          <motion.div 
+            initial={{ opacity: 0, y: -20 }} 
+            animate={{ opacity: 1, y: 0 }} 
+            exit={{ opacity: 0, y: -20 }}
+            className="absolute top-[122px] right-12 w-64 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 z-50"
+          >
+            <div className="p-3 border-b border-gray-200 dark:border-gray-700">
+              <h3 className="font-medium">Bookmarks</h3>
+            </div>
+            
+            <div className="max-h-80 overflow-y-auto">
+              {/* Group bookmarks by folder */}
+              {Array.from(new Set(bookmarks.map(b => b.folder || 'Other'))).map(folder => (
+                <div key={folder} className="border-b border-gray-200 dark:border-gray-700 last:border-b-0">
+                  <div className="px-3 py-2 text-xs text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-gray-850">
+                    {folder}
+                  </div>
+                  {bookmarks.filter(b => (b.folder || 'Other') === folder).map(bookmark => (
+                    <div 
+                      key={bookmark.id}
+                      onClick={() => {
+                        navigateToUrl(bookmark.url, bookmark.title, bookmark.favicon);
+                        setShowBookmarks(false);
+                      }}
+                      className="px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center cursor-pointer"
+                    >
+                      <span className="mr-2">{bookmark.favicon}</span>
+                      <span className="text-sm truncate">{bookmark.title}</span>
+                    </div>
+                  ))}
+                </div>
+              ))}
+            </div>
+          </motion.div>
+        )}
+        
+        {/* Menu panel */}
+        {showMenu && (
+          <motion.div 
+            initial={{ opacity: 0, y: -20 }} 
+            animate={{ opacity: 1, y: 0 }} 
+            exit={{ opacity: 0, y: -20 }}
+            className="absolute top-[122px] right-2 w-64 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 z-50"
+          >
+            <div className="py-1">
+              <div 
+                onClick={() => togglePanel('history')}
+                className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center cursor-pointer"
+              >
+                <History size={16} className="mr-3 text-gray-500 dark:text-gray-400" />
+                <span>History</span>
+              </div>
+              
+              <div 
+                onClick={() => togglePanel('downloads')}
+                className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center cursor-pointer"
+              >
+                <Download size={16} className="mr-3 text-gray-500 dark:text-gray-400" />
+                <span>Downloads</span>
+              </div>
+              
+              <div className="border-t border-gray-200 dark:border-gray-700 my-1"></div>
+              
+              <div className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center cursor-pointer">
+                <Settings size={16} className="mr-3 text-gray-500 dark:text-gray-400" />
+                <span>Settings</span>
+              </div>
+            </div>
+          </motion.div>
+        )}
+        
+        {/* History panel */}
         {showHistory && (
           <motion.div 
-            className="absolute top-[88px] right-0 w-96 bg-white border-l shadow-lg h-[calc(100%-88px)] z-40"
-            initial={{ x: '100%' }}
-            animate={{ x: 0 }}
-            exit={{ x: '100%' }}
-            transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+            initial={{ opacity: 0, y: -20 }} 
+            animate={{ opacity: 1, y: 0 }} 
+            exit={{ opacity: 0, y: -20 }}
+            className="absolute top-[122px] right-2 w-72 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 z-50"
           >
-            <div className="p-4 border-b">
-              <h3 className="font-medium text-gray-800">History</h3>
+            <div className="p-3 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
+              <h3 className="font-medium">History</h3>
+              <button 
+                onClick={() => setShowHistory(false)}
+                className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+              >
+                <X size={16} />
+              </button>
             </div>
-            <div className="overflow-y-auto h-[calc(100%-57px)]">
+            
+            <div className="max-h-96 overflow-y-auto">
               {browserHistoryItems.map((item, index) => (
-                <div
+                <div 
                   key={index}
-                  className="flex items-center p-3 hover:bg-gray-100 cursor-pointer"
-                  onClick={() => navigateToUrl(item.url, item.title, item.favicon)}
+                  onClick={() => {
+                    navigateToUrl(item.url, item.title, item.favicon);
+                    setShowHistory(false);
+                  }}
+                  className="px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center cursor-pointer"
                 >
-                  <span className="mr-3 text-lg">{item.favicon}</span>
+                  <span className="mr-2">{item.favicon}</span>
                   <div className="flex-1 min-w-0">
-                    <div className="text-sm text-gray-800 truncate">{item.title}</div>
-                    <div className="text-xs text-gray-500 truncate">{item.url}</div>
+                    <div className="text-sm font-medium truncate">{item.title}</div>
+                    <div className="text-xs text-gray-500 dark:text-gray-400 truncate">{item.url}</div>
                   </div>
-                  <div className="text-xs text-gray-500 ml-2">
+                  <div className="text-xs text-gray-400 dark:text-gray-500 ml-2">
                     {formatTimeAgo(item.timestamp)}
                   </div>
                 </div>
@@ -659,51 +639,32 @@ export default function ChromeApp() {
             </div>
           </motion.div>
         )}
-      </AnimatePresence>
-      
-      {/* Downloads panel */}
-      <AnimatePresence>
+        
+        {/* Downloads panel */}
         {showDownloads && (
           <motion.div 
-            className="absolute bottom-0 w-full h-64 bg-white border-t shadow-lg z-40"
-            initial={{ y: '100%' }}
-            animate={{ y: 0 }}
-            exit={{ y: '100%' }}
-            transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+            initial={{ opacity: 0, y: -20 }} 
+            animate={{ opacity: 1, y: 0 }} 
+            exit={{ opacity: 0, y: -20 }}
+            className="absolute top-[122px] right-2 w-72 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 z-50"
           >
-            <div className="flex justify-between items-center p-3 border-b">
-              <h3 className="font-medium text-gray-800">Downloads</h3>
-              <button
-                className="p-1 rounded-full hover:bg-gray-200"
+            <div className="p-3 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
+              <h3 className="font-medium">Downloads</h3>
+              <button 
                 onClick={() => setShowDownloads(false)}
+                className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
               >
-                <X className="w-4 h-4" />
+                <X size={16} />
               </button>
             </div>
-            <div className="p-6 text-center text-gray-500">
+            
+            <div className="p-4 text-center text-gray-500 dark:text-gray-400">
+              <Download size={24} className="mx-auto mb-2 opacity-50" />
               <p>No recent downloads</p>
             </div>
           </motion.div>
         )}
       </AnimatePresence>
-      
-      {/* Add Chrome's bounce animation */}
-      <style jsx global>{`
-        @keyframes bounce-x {
-          0%, 100% { transform: translateX(-100%); }
-          50% { transform: translateX(400%); }
-        }
-        .animate-bounce-x {
-          animation: bounce-x 1.5s infinite;
-        }
-        .hide-scrollbar::-webkit-scrollbar {
-          display: none;
-        }
-        .hide-scrollbar {
-          -ms-overflow-style: none;
-          scrollbar-width: none;
-        }
-      `}</style>
     </div>
   );
 } 

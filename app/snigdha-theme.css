@@ -1,32 +1,32 @@
-/* Snigdha SnigdhaOS theme - using authentic SnigdhaOS pink accent colors */
+/* Snigdha SnigdhaOS theme using Catppuccin colors */
 .snigdha-theme {
-  /* Using authentic SnigdhaOS pink accent colors */
-  --background: 0 0% 100%;            /* Pure white #FFFFFF */
-  --foreground: 0 0% 0%;              /* Pure black #000000 */
-  --card: 0 0% 100%;                  /* Pure white #FFFFFF */
-  --card-foreground: 0 0% 0%;         /* Pure black #000000 */
-  --popover: 0 0% 100%;               /* Pure white #FFFFFF */
-  --popover-foreground: 0 0% 0%;      /* Pure black #000000 */
-  --primary: 329 100% 56%;            /* Apple pink #FF2D55 */
-  --primary-foreground: 0 0% 100%;    /* Pure white #FFFFFF */
-  --secondary: 240 5% 96%;            /* Light gray #F2F2F7 */
-  --secondary-foreground: 240 3% 12%; /* Dark gray #1F1F20 */
-  --muted: 240 4% 90%;                /* Muted gray #E5E5EA */
-  --muted-foreground: 240 3% 46%;     /* Medium gray #8E8E93 */
-  --accent: 329 100% 56%;             /* Apple pink #FF2D55 */
-  --accent-foreground: 0 0% 100%;     /* Pure white #FFFFFF */
-  --destructive: 0 78% 63%;           /* Red #FF3B30 */
-  --destructive-foreground: 0 0% 100%; /* Pure white #FFFFFF */
-  --border: 240 6% 90%;               /* Border gray #E5E5EA */
-  --input: 240 6% 90%;                /* Input gray #E5E5EA */
-  --ring: 329 100% 56%;               /* Apple pink #FF2D55 */
+  /* Catppuccin Frappe color palette */
+  --background: 229 23% 88%;          /* Base #EFF1F5 */
+  --foreground: 240 10% 16%;          /* Text #4C4F69 */
+  --card: 231 18% 91%;                /* Surface0 #CCD0DA */
+  --card-foreground: 240 10% 16%;     /* Text #4C4F69 */
+  --popover: 231 18% 91%;             /* Surface0 #CCD0DA */
+  --popover-foreground: 240 10% 16%;  /* Text #4C4F69 */
+  --primary: 320 70% 75%;             /* Mauve #8839EF */
+  --primary-foreground: 229 23% 88%;  /* Base #EFF1F5 */
+  --secondary: 227 35% 80%;           /* Surface1 #BCC0CC */
+  --secondary-foreground: 240 10% 16%; /* Text #4C4F69 */
+  --muted: 227 35% 80%;               /* Surface1 #BCC0CC */
+  --muted-foreground: 249 12% 47%;    /* Subtext0 #6C6F85 */
+  --accent: 340 82% 85%;              /* Pink #F4B8E4 */
+  --accent-foreground: 240 10% 16%;   /* Text #4C4F69 */
+  --destructive: 0 78% 63%;           /* Red #D20F39 */
+  --destructive-foreground: 229 23% 88%; /* Base #EFF1F5 */
+  --border: 233 25% 65%;              /* Surface2 #ACB0BE */
+  --input: 233 25% 65%;               /* Surface2 #ACB0BE */
+  --ring: 320 70% 75%;                /* Mauve #8839EF */
   
-  /* Authentic macOS chart colors - pink accent */
-  --chart-1: 329 100% 56%;            /* Pink #FF2D55 */
-  --chart-2: 262 83% 58%;             /* Purple #5856D6 */
-  --chart-3: 211 100% 50%;            /* Blue #0066FF */
-  --chart-4: 176 100% 40%;            /* Teal #5AC8FA */
-  --chart-5: 35 91% 55%;              /* Orange #FF9500 */
+  /* Catppuccin Frappe chart colors */
+  --chart-1: 320 70% 75%;             /* Mauve #8839EF */
+  --chart-2: 182 43% 76%;             /* Teal #81C8BE */
+  --chart-3: 209 66% 74%;             /* Blue #8CAAEE */
+  --chart-4: 268 56% 70%;             /* Lavender #BABBF1 */
+  --chart-5: 30 100% 65%;             /* Peach #EF9F76 */
   
   /* Adding font family settings */
   --font-family: 'Dosis', sans-serif;
@@ -34,89 +34,90 @@
 }
 
 .snigdha-theme.dark {
-  --background: 0 0% 11%;             /* Dark gray #1C1C1E */
-  --foreground: 0 0% 100%;            /* Pure white #FFFFFF */
-  --card: 240 3% 15%;                 /* Card gray #28282A */
-  --card-foreground: 0 0% 100%;       /* Pure white #FFFFFF */
-  --popover: 240 3% 15%;              /* Popover gray #28282A */
-  --popover-foreground: 0 0% 100%;    /* Pure white #FFFFFF */
-  --primary: 329 100% 65%;            /* Apple pink #FF375F */
-  --primary-foreground: 0 0% 100%;    /* Pure white #FFFFFF */
-  --secondary: 240 3% 22%;            /* Secondary gray #38383A */
-  --secondary-foreground: 0 0% 100%;  /* Pure white #FFFFFF */
-  --muted: 240 3% 22%;                /* Muted gray #38383A */
-  --muted-foreground: 240 5% 65%;     /* Medium gray #AEAEB2 */
-  --accent: 329 100% 65%;             /* Apple pink #FF375F */
-  --accent-foreground: 0 0% 100%;     /* Pure white #FFFFFF */
-  --destructive: 0 73% 58%;           /* Red #FF453A */
-  --destructive-foreground: 0 0% 100%; /* Pure white #FFFFFF */
-  --border: 240 3% 22%;               /* Border gray #38383A */
-  --input: 240 3% 22%;                /* Input gray #38383A */
-  --ring: 329 100% 65%;               /* Apple pink #FF375F */
+  /* Catppuccin Mocha color palette */
+  --background: 240 21% 15%;          /* Base #1E1E2E */
+  --foreground: 226 64% 88%;          /* Text #CDD6F4 */
+  --card: 240 23% 9%;                 /* Surface0 #313244 */
+  --card-foreground: 226 64% 88%;     /* Text #CDD6F4 */
+  --popover: 240 23% 9%;              /* Surface0 #313244 */
+  --popover-foreground: 226 64% 88%;  /* Text #CDD6F4 */
+  --primary: 267 84% 81%;             /* Mauve #CBA6F7 */
+  --primary-foreground: 240 21% 15%;  /* Base #1E1E2E */
+  --secondary: 240 24% 30%;           /* Surface1 #45475A */
+  --secondary-foreground: 226 64% 88%; /* Text #CDD6F4 */
+  --muted: 240 24% 30%;               /* Surface1 #45475A */
+  --muted-foreground: 228 39% 75%;    /* Subtext0 #A6ADC8 */
+  --accent: 316 72% 86%;              /* Pink #F5C2E7 */
+  --accent-foreground: 240 21% 15%;   /* Base #1E1E2E */
+  --destructive: 347 87% 69%;         /* Red #F38BA8 */
+  --destructive-foreground: 240 21% 15%; /* Base #1E1E2E */
+  --border: 240 21% 38%;              /* Surface2 #585B70 */
+  --input: 240 21% 38%;               /* Surface2 #585B70 */
+  --ring: 267 84% 81%;                /* Mauve #CBA6F7 */
   
-  /* Authentic macOS chart colors - dark mode pink accent */
-  --chart-1: 329 100% 65%;            /* Pink #FF375F */
-  --chart-2: 262 83% 65%;             /* Purple #5E5CE6 */
-  --chart-3: 211 100% 60%;            /* Blue #0A84FF */
-  --chart-4: 176 100% 50%;            /* Teal #64D2FF */
-  --chart-5: 35 91% 60%;              /* Orange #FF9F0A */
+  /* Catppuccin Mocha chart colors */
+  --chart-1: 267 84% 81%;             /* Mauve #CBA6F7 */
+  --chart-2: 180 55% 76%;             /* Teal #94E2D5 */
+  --chart-3: 203 92% 75%;             /* Blue #89B4FA */
+  --chart-4: 233 75% 85%;             /* Lavender #B4BEFE */
+  --chart-5: 16 93% 79%;              /* Peach #FAB387 */
 }
 
-/* macOS-style scrollbar with pink accent */
+/* Catppuccin scrollbar styles */
 .snigdha-theme::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 
 .snigdha-theme::-webkit-scrollbar-track {
-  background: hsl(0 0% 95%);
+  background: hsl(231 18% 91%);       /* Surface0 #CCD0DA */
   border-radius: 8px;
 }
 
 .snigdha-theme::-webkit-scrollbar-thumb {
-  background: hsl(329 100% 56% / 0.6); /* #FF2D55 */
+  background: hsl(320 70% 75% / 0.6);  /* Mauve #8839EF */
   border-radius: 8px;
 }
 
 .snigdha-theme::-webkit-scrollbar-thumb:hover {
-  background: hsl(329 100% 56% / 0.8); /* #FF2D55 */
+  background: hsl(320 70% 75% / 0.8);  /* Mauve #8839EF */
 }
 
 .snigdha-theme.dark::-webkit-scrollbar-track {
-  background: hsl(0 0% 15% / 0.6);
+  background: hsl(240 23% 9% / 0.6);    /* Surface0 #313244 */
 }
 
 .snigdha-theme.dark::-webkit-scrollbar-thumb {
-  background: hsl(329 100% 65% / 0.6); /* #FF375F */
+  background: hsl(267 84% 81% / 0.6);   /* Mauve #CBA6F7 */
 }
 
 .snigdha-theme.dark::-webkit-scrollbar-thumb:hover {
-  background: hsl(329 100% 65% / 0.8); /* #FF375F */
+  background: hsl(267 84% 81% / 0.8);   /* Mauve #CBA6F7 */
 }
 
-/* macOS Glass effects with pink accents */
+/* Glass effects with Catppuccin accent colors */
 .snigdha-theme .glass-effect {
   backdrop-filter: blur(16px) saturate(180%);
-  background: rgba(255, 255, 255, 0.7);
-  border: 1px solid rgba(0, 0, 0, 0.1);
+  background: rgba(239, 241, 245, 0.7);  /* Base #EFF1F5 */
+  border: 1px solid rgba(76, 79, 105, 0.1);  /* Text #4C4F69 */
   box-shadow: 
-    0 4px 15px rgba(0, 0, 0, 0.1), 
+    0 4px 15px rgba(76, 79, 105, 0.1), 
     0 0 0 1px rgba(255, 255, 255, 0.1) inset;
 }
 
 .snigdha-theme.dark .glass-effect {
-  background: rgba(28, 28, 30, 0.7);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(30, 30, 46, 0.7);  /* Base #1E1E2E */
+  border: 1px solid rgba(205, 214, 244, 0.08);  /* Text #CDD6F4 */
   box-shadow: 
     0 4px 15px rgba(0, 0, 0, 0.3), 
     0 0 0 1px rgba(255, 255, 255, 0.05) inset;
 }
 
-/* macOS Dock styling with pink accent */
+/* Dock styling with Catppuccin accent colors */
 .snigdha-theme .dock-icon {
   background: linear-gradient(to bottom, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1));
   box-shadow: 
-    0 3px 10px rgba(0, 0, 0, 0.1), 
+    0 3px 10px rgba(76, 79, 105, 0.1), 
     0 0 0 1px rgba(255, 255, 255, 0.1) inset;
   transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
 }
@@ -131,13 +132,13 @@
 .snigdha-theme .dock-icon:hover {
   transform: translateY(-10px) scale(1.1);
   box-shadow: 
-    0 8px 20px rgba(255, 45, 85, 0.2), /* #FF2D55 */
+    0 8px 20px hsla(320, 70%, 75%, 0.2), /* Mauve #8839EF */
     0 0 0 1px rgba(255, 255, 255, 0.15) inset;
 }
 
 .snigdha-theme.dark .dock-icon:hover {
   box-shadow: 
-    0 8px 20px rgba(255, 55, 95, 0.3), /* #FF375F */
+    0 8px 20px hsla(267, 84%, 81%, 0.3), /* Mauve #CBA6F7 */
     0 0 0 1px rgba(255, 255, 255, 0.1) inset;
 }
 
@@ -146,125 +147,125 @@
 }
 
 .snigdha-theme .dock-icon-reflection {
-  background: linear-gradient(to bottom, rgba(255, 45, 85, 0.3), transparent); /* #FF2D55 */
+  background: linear-gradient(to bottom, hsla(320, 70%, 75%, 0.3), transparent); /* Mauve #8839EF */
   filter: blur(3px);
 }
 
 .snigdha-theme.dark .dock-icon-reflection {
-  background: linear-gradient(to bottom, rgba(255, 55, 95, 0.3), transparent); /* #FF375F */
+  background: linear-gradient(to bottom, hsla(267, 84%, 81%, 0.3), transparent); /* Mauve #CBA6F7 */
 }
 
-/* macOS Pink shadow glow */
+/* Shadow glow with Catppuccin accent colors */
 .snigdha-theme .shadow-glow {
   box-shadow: 
-    0 0 15px 3px hsl(329 100% 56% / 0.3), /* #FF2D55 */
-    0 0 5px 1px hsl(329 100% 56% / 0.2); /* #FF2D55 */
+    0 0 15px 3px hsla(320, 70%, 75%, 0.3), /* Mauve #8839EF */
+    0 0 5px 1px hsla(320, 70%, 75%, 0.2); /* Mauve #8839EF */
 }
 
 .snigdha-theme.dark .shadow-glow {
   box-shadow: 
-    0 0 15px 3px hsl(329 100% 65% / 0.4), /* #FF375F */
-    0 0 5px 1px hsl(329 100% 65% / 0.3); /* #FF375F */
+    0 0 15px 3px hsla(267, 84%, 81%, 0.4), /* Mauve #CBA6F7 */
+    0 0 5px 1px hsla(267, 84%, 81%, 0.3); /* Mauve #CBA6F7 */
 }
 
-/* macOS Menu bar styling with pink accent */
+/* Menu bar styling with Catppuccin colors */
 .snigdha-theme .menu-bar {
-  background-color: rgba(255, 255, 255, 0.9);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  background-color: rgba(239, 241, 245, 0.9);  /* Base #EFF1F5 */
+  border-bottom: 1px solid rgba(76, 79, 105, 0.1);  /* Text #4C4F69 */
   backdrop-filter: blur(10px);
 }
 
 .snigdha-theme.dark .menu-bar {
-  background-color: rgba(28, 28, 30, 0.8);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background-color: rgba(30, 30, 46, 0.8);  /* Base #1E1E2E */
+  border-bottom: 1px solid rgba(205, 214, 244, 0.08);  /* Text #CDD6F4 */
 }
 
-/* macOS window animations */
+/* Window animations */
 .snigdha-theme .window-enter-active {
   transition: 
     opacity 300ms cubic-bezier(0.2, 0.8, 0.2, 1), 
     transform 300ms cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-/* macOS buttons with pink accent */
+/* Buttons with Catppuccin accent colors */
 .snigdha-theme button.bg-primary {
-  background: hsl(329 100% 56%); /* #FF2D55 */
+  background: hsl(320, 70%, 75%); /* Mauve #8839EF */
   box-shadow: 
-    0 2px 5px hsl(329 100% 56% / 0.3), /* #FF2D55 */
-    0 0 0 1px hsl(329 100% 56% / 0.2) inset; /* #FF2D55 */
+    0 2px 5px hsla(320, 70%, 75%, 0.3), /* Mauve #8839EF */
+    0 0 0 1px hsla(320, 70%, 75%, 0.2) inset; /* Mauve #8839EF */
   transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .snigdha-theme.dark button.bg-primary {
-  background: hsl(329 100% 65%); /* #FF375F */
+  background: hsl(267, 84%, 81%); /* Mauve #CBA6F7 */
   box-shadow: 
-    0 2px 5px hsl(329 100% 65% / 0.4), /* #FF375F */
-    0 0 0 1px hsl(329 100% 65% / 0.3) inset; /* #FF375F */
+    0 2px 5px hsla(267, 84%, 81%, 0.4), /* Mauve #CBA6F7 */
+    0 0 0 1px hsla(267, 84%, 81%, 0.3) inset; /* Mauve #CBA6F7 */
 }
 
 .snigdha-theme button.bg-primary:hover {
   transform: translateY(-2px);
   box-shadow: 
-    0 4px 10px hsl(329 100% 56% / 0.4), /* #FF2D55 */
-    0 0 0 1px hsl(329 100% 56% / 0.3) inset; /* #FF2D55 */
+    0 4px 10px hsla(320, 70%, 75%, 0.4), /* Mauve #8839EF */
+    0 0 0 1px hsla(320, 70%, 75%, 0.3) inset; /* Mauve #8839EF */
 }
 
 .snigdha-theme.dark button.bg-primary:hover {
   box-shadow: 
-    0 4px 10px hsl(329 100% 65% / 0.5), /* #FF375F */
-    0 0 0 1px hsl(329 100% 65% / 0.4) inset; /* #FF375F */
+    0 4px 10px hsla(267, 84%, 81%, 0.5), /* Mauve #CBA6F7 */
+    0 0 0 1px hsla(267, 84%, 81%, 0.4) inset; /* Mauve #CBA6F7 */
 }
 
 .snigdha-theme button.bg-primary:active {
   transform: translateY(0) scale(0.98);
   box-shadow: 
-    0 1px 3px hsl(329 100% 56% / 0.3), /* #FF2D55 */
-    0 0 0 1px hsl(329 100% 56% / 0.2) inset; /* #FF2D55 */
+    0 1px 3px hsla(320, 70%, 75%, 0.3), /* Mauve #8839EF */
+    0 0 0 1px hsla(320, 70%, 75%, 0.2) inset; /* Mauve #8839EF */
 }
 
 .snigdha-theme.dark button.bg-primary:active {
   box-shadow: 
-    0 1px 3px hsl(329 100% 65% / 0.4), /* #FF375F */
-    0 0 0 1px hsl(329 100% 65% / 0.3) inset; /* #FF375F */
+    0 1px 3px hsla(267, 84%, 81%, 0.4), /* Mauve #CBA6F7 */
+    0 0 0 1px hsla(267, 84%, 81%, 0.3) inset; /* Mauve #CBA6F7 */
 }
 
-/* macOS Focus ring with pink accent */
+/* Focus ring with Catppuccin accent colors */
 .snigdha-theme *:focus-visible {
-  outline: 2px solid hsl(329 100% 56% / 0.6); /* #FF2D55 */
+  outline: 2px solid hsla(320, 70%, 75%, 0.6); /* Mauve #8839EF */
   outline-offset: 2px;
-  box-shadow: 0 0 0 4px hsl(329 100% 56% / 0.2); /* #FF2D55 */
+  box-shadow: 0 0 0 4px hsla(320, 70%, 75%, 0.2); /* Mauve #8839EF */
 }
 
 .snigdha-theme.dark *:focus-visible {
-  outline: 2px solid hsl(329 100% 65% / 0.6); /* #FF375F */
-  box-shadow: 0 0 0 4px hsl(329 100% 65% / 0.2); /* #FF375F */
+  outline: 2px solid hsla(267, 84%, 81%, 0.6); /* Mauve #CBA6F7 */
+  box-shadow: 0 0 0 4px hsla(267, 84%, 81%, 0.2); /* Mauve #CBA6F7 */
 }
 
-/* macOS window title bar */
+/* Window title bar with Catppuccin colors */
 .snigdha-theme .window-title-bar {
-  background: rgba(255, 255, 255, 0.9);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  background: rgba(239, 241, 245, 0.9);  /* Base #EFF1F5 */
+  border-bottom: 1px solid rgba(76, 79, 105, 0.1);  /* Text #4C4F69 */
 }
 
 .snigdha-theme.dark .window-title-bar {
-  background: rgba(28, 28, 30, 0.9);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(30, 30, 46, 0.9);  /* Base #1E1E2E */
+  border-bottom: 1px solid rgba(205, 214, 244, 0.08);  /* Text #CDD6F4 */
 }
 
-/* macOS window traffic lights */
+/* Window traffic lights */
 .snigdha-theme .traffic-light-red {
-  background-color: #ff5f57;
-  border: 1px solid #e0443e;
+  background-color: #F38BA8;  /* Red from Catppuccin */
+  border: 1px solid #E38194;
 }
 
 .snigdha-theme .traffic-light-yellow {
-  background-color: #febc2e;
-  border: 1px solid #d89d24;
+  background-color: #FAB387;  /* Peach from Catppuccin */
+  border: 1px solid #E0A374;
 }
 
 .snigdha-theme .traffic-light-green {
-  background-color: #28c840;
-  border: 1px solid #24aa36;
+  background-color: #A6E3A1;  /* Green from Catppuccin */
+  border: 1px solid #94CF90;
 }
 
 /* Adding explicit font styling for consistency */
