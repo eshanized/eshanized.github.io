@@ -34,6 +34,31 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTheme } from 'next-themes';
+import { toast } from 'sonner';
+
+// Add interfaces
+interface KeyboardSettings {
+  repeatDelay: number;
+  repeatRate: number;
+  capsLockEnabled: boolean;
+  fnKeyEnabled: boolean;
+  keyboardBacklight: number;
+}
+
+interface MouseSettings {
+  speed: number;
+  acceleration: boolean;
+  naturalScrolling: boolean;
+  tapToClick: boolean;
+  scrollSpeed: number;
+}
+
+interface NetworkSettings {
+  proxyEnabled: boolean;
+  vpnEnabled: boolean;
+  firewallEnabled: boolean;
+  bandwidthLimit: number;
+}
 
 type SettingsCategory = {
   id: string;
@@ -63,6 +88,7 @@ const PERSONAL_INFO = {
 };
 
 export default function SettingsApp() {
+  // State declarations
   const [activeCategory, setActiveCategory] = useState('general');
   const [searchTerm, setSearchTerm] = useState('');
   const { theme, setTheme } = useTheme();
@@ -78,8 +104,79 @@ export default function SettingsApp() {
   const [showLanguageMenu, setShowLanguageMenu] = useState(false);
   const [volume, setVolume] = useState(75);
   const langMenuRef = useRef<HTMLDivElement>(null);
-  
-  // Close language menu when clicking outside
+
+  // Settings state
+  const [keyboardSettings, setKeyboardSettings] = useState<KeyboardSettings>({
+    repeatDelay: 500,
+    repeatRate: 30,
+    capsLockEnabled: true,
+    fnKeyEnabled: true,
+    keyboardBacklight: 50
+  });
+
+  const [mouseSettings, setMouseSettings] = useState<MouseSettings>({
+    speed: 50,
+    acceleration: true,
+    naturalScrolling: true,
+    tapToClick: true,
+    scrollSpeed: 50
+  });
+
+  const [networkSettings, setNetworkSettings] = useState<NetworkSettings>({
+    proxyEnabled: false,
+    vpnEnabled: false,
+    firewallEnabled: true,
+    bandwidthLimit: 0
+  });
+
+  const [passwordAfterSleep, setPasswordAfterSleep] = useState(true);
+  const [analyticsEnabled, setAnalyticsEnabled] = useState(false);
+  const [locationEnabled, setLocationEnabled] = useState(true);
+  const [contactsEnabled, setContactsEnabled] = useState(true);
+  const [cameraEnabled, setCameraEnabled] = useState(false);
+
+  // Event handlers
+  const handleKeyboardSettingChange = (setting: keyof KeyboardSettings, value: any) => {
+    setKeyboardSettings(prev => ({ ...prev, [setting]: value }));
+    toast.success(`Keyboard ${setting} updated`);
+  };
+
+  const handleMouseSettingChange = (setting: keyof MouseSettings, value: any) => {
+    setMouseSettings(prev => ({ ...prev, [setting]: value }));
+    toast.success(`Mouse ${setting} updated`);
+  };
+
+  const handleNetworkSettingChange = (setting: keyof NetworkSettings, value: any) => {
+    setNetworkSettings(prev => ({ ...prev, [setting]: value }));
+    toast.success(`Network ${setting} updated`);
+  };
+
+  const handleSecuritySettingChange = (setting: string, value: boolean) => {
+    switch(setting) {
+      case 'passwordAfterSleep':
+        setPasswordAfterSleep(value);
+        break;
+      case 'analytics':
+        setAnalyticsEnabled(value);
+        break;
+      case 'location':
+        setLocationEnabled(value);
+        break;
+      case 'contacts':
+        setContactsEnabled(value);
+        break;
+      case 'camera':
+        setCameraEnabled(value);
+        break;
+    }
+    toast.success(`Security setting updated`);
+  };
+
+  const handleChangePassword = () => {
+    toast.info("Password change functionality will be implemented soon");
+  };
+
+  // Effects
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (langMenuRef.current && !langMenuRef.current.contains(event.target as Node)) {
@@ -90,7 +187,7 @@ export default function SettingsApp() {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
-  
+
   const categories: SettingsCategory[] = [
     {
       id: 'general',
@@ -867,14 +964,14 @@ export default function SettingsApp() {
                       <span className="text-sm font-medium">Require password after sleep or screen saver</span>
                     </div>
                     <ToggleSwitch 
-                      checked={true} 
-                      onChange={() => {}} 
+                      checked={passwordAfterSleep} 
+                      onChange={() => handleSecuritySettingChange('passwordAfterSleep', !passwordAfterSleep)} 
                     />
                   </div>
                   
                   <div className="flex items-center justify-between">
                     <span className="text-sm font-medium">Change Password...</span>
-                    <button className="text-sm px-3 py-1.5 bg-primary/10 hover:bg-primary/20 text-primary rounded-lg transition-colors">
+                    <button className="text-sm px-3 py-1.5 bg-primary/10 hover:bg-primary/20 text-primary rounded-lg transition-colors" onClick={handleChangePassword}>
                       Change
                     </button>
                   </div>
@@ -915,8 +1012,8 @@ export default function SettingsApp() {
                       <span className="text-sm">Share analytics data</span>
                     </div>
                     <ToggleSwitch 
-                      checked={false} 
-                      onChange={() => {}} 
+                      checked={analyticsEnabled} 
+                      onChange={() => handleSecuritySettingChange('analytics', !analyticsEnabled)} 
                     />
                   </div>
                   
@@ -945,8 +1042,8 @@ export default function SettingsApp() {
                         </div>
                       </div>
                       <ToggleSwitch 
-                        checked={true} 
-                        onChange={() => {}} 
+                        checked={locationEnabled} 
+                        onChange={() => handleSecuritySettingChange('location', !locationEnabled)} 
                       />
                     </div>
                     
@@ -963,8 +1060,8 @@ export default function SettingsApp() {
                         </div>
                       </div>
                       <ToggleSwitch 
-                        checked={true} 
-                        onChange={() => {}} 
+                        checked={contactsEnabled} 
+                        onChange={() => handleSecuritySettingChange('contacts', !contactsEnabled)} 
                       />
                     </div>
                     
@@ -982,8 +1079,8 @@ export default function SettingsApp() {
                         </div>
                       </div>
                       <ToggleSwitch 
-                        checked={false} 
-                        onChange={() => {}} 
+                        checked={cameraEnabled} 
+                        onChange={() => handleSecuritySettingChange('camera', !cameraEnabled)} 
                       />
                     </div>
                   </div>
@@ -1000,8 +1097,98 @@ export default function SettingsApp() {
       icon: Keyboard,
       content: (
         <div className="p-6">
-          <h2 className="text-xl font-semibold mb-6">Keyboard</h2>
-          <p className="text-muted-foreground">Configure keyboard settings and shortcuts</p>
+          <motion.h2 
+            className="text-2xl font-semibold mb-6"
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            Keyboard Settings
+          </motion.h2>
+          
+          <div className="space-y-8">
+            <motion.div 
+              className="space-y-4"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, delay: 0.1 }}
+            >
+              <div className="bg-card p-4 rounded-xl shadow-sm border">
+                <h3 className="font-medium text-lg mb-4">Key Repeat</h3>
+                
+                <div className="space-y-4">
+                  <div>
+                    <div className="flex justify-between items-center mb-2">
+                      <span className="text-sm">Delay Until Repeat</span>
+                      <span className="text-sm text-muted-foreground">{keyboardSettings.repeatDelay}ms</span>
+                    </div>
+                    <input
+                      type="range"
+                      min="200"
+                      max="1000"
+                      value={keyboardSettings.repeatDelay}
+                      onChange={(e) => handleKeyboardSettingChange('repeatDelay', parseInt(e.target.value))}
+                      className="w-full"
+                    />
+                  </div>
+                  
+                  <div>
+                    <div className="flex justify-between items-center mb-2">
+                      <span className="text-sm">Key Repeat Rate</span>
+                      <span className="text-sm text-muted-foreground">{keyboardSettings.repeatRate}/s</span>
+                    </div>
+                    <input
+                      type="range"
+                      min="10"
+                      max="50"
+                      value={keyboardSettings.repeatRate}
+                      onChange={(e) => handleKeyboardSettingChange('repeatRate', parseInt(e.target.value))}
+                      className="w-full"
+                    />
+                  </div>
+                </div>
+                
+                <div className="mt-4 space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm">Caps Lock Enabled</span>
+                    <ToggleSwitch
+                      checked={keyboardSettings.capsLockEnabled}
+                      onChange={() => handleKeyboardSettingChange('capsLockEnabled', !keyboardSettings.capsLockEnabled)}
+                    />
+                  </div>
+                  
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm">Function Keys Enabled</span>
+                    <ToggleSwitch
+                      checked={keyboardSettings.fnKeyEnabled}
+                      onChange={() => handleKeyboardSettingChange('fnKeyEnabled', !keyboardSettings.fnKeyEnabled)}
+                    />
+                  </div>
+                </div>
+              </div>
+              
+              <div className="bg-card p-4 rounded-xl shadow-sm border">
+                <h3 className="font-medium text-lg mb-4">Keyboard Backlight</h3>
+                <div className="flex items-center gap-4">
+                  <svg className="w-5 h-5 text-muted-foreground" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" />
+                  </svg>
+                  <input
+                    type="range"
+                    min="0"
+                    max="100"
+                    value={keyboardSettings.keyboardBacklight}
+                    onChange={(e) => handleKeyboardSettingChange('keyboardBacklight', parseInt(e.target.value))}
+                    className="flex-1"
+                  />
+                  <svg className="w-5 h-5 text-yellow-400" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <circle cx="12" cy="12" r="5" />
+                    <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+                  </svg>
+                </div>
+              </div>
+            </motion.div>
+          </div>
         </div>
       )
     },
@@ -1011,24 +1198,13 @@ export default function SettingsApp() {
       icon: Mouse,
       content: (
         <div className="p-6">
-          <h2 className="text-xl font-semibold mb-6">Mouse & Trackpad</h2>
-          <p className="text-muted-foreground">Configure mouse and trackpad settings</p>
-        </div>
-      )
-    },
-    {
-      id: 'wifi',
-      name: 'Wi-Fi',
-      icon: Wifi,
-      content: (
-        <div className="p-6">
           <motion.h2 
             className="text-2xl font-semibold mb-6"
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3 }}
           >
-            Wi-Fi
+            Mouse & Trackpad Settings
           </motion.h2>
           
           <div className="space-y-8">
@@ -1038,262 +1214,66 @@ export default function SettingsApp() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3, delay: 0.1 }}
             >
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="font-medium text-lg flex items-center">
-                  <Wifi className="mr-2 h-5 w-5 text-primary" />
-                  Wi-Fi Status
-                </h3>
-                <ToggleSwitch 
-                  checked={true} 
-                  onChange={() => {}} 
-                />
-              </div>
-              
-              <div className="bg-card rounded-xl shadow-sm border overflow-hidden">
-                <div className="p-4 bg-accent/30">
+              <div className="bg-card p-4 rounded-xl shadow-sm border">
+                <h3 className="font-medium text-lg mb-4">Pointer Settings</h3>
+                
+                <div className="space-y-4">
+                  <div>
+                    <div className="flex justify-between items-center mb-2">
+                      <span className="text-sm">Pointer Speed</span>
+                      <span className="text-sm text-muted-foreground">{mouseSettings.speed}%</span>
+                    </div>
+                    <input
+                      type="range"
+                      min="0"
+                      max="100"
+                      value={mouseSettings.speed}
+                      onChange={(e) => handleMouseSettingChange('speed', parseInt(e.target.value))}
+                      className="w-full"
+                    />
+                  </div>
+                  
+                  <div>
+                    <div className="flex justify-between items-center mb-2">
+                      <span className="text-sm">Scroll Speed</span>
+                      <span className="text-sm text-muted-foreground">{mouseSettings.scrollSpeed}%</span>
+                    </div>
+                    <input
+                      type="range"
+                      min="0"
+                      max="100"
+                      value={mouseSettings.scrollSpeed}
+                      onChange={(e) => handleMouseSettingChange('scrollSpeed', parseInt(e.target.value))}
+                      className="w-full"
+                    />
+                  </div>
+                </div>
+                
+                <div className="mt-4 space-y-3">
                   <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-3">
-                      <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
-                        <Wifi className="h-5 w-5 text-primary" />
-                      </div>
-                      <div>
-                        <p className="font-medium">Portfolio_Network</p>
-                        <p className="text-xs text-muted-foreground">Connected • Secure</p>
-                      </div>
-                    </div>
-                    <div className="flex items-center">
-                      <div className="flex items-center space-x-0.5">
-                        <div className="w-1.5 h-3 bg-primary rounded-sm"></div>
-                        <div className="w-1.5 h-4 bg-primary rounded-sm"></div>
-                        <div className="w-1.5 h-5 bg-primary rounded-sm"></div>
-                        <div className="w-1.5 h-6 bg-primary rounded-sm"></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                
-                <div className="p-4 border-t">
-                  <div className="space-y-3">
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm font-medium">IP Address</span>
-                      <span className="text-sm text-muted-foreground">192.168.1.42</span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm font-medium">Router</span>
-                      <span className="text-sm text-muted-foreground">192.168.1.1</span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm font-medium">DNS</span>
-                      <span className="text-sm text-muted-foreground">8.8.8.8, 8.8.4.4</span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm font-medium">Network Band</span>
-                      <span className="text-sm text-muted-foreground">5 GHz</span>
-                    </div>
-                  </div>
-                </div>
-                
-                <div className="p-4 flex gap-3 border-t">
-                  <button className="w-full px-4 py-2 text-sm bg-primary/10 hover:bg-primary/20 text-primary rounded-lg transition-colors">Advanced</button>
-                  <button className="w-full px-4 py-2 text-sm bg-primary/10 hover:bg-primary/20 text-primary rounded-lg transition-colors">Forget Network</button>
-                </div>
-              </div>
-              
-              <div className="mt-6">
-                <h3 className="font-medium text-lg mb-3 flex items-center">
-                  <svg className="mr-2 h-5 w-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.246-3.905 14.15 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                  Available Networks
-                </h3>
-                
-                <div className="bg-card rounded-xl shadow-sm border overflow-hidden divide-y">
-                  <div className="p-3 hover:bg-accent/50 cursor-pointer transition-colors">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center space-x-3">
-                        <div className="flex items-center space-x-0.5">
-                          <div className="w-1 h-2 bg-muted-foreground rounded-sm"></div>
-                          <div className="w-1 h-3 bg-muted-foreground rounded-sm"></div>
-                          <div className="w-1 h-4 bg-muted-foreground rounded-sm"></div>
-                          <div className="w-1 h-5 bg-muted-foreground/30 rounded-sm"></div>
-                        </div>
-                        <div>
-                          <p className="text-sm font-medium">Neighbor_Wifi</p>
-                          <div className="flex items-center text-xs text-muted-foreground gap-1">
-                            <svg className="h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                            </svg>
-                            <span>Secure</span>
-                          </div>
-                        </div>
-                      </div>
-                      <button className="text-xs px-2 py-1 bg-primary/10 hover:bg-primary/20 text-primary rounded-md transition-colors">
-                        Connect
-                      </button>
-                    </div>
+                    <span className="text-sm">Pointer Acceleration</span>
+                    <ToggleSwitch
+                      checked={mouseSettings.acceleration}
+                      onChange={() => handleMouseSettingChange('acceleration', !mouseSettings.acceleration)}
+                    />
                   </div>
                   
-                  <div className="p-3 hover:bg-accent/50 cursor-pointer transition-colors">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center space-x-3">
-                        <div className="flex items-center space-x-0.5">
-                          <div className="w-1 h-2 bg-muted-foreground rounded-sm"></div>
-                          <div className="w-1 h-3 bg-muted-foreground rounded-sm"></div>
-                          <div className="w-1 h-4 bg-muted-foreground/30 rounded-sm"></div>
-                          <div className="w-1 h-5 bg-muted-foreground/30 rounded-sm"></div>
-                        </div>
-                        <div>
-                          <p className="text-sm font-medium">Coffee_Shop</p>
-                          <div className="flex items-center text-xs text-muted-foreground gap-1">
-                            <svg className="h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                            </svg>
-                            <span>Secure</span>
-                          </div>
-                        </div>
-                      </div>
-                      <button className="text-xs px-2 py-1 bg-primary/10 hover:bg-primary/20 text-primary rounded-md transition-colors">
-                        Connect
-                      </button>
-                    </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm">Natural Scrolling</span>
+                    <ToggleSwitch
+                      checked={mouseSettings.naturalScrolling}
+                      onChange={() => handleMouseSettingChange('naturalScrolling', !mouseSettings.naturalScrolling)}
+                    />
                   </div>
                   
-                  <div className="p-3 hover:bg-accent/50 cursor-pointer transition-colors">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center space-x-3">
-                        <div className="flex items-center space-x-0.5">
-                          <div className="w-1 h-2 bg-muted-foreground rounded-sm"></div>
-                          <div className="w-1 h-3 bg-muted-foreground/30 rounded-sm"></div>
-                          <div className="w-1 h-4 bg-muted-foreground/30 rounded-sm"></div>
-                          <div className="w-1 h-5 bg-muted-foreground/30 rounded-sm"></div>
-                        </div>
-                        <div>
-                          <p className="text-sm font-medium">Free_Wifi</p>
-                          <p className="text-xs text-muted-foreground">Open</p>
-                        </div>
-                      </div>
-                      <button className="text-xs px-2 py-1 bg-primary/10 hover:bg-primary/20 text-primary rounded-md transition-colors">
-                        Connect
-                      </button>
-                    </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm">Tap to Click</span>
+                    <ToggleSwitch
+                      checked={mouseSettings.tapToClick}
+                      onChange={() => handleMouseSettingChange('tapToClick', !mouseSettings.tapToClick)}
+                    />
                   </div>
                 </div>
-              </div>
-            </motion.div>
-          </div>
-        </div>
-      )
-    },
-    {
-      id: 'bluetooth',
-      name: 'Bluetooth',
-      icon: Bluetooth,
-      content: (
-        <div className="p-6">
-          <motion.h2 
-            className="text-2xl font-semibold mb-6"
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3 }}
-          >
-            Bluetooth
-          </motion.h2>
-          
-          <div className="space-y-8">
-            <motion.div 
-              className="space-y-4"
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3, delay: 0.1 }}
-            >
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="font-medium text-lg flex items-center">
-                  <Bluetooth className="mr-2 h-5 w-5 text-primary" />
-                  Bluetooth Status
-                </h3>
-                <ToggleSwitch 
-                  checked={true} 
-                  onChange={() => {}} 
-                />
-              </div>
-              
-              <div className="bg-card rounded-xl shadow-sm border overflow-hidden">
-                <div className="p-4">
-                  <h4 className="text-sm font-medium mb-3">My Devices</h4>
-                  <div className="space-y-3">
-                    <div className="flex items-center justify-between py-2 border-b">
-                      <div className="flex items-center gap-3">
-                        <div className="w-9 h-9 bg-primary/10 rounded-full flex items-center justify-center">
-                          <svg className="h-5 w-5 text-primary" viewBox="0 0 24 24" fill="none">
-                            <path d="M7 10V14C7 14 7 17 12 17C17 17 17 14 17 14V10" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                            <rect x="3" y="10" width="18" height="4" rx="2" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                            <path d="M11 18H13" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-                          </svg>
-                        </div>
-                        <div>
-                          <p className="text-sm font-medium">Porfolio Headphones</p>
-                          <p className="text-xs text-muted-foreground">Connected</p>
-                        </div>
-                      </div>
-                      <button className="text-xs px-2 py-1 bg-primary/10 hover:bg-primary/20 text-primary rounded-md transition-colors">
-                        Options
-                      </button>
-                    </div>
-                    
-                    <div className="flex items-center justify-between py-2 border-b">
-                      <div className="flex items-center gap-3">
-                        <div className="w-9 h-9 bg-primary/10 rounded-full flex items-center justify-center">
-                          <svg className="h-5 w-5 text-primary" viewBox="0 0 24 24" fill="none">
-                            <rect x="5" y="3" width="14" height="18" rx="2" stroke="currentColor" strokeWidth="2"/>
-                            <path d="M11 18H13" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-                          </svg>
-                        </div>
-                        <div>
-                          <p className="text-sm font-medium">Portfolio Phone</p>
-                          <p className="text-xs text-muted-foreground">Connected</p>
-                        </div>
-                      </div>
-                      <button className="text-xs px-2 py-1 bg-primary/10 hover:bg-primary/20 text-primary rounded-md transition-colors">
-                        Options
-                      </button>
-                    </div>
-                    
-                    <div className="flex items-center justify-between py-2">
-                      <div className="flex items-center gap-3">
-                        <div className="w-9 h-9 bg-muted rounded-full flex items-center justify-center">
-                          <svg className="h-5 w-5 text-muted-foreground" viewBox="0 0 24 24" fill="none">
-                            <path d="M22 8.5V12.5C22 16.5 20 18.5 16 18.5H8C4 18.5 2 16.5 2 12.5V8.5C2 4.5 4 2.5 8 2.5H16C20 2.5 22 4.5 22 8.5Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                            <path d="M12 22.5V18.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                            <path d="M8 22.5H16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                            <path d="M7.5 10.5V10.5C7.5 9.4 8.4 8.5 9.5 8.5H13C14.1 8.5 15 7.6 15 6.5V6.5C15 5.4 14.1 4.5 13 4.5H12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                            <path d="M11 10.5V4.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                          </svg>
-                        </div>
-                        <div>
-                          <p className="text-sm font-medium">Portfolio Keyboard</p>
-                          <p className="text-xs text-muted-foreground">Not Connected</p>
-                        </div>
-                      </div>
-                      <button className="text-xs px-2 py-1 bg-primary/10 hover:bg-primary/20 text-primary rounded-md transition-colors">
-                        Connect
-                      </button>
-                    </div>
-                  </div>
-                </div>
-                
-                <div className="p-4 bg-accent/30 flex justify-between items-center">
-                  <span className="text-sm">Scanning for devices...</span>
-                  <div className="animate-spin h-4 w-4 border-2 border-primary border-t-transparent rounded-full"></div>
-                </div>
-              </div>
-              
-              <div className="flex gap-3">
-                <button className="flex-1 px-4 py-2 text-sm bg-primary/10 hover:bg-primary/20 text-primary rounded-lg transition-colors">
-                  Advanced Options
-                </button>
-                <button className="flex-1 px-4 py-2 text-sm bg-primary/10 hover:bg-primary/20 text-primary rounded-lg transition-colors">
-                  Add Device
-                </button>
               </div>
             </motion.div>
           </div>
@@ -1306,8 +1286,73 @@ export default function SettingsApp() {
       icon: Network,
       content: (
         <div className="p-6">
-          <h2 className="text-xl font-semibold mb-6">Network</h2>
-          <p className="text-muted-foreground">Configure network settings and connections</p>
+          <motion.h2 
+            className="text-2xl font-semibold mb-6"
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            Network Settings
+          </motion.h2>
+          
+          <div className="space-y-8">
+            <motion.div 
+              className="space-y-4"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, delay: 0.1 }}
+            >
+              <div className="bg-card p-4 rounded-xl shadow-sm border">
+                <h3 className="font-medium text-lg mb-4">Network Security</h3>
+                
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm">Firewall</span>
+                    <ToggleSwitch
+                      checked={networkSettings.firewallEnabled}
+                      onChange={() => handleNetworkSettingChange('firewallEnabled', !networkSettings.firewallEnabled)}
+                    />
+                  </div>
+                  
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm">VPN</span>
+                    <ToggleSwitch
+                      checked={networkSettings.vpnEnabled}
+                      onChange={() => handleNetworkSettingChange('vpnEnabled', !networkSettings.vpnEnabled)}
+                    />
+                  </div>
+                  
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm">Proxy</span>
+                    <ToggleSwitch
+                      checked={networkSettings.proxyEnabled}
+                      onChange={() => handleNetworkSettingChange('proxyEnabled', !networkSettings.proxyEnabled)}
+                    />
+                  </div>
+                </div>
+              </div>
+              
+              <div className="bg-card p-4 rounded-xl shadow-sm border">
+                <h3 className="font-medium text-lg mb-4">Bandwidth Management</h3>
+                <div>
+                  <div className="flex justify-between items-center mb-2">
+                    <span className="text-sm">Bandwidth Limit</span>
+                    <span className="text-sm text-muted-foreground">
+                      {networkSettings.bandwidthLimit === 0 ? 'Unlimited' : `${networkSettings.bandwidthLimit} Mbps`}
+                    </span>
+                  </div>
+                  <input
+                    type="range"
+                    min="0"
+                    max="1000"
+                    value={networkSettings.bandwidthLimit}
+                    onChange={(e) => handleNetworkSettingChange('bandwidthLimit', parseInt(e.target.value))}
+                    className="w-full"
+                  />
+                </div>
+              </div>
+            </motion.div>
+          </div>
         </div>
       )
     },
@@ -1503,7 +1548,21 @@ export default function SettingsApp() {
   
   const activeContent = categories.find(cat => cat.id === activeCategory)?.content;
   
-  return (
+  // Close language menu when clicking outside
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (langMenuRef.current && !langMenuRef.current.contains(event.target as Node)) {
+        setShowLanguageMenu(false);
+      }
+    }
+    
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+    return (
     <div className="h-full flex bg-background">
       {/* Sidebar */}
       <div className="w-64 border-r bg-muted/30 p-3 overflow-auto">
