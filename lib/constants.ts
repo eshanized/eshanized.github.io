@@ -242,10 +242,11 @@ export const DESKTOP_APPS = [
   },
   {
     id: "safari",
-    title: "Safari",
+    title: "Chrome",
     icon: Globe,
     defaultSize: { width: 900, height: 600 },
     defaultPosition: { x: 130, y: 120 },
+    showInDock: true,
   },
   {
     id: "mail",
@@ -287,13 +288,13 @@ export const DESKTOP_APPS = [
 // Desktop notes about different app interfaces
 export const DESKTOP_NOTES = [
   {
-    id: "safari-note",
-    title: "Safari Features",
+    id: "chrome-note",
+    title: "Chrome Features",
     type: "note" as const,
-    content: `Safari App Features:
+    content: `Chrome App Features:
 
 • Fully functional tabbed browsing interface
-• Address bar with site information
+• Omnibox for URL and search functionality
 • Bookmarks bar with popular bookmarks
 • Forward, backward, and reload navigation
 • Tab management - add, close, and switch tabs

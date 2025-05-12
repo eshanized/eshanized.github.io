@@ -20,7 +20,7 @@ import FinderApp from './apps/finder-app';
 import CalendarApp from './apps/calendar-app';
 import MessagesApp from './apps/messages-app';
 import NotesApp from './apps/notes-app';
-import SafariApp from './apps/safari-app';
+import ChromeApp from './apps/chrome-app';
 import MailApp from './apps/mail-app';
 import MusicApp from './apps/music-app';
 import MapsApp from './apps/maps-app';
@@ -210,7 +210,7 @@ export function SnigdhaOSDesktop() {
       case 'notes':
         return <NotesApp />;
       case 'safari':
-        return <SafariApp />;
+        return <ChromeApp />;
       case 'mail':
         return <MailApp specialUser={specialUser} />;
       case 'music':

@@ -32,7 +32,7 @@ const FinderIcon = () => (
   </div>
 );
 
-const SafariIcon = () => (
+const ChromeIcon = () => (
   <div className="flex items-center justify-center w-full h-full rounded-xl bg-gradient-to-br from-sky-300 to-blue-500">
     <Compass className="w-8 h-8 text-white" />
   </div>
@@ -114,7 +114,7 @@ export function Dock({ openWindows, activeWindow, minimizedWindows, onAppClick }
   // Use DESKTOP_APPS to get app data but display them in the order we want
   const appIcons = {
     'finder': FinderIcon,
-    'safari': SafariIcon,
+    'safari': ChromeIcon,
     'mail': MailIcon,
     'messages': MessagesIcon,
     'notes': NotesIcon,
