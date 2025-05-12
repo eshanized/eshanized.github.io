@@ -32,6 +32,7 @@ import {
   FileCode2
 } from 'lucide-react';
 import { PERSONAL_INFO } from '@/lib/constants';
+import { shouldSkipLockscreen } from '@/lib/lockscreen';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import { useMIUITheme, MIUIThemeProvider } from './MIUIThemeContext';
@@ -87,7 +88,7 @@ function MIUILayoutContent({ children }: { children?: React.ReactNode }) {
   const [currentTime, setCurrentTime] = useState<string>('');
   const [currentDate, setCurrentDate] = useState<string>('');
   const [batteryLevel, setBatteryLevel] = useState<number>(85);
-  const [isLocked, setIsLocked] = useState<boolean>(true);
+  const [isLocked, setIsLocked] = useState<boolean>(!shouldSkipLockscreen());
   const [openApp, setOpenApp] = useState<string | null>(null);
   const [isAppSwitcherOpen, setIsAppSwitcherOpen] = useState<boolean>(false);
   const [recentApps, setRecentApps] = useState<string[]>([]);
@@ -96,6 +97,14 @@ function MIUILayoutContent({ children }: { children?: React.ReactNode }) {
   const [currentPage, setCurrentPage] = useState<number>(0);
   const [showControlCenter, setShowControlCenter] = useState<boolean>(false);
   const [showNotificationCenter, setShowNotificationCenter] = useState<boolean>(false);
+
+  // Check if lockscreen should be skipped
+  useEffect(() => {
+    // If the user has chosen to skip the lockscreen, unlock immediately
+    if (shouldSkipLockscreen()) {
+      setIsLocked(false);
+    }
+  }, []);
 
   // Update time and date
   useEffect(() => {
@@ -150,10 +159,13 @@ function MIUILayoutContent({ children }: { children?: React.ReactNode }) {
 
   // Lock/unlock device
   const handleLockToggle = () => {
-    setIsLocked(!isLocked);
-    if (!isLocked) {
+    // If skipLockscreen is enabled, don't lock the device
+    if (!isLocked && !shouldSkipLockscreen()) {
+      setIsLocked(true);
       // Reset all UI states when locking
       handleGoHome();
+    } else {
+      setIsLocked(false);
     }
   };
 
@@ -254,6 +266,13 @@ function MIUILayoutContent({ children }: { children?: React.ReactNode }) {
 
   // Lock screen component
   const LockScreen = () => {
+    // If skipLockscreen is enabled, automatically unlock and don't show the lockscreen
+    useEffect(() => {
+      if (shouldSkipLockscreen()) {
+        handleLockToggle();
+      }
+    }, []);
+    
     const [showPasscode, setShowPasscode] = useState(false);
     const [passcode, setPasscode] = useState('');
     const correctPasscode = '5456'; // In a real app, this should be stored securely

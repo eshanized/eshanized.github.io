@@ -5,25 +5,23 @@ import BaseMIUIApp from './BaseMIUIApp';
 import { User, Wifi, Bell, Battery, Moon, Lock, Smartphone, Info, Globe, ArrowRight } from 'lucide-react';
 import Image from 'next/image';
 import { PERSONAL_INFO } from '@/lib/constants';
+import { shouldSkipLockscreen, setSkipLockscreen } from '@/lib/lockscreen';
 import { useMIUITheme } from '../MIUIThemeContext';
 
 export default function SettingsApp() {
-  const [skipLockscreen, setSkipLockscreen] = useState(false);
+  const [skipLockscreen, setSkipLockscreenState] = useState(false);
   const { colors, isDarkMode, toggleDarkMode } = useMIUITheme();
 
-  // Load skipLockscreen preference from localStorage on mount
+  // Load skipLockscreen preference on mount
   useEffect(() => {
-    const savedPreference = localStorage.getItem('skipLockscreen');
-    if (savedPreference !== null) {
-      setSkipLockscreen(savedPreference === 'true');
-    }
+    setSkipLockscreenState(shouldSkipLockscreen());
   }, []);
 
-  // Save skipLockscreen preference to localStorage when changed
+  // Toggle skipLockscreen preference
   const handleSkipLockscreenToggle = () => {
     const newValue = !skipLockscreen;
+    setSkipLockscreenState(newValue);
     setSkipLockscreen(newValue);
-    localStorage.setItem('skipLockscreen', String(newValue));
   };
 
   const settingsSections = [
