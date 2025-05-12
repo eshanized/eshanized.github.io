@@ -4,9 +4,11 @@ import React, { useState } from 'react';
 import BaseMIUIApp from './BaseMIUIApp';
 import { Grid, Image as ImageIcon, Search, Share, Heart, User, BookOpen } from 'lucide-react';
 import Image from 'next/image';
+import { useMIUITheme } from '../MIUIThemeContext';
 
 export default function PhotosApp() {
   const [activeTab, setActiveTab] = useState<string>("library");
+  const { colors } = useMIUITheme();
   
   // Sample photos for the gallery
   const photos = [
@@ -101,21 +103,21 @@ export default function PhotosApp() {
   ];
   
   return (
-    <BaseMIUIApp title="Photos" rightAction="more">
-      <div className="h-full flex flex-col">
+    <BaseMIUIApp title="Gallery" rightAction="more">
+      <div className={`h-full flex flex-col ${colors.primary}`}>
         {/* Photos view (Library tab) */}
         {activeTab === "library" && (
-          <div className="flex-1 overflow-y-auto pb-16">
+          <div className="flex-1 overflow-y-auto">
             <div className="p-4">
               <div className="flex justify-between items-center mb-4">
-                <h2 className="text-xl font-semibold">Library</h2>
-                <button className="text-blue-500 text-sm">Select</button>
+                <h2 className={`text-lg font-medium ${colors.textPrimary}`}>Library</h2>
+                <button className={`${colors.accent} text-sm`}>Select</button>
               </div>
               
               {/* Photos by date */}
               {Object.entries(groupedPhotos).map(([date, datePhotos]) => (
                 <div key={date} className="mb-6">
-                  <h3 className="text-lg font-medium mb-2">{date}</h3>
+                  <h3 className={`text-base font-medium mb-2 ${colors.textPrimary}`}>{date}</h3>
                   <div className="grid grid-cols-3 gap-1">
                     {datePhotos.map(photo => (
                       <div key={photo.id} className="aspect-square relative">
@@ -137,18 +139,18 @@ export default function PhotosApp() {
         
         {/* Albums tab */}
         {activeTab === "albums" && (
-          <div className="flex-1 overflow-y-auto pb-16">
+          <div className="flex-1 overflow-y-auto">
             <div className="p-4">
               <div className="flex justify-between items-center mb-4">
-                <h2 className="text-xl font-semibold">Albums</h2>
-                <button className="text-blue-500 text-sm">+</button>
+                <h2 className={`text-lg font-medium ${colors.textPrimary}`}>Albums</h2>
+                <button className={`${colors.accent} text-sm p-1 rounded-md`}>+</button>
               </div>
               
-              <h3 className="text-lg font-medium mb-2">My Albums</h3>
+              <h3 className={`text-base font-medium mb-2 ${colors.textPrimary}`}>My Albums</h3>
               <div className="grid grid-cols-2 gap-3">
                 {albums.map((album, index) => (
                   <div key={index} className="mb-4">
-                    <div className="aspect-square relative rounded-xl overflow-hidden mb-1">
+                    <div className="aspect-square relative rounded-md overflow-hidden mb-1 border border-gray-200 dark:border-gray-700">
                       <Image
                         src={album.cover}
                         alt={album.name}
@@ -156,8 +158,8 @@ export default function PhotosApp() {
                         objectFit="cover"
                       />
                     </div>
-                    <h4 className="font-medium text-sm">{album.name}</h4>
-                    <p className="text-xs text-gray-500">{album.count}</p>
+                    <h4 className={`font-medium text-sm ${colors.textPrimary}`}>{album.name}</h4>
+                    <p className={`text-xs ${colors.textSecondary}`}>{album.count}</p>
                   </div>
                 ))}
               </div>
@@ -167,19 +169,19 @@ export default function PhotosApp() {
         
         {/* Placeholder for For You and Search tabs */}
         {(activeTab === "for-you" || activeTab === "search") && (
-          <div className="flex-1 flex items-center justify-center p-4 text-gray-500">
+          <div className={`flex-1 flex items-center justify-center p-4 ${colors.textSecondary}`}>
             <div className="text-center">
-              <div className="w-16 h-16 rounded-full bg-gray-200 flex items-center justify-center mx-auto mb-4">
+              <div className={`w-16 h-16 rounded-full ${colors.tertiary} flex items-center justify-center mx-auto mb-4`}>
                 {activeTab === "for-you" ? (
-                  <Heart className="w-8 h-8 text-gray-400" />
+                  <Heart className={`w-8 h-8 ${colors.textSecondary}`} />
                 ) : (
-                  <Search className="w-8 h-8 text-gray-400" />
+                  <Search className={`w-8 h-8 ${colors.textSecondary}`} />
                 )}
               </div>
-              <h3 className="text-lg font-medium">
+              <h3 className={`text-lg font-medium ${colors.textPrimary}`}>
                 {activeTab === "for-you" ? "For You" : "Search"}
               </h3>
-              <p className="text-sm mt-1">
+              <p className={`text-sm mt-1 ${colors.textSecondary}`}>
                 {activeTab === "for-you" 
                   ? "Personalized photos and memories will appear here" 
                   : "Search through your photos by people, places, or keywords"}
@@ -189,18 +191,18 @@ export default function PhotosApp() {
         )}
         
         {/* Bottom tabs */}
-        <div className="fixed bottom-0 left-0 right-0 border-t border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 flex justify-around p-2">
+        <div className={`border-t ${colors.divider} ${colors.cardBg} flex justify-around`}>
           {tabs.map((tab) => (
             <button 
               key={tab.id}
-              className={`flex flex-col items-center py-1 px-3 ${
+              className={`flex flex-col items-center py-2 px-4 ${
                 activeTab === tab.id 
-                  ? 'text-blue-500' 
-                  : 'text-gray-500 dark:text-gray-400'
+                  ? colors.accent
+                  : colors.textSecondary
               }`}
               onClick={() => setActiveTab(tab.id)}
             >
-              <tab.icon className="w-6 h-6" />
+              <tab.icon className="w-5 h-5" />
               <span className="text-xs mt-1">{tab.label}</span>
             </button>
           ))}

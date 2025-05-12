@@ -4,6 +4,7 @@ import React from 'react';
 import BaseMIUIApp from './BaseMIUIApp';
 import Image from 'next/image';
 import { Heart, MessageCircle, Bookmark, Share2, MoreHorizontal } from 'lucide-react';
+import { useMIUITheme } from '../MIUIThemeContext';
 
 const posts = [
   {
@@ -41,11 +42,13 @@ const stories = [
 ];
 
 export default function InstagramApp() {
+  const { colors } = useMIUITheme();
+  
   return (
     <BaseMIUIApp title="Instagram" rightAction="new">
-      <div className="flex flex-col divide-y divide-gray-200 dark:divide-gray-700/60">
+      <div className={`flex flex-col ${colors.primary}`}>
         {/* Stories */}
-        <div className="p-4 bg-white dark:bg-black overflow-x-auto">
+        <div className={`p-4 ${colors.cardBg} overflow-x-auto border-b ${colors.divider}`}>
           <div className="flex space-x-4">
             {stories.map((story) => (
               <div key={story.id} className="flex flex-col items-center space-y-1">
@@ -67,7 +70,7 @@ export default function InstagramApp() {
                     )}
                   </div>
                 </div>
-                <span className="text-xs text-gray-900 dark:text-gray-100">{story.username}</span>
+                <span className={`text-xs ${colors.textPrimary}`}>{story.username}</span>
               </div>
             ))}
           </div>
@@ -75,7 +78,7 @@ export default function InstagramApp() {
 
         {/* Posts */}
         {posts.map((post) => (
-          <article key={post.id} className="bg-white dark:bg-black">
+          <article key={post.id} className={`${colors.cardBg} border-b ${colors.divider}`}>
             {/* Post Header */}
             <div className="p-4 flex items-center justify-between">
               <div className="flex items-center space-x-2">
@@ -88,10 +91,10 @@ export default function InstagramApp() {
                     sizes="32px"
                   />
                 </div>
-                <span className="font-semibold text-sm text-black dark:text-white">eshanized</span>
+                <span className={`font-medium text-sm ${colors.textPrimary}`}>eshanized</span>
               </div>
               <button>
-                <MoreHorizontal className="w-5 h-5 text-gray-500 dark:text-gray-400" />
+                <MoreHorizontal className={`w-5 h-5 ${colors.textSecondary}`} />
               </button>
             </div>
 
@@ -111,39 +114,39 @@ export default function InstagramApp() {
               <div className="flex justify-between items-center">
                 <div className="flex space-x-4">
                   <button>
-                    <Heart className="w-7 h-7 text-gray-900 dark:text-gray-100" />
+                    <Heart className={`w-7 h-7 ${colors.textPrimary}`} />
                   </button>
                   <button>
-                    <MessageCircle className="w-7 h-7 text-gray-900 dark:text-gray-100" />
+                    <MessageCircle className={`w-7 h-7 ${colors.textPrimary}`} />
                   </button>
                   <button>
-                    <Share2 className="w-7 h-7 text-gray-900 dark:text-gray-100" />
+                    <Share2 className={`w-7 h-7 ${colors.textPrimary}`} />
                   </button>
                 </div>
                 <button>
-                  <Bookmark className="w-7 h-7 text-gray-900 dark:text-gray-100" />
+                  <Bookmark className={`w-7 h-7 ${colors.textPrimary}`} />
                 </button>
               </div>
 
               {/* Likes */}
               <div className="mt-2">
-                <span className="font-semibold text-sm text-black dark:text-white">{post.likes} likes</span>
+                <span className={`font-medium text-sm ${colors.textPrimary}`}>{post.likes} likes</span>
               </div>
 
               {/* Caption */}
               <div className="mt-1">
-                <span className="font-semibold text-sm text-black dark:text-white mr-2">eshanized</span>
-                <span className="text-sm text-black dark:text-white">{post.caption}</span>
+                <span className={`font-medium text-sm ${colors.textPrimary} mr-2`}>eshanized</span>
+                <span className={`text-sm ${colors.textPrimary}`}>{post.caption}</span>
               </div>
 
               {/* Comments */}
-              <button className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+              <button className={`mt-1 text-sm ${colors.textSecondary}`}>
                 View all {post.comments} comments
               </button>
 
               {/* Timestamp */}
               <div className="mt-1">
-                <span className="text-xs text-gray-500 dark:text-gray-400">{post.timestamp}</span>
+                <span className={`text-xs ${colors.textSecondary}`}>{post.timestamp}</span>
               </div>
             </div>
           </article>

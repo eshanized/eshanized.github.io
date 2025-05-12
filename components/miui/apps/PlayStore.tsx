@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import BaseMIUIApp from './BaseMIUIApp';
 import { Search, Star, Download, Grid, Play, Clock, User, GamepadIcon, Smartphone, Film, Book } from 'lucide-react';
 import Image from 'next/image';
+import { useMIUITheme } from '../MIUIThemeContext';
 
 interface App {
   id: number;
@@ -22,6 +23,7 @@ interface App {
 export default function PlayStore() {
   const [activeTab, setActiveTab] = useState<string>("games");
   const [searchQuery, setSearchQuery] = useState<string>("");
+  const { colors } = useMIUITheme();
   
   // Sample apps data with MIUI-specific apps
   const apps: App[] = [
@@ -118,18 +120,18 @@ export default function PlayStore() {
   
   return (
     <BaseMIUIApp title="Play Store">
-      <div className="h-full flex flex-col bg-white dark:bg-gray-900">
+      <div className={`h-full flex flex-col ${colors.primary}`}>
         {/* Search bar */}
-        <div className="p-4 sticky top-0 bg-white dark:bg-gray-900 z-10">
+        <div className={`p-4 sticky top-0 ${colors.cardBg} z-10`}>
           <div className="relative">
             <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-              <Search className="w-4 h-4 text-gray-500 dark:text-gray-400" />
+              <Search className={`w-4 h-4 ${colors.textSecondary}`} />
             </div>
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full py-2 pl-10 pr-4 bg-gray-100 dark:bg-gray-800 rounded-full text-sm border-none focus:outline-none focus:ring-2 focus:ring-green-500"
+              className={`w-full py-2 pl-10 pr-4 ${colors.tertiary} rounded-md text-sm border-none focus:outline-none focus:ring-1 focus:ring-blue-500 ${colors.textPrimary}`}
               placeholder="Search for apps & games"
             />
           </div>
@@ -139,16 +141,16 @@ export default function PlayStore() {
         <div className="flex-1 overflow-y-auto">
           {/* Featured section */}
           <div className="px-4 mb-6">
-            <h2 className="text-lg font-medium mb-4 text-black dark:text-white">Recommended for you</h2>
+            <h2 className={`text-lg font-medium mb-4 ${colors.textPrimary}`}>Recommended for you</h2>
             <div className="space-y-4">
               {featuredApps.map((app) => (
                 <div 
                   key={app.id}
-                  className="bg-gray-50 dark:bg-gray-800 rounded-xl overflow-hidden"
+                  className={`${colors.cardBg} border ${colors.divider} overflow-hidden`}
                 >
                   <div className="p-4">
                     <div className="flex items-start">
-                      <div className="w-16 h-16 rounded-xl overflow-hidden">
+                      <div className="w-16 h-16 rounded-md overflow-hidden">
                         <Image 
                           src={app.icon} 
                           alt={app.name} 
@@ -158,17 +160,17 @@ export default function PlayStore() {
                         />
                       </div>
                       <div className="ml-4 flex-1">
-                        <h3 className="font-medium text-black dark:text-white">{app.name}</h3>
-                        <p className="text-xs text-gray-500 dark:text-gray-400">{app.developer}</p>
+                        <h3 className={`font-medium ${colors.textPrimary}`}>{app.name}</h3>
+                        <p className={`text-xs ${colors.textSecondary}`}>{app.developer}</p>
                         <div className="flex items-center mt-1">
                           <div className="flex items-center">
                             <Star className="w-3 h-3 text-yellow-500 fill-yellow-500" />
-                            <span className="text-xs text-gray-500 dark:text-gray-400 ml-1">{app.rating}</span>
+                            <span className={`text-xs ${colors.textSecondary} ml-1`}>{app.rating}</span>
                           </div>
-                          <span className="text-xs text-gray-500 dark:text-gray-400 ml-3">{app.downloads} downloads</span>
+                          <span className={`text-xs ${colors.textSecondary} ml-3`}>{app.downloads} downloads</span>
                         </div>
                       </div>
-                      <button className="bg-green-500 text-white text-sm font-medium px-4 py-1.5 rounded-full">
+                      <button className={`${colors.accent} text-white text-sm font-medium px-4 py-1.5 rounded-md`}>
                         {app.price === "Free" ? "Install" : app.price}
                       </button>
                     </div>
@@ -180,7 +182,7 @@ export default function PlayStore() {
                       {app.screenshots.map((screenshot, index) => (
                         <div 
                           key={index}
-                          className="w-40 h-24 flex-shrink-0 rounded-lg overflow-hidden"
+                          className="w-40 h-24 flex-shrink-0 rounded-md overflow-hidden border border-gray-200 dark:border-gray-700"
                         >
                           <Image 
                             src={screenshot} 
@@ -200,17 +202,17 @@ export default function PlayStore() {
 
           {/* Categories */}
           <div className="px-4 mb-6">
-            <h2 className="text-lg font-medium mb-4 text-black dark:text-white">Categories</h2>
+            <h2 className={`text-lg font-medium mb-4 ${colors.textPrimary}`}>Categories</h2>
             <div className="grid grid-cols-2 gap-3">
               {["Action", "Adventure", "Arcade", "Board", "Card", "Casino", "Casual", "Educational"].map((category) => (
                 <button
                   key={category}
-                  className="flex items-center p-3 bg-gray-50 dark:bg-gray-800 rounded-xl"
+                  className={`flex items-center p-3 ${colors.cardBg} border ${colors.divider} rounded-md`}
                 >
-                  <div className="w-8 h-8 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center mr-3">
-                    <GamepadIcon className="w-4 h-4 text-green-500" />
+                  <div className={`w-8 h-8 rounded-full ${colors.tertiary} flex items-center justify-center mr-3`}>
+                    <GamepadIcon className={`w-4 h-4 ${colors.accent}`} />
                   </div>
-                  <span className="text-sm text-black dark:text-white">{category}</span>
+                  <span className={`text-sm ${colors.textPrimary}`}>{category}</span>
                 </button>
               ))}
             </div>
@@ -218,12 +220,12 @@ export default function PlayStore() {
 
           {/* Top apps section */}
           <div className="px-4 mb-6">
-            <h2 className="text-lg font-medium mb-4 text-black dark:text-white">Top Charts</h2>
-            <div className="space-y-3">
+            <h2 className={`text-lg font-medium mb-4 ${colors.textPrimary}`}>Top Charts</h2>
+            <div className="space-y-px">
               {apps.slice(0, 3).map((app, index) => (
-                <div key={app.id} className="flex items-center bg-gray-50 dark:bg-gray-800 p-3 rounded-xl">
-                  <span className="w-5 text-center text-gray-500 font-medium">{index + 1}</span>
-                  <div className="w-12 h-12 rounded-xl overflow-hidden mx-3">
+                <div key={app.id} className={`flex items-center ${colors.cardBg} p-4 border-b ${colors.divider}`}>
+                  <span className={`w-5 text-center ${colors.textSecondary} font-medium`}>{index + 1}</span>
+                  <div className="w-12 h-12 rounded-md overflow-hidden mx-3">
                     <Image 
                       src={app.icon} 
                       alt={app.name} 
@@ -233,14 +235,14 @@ export default function PlayStore() {
                     />
                   </div>
                   <div className="flex-1">
-                    <h4 className="font-medium text-sm text-black dark:text-white">{app.name}</h4>
-                    <p className="text-xs text-gray-500 dark:text-gray-400">{app.category}</p>
+                    <h4 className={`font-medium text-sm ${colors.textPrimary}`}>{app.name}</h4>
+                    <p className={`text-xs ${colors.textSecondary}`}>{app.category}</p>
                     <div className="flex items-center mt-1">
                       <Star className="w-3 h-3 text-yellow-500 fill-yellow-500" />
-                      <span className="text-xs text-gray-500 dark:text-gray-400 ml-1">{app.rating}</span>
+                      <span className={`text-xs ${colors.textSecondary} ml-1`}>{app.rating}</span>
                     </div>
                   </div>
-                  <button className="bg-green-500 text-white text-xs font-medium px-3 py-1.5 rounded-full">
+                  <button className={`${colors.accent} text-white text-xs font-medium px-3 py-1.5 rounded-md`}>
                     {app.price === "Free" ? "Install" : app.price}
                   </button>
                 </div>
@@ -248,20 +250,20 @@ export default function PlayStore() {
             </div>
           </div>
         </div>
-
-        {/* Bottom navigation */}
-        <div className="mt-auto border-t border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 flex justify-around p-2">
+        
+        {/* Bottom Tabs */}
+        <div className={`border-t ${colors.divider} ${colors.cardBg} flex justify-around`}>
           {tabs.map((tab) => (
             <button 
               key={tab.id}
-              className={`flex flex-col items-center py-1 px-3 ${
+              className={`flex flex-col items-center py-2 px-4 ${
                 activeTab === tab.id 
-                  ? 'text-green-500' 
-                  : 'text-gray-500 dark:text-gray-400'
+                  ? colors.accent
+                  : colors.textSecondary
               }`}
               onClick={() => setActiveTab(tab.id)}
             >
-              <tab.icon className="w-6 h-6" />
+              <tab.icon className="w-5 h-5" />
               <span className="text-xs mt-1">{tab.label}</span>
             </button>
           ))}

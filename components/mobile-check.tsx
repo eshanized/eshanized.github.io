@@ -4,6 +4,7 @@ import React from 'react';
 import { useMobileDetector } from '@/hooks/use-mobile-detector';
 import dynamic from 'next/dynamic';
 import { TabletLayout } from './tablet-layout';
+import { MIUIThemeProvider } from '@/components/miui/MIUIThemeContext';
 
 // Dynamically import the MIUILayout to avoid SSR issues
 const MIUILayout = dynamic(() => import('@/components/miui/MIUILayout'), { ssr: false });
@@ -18,7 +19,11 @@ export const MobileCheck: React.FC<{ children: React.ReactNode }> = ({ children 
 
   // On small mobile devices, show the MIUI interface
   if (isMobile && !isTablet) {
-    return <MIUILayout />;
+    return (
+      <MIUIThemeProvider>
+        <MIUILayout />
+      </MIUIThemeProvider>
+    );
   }
 
   // On tablet devices, use the tablet-optimized layout

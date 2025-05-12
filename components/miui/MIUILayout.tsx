@@ -34,7 +34,7 @@ import {
 import { PERSONAL_INFO } from '@/lib/constants';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
-import { useTheme, ThemeProvider } from './ThemeContext';
+import { useMIUITheme, MIUIThemeProvider } from './MIUIThemeContext';
 
 // Dynamically import app components with SSR disabled
 const AboutApp = dynamic(() => import('@/components/miui/apps/AboutApp'), { ssr: false });
@@ -77,14 +77,12 @@ interface AppFolder {
 // MIUI Layout Component
 export default function MIUILayout({ children }: { children?: React.ReactNode }) {
   return (
-    <ThemeProvider>
-      <MIUILayoutContent>{children}</MIUILayoutContent>
-    </ThemeProvider>
+    <MIUILayoutContent>{children}</MIUILayoutContent>
   );
 }
 
 function MIUILayoutContent({ children }: { children?: React.ReactNode }) {
-  const { isDarkMode, toggleDarkMode } = useTheme();
+  const { isDarkMode, toggleDarkMode } = useMIUITheme();
   // State hooks
   const [currentTime, setCurrentTime] = useState<string>('');
   const [currentDate, setCurrentDate] = useState<string>('');

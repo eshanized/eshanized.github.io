@@ -1,13 +1,8 @@
-"use client";
-
 import './globals.css';
 import './snigdha-theme.css';
 import type { Metadata, Viewport } from 'next';
-import { ThemeProvider } from '@/components/providers/theme-provider';
-import { NotificationProvider } from '@/components/miui/NotificationProvider';
-import { MobileCheck } from '@/components/mobile-check';
 import { Inter } from "next/font/google";
-import { MIUIThemeProvider } from "@/components/miui/MIUIThemeContext";
+import ClientLayout from '@/components/ClientLayout';
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -119,15 +114,9 @@ export default function RootLayout({
       className="scroll-smooth"
     >
       <body className={inter.className}>
-        <ThemeProvider>
-          <NotificationProvider>
-            <MobileCheck>
-              <MIUIThemeProvider>
-                {children}
-              </MIUIThemeProvider>
-            </MobileCheck>
-          </NotificationProvider>
-        </ThemeProvider>
+        <ClientLayout>
+          {children}
+        </ClientLayout>
       </body>
     </html>
   );

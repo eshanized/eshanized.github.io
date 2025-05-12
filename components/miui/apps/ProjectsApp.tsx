@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import BaseMIUIApp from './BaseMIUIApp';
 import { ExternalLink, Github, GitBranch, Star, GitFork, Loader2 } from 'lucide-react';
 import Image from 'next/image';
+import { useMIUITheme } from '../MIUIThemeContext';
 
 // Define project type
 interface Project {
@@ -23,6 +24,7 @@ export default function ProjectsApp() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const { colors } = useMIUITheme();
 
   // Fetch projects from GitHub and GitLab
   useEffect(() => {
@@ -91,33 +93,33 @@ export default function ProjectsApp() {
 
   return (
     <BaseMIUIApp title="Projects" rightAction="more">
-      <div className="p-4">
-        <h1 className="text-2xl font-bold mb-4">My Projects</h1>
+      <div className={`p-4 ${colors.primary} min-h-full`}>
+        <h1 className={`text-xl font-medium mb-4 ${colors.textPrimary}`}>My Projects</h1>
         
         {isLoading && (
           <div className="flex flex-col items-center justify-center py-12">
-            <Loader2 className="w-8 h-8 animate-spin text-blue-500 mb-2" />
-            <p className="text-gray-600 dark:text-gray-400">Loading projects...</p>
+            <Loader2 className={`w-8 h-8 animate-spin ${colors.accent} mb-2`} />
+            <p className={`${colors.textSecondary}`}>Loading projects...</p>
           </div>
         )}
         
         {error && (
-          <div className="p-4 bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 rounded-lg text-red-600 dark:text-red-300 mb-4">
+          <div className={`p-4 border ${colors.divider} rounded-md text-red-500 mb-4`}>
             {error}
           </div>
         )}
         
         {!isLoading && !error && projects.length === 0 && (
           <div className="text-center py-12">
-            <p className="text-gray-600 dark:text-gray-400">No projects found</p>
+            <p className={`${colors.textSecondary}`}>No projects found</p>
           </div>
         )}
         
-        <div className="space-y-6">
+        <div className="space-y-4">
           {projects.map((project) => (
             <div 
               key={project.id}
-              className="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-sm"
+              className={`${colors.cardBg} border ${colors.divider} overflow-hidden`}
             >
               {/* Project image */}
               <div className="w-full h-48 relative">
@@ -127,28 +129,28 @@ export default function ProjectsApp() {
                   layout="fill"
                   objectFit="cover"
                 />
-                <div className="absolute top-2 right-2 bg-black/50 rounded-full px-2 py-1 text-xs text-white">
+                <div className={`absolute top-2 right-2 ${colors.accent} bg-opacity-80 rounded-md px-2 py-0.5 text-xs text-white`}>
                   {project.source === 'github' ? 'GitHub' : 'GitLab'}
                 </div>
               </div>
               
               {/* Project details */}
               <div className="p-4">
-                <h2 className="text-lg font-semibold">{project.title}</h2>
-                <p className="text-gray-600 dark:text-gray-400 text-sm mt-2">
+                <h2 className={`text-lg font-medium ${colors.textPrimary}`}>{project.title}</h2>
+                <p className={`${colors.textSecondary} text-sm mt-2`}>
                   {project.description}
                 </p>
                 
                 {/* Project stats */}
                 <div className="flex gap-3 mt-3">
                   {project.stars !== undefined && (
-                    <div className="flex items-center text-xs text-gray-600 dark:text-gray-400">
+                    <div className={`flex items-center text-xs ${colors.textSecondary}`}>
                       <Star className="w-3.5 h-3.5 mr-1 text-yellow-500" />
                       {project.stars}
                     </div>
                   )}
                   {project.forks !== undefined && (
-                    <div className="flex items-center text-xs text-gray-600 dark:text-gray-400">
+                    <div className={`flex items-center text-xs ${colors.textSecondary}`}>
                       <GitFork className="w-3.5 h-3.5 mr-1" />
                       {project.forks}
                     </div>
@@ -160,7 +162,7 @@ export default function ProjectsApp() {
                   {project.tags.filter(Boolean).map((tag, tagIndex) => (
                     <span
                       key={tagIndex}
-                      className="px-2.5 py-0.5 bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 rounded-full text-xs"
+                      className={`px-2.5 py-0.5 ${colors.tertiary} ${colors.textPrimary} rounded-md text-xs`}
                     >
                       {tag}
                     </span>
@@ -173,7 +175,7 @@ export default function ProjectsApp() {
                     href={project.link}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center justify-center px-4 py-2 bg-gray-200 dark:bg-gray-700 rounded-lg text-sm font-medium"
+                    className={`flex items-center justify-center px-4 py-2 ${colors.tertiary} rounded-md text-sm ${colors.textPrimary}`}
                   >
                     <Github className="w-4 h-4 mr-2" />
                     <span>Code</span>
@@ -184,7 +186,7 @@ export default function ProjectsApp() {
                       href={project.demoLink}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center justify-center px-4 py-2 bg-blue-500 text-white rounded-lg text-sm font-medium"
+                      className={`flex items-center justify-center px-4 py-2 ${colors.accent} text-white rounded-md text-sm`}
                     >
                       <ExternalLink className="w-4 h-4 mr-2" />
                       <span>Live Demo</span>

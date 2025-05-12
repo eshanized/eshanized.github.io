@@ -3,11 +3,13 @@
 import React, { useState, useEffect } from 'react';
 import BaseMIUIApp from './BaseMIUIApp';
 import { Calendar as CalendarIcon, ChevronLeft, ChevronRight, Plus } from 'lucide-react';
+import { useMIUITheme } from '../MIUIThemeContext';
 
 export default function CalendarApp() {
   const [currentMonth, setCurrentMonth] = useState<Date>(new Date());
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [view, setView] = useState<string>("month"); // month, week, day
+  const { colors } = useMIUITheme();
   
   // Sample calendar events
   const events = [
@@ -146,20 +148,22 @@ export default function CalendarApp() {
   
   return (
     <BaseMIUIApp title="Calendar" rightAction={<Plus className="w-5 h-5" />}>
-      <div className="h-full flex flex-col">
+      <div className={`h-full flex flex-col ${colors.primary}`}>
         {/* Calendar navigation */}
-        <div className="p-4 flex items-center justify-between border-b border-gray-200 dark:border-gray-800">
+        <div className={`p-4 flex items-center justify-between border-b ${colors.divider} ${colors.cardBg}`}>
           <button 
-            className="p-1 text-gray-500 dark:text-gray-400"
+            className={`p-1 ${colors.textSecondary}`}
             onClick={prevMonth}
           >
             <ChevronLeft className="w-5 h-5" />
           </button>
           
           <div className="flex items-center">
-            <h2 className="text-lg font-medium">{formatMonthYear(currentMonth)}</h2>
+            <h2 className={`text-lg font-medium ${colors.textPrimary}`}>
+              {formatMonthYear(currentMonth)}
+            </h2>
             <button 
-              className="ml-3 px-2 py-1 text-xs text-blue-500 font-medium rounded-md bg-blue-100 dark:bg-blue-900/30"
+              className={`ml-3 px-2 py-1 text-xs ${colors.accent} font-medium rounded-sm`}
               onClick={goToToday}
             >
               Today
@@ -167,7 +171,7 @@ export default function CalendarApp() {
           </div>
           
           <button 
-            className="p-1 text-gray-500 dark:text-gray-400"
+            className={`p-1 ${colors.textSecondary}`}
             onClick={nextMonth}
           >
             <ChevronRight className="w-5 h-5" />
@@ -175,13 +179,13 @@ export default function CalendarApp() {
         </div>
         
         {/* Calendar grid */}
-        <div className="p-2">
+        <div className={`p-2 ${colors.cardBg}`}>
           {/* Weekday headers */}
           <div className="grid grid-cols-7 mb-2">
             {weekdays.map((day, i) => (
               <div 
                 key={i} 
-                className="text-center text-xs font-medium text-gray-500 py-1"
+                className={`text-center text-xs font-medium ${colors.textSecondary} py-1`}
               >
                 {day}
               </div>
@@ -193,10 +197,10 @@ export default function CalendarApp() {
             {getDaysInMonth(currentMonth).map((day, i) => (
               <button
                 key={i}
-                className={`aspect-square flex flex-col items-center justify-center p-1 rounded-full relative
-                  ${day.isCurrentMonth ? 'text-gray-800 dark:text-gray-200' : 'text-gray-400 dark:text-gray-600'}
+                className={`aspect-square flex flex-col items-center justify-center p-1 relative
+                  ${day.isCurrentMonth ? colors.textPrimary : colors.textTertiary}
                   ${isToday(day.date) ? 'font-bold' : ''}
-                  ${isSelected(day.date) ? 'bg-blue-500 text-white' : ''}
+                  ${isSelected(day.date) ? colors.accent + ' text-white rounded-full' : ''}
                 `}
                 onClick={() => setSelectedDate(day.date)}
               >
@@ -216,10 +220,10 @@ export default function CalendarApp() {
         </div>
         
         {/* Events list for selected date */}
-        <div className="flex-1 overflow-y-auto p-4 pt-2 bg-gray-50 dark:bg-gray-900">
+        <div className={`flex-1 overflow-y-auto p-4 pt-2 ${colors.primary}`}>
           <div className="flex items-center mb-4">
-            <CalendarIcon className="w-5 h-5 text-gray-500 mr-2" />
-            <h3 className="font-medium">
+            <CalendarIcon className={`w-5 h-5 ${colors.textSecondary} mr-2`} />
+            <h3 className={`font-medium ${colors.textPrimary}`}>
               {selectedDate.toLocaleDateString('en-US', { 
                 weekday: 'long', 
                 month: 'long', 
@@ -229,15 +233,15 @@ export default function CalendarApp() {
           </div>
           
           {getEventsForDate(selectedDate).length > 0 ? (
-            <div className="space-y-3">
+            <div className="space-y-2">
               {getEventsForDate(selectedDate).map((event) => (
                 <div 
                   key={event.id} 
-                  className="bg-white dark:bg-gray-800 rounded-xl p-3 shadow-sm border-l-4 border-l-blue-500"
+                  className={`${colors.cardBg} p-3 border-l-[3px] ${colors.divider}`}
                   style={{ borderLeftColor: event.color.replace('bg-', '') }}
                 >
-                  <h4 className="font-medium">{event.title}</h4>
-                  <div className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                  <h4 className={`font-medium ${colors.textPrimary}`}>{event.title}</h4>
+                  <div className={`mt-1 text-sm ${colors.textSecondary}`}>
                     <div className="flex items-center">
                       <span>{event.startTime} - {event.endTime}</span>
                     </div>
@@ -249,14 +253,20 @@ export default function CalendarApp() {
               ))}
             </div>
           ) : (
-            <div className="text-center py-8 text-gray-500 dark:text-gray-400">
-              <p>No events for this day</p>
-              <button className="mt-3 text-blue-500 flex items-center justify-center mx-auto">
-                <Plus className="w-4 h-4 mr-1" />
-                <span>Add Event</span>
-              </button>
+            <div className={`text-center ${colors.textSecondary} py-8`}>
+              <p>No events scheduled</p>
             </div>
           )}
+        </div>
+        
+        {/* Add event button */}
+        <div className={`p-4 border-t ${colors.divider} ${colors.cardBg} flex justify-center`}>
+          <button 
+            className={`px-4 py-2 ${colors.accent} text-white rounded-md flex items-center`}
+          >
+            <Plus className="w-4 h-4 mr-1" />
+            Add Event
+          </button>
         </div>
       </div>
     </BaseMIUIApp>
