@@ -322,6 +322,58 @@ export function LoginScreen({ onLogin }: { onLogin: (specialUser?: string) => vo
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
         >
+          {/* Brand text overlay */}
+          <div className="absolute inset-0 flex flex-col items-center justify-between p-12 z-10">
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 1, duration: 0.8 }}
+              className="text-center"
+            >
+              <h2 
+                className="text-6xl font-bold mb-2"
+                style={{
+                  background: `linear-gradient(135deg, ${catppuccinColors.dark.base[0]}, ${catppuccinColors.dark.base[5]})`,
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  textShadow: '0 0 30px rgba(203, 166, 247, 0.3)',
+                }}
+              >
+                SnigdhaOS
+              </h2>
+              <p 
+                className="text-xl"
+                style={{ color: catppuccinColors.dark.text }}
+              >
+                Elegance in Simplicity
+              </p>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 1.2, duration: 0.8 }}
+              className="text-center"
+            >
+              <p 
+                className="text-sm uppercase tracking-wider mb-2"
+                style={{ color: 'rgba(205, 214, 244, 0.6)' }}
+              >
+                Powered by
+              </p>
+              <p 
+                className="text-2xl font-bold"
+                style={{
+                  background: `linear-gradient(135deg, ${catppuccinColors.dark.base[2]}, ${catppuccinColors.dark.base[3]})`,
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                }}
+              >
+                Eshanized
+              </p>
+            </motion.div>
+          </div>
+
           {/* Animated circles background */}
           <div className="absolute inset-0 flex items-center justify-center">
             {[...Array(3)].map((_, i) => (
@@ -446,32 +498,41 @@ export function LoginScreen({ onLogin }: { onLogin: (specialUser?: string) => vo
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
         >
-          {/* Welcome text */}
+          {/* Welcome text with enhanced branding */}
           <motion.div 
             className="text-center mb-12"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
           >
-            <motion.h1 
-              className="text-5xl font-bold mb-4"
-              style={{ 
-                background: theme === 'dark'
-                  ? `linear-gradient(135deg, ${catppuccinColors.dark.base[0]}, ${catppuccinColors.dark.base[5]})`
-                  : `linear-gradient(135deg, ${catppuccinColors.light.base[0]}, ${catppuccinColors.light.base[5]})`,
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-              }}
-            >
-              Welcome Back
-            </motion.h1>
+            <motion.div className="mb-6">
+              <motion.div
+                className="flex items-center justify-center mb-4"
+                whileHover={{ scale: 1.05 }}
+                transition={{ type: "spring", stiffness: 400 }}
+              >
+                <SnigdhaOSLogo className="w-16 h-16" />
+              </motion.div>
+              <h1 
+                className="text-5xl font-bold mb-2"
+                style={{ 
+                  background: `linear-gradient(135deg, ${catppuccinColors.dark.base[0]}, ${catppuccinColors.dark.base[5]})`,
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                }}
+              >
+                Welcome Back
+              </h1>
+              <p 
+                className="text-lg"
+                style={{ color: 'rgba(205, 214, 244, 0.8)' }}
+              >
+                to your digital sanctuary
+              </p>
+            </motion.div>
             <motion.p 
               className="text-xl"
-              style={{ 
-                color: theme === 'dark' 
-                  ? catppuccinColors.dark.text 
-                  : catppuccinColors.light.text 
-              }}
+              style={{ color: catppuccinColors.dark.text }}
             >
               {currentDate}
             </motion.p>
@@ -479,22 +540,36 @@ export function LoginScreen({ onLogin }: { onLogin: (specialUser?: string) => vo
 
           {/* Login form container */}
           <motion.div 
-            className="w-full max-w-md"
+            className="w-full max-w-md relative"
             style={{
-              background: theme === 'dark' 
-                ? catppuccinColors.dark.surface 
-                : catppuccinColors.light.surface,
+              background: catppuccinColors.dark.surface,
               borderRadius: '24px',
               padding: '32px',
               backdropFilter: 'blur(20px)',
-              boxShadow: theme === 'dark'
-                ? '0 8px 32px rgba(0, 0, 0, 0.3), inset 0 0 0 1px rgba(255, 255, 255, 0.1)'
-                : '0 8px 32px rgba(65, 105, 225, 0.15), inset 0 0 0 1px rgba(65, 105, 225, 0.2)',
+              boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3), inset 0 0 0 1px rgba(255, 255, 255, 0.1)',
             }}
             initial={{ scale: 0.95 }}
             animate={{ scale: 1 }}
             transition={{ delay: 0.5 }}
           >
+            {/* Decorative corner accents */}
+            <div className="absolute top-0 left-0 w-16 h-16 pointer-events-none">
+              <div className="absolute top-0 left-0 w-[2px] h-8" style={{ background: catppuccinColors.dark.base[0] }} />
+              <div className="absolute top-0 left-0 w-8 h-[2px]" style={{ background: catppuccinColors.dark.base[0] }} />
+            </div>
+            <div className="absolute top-0 right-0 w-16 h-16 pointer-events-none">
+              <div className="absolute top-0 right-0 w-[2px] h-8" style={{ background: catppuccinColors.dark.base[5] }} />
+              <div className="absolute top-0 right-0 w-8 h-[2px]" style={{ background: catppuccinColors.dark.base[5] }} />
+            </div>
+            <div className="absolute bottom-0 left-0 w-16 h-16 pointer-events-none">
+              <div className="absolute bottom-0 left-0 w-[2px] h-8" style={{ background: catppuccinColors.dark.base[2] }} />
+              <div className="absolute bottom-0 left-0 w-8 h-[2px]" style={{ background: catppuccinColors.dark.base[2] }} />
+            </div>
+            <div className="absolute bottom-0 right-0 w-16 h-16 pointer-events-none">
+              <div className="absolute bottom-0 right-0 w-[2px] h-8" style={{ background: catppuccinColors.dark.base[3] }} />
+              <div className="absolute bottom-0 right-0 w-8 h-[2px]" style={{ background: catppuccinColors.dark.base[3] }} />
+            </div>
+
             {/* Time display */}
             <motion.div 
               className="text-center mb-8"
@@ -502,12 +577,9 @@ export function LoginScreen({ onLogin }: { onLogin: (specialUser?: string) => vo
               animate={{ opacity: 1 }}
               transition={{ delay: 0.7 }}
             >
-              <h2 className="text-6xl font-light"
-                style={{ 
-                  color: theme === 'dark' 
-                    ? catppuccinColors.dark.text 
-                    : catppuccinColors.light.text 
-                }}
+              <h2 
+                className="text-6xl font-light"
+                style={{ color: catppuccinColors.dark.text }}
               >
                 {currentTime}
               </h2>
@@ -605,6 +677,21 @@ export function LoginScreen({ onLogin }: { onLogin: (specialUser?: string) => vo
                 Skip Login
               </motion.button>
             </motion.form>
+          </motion.div>
+
+          {/* Bottom branding */}
+          <motion.div
+            className="mt-8 text-center"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1.4 }}
+          >
+            <p 
+              className="text-sm"
+              style={{ color: 'rgba(205, 214, 244, 0.6)' }}
+            >
+              SnigdhaOS × Eshanized
+            </p>
           </motion.div>
 
           {/* Bottom controls - Only show password hint toggle */}
