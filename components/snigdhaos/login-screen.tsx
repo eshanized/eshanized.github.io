@@ -7,6 +7,38 @@ import { PERSONAL_INFO } from '@/lib/constants';
 import { User, Wifi, Battery, ChevronDown, Lock, ArrowRight, Info, Globe, Moon, Sun } from 'lucide-react';
 import { SnigdhaOSLogo } from './snigdhaos-logo';
 
+// Catppuccin color palette
+const catppuccinColors = {
+  dark: {
+    base: [
+      'rgba(198, 160, 246, 0.8)',  // Mauve
+      'rgba(245, 169, 127, 0.8)',  // Peach
+      'rgba(166, 227, 161, 0.8)',  // Green
+      'rgba(148, 226, 213, 0.8)',  // Teal
+      'rgba(137, 180, 250, 0.8)',  // Blue
+      'rgba(203, 166, 247, 0.8)',  // Lavender
+    ],
+    surface: 'rgba(30, 30, 46, 0.85)',  // Surface0
+    overlay: 'rgba(17, 17, 27, 0.75)',  // Base
+    accent: 'rgba(203, 166, 247, 1)',   // Lavender
+    text: 'rgba(205, 214, 244, 1)',     // Text
+  },
+  light: {
+    base: [
+      'rgba(168, 130, 216, 0.6)',  // Mauve
+      'rgba(215, 139, 97, 0.6)',   // Peach
+      'rgba(136, 197, 131, 0.6)',  // Green
+      'rgba(118, 196, 183, 0.6)',  // Teal
+      'rgba(107, 150, 220, 0.6)',  // Blue
+      'rgba(173, 136, 217, 0.6)',  // Lavender
+    ],
+    surface: 'rgba(239, 241, 245, 0.85)', // Surface0
+    overlay: 'rgba(220, 224, 232, 0.75)', // Base
+    accent: 'rgba(173, 136, 217, 1)',     // Lavender
+    text: 'rgba(76, 79, 105, 1)',         // Text
+  }
+};
+
 export function LoginScreen({ onLogin }: { onLogin: (specialUser?: string) => void }) {
   const [currentTime, setCurrentTime] = useState("");
   const [currentDate, setCurrentDate] = useState("");
@@ -49,22 +81,10 @@ export function LoginScreen({ onLogin }: { onLogin: (specialUser?: string) => vo
       orbitAngle: number;
     }> = [];
 
-    // Enhanced color palette with more vibrant colors
+    // Use Catppuccin colors
     const colors = theme === 'dark' 
-      ? [
-          'rgba(100, 149, 237, 0.8)',  // Cornflower blue
-          'rgba(147, 112, 219, 0.8)',  // Medium purple
-          'rgba(123, 104, 238, 0.8)',  // Medium slate blue
-          'rgba(72, 61, 139, 0.8)',    // Dark slate blue
-          'rgba(106, 90, 205, 0.8)'    // Slate blue
-        ]
-      : [
-          'rgba(65, 105, 225, 0.5)',   // Royal blue
-          'rgba(30, 144, 255, 0.5)',   // Dodger blue
-          'rgba(0, 191, 255, 0.5)',    // Deep sky blue
-          'rgba(70, 130, 180, 0.5)',   // Steel blue
-          'rgba(100, 149, 237, 0.5)'   // Cornflower blue
-        ];
+      ? catppuccinColors.dark.base
+      : catppuccinColors.light.base;
 
     // Create particles with enhanced properties
     for (let i = 0; i < 80; i++) {
@@ -103,7 +123,7 @@ export function LoginScreen({ onLogin }: { onLogin: (specialUser?: string) => vo
       
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      // Create dynamic gradient background with time-based animation
+      // Create dynamic gradient background with Catppuccin colors
       const time = Date.now() * 0.0002;
       const gradient = ctx.createLinearGradient(
         Math.sin(time) * canvas.width,
@@ -113,13 +133,13 @@ export function LoginScreen({ onLogin }: { onLogin: (specialUser?: string) => vo
       );
 
       if (theme === 'dark') {
-        gradient.addColorStop(0, '#1a1b2e');
-        gradient.addColorStop(0.5, '#14152b');
-        gradient.addColorStop(1, '#1a1b2e');
+        gradient.addColorStop(0, '#1e1e2e');  // Catppuccin Mocha base
+        gradient.addColorStop(0.5, '#181825'); // Catppuccin Mocha mantle
+        gradient.addColorStop(1, '#11111b');   // Catppuccin Mocha crust
       } else {
-        gradient.addColorStop(0, '#ffffff');
-        gradient.addColorStop(0.5, '#f0f7ff');
-        gradient.addColorStop(1, '#ffffff');
+        gradient.addColorStop(0, '#eff1f5');   // Catppuccin Latte base
+        gradient.addColorStop(0.5, '#e6e9ef'); // Catppuccin Latte mantle
+        gradient.addColorStop(1, '#dce0e8');   // Catppuccin Latte crust
       }
       
       ctx.fillStyle = gradient;
@@ -283,144 +303,78 @@ export function LoginScreen({ onLogin }: { onLogin: (specialUser?: string) => vo
         className="absolute inset-0 mix-blend-overlay pointer-events-none"
         style={{
           backgroundImage: theme === 'dark'
-            ? 'radial-gradient(circle at 50% 50%, rgba(100, 149, 237, 0.15), transparent 70%), radial-gradient(circle at 100% 0%, rgba(147, 112, 219, 0.1), transparent 50%)'
-            : 'radial-gradient(circle at 50% 50%, rgba(65, 105, 225, 0.2), transparent 70%), radial-gradient(circle at 100% 0%, rgba(30, 144, 255, 0.15), transparent 50%)'
+            ? `radial-gradient(circle at 50% 50%, ${catppuccinColors.dark.base[0]}, transparent 70%),
+               radial-gradient(circle at 100% 0%, ${catppuccinColors.dark.base[5]}, transparent 50%)`
+            : `radial-gradient(circle at 50% 50%, ${catppuccinColors.light.base[0]}, transparent 70%),
+               radial-gradient(circle at 100% 0%, ${catppuccinColors.light.base[5]}, transparent 50%)`
         }}
       />
       <div className="absolute inset-0 bg-[url(https://grainy-gradients.vercel.app/noise.svg)] opacity-[0.15] pointer-events-none mix-blend-overlay"/>
       
-      {/* Status Bar with enhanced styling */}
-      <motion.div 
-        className="absolute top-0 left-0 right-0 h-12 flex items-center justify-between px-8 z-20"
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.2, type: "spring", stiffness: 100 }}
-        style={{
-          background: theme === 'dark'
-            ? 'linear-gradient(180deg, rgba(26, 27, 46, 0.85) 0%, rgba(26, 27, 46, 0) 100%)'
-            : 'linear-gradient(180deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0) 100%)',
-          backdropFilter: 'blur(10px)',
-          borderBottom: theme === 'dark' 
-            ? '1px solid rgba(255, 255, 255, 0.1)'
-            : '1px solid rgba(65, 105, 225, 0.1)'
-        }}
-      >
-        <div className="flex items-center space-x-3">
-          <motion.div
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <SnigdhaOSLogo className="w-5 h-5" />
-          </motion.div>
-          <span className="text-sm font-medium" style={{ color: theme === 'dark' ? 'white' : 'black' }}>
-            SnigdhaOS
-          </span>
-        </div>
-        <div className="flex items-center space-x-4">
-          <Wifi className="w-4 h-4" style={{ opacity: 0.8 }} />
-          <Battery className="w-4 h-4" style={{ opacity: 0.8 }} />
-          <span className="text-sm font-medium">{currentTime}</span>
-        </div>
-      </motion.div>
-      
-      {/* Main content container with enhanced styling */}
-      <div className="absolute inset-0 flex flex-col items-center justify-center">
-        {/* Clock and date with enhanced typography */}
+      {/* Main content with split layout */}
+      <div className="absolute inset-0 flex">
+        {/* Left panel - Decorative */}
         <motion.div 
-          className="mb-12 text-center z-10"
-          style={{ 
-            color: theme === 'dark' ? 'white' : 'rgba(0, 0, 0, 0.9)',
-            textShadow: theme === 'dark'
-              ? '0 0 30px rgba(100, 149, 237, 0.3)'
-              : '0 0 30px rgba(65, 105, 225, 0.2)'
-          }}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.4 }}
+          className="hidden lg:flex w-1/2 relative overflow-hidden items-center justify-center"
+          initial={{ opacity: 0, x: -50 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
         >
-          <motion.h1 
-            className="text-7xl font-light mb-3"
-            style={{ 
-              color: theme === 'dark' ? 'white' : 'rgba(0, 0, 0, 0.9)',
-              textShadow: theme === 'dark'
-                ? '0 0 30px rgba(100, 149, 237, 0.3)'
-                : '0 0 30px rgba(65, 105, 225, 0.2)'
-            }}
-            whileHover={{ scale: 1.02 }}
-          >
-            {currentTime}
-          </motion.h1>
-          <motion.p 
-            className="text-xl"
-            style={{ 
-              color: theme === 'dark' ? 'rgba(255, 255, 255, 0.8)' : 'rgba(0, 0, 0, 0.7)',
-              textShadow: theme === 'dark'
-                ? '0 0 20px rgba(100, 149, 237, 0.2)'
-                : '0 0 20px rgba(65, 105, 225, 0.15)'
-            }}
-            whileHover={{ scale: 1.02 }}
-          >
-            {currentDate}
-          </motion.p>
-        </motion.div>
-        
-        {/* Glass container with enhanced styling */}
-        <motion.div 
-          className="relative z-10 p-8 rounded-2xl overflow-hidden max-w-md w-full mx-4"
-          style={{
-            backgroundColor: theme === 'dark' 
-              ? 'rgba(26, 27, 46, 0.5)' 
-              : 'rgba(255, 255, 255, 0.7)',
-            backdropFilter: 'blur(20px) saturate(180%)',
-            WebkitBackdropFilter: 'blur(20px) saturate(180%)',
-            boxShadow: theme === 'dark' 
-              ? '0 8px 32px rgba(0, 0, 0, 0.3), inset 0 0 0 1px rgba(255, 255, 255, 0.1), 0 0 100px rgba(100, 149, 237, 0.1)' 
-              : '0 8px 32px rgba(65, 105, 225, 0.15), inset 0 0 0 1px rgba(65, 105, 225, 0.2), 0 0 100px rgba(65, 105, 225, 0.1)',
-            transform: `perspective(1000px) rotateX(${bgPosition.y / 30}deg) rotateY(${-bgPosition.x / 30}deg)`,
-          }}
-          initial={{ opacity: 0, scale: 0.95, y: 10 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: [0.23, 1, 0.32, 1] }}
-        >
-          {/* Theme toggle with enhanced design */}
-          <motion.button
-            className="absolute top-4 right-4 p-3 rounded-xl backdrop-blur-md"
-            style={{ 
-              backgroundColor: theme === 'dark' 
-                ? 'rgba(255, 255, 255, 0.1)' 
-                : 'rgba(65, 105, 225, 0.1)',
-              border: `1px solid ${theme === 'dark' 
-                ? 'rgba(255, 255, 255, 0.1)' 
-                : 'rgba(65, 105, 225, 0.2)'}`,
-              boxShadow: theme === 'dark'
-                ? '0 4px 12px rgba(0, 0, 0, 0.2)'
-                : '0 4px 12px rgba(65, 105, 225, 0.1)'
-            }}
-            whileHover={{ scale: 1.1, rotate: 180 }}
-            whileTap={{ scale: 0.9 }}
-            onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-          >
-            {theme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
-          </motion.button>
-            
-          {/* SnigdhaOS Logo with enhanced effects */}
+          {/* Animated circles background */}
+          <div className="absolute inset-0 flex items-center justify-center">
+            {[...Array(3)].map((_, i) => (
+              <motion.div
+                key={i}
+                className="absolute rounded-full"
+                style={{
+                  width: `${400 + i * 100}px`,
+                  height: `${400 + i * 100}px`,
+                  border: `2px solid ${theme === 'dark' 
+                    ? catppuccinColors.dark.base[i] 
+                    : catppuccinColors.light.base[i]}`,
+                  opacity: 0.2 - i * 0.05
+                }}
+                animate={{
+                  rotate: [0, 360],
+                  scale: [1, 1.1, 1]
+                }}
+                transition={{
+                  duration: 20 + i * 5,
+                  repeat: Infinity,
+                  ease: "linear"
+                }}
+              />
+            ))}
+          </div>
+
+          {/* Large decorative logo */}
           <motion.div
-            className="flex justify-center mb-8"
-            animate={controls}
+            className="relative z-10 transform"
+            animate={{
+              scale: [1, 1.05, 1],
+              rotate: [0, 5, 0]
+            }}
+            transition={{
+              duration: 8,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
           >
-            <div className="relative w-28 h-28">
+            <div className="relative w-64 h-64">
               <motion.div 
                 className="absolute inset-0 rounded-full"
                 style={{
-                  background: theme === 'dark'
-                    ? 'conic-gradient(from 0deg, #6495ED, #4169E1, #1E90FF, #6495ED)'
-                    : 'conic-gradient(from 0deg, #4169E1, #1E90FF, #4169E1, #1E90FF)'
+                  background: `conic-gradient(from 0deg, ${
+                    theme === 'dark'
+                      ? catppuccinColors.dark.base.join(', ')
+                      : catppuccinColors.light.base.join(', ')
+                  })`
                 }}
                 animate={{
                   rotate: [0, 360]
                 }}
                 transition={{
-                  duration: 8,
+                  duration: 20,
                   repeat: Infinity,
                   ease: "linear"
                 }}
@@ -429,245 +383,295 @@ export function LoginScreen({ onLogin }: { onLogin: (specialUser?: string) => vo
                 className="absolute inset-0"
                 style={{
                   background: `radial-gradient(circle at 30% 30%, ${
-                    theme === 'dark' ? 'rgba(100, 149, 237, 0.4)' : 'rgba(65, 105, 225, 0.4)'
+                    theme === 'dark' 
+                      ? catppuccinColors.dark.base[0]
+                      : catppuccinColors.light.base[0]
                   }, transparent)`,
-                  filter: 'blur(10px)',
+                  filter: 'blur(30px)',
                 }}
                 animate={{
                   scale: [1, 1.2, 1],
                   opacity: [0.5, 0.8, 0.5]
                 }}
                 transition={{
-                  duration: 3,
+                  duration: 4,
                   repeat: Infinity,
                   ease: "easeInOut"
                 }}
               />
-              <div className="relative w-full h-full rounded-full flex items-center justify-center backdrop-blur-sm">
-                <div
-                  style={{
-                    filter: `drop-shadow(0 0 10px ${theme === 'dark' ? 'rgba(255,255,255,0.5)' : 'rgba(65,105,225,0.5)'})`
-                  }}
-                >
-                  <SnigdhaOSLogo 
-                    className={`w-20 h-20 ${theme === 'dark' ? 'text-white' : 'text-[#4169E1]'}`}
-                  />
-                </div>
+              <div className="absolute inset-0 rounded-full flex items-center justify-center backdrop-blur-lg">
+                <SnigdhaOSLogo 
+                  className={`w-40 h-40 ${
+                    theme === 'dark' ? 'text-white' : 'text-[#4169E1]'
+                  }`}
+                />
               </div>
             </div>
           </motion.div>
-          
-          {/* Brand name with enhanced typography */}
-          <motion.h2 
-            className="text-2xl font-bold text-center mb-2"
-            style={{ 
-              color: theme === 'dark' ? 'white' : 'rgba(0, 0, 0, 0.9)',
-              letterSpacing: '0.01em',
-              textShadow: theme === 'dark' 
-                ? '0 0 20px rgba(100, 149, 237, 0.3)' 
-                : '0 0 20px rgba(65, 105, 225, 0.2)'
-            }}
-            initial={{ opacity: 0, y: 5 }}
+
+          {/* Floating elements */}
+          {[...Array(6)].map((_, i) => (
+            <motion.div
+              key={i}
+              className="absolute rounded-full"
+              style={{
+                width: '8px',
+                height: '8px',
+                background: theme === 'dark'
+                  ? catppuccinColors.dark.base[i]
+                  : catppuccinColors.light.base[i],
+                top: `${Math.random() * 100}%`,
+                left: `${Math.random() * 100}%`,
+              }}
+              animate={{
+                y: [0, -30, 0],
+                opacity: [0.8, 0.3, 0.8],
+              }}
+              transition={{
+                duration: 3 + i,
+                repeat: Infinity,
+                ease: "easeInOut",
+                delay: i * 0.5,
+              }}
+            />
+          ))}
+        </motion.div>
+
+        {/* Right panel - Login form */}
+        <motion.div 
+          className="w-full lg:w-1/2 flex flex-col items-center justify-center p-8"
+          initial={{ opacity: 0, x: 50 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+        >
+          {/* Welcome text */}
+          <motion.div 
+            className="text-center mb-12"
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+          >
+            <motion.h1 
+              className="text-5xl font-bold mb-4"
+              style={{ 
+                background: theme === 'dark'
+                  ? `linear-gradient(135deg, ${catppuccinColors.dark.base[0]}, ${catppuccinColors.dark.base[5]})`
+                  : `linear-gradient(135deg, ${catppuccinColors.light.base[0]}, ${catppuccinColors.light.base[5]})`,
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+              }}
+            >
+              Welcome Back
+            </motion.h1>
+            <motion.p 
+              className="text-xl"
+              style={{ 
+                color: theme === 'dark' 
+                  ? catppuccinColors.dark.text 
+                  : catppuccinColors.light.text 
+              }}
+            >
+              {currentDate}
+            </motion.p>
+          </motion.div>
+
+          {/* Login form container */}
+          <motion.div 
+            className="w-full max-w-md"
+            style={{
+              background: theme === 'dark' 
+                ? catppuccinColors.dark.surface 
+                : catppuccinColors.light.surface,
+              borderRadius: '24px',
+              padding: '32px',
+              backdropFilter: 'blur(20px)',
+              boxShadow: theme === 'dark'
+                ? '0 8px 32px rgba(0, 0, 0, 0.3), inset 0 0 0 1px rgba(255, 255, 255, 0.1)'
+                : '0 8px 32px rgba(65, 105, 225, 0.15), inset 0 0 0 1px rgba(65, 105, 225, 0.2)',
+            }}
+            initial={{ scale: 0.95 }}
+            animate={{ scale: 1 }}
             transition={{ delay: 0.5 }}
           >
-            SnigdhaOS
-          </motion.h2>
-          
-          {/* User name with enhanced styling */}
-          <motion.p 
-            className="text-base font-sf-pro font-normal mb-3 text-center"
-            style={{ 
-              color: theme === 'dark' ? 'rgba(255, 255, 255, 0.8)' : 'rgba(0, 0, 0, 0.8)',
-              textShadow: theme === 'dark' 
-                ? '0 0 10px rgba(100, 149, 237, 0.2)' 
-                : '0 0 10px rgba(65, 105, 225, 0.1)'
-            }}
-            initial={{ opacity: 0, y: 5 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6 }}
-          >
-            {PERSONAL_INFO.name}
-          </motion.p>
-          
-          {/* Password hint with enhanced design */}
-          <AnimatePresence>
-            {showPasswordHint && (
-              <motion.div
-                initial={{ opacity: 0, y: 5 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0 }}
-                className="text-sm mb-5 text-center font-sf-pro"
+            {/* Time display */}
+            <motion.div 
+              className="text-center mb-8"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.7 }}
+            >
+              <h2 className="text-6xl font-light"
                 style={{ 
                   color: theme === 'dark' 
-                    ? 'rgba(100, 149, 237, 0.9)' 
-                    : 'rgba(65, 105, 225, 0.9)',
-                  textShadow: '0 0 10px rgba(100, 149, 237, 0.3)'
+                    ? catppuccinColors.dark.text 
+                    : catppuccinColors.light.text 
                 }}
               >
-                <p className="flex items-center justify-center">
-                  <Info className="w-3.5 h-3.5 mr-1.5" />
-                  <span>Hint: Try the name that brings love ♥</span>
-                </p>
-              </motion.div>
-            )}
-          </AnimatePresence>
-          
-          {/* Password input with enhanced design */}
-          <motion.form 
-            onSubmit={handleSubmit}
-            animate={{ x: isShaking ? [-10, 10, -10, 10, 0] : 0 }}
-            transition={{ duration: 0.4 }}
-            className="relative"
-          >
-            <div className="relative">
-              <motion.input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                onFocus={() => setIsPasswordFocused(true)}
-                onBlur={() => setIsPasswordFocused(false)}
-                placeholder="Enter password"
-                className="w-full h-14 rounded-xl px-12 outline-none transition-all duration-300"
-                style={{
-                  backgroundColor: theme === 'dark' 
-                    ? 'rgba(255, 255, 255, 0.08)' 
-                    : 'rgba(65, 105, 225, 0.08)',
-                  color: theme === 'dark' ? 'white' : 'rgba(0, 0, 0, 0.8)',
-                  border: `1px solid ${isPasswordFocused 
-                    ? theme === 'dark' ? 'rgba(100, 149, 237, 0.8)' : 'rgba(65, 105, 225, 0.5)'
-                    : theme === 'dark' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(65, 105, 225, 0.2)'}`,
-                  boxShadow: isPasswordFocused
-                    ? `0 0 0 4px ${theme === 'dark' ? 'rgba(100, 149, 237, 0.2)' : 'rgba(65, 105, 225, 0.15)'}, 
-                       inset 0 0 20px ${theme === 'dark' ? 'rgba(100, 149, 237, 0.1)' : 'rgba(65, 105, 225, 0.05)'}`
-                    : `inset 0 0 20px ${theme === 'dark' ? 'rgba(0, 0, 0, 0.1)' : 'rgba(65, 105, 225, 0.05)'}`,
-                  backdropFilter: 'blur(10px)'
-                }}
-                whileFocus={{ scale: 1.02 }}
-              />
-              <Lock className={`absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 transition-colors duration-300 ${
-                isPasswordFocused 
-                  ? theme === 'dark' ? 'text-primary' : 'text-blue-600' 
-                  : theme === 'dark' ? 'opacity-60' : 'opacity-40'
-              }`} />
+                {currentTime}
+              </h2>
+            </motion.div>
+
+            {/* Password input */}
+            <motion.form 
+              onSubmit={handleSubmit}
+              animate={{ x: isShaking ? [-10, 10, -10, 10, 0] : 0 }}
+              transition={{ duration: 0.4 }}
+              className="space-y-6"
+            >
+              <div className="relative">
+                <motion.input
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  onFocus={() => setIsPasswordFocused(true)}
+                  onBlur={() => setIsPasswordFocused(false)}
+                  placeholder="Enter password"
+                  className="w-full h-14 rounded-xl px-12 outline-none transition-all duration-300"
+                  style={{
+                    backgroundColor: theme === 'dark' 
+                      ? 'rgba(255, 255, 255, 0.08)' 
+                      : 'rgba(65, 105, 225, 0.08)',
+                    color: theme === 'dark' 
+                      ? catppuccinColors.dark.text 
+                      : catppuccinColors.light.text,
+                    border: `1px solid ${isPasswordFocused 
+                      ? theme === 'dark' 
+                        ? catppuccinColors.dark.accent 
+                        : catppuccinColors.light.accent
+                      : theme === 'dark' 
+                        ? 'rgba(255, 255, 255, 0.1)' 
+                        : 'rgba(65, 105, 225, 0.2)'}`,
+                    boxShadow: isPasswordFocused
+                      ? `0 0 0 4px ${theme === 'dark' 
+                        ? 'rgba(203, 166, 247, 0.2)' 
+                        : 'rgba(173, 136, 217, 0.15)'}`
+                      : 'none',
+                  }}
+                />
+                <Lock className={`absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 transition-colors duration-300 ${
+                  isPasswordFocused 
+                    ? theme === 'dark' 
+                      ? 'text-[#cba6f7]' 
+                      : 'text-[#ad88d9]' 
+                    : 'opacity-50'
+                }`} />
+              </div>
+
+              {/* Login button */}
               <motion.button
                 type="submit"
-                className="absolute right-3 top-1/2 transform -translate-y-1/2 w-8 h-8 rounded-lg flex items-center justify-center overflow-hidden"
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
+                className="w-full h-14 rounded-xl relative overflow-hidden"
                 style={{
                   background: theme === 'dark'
-                    ? 'linear-gradient(135deg, #6495ED, #4169E1)'
-                    : 'linear-gradient(135deg, #4169E1, #1E90FF)',
-                  boxShadow: `0 0 20px ${theme === 'dark' ? 'rgba(100, 149, 237, 0.3)' : 'rgba(65, 105, 225, 0.3)'}`,
+                    ? `linear-gradient(135deg, ${catppuccinColors.dark.base[0]}, ${catppuccinColors.dark.base[5]})`
+                    : `linear-gradient(135deg, ${catppuccinColors.light.base[0]}, ${catppuccinColors.light.base[5]})`,
                 }}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
               >
                 <motion.div
-                  className="absolute inset-0"
-                  style={{
-                    background: 'linear-gradient(45deg, transparent, rgba(255,255,255,0.3), transparent)',
-                    transform: 'translateX(-100%)',
-                  }}
-                  animate={{
-                    transform: ['translateX(-100%)', 'translateX(100%)'],
-                  }}
+                  className="absolute inset-0 bg-white/20"
+                  initial={{ x: '-100%' }}
+                  animate={{ x: '100%' }}
                   transition={{
-                    duration: 1.5,
                     repeat: Infinity,
-                    repeatDelay: 0.5,
+                    duration: 1.5,
                     ease: 'linear',
                   }}
                 />
-                <ArrowRight className="w-5 h-5 text-white relative z-10" />
+                <span className="relative z-10 text-white font-medium">
+                  Login
+                </span>
               </motion.button>
-            </div>
-            
-            <div className="mt-6 w-full text-sm flex justify-center">
-              <motion.button 
+
+              {/* Skip login button */}
+              <motion.button
                 type="button"
-                className="w-full h-12 rounded-xl text-base font-medium transition-all overflow-hidden relative"
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
                 onClick={() => onLogin()}
+                className="w-full h-12 rounded-xl text-base font-medium"
                 style={{
                   background: theme === 'dark'
-                    ? 'linear-gradient(135deg, rgba(100, 149, 237, 0.2), rgba(65, 105, 225, 0.2))'
-                    : 'linear-gradient(135deg, rgba(65, 105, 225, 0.1), rgba(30, 144, 255, 0.1))',
-                  color: theme === 'dark' ? 'rgba(255, 255, 255, 0.8)' : 'rgba(0, 0, 0, 0.6)',
-                  border: `1px solid ${theme === 'dark' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(65, 105, 225, 0.2)'}`,
-                  boxShadow: theme === 'dark'
-                    ? '0 4px 12px rgba(0, 0, 0, 0.2)'
-                    : '0 4px 12px rgba(65, 105, 225, 0.1)'
+                    ? 'rgba(255, 255, 255, 0.1)'
+                    : 'rgba(65, 105, 225, 0.1)',
+                  color: theme === 'dark'
+                    ? catppuccinColors.dark.text
+                    : catppuccinColors.light.text,
                 }}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
               >
                 Skip Login
               </motion.button>
-            </div>
-          </motion.form>
+            </motion.form>
+          </motion.div>
+
+          {/* Bottom controls */}
+          <motion.div 
+            className="flex justify-between w-full max-w-md mt-8"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.9 }}
+          >
+            {/* Theme toggle */}
+            <motion.button
+              onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+              className="p-3 rounded-xl backdrop-blur-md"
+              style={{
+                background: theme === 'dark'
+                  ? 'rgba(255, 255, 255, 0.1)'
+                  : 'rgba(65, 105, 225, 0.1)',
+                border: `1px solid ${theme === 'dark'
+                  ? 'rgba(255, 255, 255, 0.1)'
+                  : 'rgba(65, 105, 225, 0.2)'}`,
+              }}
+              whileHover={{ scale: 1.1, rotate: 180 }}
+              whileTap={{ scale: 0.9 }}
+            >
+              {theme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+            </motion.button>
+
+            {/* Password hint toggle */}
+            <motion.button
+              onClick={() => setShowPasswordHint(!showPasswordHint)}
+              className="p-3 rounded-xl backdrop-blur-md"
+              style={{
+                background: theme === 'dark'
+                  ? 'rgba(255, 255, 255, 0.1)'
+                  : 'rgba(65, 105, 225, 0.1)',
+                border: `1px solid ${theme === 'dark'
+                  ? 'rgba(255, 255, 255, 0.1)'
+                  : 'rgba(65, 105, 225, 0.2)'}`,
+              }}
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+            >
+              <Info className="w-5 h-5" />
+            </motion.button>
+          </motion.div>
+
+          {/* Password hint */}
+          <AnimatePresence>
+            {showPasswordHint && (
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                className="mt-4 text-sm text-center p-3 rounded-xl backdrop-blur-md"
+                style={{
+                  background: theme === 'dark'
+                    ? 'rgba(255, 255, 255, 0.1)'
+                    : 'rgba(65, 105, 225, 0.1)',
+                  color: theme === 'dark'
+                    ? catppuccinColors.dark.text
+                    : catppuccinColors.light.text,
+                }}
+              >
+                Hint: Try the name that brings love ♥
+              </motion.div>
+            )}
+          </AnimatePresence>
         </motion.div>
       </div>
-      
-      {/* Bottom controls with enhanced styling */}
-      <div className="absolute bottom-8 left-0 right-0 flex justify-between px-8 z-10">
-        {/* Language selector with enhanced design */}
-        <motion.button 
-          className="flex items-center text-xs backdrop-blur-md px-4 py-2 rounded-lg border font-sf-pro"
-          style={{ 
-            background: theme === 'dark' 
-              ? 'rgba(30, 32, 48, 0.5)' 
-              : 'rgba(65, 105, 225, 0.1)',
-            borderColor: theme === 'dark' 
-              ? 'rgba(255, 255, 255, 0.1)' 
-              : 'rgba(65, 105, 225, 0.2)',
-            color: theme === 'dark' 
-              ? 'rgba(255, 255, 255, 0.8)' 
-              : 'rgba(0, 0, 0, 0.6)',
-            boxShadow: theme === 'dark'
-              ? '0 4px 12px rgba(0, 0, 0, 0.2)'
-              : '0 4px 12px rgba(65, 105, 225, 0.1)'
-          }}
-          whileHover={{ scale: 1.03 }}
-          whileTap={{ scale: 0.97 }}
-        >
-          <Globe className="w-3.5 h-3.5 mr-1.5" />
-          English
-          <ChevronDown className="w-3 h-3 ml-1.5" />
-        </motion.button>
-
-        {/* Accessibility button with enhanced design */}
-        <motion.button 
-          className="flex items-center text-xs backdrop-blur-md px-4 py-2 rounded-lg border font-sf-pro"
-          style={{ 
-            background: theme === 'dark' 
-              ? 'rgba(30, 32, 48, 0.5)' 
-              : 'rgba(65, 105, 225, 0.1)',
-            borderColor: theme === 'dark' 
-              ? 'rgba(255, 255, 255, 0.1)' 
-              : 'rgba(65, 105, 225, 0.2)',
-            color: theme === 'dark' 
-              ? 'rgba(255, 255, 255, 0.8)' 
-              : 'rgba(0, 0, 0, 0.6)',
-            boxShadow: theme === 'dark'
-              ? '0 4px 12px rgba(0, 0, 0, 0.2)'
-              : '0 4px 12px rgba(65, 105, 225, 0.1)'
-          }}
-          whileHover={{ scale: 1.03 }}
-          whileTap={{ scale: 0.97 }}
-        >
-          <svg className="w-3.5 h-3.5 mr-1.5" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4M12,6A6,6 0 0,0 6,12A6,6 0 0,0 12,18A6,6 0 0,0 18,12A6,6 0 0,0 12,6M12,8A4,4 0 0,1 16,12A4,4 0 0,1 12,16A4,4 0 0,1 8,12A4,4 0 0,1 12,8Z" />
-          </svg>
-          Accessibility
-        </motion.button>
-      </div>
-      
-      {/* CSS for animations */}
-      <style jsx global>{`
-        @keyframes spin {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
-        }
-      `}</style>
     </div>
   );
 }
