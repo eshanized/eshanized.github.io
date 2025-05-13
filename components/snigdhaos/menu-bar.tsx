@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback, useMemo, memo } from 'react';
 import { useTheme } from 'next-themes';
 import { PERSONAL_INFO, DESKTOP_APPS } from '@/lib/constants';
+import { SnigdhaOSLogo } from './snigdhaos-logo';
 import { 
   Moon, Sun, Wifi, Battery, Command, Search, ChevronDown,
   FileText, Edit2, Eye, Layout, HelpCircle, Settings, Power,
@@ -527,382 +528,491 @@ export const MenuBar = memo(function MenuBar({
           letter-spacing: 0.02em;
         }
 
-        .menu-name {
-          font-family: 'Dosis', sans-serif;
-          letter-spacing: 0.02em;
+        .glass-effect {
+          backdrop-filter: blur(10px);
+          -webkit-backdrop-filter: blur(10px);
         }
 
-        .menu-bar-item {
-          font-family: 'Dosis', sans-serif;
-          letter-spacing: 0.02em;
+        .menu-pill {
+          transition: all 0.3s ease;
+          transform-origin: center;
+        }
+
+        .menu-pill:hover {
+          transform: translateY(-1px);
+        }
+
+        .status-icon {
+          transition: all 0.2s ease;
+        }
+
+        .status-icon:hover {
+          transform: scale(1.1);
+        }
+
+        .menu-separator {
+          width: 1px;
+          height: 16px;
+          background: ${theme === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'};
+          margin: 0 8px;
+        }
+
+        .neo-dropdown {
+          backdrop-filter: blur(20px);
+          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .menu-item-hover {
+          position: relative;
+          transition: all 0.3s ease;
+        }
+
+        .menu-item-hover::before {
+          content: '';
+          position: absolute;
+          inset: 0;
+          border-radius: 12px;
+          padding: 1px;
+          background: linear-gradient(45deg, #cba6f7, #89b4fa);
+          -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+          mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+          -webkit-mask-composite: xor;
+          mask-composite: exclude;
+          opacity: 0;
+          transition: opacity 0.3s ease;
+        }
+
+        .menu-item-hover:hover::before {
+          opacity: 1;
+        }
+
+        .glass-card {
+          background: rgba(255, 255, 255, 0.05);
+          backdrop-filter: blur(10px);
+          border-radius: 16px;
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          transition: all 0.3s ease;
+        }
+
+        .glass-card:hover {
+          background: rgba(255, 255, 255, 0.1);
+          transform: translateY(-2px);
         }
       `}</style>
       
       <motion.div 
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ 
-          type: "spring", 
-          stiffness: 300, 
-          damping: 30 
-        }}
+        transition={{ type: "spring", stiffness: 300, damping: 30 }}
         className={`
-          menu-bar w-full h-7 flex items-center justify-between px-2 z-50 text-xs font-sans
+          menu-bar w-full h-10 flex items-center justify-between px-4 z-50 
           ${theme === 'dark' 
-            ? 'bg-[#1D1D1F]/80 text-white border-b border-[#3A3A3C]/30' 
-            : 'bg-[#F5F5F7]/80 text-black border-b border-[#E5E5E7]/50'
+            ? 'bg-gradient-to-r from-[#1D1D1F]/90 via-[#2C2C2E]/90 to-[#1D1D1F]/90 text-white' 
+            : 'bg-gradient-to-r from-[#F5F5F7]/90 via-[#FFFFFF]/90 to-[#F5F5F7]/90 text-black'
           } 
-          backdrop-blur-xl shadow-sm
+          glass-effect border-b ${theme === 'dark' ? 'border-[#3A3A3C]/30' : 'border-[#E5E5E7]/50'}
         `}
       >
         {/* Left section: Apple logo and menu items */}
-        <div className="flex items-center h-full">
-          <DropdownMenu>
-            <DropdownMenuTrigger 
-              className={`
-                h-full px-2.5 rounded-sm flex items-center justify-center
-                ${theme === 'dark'
-                  ? 'hover:bg-[#3A3A3C]/50 active:bg-[#3A3A3C]/70'
-                  : 'hover:bg-[#E5E5E7]/50 active:bg-[#E5E5E7]/70'
-                }
-                transition-colors duration-150
-              `}
-            >
-              <svg viewBox="0 0 256 256" className="w-[14px] h-[14px] fill-current">
-                <path fillRule="evenodd" d="m112.8 111.5q25.7 27 1.7 53.9-21.4 20.9-41.9 22.9c8.6-7.4 11-19.8 5.8-29.9q-26.1-27.2-39.2-47.7-15.1-39.6 40.9-53.8 9.4-15.5 91.4-55.6c15.4-4.4 31.8 2.8 38.9 17.2 7 14.4 2.8 31.8-10.2 41.3l-112.8 7.1q-1.9 20.7 25.4 44.6zm-35.5-43.4c-11.4 3.4-26.3 9.6-30.2 20.4-2 5.8-0.9 12.1 1.1 17.7 10.5 16.1 24.2 31.5 37.5 45.3l1 1.1 0.7 1.3c2.8 5.5 4 11.5 3.7 17.4 6-3.7 11.4-8.2 16.2-12.8 12.4-14.2 11.3-26.2-1.5-39.8-14.4-12.7-29.3-30.2-28.5-50.6zm124.1-45.1c-4.8-9.8-15.8-14.9-26.4-12.3-20.9 10.3-42.3 21.1-62.1 33.2-3.7 2.2-12.5 7.7-18.6 12.5l102.1-6.4c7.4-6.8 9.5-17.8 5-27z" />
-                <path fillRule="evenodd" d="m143.8 144.3q-25.7-26.9-1.8-53.9 21.5-20.8 42-22.8c-8.6 7.4-11 19.7-5.9 29.8q26.2 27.2 39.3 47.8 15 39.6-40.9 53.7-9.4 15.5-91.5 55.7c-15.4 4.4-31.7-2.9-38.8-17.3-7-14.4-2.8-31.7 10.1-41.3l112.8-7.1q2-20.7-25.3-44.6zm35.5 43.5c11.4-3.4 26.3-9.6 30.2-20.5 2-5.7 0.9-12-1.2-17.6-10.4-16.1-24.2-31.5-37.4-45.4l-1.1-1-0.6-1.3c-2.8-5.5-4-11.5-3.8-17.4-5.9 3.6-11.4 8.2-16.1 12.8-12.5 14.1-11.3 26.2 1.4 39.7 14.5 12.7 29.4 30.3 28.6 50.7zm-124.1 45.1c4.8 9.7 15.8 14.8 26.3 12.2 20.9-10.2 42.3-21 62.2-33.1 3.7-2.2 12.5-7.7 18.5-12.6l-102 6.5c-7.4 6.8-9.5 17.8-5 27z" />
-              </svg>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent 
-              align="start" 
-              className={`
-                w-64 p-0 rounded-lg overflow-hidden shadow-lg font-sans
-                ${theme === 'dark'
-                  ? 'bg-[#2C2C2E]/90 backdrop-blur-xl border border-[#3A3A3C]/50'
-                  : 'bg-[#F5F5F7]/90 backdrop-blur-xl border border-[#E5E5E7]/70'
-                }
-              `}
-            >
-              <div className={`p-3 border-b ${theme === 'dark' ? 'border-[#3A3A3C]/50' : 'border-[#E5E5E7]/70'}`}>
-                <h4 className="text-sm font-medium">About This Mac</h4>
-              </div>
-              <div className="p-1">
-                <DropdownMenuItem 
-                  onClick={() => windowManager.openWindow('settings')}
-                  className="rounded-md px-3"
-                >
-                  System Settings...
-                  <DropdownMenuShortcut className="ml-auto">⌘,</DropdownMenuShortcut>
-                </DropdownMenuItem>
-                <DropdownMenuItem 
-                  onClick={() => windowManager.openWindow('app-store')}
-                  className="rounded-md px-3"  
-                >
-                  App Store...
-                </DropdownMenuItem>
-                <DropdownMenuSeparator className={`my-1 ${theme === 'dark' ? 'bg-[#3A3A3C]/50' : 'bg-[#E5E5E7]/70'}`} />
-                <DropdownMenuItem 
-                  onClick={() => windowManager.openWindow('finder')}
-                  className="rounded-md px-3"
-                >
-                  <div className="flex items-center">
-                    <FolderOpen size={14} className="mr-2" />
-                    Finder
-                  </div>
-                </DropdownMenuItem>
-                <DropdownMenuItem 
-                  onClick={() => windowManager.openWindow('calendar')}
-                  className="rounded-md px-3"
-                >
-                  <div className="flex items-center">
-                    <Calendar size={14} className="mr-2" />
-                    Calendar
-                  </div>
-                </DropdownMenuItem>
-                <DropdownMenuItem 
-                  onClick={() => windowManager.openWindow('messages')}
-                  className="rounded-md px-3"
-                >
-                  <div className="flex items-center">
-                    <MessagesSquare size={14} className="mr-2" />
-                    Messages
-                  </div>
-                </DropdownMenuItem>
-                <DropdownMenuItem 
-                  onClick={() => windowManager.openWindow('notes')}
-                  className="rounded-md px-3"
-                >
-                  <div className="flex items-center">
-                    <StickyNote size={14} className="mr-2" />
-                    Notes
-                  </div>
-                </DropdownMenuItem>
-                <DropdownMenuSeparator className={`my-1 ${theme === 'dark' ? 'bg-[#3A3A3C]/50' : 'bg-[#E5E5E7]/70'}`} />
-                <DropdownMenuItem className="rounded-md px-3">
-                  <div className="flex items-center">
-                    <Clock size={14} className="mr-2" />
-                    Recent Items
-                  </div>
-                </DropdownMenuItem>
-                <DropdownMenuSeparator className={`my-1 ${theme === 'dark' ? 'bg-[#3A3A3C]/50' : 'bg-[#E5E5E7]/70'}`} />
-                <DropdownMenuItem className="rounded-md px-3">
-                  Force Quit...
-                  <DropdownMenuShortcut className="ml-auto">⌥⌘⎋</DropdownMenuShortcut>
-                </DropdownMenuItem>
-                <DropdownMenuSeparator className={`my-1 ${theme === 'dark' ? 'bg-[#3A3A3C]/50' : 'bg-[#E5E5E7]/70'}`} />
-                <DropdownMenuItem className="rounded-md px-3">
-                  <div className="flex items-center">
-                    <svg className="w-3.5 h-3.5 mr-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M12 5C15.87 5 19 8.13 19 12C19 15.87 15.87 19 12 19C8.13 19 5 15.87 5 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                      <path d="M12 2V8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
-                    Sleep
-                  </div>
-                </DropdownMenuItem>
-                <DropdownMenuItem className="rounded-md px-3">
-                  <div className="flex items-center">
-                    <RotateCcw size={14} className="mr-2" />
-                    Restart...
-                  </div>
-                </DropdownMenuItem>
-                <DropdownMenuItem className="rounded-md px-3">
-                  <div className="flex items-center">
-                    <Power size={14} className="mr-2" />
-                    Shut Down...
-                  </div>
-                </DropdownMenuItem>
-                <DropdownMenuSeparator className={`my-1 ${theme === 'dark' ? 'bg-[#3A3A3C]/50' : 'bg-[#E5E5E7]/70'}`} />
-                <DropdownMenuItem 
-                  onClick={handleReload}
-                  className="rounded-md px-3"
-                >
-                  <div className="flex items-center">
-                    <LogOut size={14} className="mr-2" />
-                    Log Out {PERSONAL_INFO.name}...
-                  </div>
-                  <DropdownMenuShortcut className="ml-auto">⇧⌘Q</DropdownMenuShortcut>
-                </DropdownMenuItem>
-              </div>
-            </DropdownMenuContent>
-          </DropdownMenu>
+        <div className="flex items-center space-x-2 h-full">
+          <motion.div
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className={`
+              menu-pill px-3 py-1.5 rounded-full flex items-center
+              ${theme === 'dark' 
+                ? 'bg-[#2C2C2E] hover:bg-[#3A3A3C]' 
+                : 'bg-white hover:bg-[#F5F5F7] shadow-sm'
+              }
+              transition-all duration-200
+            `}
+          >
+            <DropdownMenu>
+              <DropdownMenuTrigger className="outline-none">
+                <svg viewBox="0 0 1024 1024" className="w-5 h-5 fill-current">
+                  <path d="M747.4 535.7c-.4-68.2 30.5-119.6 92.9-157.5-34.9-50-87.7-77.5-157.3-82.8-65.9-5.2-138 38.4-164.4 38.4-27.9 0-91.7-36.6-150.8-35.7-77.9 1.1-149.6 45.7-189.7 116.4-40.8 70.9-35.1 218.3 82.6 388.8 58.7 85.2 155.4 190.5 221.3 191.4 85.6.8 110.7-57.3 207.8-57.3 98.5 0 121.7 57.3 205.7 55.3 86.3-2.3 157.3-83.8 216.1-168.9 32.5-47.9 45.7-96.4 48.1-99-1.1-.8-92.6-35.7-93.4-141.6zm-104.5-427.5c46.5-56.3 46.5-107.4 46.5-107.4s-47.3 2.3-92.2 39.7c-42.4 34.9-63.2 101.1-63.2 101.1s47.3-9.4 108.9-33.4z"/>
+                </svg>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent 
+                align="start"
+                className={`
+                  w-[380px] p-4 rounded-2xl overflow-hidden neo-dropdown
+                  ${theme === 'dark'
+                    ? 'bg-[#1E1E2E]/90 text-white'
+                    : 'bg-white/90 text-black'
+                  }
+                `}
+              >
+                {/* Header Section */}
+                <div className="mb-6">
+                  <motion.div 
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="flex items-center gap-4"
+                  >
+                    <div className={`
+                      p-3 rounded-xl
+                      ${theme === 'dark' ? 'bg-[#313244]' : 'bg-[#F5F5F7]'}
+                    `}>
+                      <svg viewBox="0 0 1024 1024" className="w-8 h-8 fill-current">
+                        <path d="M747.4 535.7c-.4-68.2 30.5-119.6 92.9-157.5-34.9-50-87.7-77.5-157.3-82.8-65.9-5.2-138 38.4-164.4 38.4-27.9 0-91.7-36.6-150.8-35.7-77.9 1.1-149.6 45.7-189.7 116.4-40.8 70.9-35.1 218.3 82.6 388.8 58.7 85.2 155.4 190.5 221.3 191.4 85.6.8 110.7-57.3 207.8-57.3 98.5 0 121.7 57.3 205.7 55.3 86.3-2.3 157.3-83.8 216.1-168.9 32.5-47.9 45.7-96.4 48.1-99-1.1-.8-92.6-35.7-93.4-141.6zm-104.5-427.5c46.5-56.3 46.5-107.4 46.5-107.4s-47.3 2.3-92.2 39.7c-42.4 34.9-63.2 101.1-63.2 101.1s47.3-9.4 108.9-33.4z"/>
+                      </svg>
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-semibold mb-1">SnigdhaOS</h3>
+                      <p className="text-sm opacity-60">Version 1.0.0</p>
+                    </div>
+                  </motion.div>
+                </div>
 
-          <div className="h-full flex items-center">
+                {/* Quick Actions Grid */}
+                <div className="grid grid-cols-2 gap-3 mb-6">
+                  {[
+                    { icon: Settings, label: 'System Settings', action: () => windowManager.openWindow('settings') },
+                    { icon: AppWindow, label: 'App Store', action: () => windowManager.openWindow('app-store') },
+                    { icon: FolderOpen, label: 'Finder', action: () => windowManager.openWindow('finder') },
+                    { icon: Command, label: 'Spotlight', action: () => {} }
+                  ].map((item, i) => (
+                    <motion.button
+                      key={i}
+                      onClick={item.action}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: i * 0.1 }}
+                      className={`
+                        glass-card p-4 text-left
+                        ${theme === 'dark' ? 'hover:bg-[#313244]/50' : 'hover:bg-[#F5F5F7]/50'}
+                      `}
+                    >
+                      <item.icon className="w-6 h-6 mb-2" />
+                      <span className="text-sm font-medium">{item.label}</span>
+                    </motion.button>
+                  ))}
+                </div>
+
+                {/* System Status */}
+                <div className="space-y-4 mb-6">
+                  <motion.div 
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    className={`
+                      p-4 rounded-xl space-y-3
+                      ${theme === 'dark' ? 'bg-[#313244]/50' : 'bg-[#F5F5F7]/50'}
+                    `}
+                  >
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <Battery className="w-4 h-4" />
+                        <span className="text-sm font-medium">Battery</span>
+                      </div>
+                      <span className="text-sm">{batteryLevel}%</span>
+                    </div>
+                    <div className={`
+                      h-1.5 w-full rounded-full overflow-hidden
+                      ${theme === 'dark' ? 'bg-[#1E1E2E]' : 'bg-white'}
+                    `}>
+                      <motion.div 
+                        initial={{ width: 0 }}
+                        animate={{ width: `${batteryLevel}%` }}
+                        className="h-full rounded-full bg-gradient-to-r from-[#cba6f7] to-[#89b4fa]"
+                      />
+                    </div>
+                  </motion.div>
+                </div>
+
+                {/* Action Buttons */}
+                <div className="grid grid-cols-2 gap-3">
+                  <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={handleReload}
+                    className="menu-item-hover p-3 rounded-xl text-left"
+                  >
+                    <div className="flex items-center gap-3">
+                      <RotateCcw className="w-5 h-5" />
+                      <div>
+                        <p className="text-sm font-medium">Restart</p>
+                        <p className="text-xs opacity-60">Refresh your system</p>
+                      </div>
+                    </div>
+                  </motion.button>
+
+                  <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={handleReload}
+                    className="menu-item-hover p-3 rounded-xl text-left"
+                  >
+                    <div className="flex items-center gap-3">
+                      <LogOut className="w-5 h-5" />
+                      <div>
+                        <p className="text-sm font-medium">Log Out</p>
+                        <p className="text-xs opacity-60">{PERSONAL_INFO.name}</p>
+                      </div>
+                    </div>
+                  </motion.button>
+                </div>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </motion.div>
+
+          <div className="h-full flex items-center space-x-1">
             {allMenus.map((item) => (
               <SnigdhaOSMenuItem 
                 key={item.label} 
                 label={item.label} 
                 items={item.items}
+                className={`
+                  menu-pill px-3 py-1.5 rounded-full text-sm
+                  ${theme === 'dark' 
+                    ? 'hover:bg-[#3A3A3C]/50' 
+                    : 'hover:bg-[#E5E5E7]/50'
+                  }
+                `}
               />
             ))}
           </div>
         </div>
 
-        {/* Title of active app */}
-        <div className="absolute left-1/2 -translate-x-1/2 font-semibold tracking-tight">
-          {activeApp?.title || "Finder"}
-        </div>
+        {/* Center section: Active app title with icon */}
+        <motion.div 
+          className={`
+            absolute left-1/2 -translate-x-1/2 
+            menu-pill px-4 py-1.5 rounded-full flex items-center gap-2
+            ${theme === 'dark' 
+              ? 'bg-[#2C2C2E]/80 text-white' 
+              : 'bg-white/80 text-black shadow-sm'
+            }
+          `}
+          initial={false}
+          animate={{ scale: [0.95, 1], opacity: [0.5, 1] }}
+          transition={{ duration: 0.2 }}
+        >
+          {activeApp?.icon && <activeApp.icon size={14} />}
+          <span className="font-medium">{activeApp?.title || "Finder"}</span>
+        </motion.div>
 
         {/* Right section: Status icons */}
-        <div className="flex items-center space-x-1.5">
-          <motion.div 
+        <div className="flex items-center space-x-2">
+          {/* Theme Toggle */}
+          <motion.button
+            whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            onClick={handleThemeToggle} 
+            onClick={handleThemeToggle}
             className={`
-              px-1.5 py-1 rounded-sm cursor-pointer
-              ${theme === 'dark'
-                ? 'hover:bg-[#3A3A3C]/50 active:bg-[#3A3A3C]/70'
-                : 'hover:bg-[#E5E5E7]/50 active:bg-[#E5E5E7]/70'
+              status-icon p-2 rounded-full
+              ${theme === 'dark' 
+                ? 'bg-[#2C2C2E] hover:bg-[#3A3A3C]' 
+                : 'bg-white hover:bg-[#F5F5F7] shadow-sm'
               }
-              transition-colors duration-150
             `}
           >
             {theme === 'dark' ? 
-              <Moon size={13} className="text-[#F5F5F7]" /> : 
-              <Sun size={13} className="text-[#1D1D1F]" />
+              <Moon size={14} className="text-[#F5F5F7]" /> : 
+              <Sun size={14} className="text-[#1D1D1F]" />
             }
-          </motion.div>
-          
-          <div className={`
-            relative px-1.5 py-1 rounded-sm
-            ${theme === 'dark'
-              ? 'hover:bg-[#3A3A3C]/50'
-              : 'hover:bg-[#E5E5E7]/50'
-            }
-            transition-colors duration-150
-          `}>
-            <Battery size={13} className={isCharging ? "animate-pulse" : ""} />
+          </motion.button>
+
+          <div className="menu-separator" />
+
+          {/* Battery Status */}
+          <motion.div 
+            whileHover={{ scale: 1.05 }}
+            className={`
+              status-icon p-2 rounded-full relative
+              ${theme === 'dark' 
+                ? 'bg-[#2C2C2E] hover:bg-[#3A3A3C]' 
+                : 'bg-white hover:bg-[#F5F5F7] shadow-sm'
+              }
+            `}
+          >
+            <Battery size={14} className={isCharging ? "animate-pulse" : ""} />
             {batteryLevel < 20 && (
-              <span className="absolute right-0.5 bottom-0.5 w-1.5 h-1.5 bg-[#FF2D55] rounded-full"></span>
+              <span className="absolute right-1 bottom-1 w-1.5 h-1.5 bg-[#FF2D55] rounded-full" />
             )}
             {isCharging && (
-              <span className="absolute right-0.5 bottom-0.5 w-1.5 h-1.5 bg-[#30D158] rounded-full"></span>
+              <span className="absolute right-1 bottom-1 w-1.5 h-1.5 bg-[#30D158] rounded-full" />
             )}
-          </div>
-          
-          <div className={`
-            px-1.5 py-1 rounded-sm
-            ${theme === 'dark'
-              ? 'hover:bg-[#3A3A3C]/50'
-              : 'hover:bg-[#E5E5E7]/50'
-            }
-            transition-colors duration-150
-          `}>
-            <Wifi size={13} />
-          </div>
-          
-          <div className={`
-            px-1.5 py-1 rounded-sm font-medium
-            ${theme === 'dark'
-              ? 'hover:bg-[#3A3A3C]/50'
-              : 'hover:bg-[#E5E5E7]/50'
-            }
-            transition-colors duration-150
-          `}>
-            {currentTime}
-          </div>
-          
-          {/* Search icon */}
-          <div className={`
-            px-1.5 py-1 rounded-sm
-            ${theme === 'dark'
-              ? 'hover:bg-[#3A3A3C]/50'
-              : 'hover:bg-[#E5E5E7]/50'
-            }
-            transition-colors duration-150
-          `}>
-            <Search size={13} />
-          </div>
-          
-          {/* Control Center */}
-          <DropdownMenu>
-            <DropdownMenuTrigger className={`
-              px-1.5 py-1 rounded-sm
-              ${theme === 'dark'
-                ? 'hover:bg-[#3A3A3C]/50 active:bg-[#3A3A3C]/70'
-                : 'hover:bg-[#E5E5E7]/50 active:bg-[#E5E5E7]/70'
+          </motion.div>
+
+          {/* WiFi Status */}
+          <motion.div 
+            whileHover={{ scale: 1.05 }}
+            className={`
+              status-icon p-2 rounded-full
+              ${theme === 'dark' 
+                ? 'bg-[#2C2C2E] hover:bg-[#3A3A3C]' 
+                : 'bg-white hover:bg-[#F5F5F7] shadow-sm'
               }
-              transition-colors duration-150
-            `}>
-              <svg viewBox="0 0 24 24" className="w-[13px] h-[13px] fill-current">
-                <path d="M12,16A4,4 0 0,1 8,12A4,4 0 0,1 12,8A4,4 0 0,1 16,12A4,4 0 0,1 12,16M12,18A6,6 0 0,0 18,12A6,6 0 0,0 12,6A6,6 0 0,0 6,12A6,6 0 0,0 12,18M20,10H22V14H20V10M4,10H6V14H4V10Z" />
-              </svg>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent 
-              align="end" 
+            `}
+          >
+            <Wifi size={14} />
+          </motion.div>
+
+          <div className="menu-separator" />
+
+          {/* Time */}
+          <motion.div 
+            whileHover={{ scale: 1.05 }}
+            className={`
+              status-icon px-3 py-1.5 rounded-full font-medium text-sm
+              ${theme === 'dark' 
+                ? 'bg-[#2C2C2E] hover:bg-[#3A3A3C]' 
+                : 'bg-white hover:bg-[#F5F5F7] shadow-sm'
+              }
+            `}
+          >
+            {currentTime}
+          </motion.div>
+
+          {/* Search and Control Center */}
+          <div className="flex items-center space-x-1">
+            <motion.div 
+              whileHover={{ scale: 1.05 }}
               className={`
-                absolute z-50 right-0 top-full mt-1 w-80 rounded-lg shadow-lg 
-                ${theme === 'dark' ? 'bg-[#1E1E1E]/90 text-white' : 'bg-white/90 text-black'} 
-                backdrop-blur-md border 
-                ${theme === 'dark' ? 'border-[#3A3A3C]/50' : 'border-[#E5E5E7]/70'}
-                font-sans
+                status-icon p-2 rounded-full
+                ${theme === 'dark' 
+                  ? 'bg-[#2C2C2E] hover:bg-[#3A3A3C]' 
+                  : 'bg-white hover:bg-[#F5F5F7] shadow-sm'
+                }
               `}
             >
-              <div className={`p-3 grid grid-cols-2 gap-2 w-[320px]`}>
+              <Search size={14} />
+            </motion.div>
+
+            <DropdownMenu>
+              <DropdownMenuTrigger>
                 <motion.div 
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
+                  whileHover={{ scale: 1.05 }}
                   className={`
-                    flex flex-col items-center justify-center rounded-xl p-3
-                    ${theme === 'dark'
-                      ? 'bg-[#3A3A3C]/50 hover:bg-[#3A3A3C]/70'
-                      : 'bg-white/80 hover:bg-white shadow-sm'
+                    status-icon p-2 rounded-full
+                    ${theme === 'dark' 
+                      ? 'bg-[#2C2C2E] hover:bg-[#3A3A3C]' 
+                      : 'bg-white hover:bg-[#F5F5F7] shadow-sm'
                     }
-                    transition-all duration-200 cursor-pointer
                   `}
                 >
-                  <Wifi size={22} className="mb-2" />
-                  <span className="text-xs font-medium">Wi-Fi</span>
+                  <Command size={14} />
                 </motion.div>
-                <motion.div 
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  className={`
-                    flex flex-col items-center justify-center rounded-xl p-3
-                    ${theme === 'dark'
-                      ? 'bg-[#3A3A3C]/50 hover:bg-[#3A3A3C]/70'
-                      : 'bg-white/80 hover:bg-white shadow-sm'
+              </DropdownMenuTrigger>
+              <DropdownMenuContent 
+                align="end" 
+                className={`
+                  absolute z-50 right-0 top-full mt-1 w-80 rounded-lg shadow-lg 
+                  ${theme === 'dark' ? 'bg-[#1E1E1E]/90 text-white' : 'bg-white/90 text-black'} 
+                  backdrop-blur-md border 
+                  ${theme === 'dark' ? 'border-[#3A3A3C]/50' : 'border-[#E5E5E7]/70'}
+                  font-sans
+                `}
+              >
+                <div className={`p-3 grid grid-cols-2 gap-2 w-[320px]`}>
+                  <motion.div 
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    className={`
+                      flex flex-col items-center justify-center rounded-xl p-3
+                      ${theme === 'dark'
+                        ? 'bg-[#3A3A3C]/50 hover:bg-[#3A3A3C]/70'
+                        : 'bg-white/80 hover:bg-white shadow-sm'
+                      }
+                      transition-all duration-200 cursor-pointer
+                    `}
+                  >
+                    <Wifi size={22} className="mb-2" />
+                    <span className="text-xs font-medium">Wi-Fi</span>
+                  </motion.div>
+                  <motion.div 
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    className={`
+                      flex flex-col items-center justify-center rounded-xl p-3
+                      ${theme === 'dark'
+                        ? 'bg-[#3A3A3C]/50 hover:bg-[#3A3A3C]/70'
+                        : 'bg-white/80 hover:bg-white shadow-sm'
+                      }
+                      transition-all duration-200 cursor-pointer
+                    `}
+                  >
+                    <Battery size={22} className="mb-2" />
+                    <span className="text-xs font-medium">Battery</span>
+                  </motion.div>
+                  <motion.div 
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={handleThemeToggle}
+                    className={`
+                      flex flex-col items-center justify-center rounded-xl p-3
+                      ${theme === 'dark'
+                        ? 'bg-[#3A3A3C]/50 hover:bg-[#3A3A3C]/70'
+                        : 'bg-white/80 hover:bg-white shadow-sm'
+                      }
+                      transition-all duration-200 cursor-pointer
+                    `}
+                  >
+                    {theme === 'dark' ? 
+                      <Moon size={22} className="mb-2" /> : 
+                      <Sun size={22} className="mb-2" />
                     }
-                    transition-all duration-200 cursor-pointer
-                  `}
-                >
-                  <Battery size={22} className="mb-2" />
-                  <span className="text-xs font-medium">Battery</span>
-                </motion.div>
-                <motion.div 
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  onClick={handleThemeToggle}
-                  className={`
-                    flex flex-col items-center justify-center rounded-xl p-3
-                    ${theme === 'dark'
-                      ? 'bg-[#3A3A3C]/50 hover:bg-[#3A3A3C]/70'
-                      : 'bg-white/80 hover:bg-white shadow-sm'
-                    }
-                    transition-all duration-200 cursor-pointer
-                  `}
-                >
-                  {theme === 'dark' ? 
-                    <Moon size={22} className="mb-2" /> : 
-                    <Sun size={22} className="mb-2" />
-                  }
-                  <span className="text-xs font-medium">
-                    {theme === 'dark' ? 'Dark Mode' : 'Light Mode'}
-                  </span>
-                </motion.div>
-                <motion.div 
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  className={`
-                    flex flex-col items-center justify-center rounded-xl p-3
-                    ${theme === 'dark'
-                      ? 'bg-[#3A3A3C]/50 hover:bg-[#3A3A3C]/70'
-                      : 'bg-white/80 hover:bg-white shadow-sm'
-                    }
-                    transition-all duration-200 cursor-pointer
-                  `}
-                >
-                  <Command size={22} className="mb-2" />
-                  <span className="text-xs font-medium">Keyboard</span>
-                </motion.div>
-              </div>
-              <div className="p-3 space-y-4">
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between">
-                    <h4 className="text-xs font-medium text-muted-foreground">Display</h4>
-                    <span className="text-xs font-medium">100%</span>
+                    <span className="text-xs font-medium">
+                      {theme === 'dark' ? 'Dark Mode' : 'Light Mode'}
+                    </span>
+                  </motion.div>
+                  <motion.div 
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    className={`
+                      flex flex-col items-center justify-center rounded-xl p-3
+                      ${theme === 'dark'
+                        ? 'bg-[#3A3A3C]/50 hover:bg-[#3A3A3C]/70'
+                        : 'bg-white/80 hover:bg-white shadow-sm'
+                      }
+                      transition-all duration-200 cursor-pointer
+                    `}
+                  >
+                    <Command size={22} className="mb-2" />
+                    <span className="text-xs font-medium">Keyboard</span>
+                  </motion.div>
+                </div>
+                <div className="p-3 space-y-4">
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between">
+                      <h4 className="text-xs font-medium text-muted-foreground">Display</h4>
+                      <span className="text-xs font-medium">100%</span>
+                    </div>
+                    <div className={`
+                      h-1.5 w-full rounded-full overflow-hidden
+                      ${theme === 'dark' ? 'bg-[#3A3A3C]/50' : 'bg-[#E5E5E7]/70'}
+                    `}>
+                      <motion.div 
+                        initial={{ width: '0%' }}
+                        animate={{ width: '100%' }}
+                        transition={{ duration: 0.5 }}
+                        className={`h-full rounded-full ${theme === 'dark' ? 'bg-[#0A84FF]' : 'bg-[#0066FF]'}`}
+                      />
+                    </div>
                   </div>
-                  <div className={`
-                    h-1.5 w-full rounded-full overflow-hidden
-                    ${theme === 'dark' ? 'bg-[#3A3A3C]/50' : 'bg-[#E5E5E7]/70'}
-                  `}>
-                    <motion.div 
-                      initial={{ width: '0%' }}
-                      animate={{ width: '100%' }}
-                      transition={{ duration: 0.5 }}
-                      className={`h-full rounded-full ${theme === 'dark' ? 'bg-[#0A84FF]' : 'bg-[#0066FF]'}`}
-                    />
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between">
+                      <h4 className="text-xs font-medium text-muted-foreground">Sound</h4>
+                      <span className="text-xs font-medium">85%</span>
+                    </div>
+                    <div className={`
+                      h-1.5 w-full rounded-full overflow-hidden
+                      ${theme === 'dark' ? 'bg-[#3A3A3C]/50' : 'bg-[#E5E5E7]/70'}
+                    `}>
+                      <motion.div 
+                        initial={{ width: '0%' }}
+                        animate={{ width: '85%' }}
+                        transition={{ duration: 0.5 }}
+                        className={`h-full rounded-full ${theme === 'dark' ? 'bg-[#0A84FF]' : 'bg-[#0066FF]'}`}
+                      />
+                    </div>
                   </div>
                 </div>
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between">
-                    <h4 className="text-xs font-medium text-muted-foreground">Sound</h4>
-                    <span className="text-xs font-medium">85%</span>
-                  </div>
-                  <div className={`
-                    h-1.5 w-full rounded-full overflow-hidden
-                    ${theme === 'dark' ? 'bg-[#3A3A3C]/50' : 'bg-[#E5E5E7]/70'}
-                  `}>
-                    <motion.div 
-                      initial={{ width: '0%' }}
-                      animate={{ width: '85%' }}
-                      transition={{ duration: 0.5 }}
-                      className={`h-full rounded-full ${theme === 'dark' ? 'bg-[#0A84FF]' : 'bg-[#0066FF]'}`}
-                    />
-                  </div>
-                </div>
-              </div>
-            </DropdownMenuContent>
-          </DropdownMenu>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
         </div>
       </motion.div>
     </>
