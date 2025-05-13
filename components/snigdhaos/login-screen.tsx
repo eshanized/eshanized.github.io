@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import { motion, AnimatePresence, useAnimation } from 'framer-motion';
 import { PERSONAL_INFO } from '@/lib/constants';
-import { User, Power, Wifi, Battery, ChevronDown, Lock, ArrowRight, Info, Globe, Moon, Sun } from 'lucide-react';
+import { User, Wifi, Battery, ChevronDown, Lock, ArrowRight, Info, Globe, Moon, Sun } from 'lucide-react';
 import { SnigdhaOSLogo } from './snigdhaos-logo';
 
 export function LoginScreen({ onLogin }: { onLogin: (specialUser?: string) => void }) {
@@ -19,7 +19,7 @@ export function LoginScreen({ onLogin }: { onLogin: (specialUser?: string) => vo
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const controls = useAnimation();
 
-  // SnigdhaOS-style dynamic wallpaper effect
+  // Enhanced animated background effect
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -27,209 +27,211 @@ export function LoginScreen({ onLogin }: { onLogin: (specialUser?: string) => vo
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-
-    let particles: {
-      x: number;
-      y: number;
-      radius: number;
-      color: string;
-      velocity: { x: number; y: number };
-    }[] = [];
-
-    // SnigdhaOS authentic colors - using blue theme to match the logo
-    const lightColors = [
-      'rgba(100, 149, 237, 0.5)',   // Cornflower blue #6495ED
-      'rgba(70, 130, 230, 0.5)',    // Blue variant
-      'rgba(30, 144, 255, 0.5)',    // Dodger blue #1E90FF
-      'rgba(0, 119, 182, 0.5)',     // Blue variant
-      'rgba(135, 206, 250, 0.5)',   // Light sky blue #87CEFA
-    ];
-    
-    const darkColors = [
-      'rgba(70, 130, 230, 0.5)',    // Blue variant
-      'rgba(30, 144, 255, 0.5)',    // Dodger blue #1E90FF
-      'rgba(0, 119, 182, 0.5)',     // Blue variant
-      'rgba(100, 149, 237, 0.5)',   // Cornflower blue #6495ED
-      'rgba(135, 206, 250, 0.4)',   // Light sky blue #87CEFA
-    ];
-    
-    const colors = theme === 'dark' ? darkColors : lightColors;
-
-    const createParticles = () => {
-      particles = [];
-      for (let i = 0; i < 80; i++) {
-        const radius = Math.random() * 2 + 1;
-        particles.push({
-          x: Math.random() * canvas.width,
-          y: Math.random() * canvas.height,
-          radius,
-          color: colors[Math.floor(Math.random() * colors.length)],
-          velocity: {
-            x: (Math.random() - 0.5) * 0.15,
-            y: (Math.random() - 0.5) * 0.15
-          }
-        });
-      }
+    const resizeCanvas = () => {
+      if (!canvas || !ctx) return;
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
     };
 
-    const animateParticles = () => {
-      requestAnimationFrame(animateParticles);
+    resizeCanvas();
+
+    const particles: Array<{
+      x: number;
+      y: number;
+      size: number;
+      speedX: number;
+      speedY: number;
+      opacity: number;
+      color: string;
+      pulse: number;
+      orbitRadius: number;
+      orbitSpeed: number;
+      orbitAngle: number;
+    }> = [];
+
+    // Enhanced color palette with more vibrant colors
+    const colors = theme === 'dark' 
+      ? [
+          'rgba(100, 149, 237, 0.8)',  // Cornflower blue
+          'rgba(147, 112, 219, 0.8)',  // Medium purple
+          'rgba(123, 104, 238, 0.8)',  // Medium slate blue
+          'rgba(72, 61, 139, 0.8)',    // Dark slate blue
+          'rgba(106, 90, 205, 0.8)'    // Slate blue
+        ]
+      : [
+          'rgba(65, 105, 225, 0.5)',   // Royal blue
+          'rgba(30, 144, 255, 0.5)',   // Dodger blue
+          'rgba(0, 191, 255, 0.5)',    // Deep sky blue
+          'rgba(70, 130, 180, 0.5)',   // Steel blue
+          'rgba(100, 149, 237, 0.5)'   // Cornflower blue
+        ];
+
+    // Create particles with enhanced properties
+    for (let i = 0; i < 80; i++) {
+      particles.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        size: Math.random() * 4 + 1,
+        speedX: (Math.random() - 0.5) * 1.2,
+        speedY: (Math.random() - 0.5) * 1.2,
+        opacity: Math.random() * 0.5 + 0.3,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        pulse: Math.random() * Math.PI,
+        orbitRadius: Math.random() * 100 + 50,
+        orbitSpeed: (Math.random() - 0.5) * 0.02,
+        orbitAngle: Math.random() * Math.PI * 2
+      });
+    }
+
+    let mouseX = 0;
+    let mouseY = 0;
+    let isMouseMoving = false;
+    let mouseTimeout: NodeJS.Timeout;
+
+    canvas.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      isMouseMoving = true;
+      clearTimeout(mouseTimeout);
+      mouseTimeout = setTimeout(() => {
+        isMouseMoving = false;
+      }, 100);
+    });
+
+    function drawParticles() {
+      if (!canvas || !ctx) return;
+      
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      
-      // Create SnigdhaOS-style gradient background
-      const gradient = ctx.createRadialGradient(
-        canvas.width / 2, canvas.height / 2, 0,
-        canvas.width / 2, canvas.height / 2, canvas.height
+
+      // Create dynamic gradient background with time-based animation
+      const time = Date.now() * 0.0002;
+      const gradient = ctx.createLinearGradient(
+        Math.sin(time) * canvas.width,
+        0,
+        Math.cos(time) * canvas.width,
+        canvas.height
       );
-      
+
       if (theme === 'dark') {
-        // Dark theme - SnigdhaOS dark colors
-        gradient.addColorStop(0, '#1E2030');    // Dark blue center
-        gradient.addColorStop(0.5, '#1A1B2A');  // Darker blue
-        gradient.addColorStop(1, '#141525');    // Nearly black edges with blue tint
+        gradient.addColorStop(0, '#1a1b2e');
+        gradient.addColorStop(0.5, '#14152b');
+        gradient.addColorStop(1, '#1a1b2e');
       } else {
-        // Light theme - SnigdhaOS light colors
-        gradient.addColorStop(0, '#F0F4FF');    // Very light blue center
-        gradient.addColorStop(0.5, '#FFFFFF');  // Pure white
-        gradient.addColorStop(1, '#E6EEFF');    // Light blue edges
+        gradient.addColorStop(0, '#ffffff');
+        gradient.addColorStop(0.5, '#f0f7ff');
+        gradient.addColorStop(1, '#ffffff');
       }
       
       ctx.fillStyle = gradient;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      // Draw and update particles with smoother movement
-      particles.forEach(particle => {
+      // Draw particles with enhanced effects
+      particles.forEach((particle, i) => {
+        // Update particle position with orbital motion
+        if (isMouseMoving) {
+          // Calculate distance to mouse
+          const dx = mouseX - particle.x;
+          const dy = mouseY - particle.y;
+          const distance = Math.sqrt(dx * dx + dy * dy);
+          
+          // Apply attraction/repulsion based on mouse position
+          if (distance < 200) {
+            const force = (200 - distance) / 200;
+            particle.speedX += (dx / distance) * force * 0.2;
+            particle.speedY += (dy / distance) * force * 0.2;
+          }
+        }
+
+        // Update orbital motion
+        particle.orbitAngle += particle.orbitSpeed;
+        const orbitX = Math.cos(particle.orbitAngle) * particle.orbitRadius;
+        const orbitY = Math.sin(particle.orbitAngle) * particle.orbitRadius;
+
+        // Blend linear and orbital motion
+        particle.x += particle.speedX + orbitX * 0.01;
+        particle.y += particle.speedY + orbitY * 0.01;
+        particle.pulse += 0.02;
+
+        // Apply velocity dampening
+        particle.speedX *= 0.99;
+        particle.speedY *= 0.99;
+
+        // Dynamic size pulsing
+        const pulsedSize = particle.size * (1 + Math.sin(particle.pulse) * 0.3);
+
+        // Boundary check with smooth transition
+        if (particle.x < 0) particle.x = canvas.width;
+        if (particle.x > canvas.width) particle.x = 0;
+        if (particle.y < 0) particle.y = canvas.height;
+        if (particle.y > canvas.height) particle.y = 0;
+
+        // Draw enhanced particle with glow effect
         ctx.beginPath();
-        ctx.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
-        ctx.fillStyle = particle.color;
+        ctx.arc(particle.x, particle.y, pulsedSize, 0, Math.PI * 2);
+        
+        // Create radial gradient for glow effect
+        const gradient = ctx.createRadialGradient(
+          particle.x, particle.y, 0,
+          particle.x, particle.y, pulsedSize * 2
+        );
+        gradient.addColorStop(0, particle.color);
+        gradient.addColorStop(1, 'rgba(0,0,0,0)');
+        
+        ctx.fillStyle = gradient;
+        ctx.globalAlpha = particle.opacity * (0.8 + Math.sin(particle.pulse) * 0.2);
         ctx.fill();
 
-        // Update position with smoother motion
-        particle.x += particle.velocity.x;
-        particle.y += particle.velocity.y;
+        // Draw connecting lines with dynamic opacity and gradient
+        particles.slice(i + 1).forEach(otherParticle => {
+          const dx = particle.x - otherParticle.x;
+          const dy = particle.y - otherParticle.y;
+          const distance = Math.sqrt(dx * dx + dy * dy);
 
-        // Create subtle swirl effect
-        const centerX = canvas.width / 2;
-        const centerY = canvas.height / 2;
-        const distX = particle.x - centerX;
-        const distY = particle.y - centerY;
-        const dist = Math.sqrt(distX * distX + distY * distY);
-        
-        if (dist > 0) {
-          const swirl = 0.0001 * Math.sin(Date.now() * 0.0005);
-          particle.velocity.x += -distY * swirl;
-          particle.velocity.y += distX * swirl;
-        }
-
-        // Boundary checking
-        if (particle.x < 0 || particle.x > canvas.width) {
-          particle.velocity.x *= -1;
-        }
-        if (particle.y < 0 || particle.y > canvas.height) {
-          particle.velocity.y *= -1;
-        }
+          if (distance < 150) {
+            ctx.beginPath();
+            ctx.moveTo(particle.x, particle.y);
+            ctx.lineTo(otherParticle.x, otherParticle.y);
+            
+            // Create gradient line with dynamic color
+            const lineGradient = ctx.createLinearGradient(
+              particle.x, particle.y,
+              otherParticle.x, otherParticle.y
+            );
+            lineGradient.addColorStop(0, particle.color);
+            lineGradient.addColorStop(1, otherParticle.color);
+            
+            ctx.strokeStyle = lineGradient;
+            ctx.globalAlpha = (1 - distance / 150) * 0.5 * 
+              (0.5 + Math.sin(particle.pulse + otherParticle.pulse) * 0.5);
+            ctx.lineWidth = Math.min(2, (1 - distance / 150) * 2);
+            ctx.stroke();
+          }
+        });
       });
 
-      // Draw SnigdhaOS-style aurora blur effect (softer, more subtle)
-      ctx.filter = 'blur(90px)';
-      for (let i = 0; i < 4; i++) {
-        ctx.beginPath();
-        const x = Math.sin(Date.now() * 0.0005 + i) * (canvas.width / 4) + canvas.width / 2;
-        const y = Math.cos(Date.now() * 0.0004 + i) * (canvas.height / 5) + canvas.height / 2;
-        
-        const gradient = ctx.createRadialGradient(
-          x, y, 0,
-          x, y, theme === 'dark' ? 350 : 400
-        );
-        gradient.addColorStop(0, colors[i % colors.length].replace('0.5', theme === 'dark' ? '0.4' : '0.3'));
-        gradient.addColorStop(1, 'transparent');
-        ctx.fillStyle = gradient;
-        ctx.arc(x, y, theme === 'dark' ? 350 : 400, 0, Math.PI * 2);
-        ctx.fill();
-      }
-      ctx.filter = 'none';
+      requestAnimationFrame(drawParticles);
+    }
 
-      // Subtle animated gradients (mimicking SnigdhaOS dynamic wallpaper)
-      const time = Date.now() * 0.0002;
-      ctx.globalCompositeOperation = 'soft-light';
-      ctx.filter = 'blur(100px)';
-      ctx.globalAlpha = 0.2;
-      
-      // Create subtle shifting accent colors
-      const accentGradient = ctx.createLinearGradient(
-        Math.sin(time) * canvas.width + canvas.width / 2, 
-        0, 
-        Math.cos(time * 0.7) * canvas.width + canvas.width / 2, 
-        canvas.height
-      );
-      
-      if (theme === 'dark') {
-        accentGradient.addColorStop(0, 'rgba(100, 149, 237, 0.15)');  // Cornflower blue
-        accentGradient.addColorStop(0.5, 'rgba(30, 144, 255, 0.1)');  // Dodger blue
-        accentGradient.addColorStop(1, 'rgba(70, 130, 230, 0.15)');   // Blue variant
-      } else {
-        accentGradient.addColorStop(0, 'rgba(100, 149, 237, 0.1)');   // Cornflower blue
-        accentGradient.addColorStop(0.5, 'rgba(135, 206, 250, 0.08)'); // Light sky blue
-        accentGradient.addColorStop(1, 'rgba(30, 144, 255, 0.1)');    // Dodger blue
-      }
-      
-      ctx.fillStyle = accentGradient;
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-      
-      ctx.filter = 'none';
-      ctx.globalCompositeOperation = 'source-over';
-      ctx.globalAlpha = 1;
-    };
-
-    const handleResize = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-      createParticles();
-    };
-
-    window.addEventListener('resize', handleResize);
-    createParticles();
-    animateParticles();
-
+    drawParticles();
+    window.addEventListener('resize', resizeCanvas);
     return () => {
-      window.removeEventListener('resize', handleResize);
+      window.removeEventListener('resize', resizeCanvas);
+      clearTimeout(mouseTimeout);
     };
   }, [theme]);
 
+  // Clock and date update
   useEffect(() => {
     const updateDateTime = () => {
       const now = new Date();
-      // Format time in OS style (no seconds, 12-hour format with AM/PM)
-      setCurrentTime(now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true }));
-      // Format date in OS style (Day, Month Date)
+      setCurrentTime(now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
       setCurrentDate(now.toLocaleDateString([], { weekday: 'long', month: 'long', day: 'numeric' }));
     };
     
     updateDateTime();
     const interval = setInterval(updateDateTime, 1000);
-
-    // Show the password hint after 3 seconds
-    const hintTimer = setTimeout(() => {
-      setShowPasswordHint(true);
-    }, 3000);
-    
-    // Subtle pulsing animation for logo
-    controls.start({
-      scale: [1, 1.03, 1],
-      transition: { 
-        duration: 3,
-        repeat: Infinity,
-        ease: "easeInOut" 
-      }
-    });
-    
-    return () => {
-      clearInterval(interval);
-      clearTimeout(hintTimer);
-    };
-  }, [controls]);
+    return () => clearInterval(interval);
+  }, []);
 
   // Handle mouse movement for subtle parallax effect
   const handleMouseMove = (e: React.MouseEvent) => {
@@ -244,33 +246,27 @@ export function LoginScreen({ onLogin }: { onLogin: (specialUser?: string) => vo
     setBgPosition({ x: xPercent, y: yPercent });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (password.length > 0 && password === 'snigdha') {
-      // Add scale down animation for successful login
-      controls.start({
+    if (password === 'snigdha') {
+      await controls.start({
         scale: [1, 0.95, 0],
-        opacity: [1, 0, 0],
-        transition: { duration: 0.5 }
-      }).then(() => onLogin('snigdha'));
+        opacity: [1, 0.5, 0],
+        transition: { duration: 0.4 }
+      });
+      onLogin('snigdha');
     } else if (password.length > 0) {
-      // For demo purposes, accept any non-empty password
-      // Add scale down animation for successful login
-      controls.start({
-        scale: [1, 0.98, 0],
-        opacity: [1, 0, 0],
-        transition: { duration: 0.5 }
-      }).then(() => onLogin());
+      await controls.start({
+        scale: [1, 0.95, 0],
+        opacity: [1, 0.5, 0],
+        transition: { duration: 0.4 }
+      });
+      onLogin();
     } else {
-      // OS-style shake animation for empty password
       setIsShaking(true);
       setTimeout(() => setIsShaking(false), 500);
     }
-  };
-
-  const toggleTheme = () => {
-    setTheme(theme === 'dark' ? 'light' : 'dark');
   };
 
   return (
@@ -281,118 +277,195 @@ export function LoginScreen({ onLogin }: { onLogin: (specialUser?: string) => vo
         className="absolute inset-0 w-full h-full"
       />
       
-      {/* Subtle noise texture overlay (more subtle) */}
-      <div className="absolute inset-0 bg-[url(https://grainy-gradients.vercel.app/noise.svg)] opacity-[0.08] pointer-events-none"/>
+      {/* Enhanced background effects */}
+      <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-black/10 pointer-events-none"/>
+      <div 
+        className="absolute inset-0 mix-blend-overlay pointer-events-none"
+        style={{
+          backgroundImage: theme === 'dark'
+            ? 'radial-gradient(circle at 50% 50%, rgba(100, 149, 237, 0.15), transparent 70%), radial-gradient(circle at 100% 0%, rgba(147, 112, 219, 0.1), transparent 50%)'
+            : 'radial-gradient(circle at 50% 50%, rgba(65, 105, 225, 0.2), transparent 70%), radial-gradient(circle at 100% 0%, rgba(30, 144, 255, 0.15), transparent 50%)'
+        }}
+      />
+      <div className="absolute inset-0 bg-[url(https://grainy-gradients.vercel.app/noise.svg)] opacity-[0.15] pointer-events-none mix-blend-overlay"/>
       
-      {/* Status Bar - SnigdhaOS style */}
+      {/* Status Bar with enhanced styling */}
       <motion.div 
-        className="absolute top-0 left-0 right-0 h-7 flex items-center justify-between px-4 z-20"
-        initial={{ opacity: 0, y: -10 }}
+        className="absolute top-0 left-0 right-0 h-12 flex items-center justify-between px-8 z-20"
+        initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.2, duration: 0.3 }}
+        transition={{ delay: 0.2, type: "spring", stiffness: 100 }}
+        style={{
+          background: theme === 'dark'
+            ? 'linear-gradient(180deg, rgba(26, 27, 46, 0.85) 0%, rgba(26, 27, 46, 0) 100%)'
+            : 'linear-gradient(180deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0) 100%)',
+          backdropFilter: 'blur(10px)',
+          borderBottom: theme === 'dark' 
+            ? '1px solid rgba(255, 255, 255, 0.1)'
+            : '1px solid rgba(65, 105, 225, 0.1)'
+        }}
       >
-        <div className="flex items-center space-x-2">
-          <div className="text-xs font-medium font-sf-pro flex items-center" 
-               style={{ color: theme === 'dark' ? 'rgba(255, 255, 255, 0.85)' : 'rgba(0, 0, 0, 0.85)' }}>
-            <SnigdhaOSLogo className="w-3.5 h-3.5 mr-1.5" />
-            SnigdhaOS
-          </div>
-        </div>
         <div className="flex items-center space-x-3">
-          <Wifi className="w-3.5 h-3.5" style={{ color: theme === 'dark' ? 'rgba(255, 255, 255, 0.85)' : 'rgba(0, 0, 0, 0.85)' }} />
-          <Battery className="w-4 h-4" style={{ color: theme === 'dark' ? 'rgba(255, 255, 255, 0.85)' : 'rgba(0, 0, 0, 0.85)' }} />
-          <div className="text-xs font-sf-pro" style={{ color: theme === 'dark' ? 'rgba(255, 255, 255, 0.85)' : 'rgba(0, 0, 0, 0.85)' }}>
-            {currentTime}
-          </div>
+          <motion.div
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <SnigdhaOSLogo className="w-5 h-5" />
+          </motion.div>
+          <span className="text-sm font-medium" style={{ color: theme === 'dark' ? 'white' : 'black' }}>
+            SnigdhaOS
+          </span>
+        </div>
+        <div className="flex items-center space-x-4">
+          <Wifi className="w-4 h-4" style={{ opacity: 0.8 }} />
+          <Battery className="w-4 h-4" style={{ opacity: 0.8 }} />
+          <span className="text-sm font-medium">{currentTime}</span>
         </div>
       </motion.div>
       
-      {/* Main content container */}
+      {/* Main content container with enhanced styling */}
       <div className="absolute inset-0 flex flex-col items-center justify-center">
-        {/* Clock and date - Displayed above login card for visibility */}
+        {/* Clock and date with enhanced typography */}
         <motion.div 
-          className="mb-8 text-center z-10"
-          style={{ color: theme === 'dark' ? 'white' : '#000000' }}
+          className="mb-12 text-center z-10"
+          style={{ 
+            color: theme === 'dark' ? 'white' : 'rgba(0, 0, 0, 0.9)',
+            textShadow: theme === 'dark'
+              ? '0 0 30px rgba(100, 149, 237, 0.3)'
+              : '0 0 30px rgba(65, 105, 225, 0.2)'
+          }}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.4, duration: 0.6 }}
+          transition={{ delay: 0.4 }}
         >
-          <h1 className="text-7xl font-sf-pro font-light mb-2 tracking-tight drop-shadow-sm">{currentTime}</h1>
-          <p className="text-xl font-sf-pro font-normal opacity-80 drop-shadow-sm">{currentDate}</p>
+          <motion.h1 
+            className="text-7xl font-light mb-3"
+            style={{ 
+              color: theme === 'dark' ? 'white' : 'rgba(0, 0, 0, 0.9)',
+              textShadow: theme === 'dark'
+                ? '0 0 30px rgba(100, 149, 237, 0.3)'
+                : '0 0 30px rgba(65, 105, 225, 0.2)'
+            }}
+            whileHover={{ scale: 1.02 }}
+          >
+            {currentTime}
+          </motion.h1>
+          <motion.p 
+            className="text-xl"
+            style={{ 
+              color: theme === 'dark' ? 'rgba(255, 255, 255, 0.8)' : 'rgba(0, 0, 0, 0.7)',
+              textShadow: theme === 'dark'
+                ? '0 0 20px rgba(100, 149, 237, 0.2)'
+                : '0 0 20px rgba(65, 105, 225, 0.15)'
+            }}
+            whileHover={{ scale: 1.02 }}
+          >
+            {currentDate}
+          </motion.p>
         </motion.div>
         
-        {/* Glass container - authentic SnigdhaOS style */}
+        {/* Glass container with enhanced styling */}
         <motion.div 
           className="relative z-10 p-8 rounded-2xl overflow-hidden max-w-md w-full mx-4"
           style={{
-            background: theme === 'dark' 
-              ? 'rgba(30, 32, 48, 0.6)' 
-              : 'rgba(255, 255, 255, 0.5)',
-            backdropFilter: 'blur(35px) saturate(180%)',
-            WebkitBackdropFilter: 'blur(35px) saturate(180%)',
-            boxShadow: theme === 'dark'
-              ? '0 20px 50px -25px rgba(0,0,0,0.3), 0 0 1px 0 rgba(100, 149, 237,0.1)'
-              : '0 20px 50px -25px rgba(0,0,0,0.1), 0 0 1px 0 rgba(100, 149, 237,0.1)',
-            border: theme === 'dark' 
-              ? '1px solid rgba(100, 149, 237, 0.08)' 
-              : '1px solid rgba(100, 149, 237, 0.2)',
+            backgroundColor: theme === 'dark' 
+              ? 'rgba(26, 27, 46, 0.5)' 
+              : 'rgba(255, 255, 255, 0.7)',
+            backdropFilter: 'blur(20px) saturate(180%)',
+            WebkitBackdropFilter: 'blur(20px) saturate(180%)',
+            boxShadow: theme === 'dark' 
+              ? '0 8px 32px rgba(0, 0, 0, 0.3), inset 0 0 0 1px rgba(255, 255, 255, 0.1), 0 0 100px rgba(100, 149, 237, 0.1)' 
+              : '0 8px 32px rgba(65, 105, 225, 0.15), inset 0 0 0 1px rgba(65, 105, 225, 0.2), 0 0 100px rgba(65, 105, 225, 0.1)',
             transform: `perspective(1000px) rotateX(${bgPosition.y / 30}deg) rotateY(${-bgPosition.x / 30}deg)`,
           }}
           initial={{ opacity: 0, scale: 0.95, y: 10 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           transition={{ duration: 0.6, ease: [0.23, 1, 0.32, 1] }}
         >
-          {/* Theme toggle - SnigdhaOS-style */}
+          {/* Theme toggle with enhanced design */}
           <motion.button
-            className="absolute top-3 right-3 p-2 rounded-full z-20"
+            className="absolute top-4 right-4 p-3 rounded-xl backdrop-blur-md"
             style={{ 
-              background: theme === 'dark' ? 'rgba(100, 149, 237, 0.1)' : 'rgba(100, 149, 237, 0.1)',
-              color: theme === 'dark' ? 'rgba(255, 255, 255, 0.8)' : 'rgba(0, 0, 0, 0.6)'
+              backgroundColor: theme === 'dark' 
+                ? 'rgba(255, 255, 255, 0.1)' 
+                : 'rgba(65, 105, 225, 0.1)',
+              border: `1px solid ${theme === 'dark' 
+                ? 'rgba(255, 255, 255, 0.1)' 
+                : 'rgba(65, 105, 225, 0.2)'}`,
+              boxShadow: theme === 'dark'
+                ? '0 4px 12px rgba(0, 0, 0, 0.2)'
+                : '0 4px 12px rgba(65, 105, 225, 0.1)'
             }}
-            whileTap={{ scale: 0.92 }}
-            onClick={toggleTheme}
+            whileHover={{ scale: 1.1, rotate: 180 }}
+            whileTap={{ scale: 0.9 }}
+            onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
           >
-            {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+            {theme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
           </motion.button>
             
-          {/* SnigdhaOS Logo with blur effect */}
+          {/* SnigdhaOS Logo with enhanced effects */}
           <motion.div
-            className="mb-8 w-32 h-32 relative mx-auto"
+            className="flex justify-center mb-8"
             animate={controls}
           >
-            <div className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-500 via-blue-400 to-blue-500 opacity-80 blur-lg" 
-                style={{ animation: "spin 8s linear infinite" }} />
-            
-            {/* SnigdhaOS logo container with subtle reflection */}
-            <div className="absolute inset-0 rounded-full overflow-hidden flex items-center justify-center"
-                style={{ 
-                  boxShadow: theme === 'dark' 
-                    ? '0 15px 35px -12px rgba(100, 149, 237, 0.3), 0 0 1px rgba(255, 255, 255, 0.2)' 
-                    : '0 15px 35px -12px rgba(100, 149, 237, 0.15), 0 0 1px rgba(0, 0, 0, 0.1)',
-                  transform: `perspective(800px) rotateX(${-bgPosition.y / 15}deg) rotateY(${bgPosition.x / 15}deg)`
-                }}
-            >
-              <div className="w-28 h-28 flex items-center justify-center bg-white dark:bg-gray-800 rounded-full">
-                <SnigdhaOSLogo className="w-20 h-20 text-cornflower-blue" />
-              </div>
-              
-              {/* SnigdhaOS-style reflection effect */}
-              <div 
-                className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-b from-transparent to-white opacity-20"
+            <div className="relative w-28 h-28">
+              <motion.div 
+                className="absolute inset-0 rounded-full"
                 style={{
-                  transform: 'scaleY(-1) translateY(-5px)',
-                  filter: 'blur(1px)'
+                  background: theme === 'dark'
+                    ? 'conic-gradient(from 0deg, #6495ED, #4169E1, #1E90FF, #6495ED)'
+                    : 'conic-gradient(from 0deg, #4169E1, #1E90FF, #4169E1, #1E90FF)'
                 }}
-              ></div>
+                animate={{
+                  rotate: [0, 360]
+                }}
+                transition={{
+                  duration: 8,
+                  repeat: Infinity,
+                  ease: "linear"
+                }}
+              />
+              <motion.div 
+                className="absolute inset-0"
+                style={{
+                  background: `radial-gradient(circle at 30% 30%, ${
+                    theme === 'dark' ? 'rgba(100, 149, 237, 0.4)' : 'rgba(65, 105, 225, 0.4)'
+                  }, transparent)`,
+                  filter: 'blur(10px)',
+                }}
+                animate={{
+                  scale: [1, 1.2, 1],
+                  opacity: [0.5, 0.8, 0.5]
+                }}
+                transition={{
+                  duration: 3,
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                }}
+              />
+              <div className="relative w-full h-full rounded-full flex items-center justify-center backdrop-blur-sm">
+                <div
+                  style={{
+                    filter: `drop-shadow(0 0 10px ${theme === 'dark' ? 'rgba(255,255,255,0.5)' : 'rgba(65,105,225,0.5)'})`
+                  }}
+                >
+                  <SnigdhaOSLogo 
+                    className={`w-20 h-20 ${theme === 'dark' ? 'text-white' : 'text-[#4169E1]'}`}
+                  />
+                </div>
+              </div>
             </div>
           </motion.div>
           
-          {/* Brand name */}
+          {/* Brand name with enhanced typography */}
           <motion.h2 
-            className="text-3xl font-sf-pro font-medium mb-1 text-center"
+            className="text-2xl font-bold text-center mb-2"
             style={{ 
-              color: theme === 'dark' ? 'white' : '#000000',
-              letterSpacing: '0.01em'
+              color: theme === 'dark' ? 'white' : 'rgba(0, 0, 0, 0.9)',
+              letterSpacing: '0.01em',
+              textShadow: theme === 'dark' 
+                ? '0 0 20px rgba(100, 149, 237, 0.3)' 
+                : '0 0 20px rgba(65, 105, 225, 0.2)'
             }}
             initial={{ opacity: 0, y: 5 }}
             animate={{ opacity: 1, y: 0 }}
@@ -401,10 +474,15 @@ export function LoginScreen({ onLogin }: { onLogin: (specialUser?: string) => vo
             SnigdhaOS
           </motion.h2>
           
-          {/* User name - under the brand name */}
+          {/* User name with enhanced styling */}
           <motion.p 
-            className="text-base font-sf-pro font-normal mb-3 text-center opacity-80"
-            style={{ color: theme === 'dark' ? 'white' : '#000000' }}
+            className="text-base font-sf-pro font-normal mb-3 text-center"
+            style={{ 
+              color: theme === 'dark' ? 'rgba(255, 255, 255, 0.8)' : 'rgba(0, 0, 0, 0.8)',
+              textShadow: theme === 'dark' 
+                ? '0 0 10px rgba(100, 149, 237, 0.2)' 
+                : '0 0 10px rgba(65, 105, 225, 0.1)'
+            }}
             initial={{ opacity: 0, y: 5 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.6 }}
@@ -412,7 +490,7 @@ export function LoginScreen({ onLogin }: { onLogin: (specialUser?: string) => vo
             {PERSONAL_INFO.name}
           </motion.p>
           
-          {/* Password hint - SnigdhaOS style */}
+          {/* Password hint with enhanced design */}
           <AnimatePresence>
             {showPasswordHint && (
               <motion.div
@@ -420,7 +498,12 @@ export function LoginScreen({ onLogin }: { onLogin: (specialUser?: string) => vo
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0 }}
                 className="text-sm mb-5 text-center font-sf-pro"
-                style={{ color: theme === 'dark' ? 'rgba(100, 149, 237, 0.9)' : 'rgba(100, 149, 237, 0.9)' }}
+                style={{ 
+                  color: theme === 'dark' 
+                    ? 'rgba(100, 149, 237, 0.9)' 
+                    : 'rgba(65, 105, 225, 0.9)',
+                  textShadow: '0 0 10px rgba(100, 149, 237, 0.3)'
+                }}
               >
                 <p className="flex items-center justify-center">
                   <Info className="w-3.5 h-3.5 mr-1.5" />
@@ -430,143 +513,118 @@ export function LoginScreen({ onLogin }: { onLogin: (specialUser?: string) => vo
             )}
           </AnimatePresence>
           
-          {/* Password input with SnigdhaOS glass effect */}
+          {/* Password input with enhanced design */}
           <motion.form 
             onSubmit={handleSubmit}
-            animate={{ x: isShaking ? [-5, 5, -5, 5, -3, 3, 0] : 0 }}
-            transition={{ duration: 0.4, type: "spring", stiffness: 400, damping: 10 }}
+            animate={{ x: isShaking ? [-10, 10, -10, 10, 0] : 0 }}
+            transition={{ duration: 0.4 }}
             className="relative"
           >
-            <div className="mb-5 mx-auto">
-              <div className="relative">
-                <div 
-                  className="absolute left-4 top-1/2 transform -translate-y-1/2"
-                  style={{ color: theme === 'dark' ? 'rgba(255, 255, 255, 0.5)' : 'rgba(0, 0, 0, 0.5)' }}
-                >
-                  <Lock className="w-4 h-4" />
-                </div>
-                <input
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  onFocus={() => setIsPasswordFocused(true)}
-                  onBlur={() => setIsPasswordFocused(false)}
-                  placeholder="Enter password"
-                  style={{
-                    background: theme === 'dark' 
-                      ? isPasswordFocused ? 'rgba(255, 255, 255, 0.12)' : 'rgba(255, 255, 255, 0.07)' 
-                      : isPasswordFocused ? 'rgba(0, 0, 0, 0.07)' : 'rgba(0, 0, 0, 0.04)',
-                    color: theme === 'dark' ? 'white' : '#000000',
-                    borderColor: isPasswordFocused 
-                      ? theme === 'dark' ? 'rgba(100, 149, 237, 0.8)' : 'rgba(100, 149, 237, 0.6)'
-                      : theme === 'dark' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)',
-                    boxShadow: isPasswordFocused 
-                      ? theme === 'dark' ? '0 0 0 4px rgba(100, 149, 237, 0.3)' : '0 0 0 4px rgba(100, 149, 237, 0.15)'
-                      : 'none'
-                  }}
-                  className="w-full h-11 rounded-xl pl-11 pr-12 border focus:outline-none transition-all font-sf-pro text-sm"
-                  autoFocus
-                />
-                <motion.button
-                  type="submit"
-                  style={{
-                    background: theme === 'dark' ? '#6495ED' : '#6495ED'
-                  }}
-                  className="absolute right-1.5 top-1.5 bottom-1.5 px-2.5 aspect-square rounded-lg text-white flex items-center justify-center"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <ArrowRight className="w-4 h-4" />
-                </motion.button>
-              </div>
-            </div>
-            
-            <div className="mt-3 text-sm flex justify-center">
-              <motion.button 
+            <div className="relative">
+              <motion.input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                onFocus={() => setIsPasswordFocused(true)}
+                onBlur={() => setIsPasswordFocused(false)}
+                placeholder="Enter password"
+                className="w-full h-14 rounded-xl px-12 outline-none transition-all duration-300"
                 style={{
-                  background: theme === 'dark' ? 'rgba(100, 149, 237, 0.06)' : 'rgba(100, 149, 237, 0.06)',
-                  borderColor: theme === 'dark' ? 'rgba(100, 149, 237, 0.2)' : 'rgba(100, 149, 237, 0.2)',
-                  color: theme === 'dark' ? 'rgba(255, 255, 255, 0.8)' : 'rgba(0, 0, 0, 0.6)'
+                  backgroundColor: theme === 'dark' 
+                    ? 'rgba(255, 255, 255, 0.08)' 
+                    : 'rgba(65, 105, 225, 0.08)',
+                  color: theme === 'dark' ? 'white' : 'rgba(0, 0, 0, 0.8)',
+                  border: `1px solid ${isPasswordFocused 
+                    ? theme === 'dark' ? 'rgba(100, 149, 237, 0.8)' : 'rgba(65, 105, 225, 0.5)'
+                    : theme === 'dark' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(65, 105, 225, 0.2)'}`,
+                  boxShadow: isPasswordFocused
+                    ? `0 0 0 4px ${theme === 'dark' ? 'rgba(100, 149, 237, 0.2)' : 'rgba(65, 105, 225, 0.15)'}, 
+                       inset 0 0 20px ${theme === 'dark' ? 'rgba(100, 149, 237, 0.1)' : 'rgba(65, 105, 225, 0.05)'}`
+                    : `inset 0 0 20px ${theme === 'dark' ? 'rgba(0, 0, 0, 0.1)' : 'rgba(65, 105, 225, 0.05)'}`,
+                  backdropFilter: 'blur(10px)'
                 }}
-                className="px-5 py-2 transition-colors flex items-center justify-center rounded-lg backdrop-blur-sm border font-sf-pro text-sm"
-                whileHover={{ 
-                  scale: 1.02, 
-                  background: theme === 'dark' ? 'rgba(100, 149, 237, 0.1)' : 'rgba(100, 149, 237, 0.1)'
-                }}
-                whileTap={{ scale: 0.98 }}
-                onClick={(e) => {
-                  e.preventDefault();
-                  // Add scale down animation for skip login
-                  controls.start({
-                    scale: [1, 0.98, 0],
-                    opacity: [1, 0, 0],
-                    transition: { duration: 0.5 }
-                  }).then(() => onLogin());
+                whileFocus={{ scale: 1.02 }}
+              />
+              <Lock className={`absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 transition-colors duration-300 ${
+                isPasswordFocused 
+                  ? theme === 'dark' ? 'text-primary' : 'text-blue-600' 
+                  : theme === 'dark' ? 'opacity-60' : 'opacity-40'
+              }`} />
+              <motion.button
+                type="submit"
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 w-8 h-8 rounded-lg flex items-center justify-center overflow-hidden"
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                style={{
+                  background: theme === 'dark'
+                    ? 'linear-gradient(135deg, #6495ED, #4169E1)'
+                    : 'linear-gradient(135deg, #4169E1, #1E90FF)',
+                  boxShadow: `0 0 20px ${theme === 'dark' ? 'rgba(100, 149, 237, 0.3)' : 'rgba(65, 105, 225, 0.3)'}`,
                 }}
               >
-                <span>Skip Login</span>
+                <motion.div
+                  className="absolute inset-0"
+                  style={{
+                    background: 'linear-gradient(45deg, transparent, rgba(255,255,255,0.3), transparent)',
+                    transform: 'translateX(-100%)',
+                  }}
+                  animate={{
+                    transform: ['translateX(-100%)', 'translateX(100%)'],
+                  }}
+                  transition={{
+                    duration: 1.5,
+                    repeat: Infinity,
+                    repeatDelay: 0.5,
+                    ease: 'linear',
+                  }}
+                />
+                <ArrowRight className="w-5 h-5 text-white relative z-10" />
+              </motion.button>
+            </div>
+            
+            <div className="mt-6 w-full text-sm flex justify-center">
+              <motion.button 
+                type="button"
+                className="w-full h-12 rounded-xl text-base font-medium transition-all overflow-hidden relative"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={() => onLogin()}
+                style={{
+                  background: theme === 'dark'
+                    ? 'linear-gradient(135deg, rgba(100, 149, 237, 0.2), rgba(65, 105, 225, 0.2))'
+                    : 'linear-gradient(135deg, rgba(65, 105, 225, 0.1), rgba(30, 144, 255, 0.1))',
+                  color: theme === 'dark' ? 'rgba(255, 255, 255, 0.8)' : 'rgba(0, 0, 0, 0.6)',
+                  border: `1px solid ${theme === 'dark' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(65, 105, 225, 0.2)'}`,
+                  boxShadow: theme === 'dark'
+                    ? '0 4px 12px rgba(0, 0, 0, 0.2)'
+                    : '0 4px 12px rgba(65, 105, 225, 0.1)'
+                }}
+              >
+                Skip Login
               </motion.button>
             </div>
           </motion.form>
         </motion.div>
       </div>
       
-      {/* Bottom power controls - SnigdhaOS style */}
-      <motion.div 
-        className="absolute bottom-8 left-0 right-0 flex justify-center z-10"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.7, duration: 0.5 }}
-      >
-        <div 
-          className="flex items-center space-x-8 py-2 px-6 rounded-2xl backdrop-blur-md"
-          style={{ 
-            color: theme === 'dark' ? 'rgba(255, 255, 255, 0.8)' : 'rgba(0, 0, 0, 0.6)',
-            background: theme === 'dark' ? 'rgba(30, 32, 48, 0.5)' : 'rgba(255, 255, 255, 0.3)',
-            borderColor: theme === 'dark' ? 'rgba(100, 149, 237, 0.06)' : 'rgba(100, 149, 237, 0.1)',
-            border: '1px solid',
-            boxShadow: theme === 'dark' 
-              ? '0 4px 20px rgba(0, 0, 0, 0.2)' 
-              : '0 4px 20px rgba(0, 0, 0, 0.05)'
-          }}
-        >
-          <PowerButton 
-            icon={<Power className="w-5 h-5" />} 
-            label="Sleep" 
-            theme={theme} 
-          />
-          
-          <PowerButton 
-            icon={
-              <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12,2C17.5,2 22,6.5 22,12C22,17.5 17.5,22 12,22C6.5,22 2,17.5 2,12C2,6.5 6.5,2 12,2M12,4C7.58,4 4,7.58 4,12C4,16.42 7.58,20 12,20C16.42,20 20,16.42 20,12C20,7.58 16.42,4 12,4M12,5C15.87,5 19,8.13 19,12H12V5Z" />
-              </svg>
-            } 
-            label="Restart" 
-            theme={theme} 
-          />
-          
-          <PowerButton 
-            icon={<Power className="w-5 h-5" />} 
-            label="Shut Down" 
-            theme={theme} 
-          />
-        </div>
-      </motion.div>
-      
-      {/* Language selector - SnigdhaOS style */}
-      <motion.div 
-        className="absolute bottom-8 right-8 z-10"
-        initial={{ opacity: 0, x: 20 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ delay: 0.8, duration: 0.5 }}
-      >
+      {/* Bottom controls with enhanced styling */}
+      <div className="absolute bottom-8 left-0 right-0 flex justify-between px-8 z-10">
+        {/* Language selector with enhanced design */}
         <motion.button 
           className="flex items-center text-xs backdrop-blur-md px-4 py-2 rounded-lg border font-sf-pro"
           style={{ 
-            background: theme === 'dark' ? 'rgba(30, 32, 48, 0.5)' : 'rgba(255, 255, 255, 0.3)',
-            borderColor: theme === 'dark' ? 'rgba(100, 149, 237, 0.06)' : 'rgba(100, 149, 237, 0.1)',
-            color: theme === 'dark' ? 'rgba(255, 255, 255, 0.8)' : 'rgba(0, 0, 0, 0.6)'
+            background: theme === 'dark' 
+              ? 'rgba(30, 32, 48, 0.5)' 
+              : 'rgba(65, 105, 225, 0.1)',
+            borderColor: theme === 'dark' 
+              ? 'rgba(255, 255, 255, 0.1)' 
+              : 'rgba(65, 105, 225, 0.2)',
+            color: theme === 'dark' 
+              ? 'rgba(255, 255, 255, 0.8)' 
+              : 'rgba(0, 0, 0, 0.6)',
+            boxShadow: theme === 'dark'
+              ? '0 4px 12px rgba(0, 0, 0, 0.2)'
+              : '0 4px 12px rgba(65, 105, 225, 0.1)'
           }}
           whileHover={{ scale: 1.03 }}
           whileTap={{ scale: 0.97 }}
@@ -575,21 +633,23 @@ export function LoginScreen({ onLogin }: { onLogin: (specialUser?: string) => vo
           English
           <ChevronDown className="w-3 h-3 ml-1.5" />
         </motion.button>
-      </motion.div>
-      
-      {/* Accessibility - SnigdhaOS style */}
-      <motion.div 
-        className="absolute bottom-8 left-8 z-10"
-        initial={{ opacity: 0, x: -20 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ delay: 0.8, duration: 0.5 }}
-      >
+
+        {/* Accessibility button with enhanced design */}
         <motion.button 
           className="flex items-center text-xs backdrop-blur-md px-4 py-2 rounded-lg border font-sf-pro"
           style={{ 
-            background: theme === 'dark' ? 'rgba(30, 32, 48, 0.5)' : 'rgba(255, 255, 255, 0.3)',
-            borderColor: theme === 'dark' ? 'rgba(100, 149, 237, 0.06)' : 'rgba(100, 149, 237, 0.1)',
-            color: theme === 'dark' ? 'rgba(255, 255, 255, 0.8)' : 'rgba(0, 0, 0, 0.6)'
+            background: theme === 'dark' 
+              ? 'rgba(30, 32, 48, 0.5)' 
+              : 'rgba(65, 105, 225, 0.1)',
+            borderColor: theme === 'dark' 
+              ? 'rgba(255, 255, 255, 0.1)' 
+              : 'rgba(65, 105, 225, 0.2)',
+            color: theme === 'dark' 
+              ? 'rgba(255, 255, 255, 0.8)' 
+              : 'rgba(0, 0, 0, 0.6)',
+            boxShadow: theme === 'dark'
+              ? '0 4px 12px rgba(0, 0, 0, 0.2)'
+              : '0 4px 12px rgba(65, 105, 225, 0.1)'
           }}
           whileHover={{ scale: 1.03 }}
           whileTap={{ scale: 0.97 }}
@@ -599,7 +659,7 @@ export function LoginScreen({ onLogin }: { onLogin: (specialUser?: string) => vo
           </svg>
           Accessibility
         </motion.button>
-      </motion.div>
+      </div>
       
       {/* CSS for animations */}
       <style jsx global>{`
@@ -612,25 +672,3 @@ export function LoginScreen({ onLogin }: { onLogin: (specialUser?: string) => vo
   );
 }
 
-// Helper component for power buttons
-function PowerButton({ icon, label, theme }: { icon: React.ReactNode, label: string, theme: string }) {
-  return (
-    <motion.button
-      className="flex flex-col items-center justify-center group"
-      whileHover={{ scale: 1.05, color: theme === 'dark' ? 'rgba(255, 255, 255, 1)' : 'rgba(0, 0, 0, 0.8)' }}
-      whileTap={{ scale: 0.95 }}
-    >
-      <div 
-        className="w-10 h-10 rounded-lg flex items-center justify-center mb-1 transition-colors border"
-        style={{ 
-          background: theme === 'dark' ? 'rgba(30, 32, 48, 0.7)' : 'rgba(255, 255, 255, 0.5)',
-          borderColor: theme === 'dark' ? 'rgba(100, 149, 237, 0.08)' : 'rgba(100, 149, 237, 0.1)',
-          backdropFilter: 'blur(8px)'
-        }}
-      >
-        {icon}
-      </div>
-      <span className="text-xs font-sf-pro">{label}</span>
-    </motion.button>
-  );
-}
