@@ -80,6 +80,7 @@
     "clsx": "^2.1.0",
     "cmdk": "^1.0.0",
     "date-fns": "^3.6.0",
+    "devicon-react": "^1.1.1",
     "embla-carousel-react": "^8.0.0",
     "framer-motion": "^11.1.14",
     "gh-pages": "^6.1.1",

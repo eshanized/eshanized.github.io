@@ -63,8 +63,8 @@ export function LoginScreen({ onLogin }: { onLogin: (specialUser?: string) => vo
 
     const resizeCanvas = () => {
       if (!canvas || !ctx) return;
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
     };
 
     resizeCanvas();
@@ -89,15 +89,15 @@ export function LoginScreen({ onLogin }: { onLogin: (specialUser?: string) => vo
       : catppuccinColors.light.base;
 
     // Create particles with enhanced properties
-    for (let i = 0; i < 80; i++) {
-      particles.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
+      for (let i = 0; i < 80; i++) {
+        particles.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
         size: Math.random() * 4 + 1,
         speedX: (Math.random() - 0.5) * 1.2,
         speedY: (Math.random() - 0.5) * 1.2,
         opacity: Math.random() * 0.5 + 0.3,
-        color: colors[Math.floor(Math.random() * colors.length)],
+          color: colors[Math.floor(Math.random() * colors.length)],
         pulse: Math.random() * Math.PI,
         orbitRadius: Math.random() * 100 + 50,
         orbitSpeed: (Math.random() - 0.5) * 0.02,
@@ -124,7 +124,7 @@ export function LoginScreen({ onLogin }: { onLogin: (specialUser?: string) => vo
       if (!canvas || !ctx) return;
       
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-
+      
       // Create dynamic gradient background with Catppuccin colors
       const time = Date.now() * 0.0002;
       const gradient = ctx.createLinearGradient(
@@ -133,7 +133,7 @@ export function LoginScreen({ onLogin }: { onLogin: (specialUser?: string) => vo
         Math.cos(time) * canvas.width,
         canvas.height
       );
-
+      
       if (theme === 'dark') {
         gradient.addColorStop(0, '#1e1e2e');  // Catppuccin Mocha base
         gradient.addColorStop(0.5, '#181825'); // Catppuccin Mocha mantle
@@ -324,9 +324,9 @@ export function LoginScreen({ onLogin }: { onLogin: (specialUser?: string) => vo
         >
           {/* Brand text overlay */}
           <div className="absolute inset-0 flex flex-col items-center justify-between p-12 z-10">
-            <motion.div
+      <motion.div 
               initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
+        animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 1, duration: 0.8 }}
               className="text-center"
             >
@@ -339,7 +339,7 @@ export function LoginScreen({ onLogin }: { onLogin: (specialUser?: string) => vo
                   textShadow: '0 0 30px rgba(203, 166, 247, 0.3)',
                 }}
               >
-                SnigdhaOS
+            SnigdhaOS
               </h2>
               <p 
                 className="text-xl"
@@ -459,13 +459,13 @@ export function LoginScreen({ onLogin }: { onLogin: (specialUser?: string) => vo
                     theme === 'dark' ? 'text-white' : 'text-[#4169E1]'
                   }`}
                 />
-              </div>
-            </div>
-          </motion.div>
-
+          </div>
+        </div>
+      </motion.div>
+      
           {/* Floating elements */}
           {[...Array(6)].map((_, i) => (
-            <motion.div
+        <motion.div 
               key={i}
               className="absolute rounded-full"
               style={{
@@ -490,7 +490,7 @@ export function LoginScreen({ onLogin }: { onLogin: (specialUser?: string) => vo
             />
           ))}
         </motion.div>
-
+        
         {/* Right panel - Login form */}
         <motion.div 
           className="w-full lg:w-1/2 flex flex-col items-center justify-center p-8"
@@ -506,7 +506,7 @@ export function LoginScreen({ onLogin }: { onLogin: (specialUser?: string) => vo
             transition={{ delay: 0.3 }}
           >
             <motion.div className="mb-6">
-              <motion.div
+          <motion.div
                 className="flex items-center justify-center mb-4"
                 whileHover={{ scale: 1.05 }}
                 transition={{ type: "spring", stiffness: 400 }}
@@ -537,11 +537,11 @@ export function LoginScreen({ onLogin }: { onLogin: (specialUser?: string) => vo
               {currentDate}
             </motion.p>
           </motion.div>
-
+          
           {/* Login form container */}
           <motion.div 
             className="w-full max-w-md relative"
-            style={{
+            style={{ 
               background: catppuccinColors.dark.surface,
               borderRadius: '24px',
               padding: '32px',
@@ -583,11 +583,11 @@ export function LoginScreen({ onLogin }: { onLogin: (specialUser?: string) => vo
               >
                 {currentTime}
               </h2>
-            </motion.div>
-
+              </motion.div>
+          
             {/* Password input */}
-            <motion.form 
-              onSubmit={handleSubmit}
+          <motion.form 
+            onSubmit={handleSubmit}
               animate={{ x: isShaking ? [-10, 10, -10, 10, 0] : 0 }}
               transition={{ duration: 0.4 }}
               className="space-y-6"
@@ -615,7 +615,7 @@ export function LoginScreen({ onLogin }: { onLogin: (specialUser?: string) => vo
                       : theme === 'dark' 
                         ? 'rgba(255, 255, 255, 0.1)' 
                         : 'rgba(65, 105, 225, 0.2)'}`,
-                    boxShadow: isPasswordFocused
+                    boxShadow: isPasswordFocused 
                       ? `0 0 0 4px ${theme === 'dark' 
                         ? 'rgba(203, 166, 247, 0.2)' 
                         : 'rgba(173, 136, 217, 0.15)'}`
@@ -632,10 +632,10 @@ export function LoginScreen({ onLogin }: { onLogin: (specialUser?: string) => vo
               </div>
 
               {/* Login button */}
-              <motion.button
-                type="submit"
+                <motion.button
+                  type="submit"
                 className="w-full h-14 rounded-xl relative overflow-hidden"
-                style={{
+                  style={{
                   background: theme === 'dark'
                     ? `linear-gradient(135deg, ${catppuccinColors.dark.base[0]}, ${catppuccinColors.dark.base[5]})`
                     : `linear-gradient(135deg, ${catppuccinColors.light.base[0]}, ${catppuccinColors.light.base[5]})`,
@@ -656,10 +656,10 @@ export function LoginScreen({ onLogin }: { onLogin: (specialUser?: string) => vo
                 <span className="relative z-10 text-white font-medium">
                   Login
                 </span>
-              </motion.button>
-
+                </motion.button>
+            
               {/* Skip login button */}
-              <motion.button
+              <motion.button 
                 type="button"
                 onClick={() => onLogin()}
                 className="w-full h-12 rounded-xl text-base font-medium"
@@ -676,11 +676,11 @@ export function LoginScreen({ onLogin }: { onLogin: (specialUser?: string) => vo
               >
                 Skip Login
               </motion.button>
-            </motion.form>
-          </motion.div>
-
+          </motion.form>
+        </motion.div>
+      
           {/* Bottom branding */}
-          <motion.div
+      <motion.div 
             className="mt-8 text-center"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -692,39 +692,39 @@ export function LoginScreen({ onLogin }: { onLogin: (specialUser?: string) => vo
             >
               SnigdhaOS × Eshanized
             </p>
-          </motion.div>
-
+      </motion.div>
+      
           {/* Bottom controls - Only show password hint toggle */}
-          <motion.div 
+      <motion.div 
             className="flex justify-center w-full max-w-md mt-8"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.9 }}
           >
             {/* Password hint toggle */}
-            <motion.button
+        <motion.button 
               onClick={() => setShowPasswordHint(!showPasswordHint)}
               className="p-3 rounded-xl backdrop-blur-md"
-              style={{
+          style={{ 
                 background: 'rgba(255, 255, 255, 0.1)',
                 border: '1px solid rgba(255, 255, 255, 0.1)',
-              }}
+          }}
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
-            >
+        >
               <Info className="w-5 h-5" />
-            </motion.button>
-          </motion.div>
-
+        </motion.button>
+      </motion.div>
+      
           {/* Password hint */}
           <AnimatePresence>
             {showPasswordHint && (
-              <motion.div
+      <motion.div 
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
                 className="mt-4 text-sm text-center p-3 rounded-xl backdrop-blur-md"
-                style={{
+          style={{ 
                   background: 'rgba(255, 255, 255, 0.1)',
                   color: catppuccinColors.dark.text,
                 }}
@@ -733,7 +733,7 @@ export function LoginScreen({ onLogin }: { onLogin: (specialUser?: string) => vo
               </motion.div>
             )}
           </AnimatePresence>
-        </motion.div>
+      </motion.div>
       </div>
     </div>
   );
