@@ -47,9 +47,11 @@ export function LoginScreen({ onLogin }: { onLogin: (specialUser?: string) => vo
   const [isShaking, setIsShaking] = useState(false);
   const [showPasswordHint, setShowPasswordHint] = useState(false);
   const [bgPosition, setBgPosition] = useState({ x: 0, y: 0 });
-  const [theme, setTheme] = useState<'light' | 'dark'>('dark');
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const controls = useAnimation();
+
+  // Remove theme state and always use dark theme
+  const theme = 'dark';
 
   // Enhanced animated background effect
   useEffect(() => {
@@ -605,42 +607,20 @@ export function LoginScreen({ onLogin }: { onLogin: (specialUser?: string) => vo
             </motion.form>
           </motion.div>
 
-          {/* Bottom controls */}
+          {/* Bottom controls - Only show password hint toggle */}
           <motion.div 
-            className="flex justify-between w-full max-w-md mt-8"
+            className="flex justify-center w-full max-w-md mt-8"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.9 }}
           >
-            {/* Theme toggle */}
-            <motion.button
-              onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-              className="p-3 rounded-xl backdrop-blur-md"
-              style={{
-                background: theme === 'dark'
-                  ? 'rgba(255, 255, 255, 0.1)'
-                  : 'rgba(65, 105, 225, 0.1)',
-                border: `1px solid ${theme === 'dark'
-                  ? 'rgba(255, 255, 255, 0.1)'
-                  : 'rgba(65, 105, 225, 0.2)'}`,
-              }}
-              whileHover={{ scale: 1.1, rotate: 180 }}
-              whileTap={{ scale: 0.9 }}
-            >
-              {theme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
-            </motion.button>
-
             {/* Password hint toggle */}
             <motion.button
               onClick={() => setShowPasswordHint(!showPasswordHint)}
               className="p-3 rounded-xl backdrop-blur-md"
               style={{
-                background: theme === 'dark'
-                  ? 'rgba(255, 255, 255, 0.1)'
-                  : 'rgba(65, 105, 225, 0.1)',
-                border: `1px solid ${theme === 'dark'
-                  ? 'rgba(255, 255, 255, 0.1)'
-                  : 'rgba(65, 105, 225, 0.2)'}`,
+                background: 'rgba(255, 255, 255, 0.1)',
+                border: '1px solid rgba(255, 255, 255, 0.1)',
               }}
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
@@ -658,12 +638,8 @@ export function LoginScreen({ onLogin }: { onLogin: (specialUser?: string) => vo
                 exit={{ opacity: 0, y: -10 }}
                 className="mt-4 text-sm text-center p-3 rounded-xl backdrop-blur-md"
                 style={{
-                  background: theme === 'dark'
-                    ? 'rgba(255, 255, 255, 0.1)'
-                    : 'rgba(65, 105, 225, 0.1)',
-                  color: theme === 'dark'
-                    ? catppuccinColors.dark.text
-                    : catppuccinColors.light.text,
+                  background: 'rgba(255, 255, 255, 0.1)',
+                  color: catppuccinColors.dark.text,
                 }}
               >
                 Hint: Try the name that brings love ♥
