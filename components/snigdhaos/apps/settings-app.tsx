@@ -1473,7 +1473,7 @@ export default function SettingsApp() {
                         </svg>
                       </div>
                       <div>
-                        <p className="text-sm font-medium">Finder</p>
+                        <p className="text-sm font-medium">Files</p>
                         <p className="text-xs text-muted-foreground">System application</p>
                       </div>
                     </div>

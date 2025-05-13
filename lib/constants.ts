@@ -214,7 +214,7 @@ export const DESKTOP_APPS = [
   },
   {
     id: "finder",
-    title: "Finder",
+    title: "Files",
     icon: FolderOpen,
     defaultSize: { width: 800, height: 500 },
     defaultPosition: { x: 120, y: 110 },
@@ -322,9 +322,9 @@ The Mail app demonstrates complex layout structure and data organization.`,
   },
   {
     id: "finder-note",
-    title: "Finder App",
+    title: "Files App",
     type: "note" as const,
-    content: `Finder App Features:
+    content: `Files App Features:
 
 • Authentic macOS file browser experience
 • Sidebar with favorites, devices, and tags

@@ -26,7 +26,7 @@ import { DESKTOP_APPS } from '@/lib/constants';
 import { useWindowManager } from './window-context';
 
 // macOS Dock App Icons using Lucide components
-const FinderIcon = () => (
+const FilesIcon = () => (
   <div className="flex items-center justify-center w-full h-full rounded-xl bg-gradient-to-br from-blue-300 to-blue-600">
     <FolderSearch className="w-8 h-8 text-white" />
   </div>
@@ -113,7 +113,7 @@ export function Dock({ openWindows, activeWindow, minimizedWindows, onAppClick }
 
   // Use DESKTOP_APPS to get app data but display them in the order we want
   const appIcons = {
-    'finder': FinderIcon,
+    'finder': FilesIcon,
     'safari': ChromeIcon,
     'mail': MailIcon,
     'messages': MessagesIcon,
@@ -135,7 +135,7 @@ export function Dock({ openWindows, activeWindow, minimizedWindows, onAppClick }
   })).filter(app => appIcons[app.id as keyof typeof appIcons]); // Only include apps that have an icon defined
 
   // Split apps into system apps and other apps
-  const systemApps = apps.filter(app => app.id === 'finder'); // Finder
+  const systemApps = apps.filter(app => app.id === 'finder'); // Files
   const otherApps = apps.filter(app => app.id !== 'finder'); // Everything else
 
   useEffect(() => {
@@ -175,7 +175,7 @@ export function Dock({ openWindows, activeWindow, minimizedWindows, onAppClick }
         return (
           <>
             <ContextMenuItem onClick={() => windowManager.openWindow('finder')}>
-              New Finder Window
+              New Files Window
               <ContextMenuShortcut>⌘N</ContextMenuShortcut>
             </ContextMenuItem>
             <ContextMenuSeparator />
@@ -622,7 +622,7 @@ function DockItem({
                         Keep in Dock
                       </ContextMenuItem>
                       <ContextMenuItem>
-                        Show in Finder
+                        Show in Files
                       </ContextMenuItem>
                     </ContextMenuSubContent>
                   </ContextMenuSub>

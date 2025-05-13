@@ -110,14 +110,14 @@ export const MenuBar = memo(function MenuBar({
   // Define menu items with memoization to prevent recreation on each render
   const MENU_ITEMS = useMemo<MenuItem[]>(() => [
     {
-      label: 'Finder',
+      label: 'Files',
       items: [
-        { label: 'About Finder', shortcut: '', id: 'about' },
+        { label: 'About Files', shortcut: '', id: 'about' },
         { type: 'separator' },
         { label: 'Preferences...', shortcut: '⌘,' },
         { type: 'separator' },
         { label: 'Empty Trash...', shortcut: '⇧⌘⌫' },
-        { label: 'Hide Finder', shortcut: '⌘H' },
+        { label: 'Hide Files', shortcut: '⌘H' },
         { label: 'Hide Others', shortcut: '⌥⌘H' },
         { label: 'Show All', shortcut: '' },
       ]
@@ -248,7 +248,7 @@ export const MenuBar = memo(function MenuBar({
     {
       label: 'Applications',
       items: [
-        { id: 'finder', label: 'Finder', icon: FolderOpen },
+        { id: 'finder', label: 'Files', icon: FolderOpen },
         { id: 'calendar', label: 'Calendar', icon: Calendar },
         { id: 'messages', label: 'Messages', icon: MessagesSquare },
         { id: 'notes', label: 'Notes', icon: StickyNote },
