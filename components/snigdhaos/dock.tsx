@@ -122,7 +122,7 @@ export function Dock({ openWindows, activeWindow, minimizedWindows, onAppClick }
     'music': MusicIcon,
     'photos': PhotosIcon,
     'maps': MapsIcon,
-    'app-store': AppStoreIcon,
+    'software-center': AppStoreIcon,
     'settings': SettingsIcon,
     'terminal': TerminalIcon,
   };
@@ -287,21 +287,21 @@ export function Dock({ openWindows, activeWindow, minimizedWindows, onAppClick }
           </>
         );
         
-      case 'app-store':
+      case 'software-center':
         return (
           <>
-            <ContextMenuItem onClick={() => windowManager.openWindow('app-store')}>
-              Open App Store
+            <ContextMenuItem onClick={() => windowManager.openWindow('software-center')}>
+              Open Software Center
             </ContextMenuItem>
             <ContextMenuSeparator />
             <ContextMenuItem>
               Updates
             </ContextMenuItem>
             <ContextMenuItem>
-              Purchased Apps
+              Installed Software
             </ContextMenuItem>
             <ContextMenuItem>
-              Redeem Gift Card...
+              Browse Categories
             </ContextMenuItem>
           </>
         );

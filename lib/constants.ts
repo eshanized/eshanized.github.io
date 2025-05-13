@@ -206,8 +206,8 @@ export const DESKTOP_APPS = [
     defaultPosition: { x: 200, y: 150 },
   },
   {
-    id: "app-store",
-    title: "App Store",
+    id: "software-center",
+    title: "Software Center",
     icon: AppWindow,
     defaultSize: { width: 900, height: 650 },
     defaultPosition: { x: 150, y: 100 },
@@ -288,19 +288,21 @@ export const DESKTOP_APPS = [
 // Desktop notes about different app interfaces
 export const DESKTOP_NOTES = [
   {
-    id: "chrome-note",
-    title: "Chrome Features",
+    id: "finder-note",
+    title: "Files App",
     type: "note" as const,
-    content: `Chrome App Features:
+    content: `Files App Features:
 
-• Fully functional tabbed browsing interface
-• Omnibox for URL and search functionality
-• Bookmarks bar with popular bookmarks
-• Forward, backward, and reload navigation
-• Tab management - add, close, and switch tabs
-• Visual loading indicator during page transitions
+• Modern file management interface
+• Grid and list view options
+• Quick preview functionality
+• Advanced search capabilities
+• File sharing and collaboration
+• Customizable sidebar with favorites
+• Smart folders and tags
+• Integrated cloud storage
 
-This component demonstrates responsive UI design and state management for web browser simulation.`,
+This component demonstrates responsive layout and file system integration.`,
     position: { x: 20, y: 100 },
   },
   {
@@ -320,124 +322,11 @@ This component demonstrates responsive UI design and state management for web br
 The Mail app demonstrates complex layout structure and data organization.`,
     position: { x: 20, y: 190 },
   },
-  {
-    id: "finder-note",
-    title: "Files App",
-    type: "note" as const,
-    content: `Files App Features:
+] as const;
 
-• Authentic macOS file browser experience
-• Sidebar with favorites, devices, and tags
-• Multiple view options (grid, list views)
-• File and folder navigation
-• File info display and actions
-• Breadcrumb navigation and search
-• Forward/back navigation
-
-This component showcases file system UI patterns and navigation paradigms.`,
-    position: { x: 20, y: 280 },
-  },
-  {
-    id: "photos-note",
-    title: "Photos App",
-    type: "note" as const,
-    content: `Photos App Features:
-
-• Photo library with albums and collections
-• Media organization by time and location
-• Photo viewer with metadata display
-• Support for viewing photo details
-• Image navigation with prev/next controls
-• Grid and list view options
-• Filter and search functionality
-
-The Photos app demonstrates media management and presentation techniques.`,
-    position: { x: 20, y: 370 },
-  },
-  {
-    id: "messages-note",
-    title: "Messages App",
-    type: "note" as const,
-    content: `Messages App Features:
-
-• Contact list with online status
-• Conversation history and threading
-• Message bubbles with timestamps
-• Typing indicators and read receipts
-• Message composition with emoji support
-• Group conversation support
-• Attachment and media sharing
-
-This component demonstrates real-time communication interface patterns.`,
-    position: { x: 120, y: 100 },
-  },
-  {
-    id: "maps-note",
-    title: "Maps App",
-    type: "note" as const,
-    content: `Maps App Features:
-
-• Interactive map with location search
-• Multiple map view types (standard, satellite, transit)
-• Location details with metadata
-• Turn-by-turn directions
-• Route planning with transportation options
-• Saved locations and favorites
-• Distance and ETA calculations
-
-The Maps app demonstrates geospatial interface design and navigation.`,
-    position: { x: 120, y: 190 },
-  },
-  {
-    id: "terminal-note",
-    title: "Terminal App",
-    type: "note" as const,
-    content: `Terminal App Features:
-
-• Authentic command line interface
-• Working command history and navigation
-• Common Unix commands (ls, cat, pwd, etc.)
-• Custom commands and responses
-• Copy/paste functionality
-• Configurable theme, font, and size
-• Keyboard shortcuts support
-
-This component demonstrates command line UI patterns and text processing.`,
-    position: { x: 120, y: 280 },
-  },
-  {
-    id: "music-note",
-    title: "Music App",
-    type: "note" as const,
-    content: `Music App Features:
-
-• Music library with albums and playlists
-• Media player with transport controls
-• Now playing information display
-• Playlist management and creation
-• Search and filter capabilities
-• Like/favorite functionality
-• Volume and playback settings
-
-The Music app demonstrates media playback interfaces and audio control patterns.`,
-    position: { x: 120, y: 370 },
-  }
-];
-
-// Terminal commands for About app
+// Terminal commands
 export const TERMINAL_COMMANDS = {
-  help: "Available commands: about, skills, projects, contact, social, clear, help",
-  about: PERSONAL_INFO.about,
-  skills: "My technical skills include:\n\n" + 
-    Object.entries(SKILLS)
-      .map(([category, skills]) => 
-        `${category}:\n${skills.map(skill => `- ${skill.name}: ${skill.proficiency}%`).join('\n')}`)
-      .join('\n\n'),
-  projects: "Some of my notable projects:\n\n" + 
-    PROJECTS.map(project => `- ${project.title}: ${project.description}`).join('\n\n'),
-  contact: `You can reach me at:\nEmail: ${PERSONAL_INFO.email}\nOr use the Contact app to send a message directly.`,
-  social: "Find me on:\n" + 
-    SOCIAL_LINKS.map(link => `- ${link.name}: ${link.url}`).join('\n'),
-  clear: "Clearing terminal...",
-  unknown: "Command not found. Type 'help' to see available commands.",
+  about: `Hi, I'm Eshan Roy, a passionate Full Stack Developer with expertise in building modern web applications using React, Next.js, Node.js, and various other technologies. I enjoy creating elegant solutions to complex problems and am constantly exploring new technologies to enhance my skill set.
+
+When I'm not coding, you might find me reading tech blogs, contributing to open-source projects, or exploring the outdoors. I believe in writing clean, maintainable code and creating intuitive user experiences.`,
 };

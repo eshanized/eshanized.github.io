@@ -15,7 +15,7 @@ import ExperienceApp from './apps/experience-app';
 import EducationApp from './apps/education-app';
 import ContactApp from './apps/contact-app';
 import SettingsApp from './apps/settings-app';
-import AppStoreApp from './apps/app-store';
+import SoftwareCenterApp from './apps/software-center';
 import CalendarApp from './apps/calendar-app';
 import MessagesApp from './apps/messages-app';
 import NotesApp from './apps/notes-app';
@@ -264,11 +264,11 @@ export function SnigdhaOSDesktop() {
       case 'education':
         return <EducationApp />;
       case 'contact':
-        return <ContactApp specialUser={specialUser} />;
+        return <ContactApp />;
       case 'settings':
         return <SettingsApp />;
-      case 'app-store':
-        return <AppStoreApp />;
+      case 'software-center':
+        return <SoftwareCenterApp />;
       case 'finder':
         return <Files />;
       case 'calendar':

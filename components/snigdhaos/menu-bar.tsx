@@ -254,7 +254,7 @@ export const MenuBar = memo(function MenuBar({
         { id: 'notes', label: 'Notes', icon: StickyNote },
         { type: 'separator' },
         { id: 'settings', label: 'System Settings', icon: Settings },
-        { id: 'app-store', label: 'App Store', icon: AppWindow },
+        { id: 'software-center', label: 'Software Center', icon: AppWindow },
       ]
     }
   ], []);
@@ -666,9 +666,10 @@ export const MenuBar = memo(function MenuBar({
                 <div className="grid grid-cols-2 gap-3 mb-6">
                   {[
                     { icon: Settings, label: 'System Settings', action: () => windowManager.openWindow('settings') },
-                    { icon: AppWindow, label: 'App Store', action: () => windowManager.openWindow('app-store') },
+                    { icon: AppWindow, label: 'Software Center', action: () => windowManager.openWindow('software-center') },
                     { icon: FolderOpen, label: 'Finder', action: () => windowManager.openWindow('finder') },
-                    { icon: Command, label: 'Spotlight', action: () => {} }
+                    { icon: Command, label: 'Spotlight', action: () => {} },
+                    { icon: AppWindow, label: 'Software Center', action: () => windowManager.openWindow('software-center') },
                   ].map((item, i) => (
                     <motion.button
                       key={i}

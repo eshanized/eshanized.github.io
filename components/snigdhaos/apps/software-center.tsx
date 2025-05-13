@@ -5,17 +5,14 @@ import Image from 'next/image';
 import { Search, Grid, Award, Clock, Download, Star as StarIcon, ArrowLeft } from 'lucide-react';
 import { motion } from 'framer-motion';
 
-// App Store Logo SVG Component
-const AppStoreLogo = ({ size = 24 }: { size?: number }) => (
+// Software Center Logo SVG Component
+const SoftwareCenterLogo = ({ size = 24 }: { size?: number }) => (
   <svg width={size} height={size} viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <circle cx="16" cy="16" r="14" fill="url(#paint0_linear_87_8317)"/>
-    <path d="M18.4468 8.65403C18.7494 8.12586 18.5685 7.45126 18.0428 7.14727C17.5171 6.84328 16.8456 7.02502 16.543 7.55318L16.0153 8.47442L15.4875 7.55318C15.1849 7.02502 14.5134 6.84328 13.9877 7.14727C13.462 7.45126 13.2811 8.12586 13.5837 8.65403L14.748 10.6864L11.0652 17.1149H8.09831C7.49173 17.1149 7 17.6089 7 18.2183C7 18.8277 7.49173 19.3217 8.09831 19.3217H18.4324C18.523 19.0825 18.6184 18.6721 18.5169 18.2949C18.3644 17.7279 17.8 17.1149 16.8542 17.1149H13.5997L18.4468 8.65403Z" fill="white"/>
-    <path d="M11.6364 20.5419C11.449 20.3328 11.0292 19.9987 10.661 19.8888C10.0997 19.7211 9.67413 19.8263 9.45942 19.9179L8.64132 21.346C8.33874 21.8741 8.51963 22.5487 9.04535 22.8527C9.57107 23.1567 10.2425 22.975 10.5451 22.4468L11.6364 20.5419Z" fill="white"/>
-    <path d="M22.2295 19.3217H23.9017C24.5083 19.3217 25 18.8277 25 18.2183C25 17.6089 24.5083 17.1149 23.9017 17.1149H20.9653L17.6575 11.3411C17.4118 11.5757 16.9407 12.175 16.8695 12.8545C16.778 13.728 16.9152 14.4636 17.3271 15.1839C18.7118 17.6056 20.0987 20.0262 21.4854 22.4468C21.788 22.975 22.4594 23.1567 22.9852 22.8527C23.5109 22.5487 23.6918 21.8741 23.3892 21.346L22.2295 19.3217Z" fill="white"/>
+    <path d="M16 2C8.268 2 2 8.268 2 16s6.268 14 14 14 14-6.268 14-14S23.732 2 16 2zm4.02 6.63c.746-.03 1.454.392 1.454 1.458 0 .78-.504 1.592-1.008 1.592-.604 0-1.108-.812-1.108-1.592 0-.728.392-1.428 1.108-1.458h-.446zm-8.04 0c.716.03 1.108.73 1.108 1.458 0 .78-.504 1.592-1.108 1.592-.504 0-1.008-.812-1.008-1.592 0-1.066.708-1.488 1.454-1.458h-.446zm4.02 14.74c-4.02 0-7.284-1.82-7.284-3.276 0-1.458 3.264-3.276 7.284-3.276s7.284 1.818 7.284 3.276c0 1.456-3.264 3.276-7.284 3.276z" fill="url(#paint0_linear_penguin)"/>
     <defs>
-      <linearGradient id="paint0_linear_87_8317" x1="16" y1="2" x2="16" y2="30" gradientUnits="userSpaceOnUse">
-        <stop stopColor="#2AC9FA"/>
-        <stop offset="1" stopColor="#1F65EB"/>
+      <linearGradient id="paint0_linear_penguin" x1="16" y1="2" x2="16" y2="30" gradientUnits="userSpaceOnUse">
+        <stop stopColor="#F8B600"/>
+        <stop offset="1" stopColor="#F89B00"/>
       </linearGradient>
     </defs>
   </svg>
@@ -35,7 +32,7 @@ type App = {
   featured?: boolean;
 };
 
-export default function AppStoreApp() {
+export default function SoftwareCenterApp() {
   const [activeSection, setActiveSection] = useState<'discover' | 'create' | 'work' | 'play' | 'develop' | 'categories'>('discover');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedApp, setSelectedApp] = useState<App | null>(null);
@@ -43,94 +40,94 @@ export default function AppStoreApp() {
   // Sample apps data
   const apps: App[] = [
     {
-      id: 'figma',
-      name: 'Figma',
-      developer: 'Figma, Inc.',
-      description: 'Figma is the collaborative interface design tool. Figma helps teams collaborate on and build beautiful screens that deliver engaging experiences.',
-      category: 'Design',
+      id: 'gimp',
+      name: 'GIMP',
+      developer: 'GIMP Team',
+      description: 'GIMP is a free and open-source image editor used for image manipulation and image editing, free-form drawing, transcoding between different image file formats, and more specialized tasks.',
+      category: 'Graphics',
       rating: 4.8,
       price: 'Free',
-      icon: 'https://cdn.dribbble.com/userupload/7725768/file/original-a7e3e617287f63ce8989ef7d664ffaa3.png?compress=1&resize=400x300&vertical=center',
-      screenshots: ['https://help.figma.com/hc/article_attachments/4404835273751/Quick_actions_search_bar.gif'],
+      icon: 'https://upload.wikimedia.org/wikipedia/commons/4/45/The_GIMP_icon_-_gnome.svg',
+      screenshots: ['https://www.gimp.org/release-notes/images/2.10-update-ui.jpg'],
       featured: true
     },
     {
-      id: 'vscode',
-      name: 'Visual Studio Code',
-      developer: 'Microsoft Corporation',
-      description: 'Visual Studio Code is a code editor redefined and optimized for building and debugging modern web and cloud applications.',
-      category: 'Developer Tools',
+      id: 'kdenlive',
+      name: 'Kdenlive',
+      developer: 'KDE',
+      description: 'Kdenlive is a free and open-source video editing software based on the MLT Framework and KDE Frameworks.',
+      category: 'Video',
       rating: 4.7,
       price: 'Free',
-      icon: 'https://code.visualstudio.com/assets/apple-touch-icon.png',
-      screenshots: ['https://code.visualstudio.com/assets/docs/getstarted/tips-and-tricks/drag-drop.gif'],
+      icon: 'https://kdenlive.org/wp-content/uploads/2016/04/kdenlive-logo.png',
+      screenshots: ['https://kdenlive.org/wp-content/uploads/2021/04/kdenlive-2104-title.jpg'],
       featured: true
     },
     {
-      id: 'notion',
-      name: 'Notion',
-      developer: 'Notion Labs, Inc.',
-      description: 'Notion is the all-in-one workspace for your notes, tasks, wikis, and databases.',
-      category: 'Productivity',
+      id: 'inkscape',
+      name: 'Inkscape',
+      developer: 'Inkscape Team',
+      description: 'Inkscape is a free and open-source vector graphics editor used to create vector images, primarily in Scalable Vector Graphics (SVG) format.',
+      category: 'Graphics',
       rating: 4.9,
       price: 'Free',
-      icon: 'https://www.notion.so/front-static/shared/icons/notion-app-icon-3d.png',
-      screenshots: ['https://www.notion.so/cdn-cgi/image/format=auto,width=3840,quality=100/front-static/pages/product/home-page-hero-refreshed-v3.png']
+      icon: 'https://media.inkscape.org/media/resources/file/inkscape.svg',
+      screenshots: ['https://media.inkscape.org/media/resources/file/Inkscape-1.2-screenshot-1.png']
     },
     {
-      id: 'photoshop',
-      name: 'Adobe Photoshop',
-      developer: 'Adobe Inc.',
-      description: "Photoshop is the world's most advanced image editing application.",
-      category: 'Photo & Video',
+      id: 'blender',
+      name: 'Blender',
+      developer: 'Blender Foundation',
+      description: "Blender is a free and open-source 3D computer graphics software toolset used for creating animated films, visual effects, art, 3D models, and more.",
+      category: '3D Graphics',
       rating: 4.5,
-      price: '$20.99/month',
-      icon: 'https://upload.wikimedia.org/wikipedia/commons/a/af/Adobe_Photoshop_CC_icon.svg',
-      screenshots: ['https://cdn.mos.cms.futurecdn.net/ThzSFQW4QrrBxP8TttxpBI.jpg']
+      price: 'Free',
+      icon: 'https://download.blender.org/branding/community/blender_community_badge_white.svg',
+      screenshots: ['https://www.blender.org/wp-content/uploads/2019/07/blender_28_splash.jpg']
     },
     {
-      id: 'spotify',
-      name: 'Spotify',
-      developer: 'Spotify AB',
-      description: 'Spotify is a digital music service that gives you access to millions of songs.',
-      category: 'Music',
+      id: 'audacity',
+      name: 'Audacity',
+      developer: 'Audacity Team',
+      description: 'Audacity is a free and open-source digital audio editor and recording application software.',
+      category: 'Audio',
       rating: 4.6,
       price: 'Free',
-      icon: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/84/Spotify_icon.svg/1982px-Spotify_icon.svg.png',
-      screenshots: ['https://storage.googleapis.com/pr-newsroom-wp/1/2023/03/Spotify-Car-UI-Update-1440x1440.jpg']
+      icon: 'https://upload.wikimedia.org/wikipedia/commons/3/38/Audacity_Logo.svg',
+      screenshots: ['https://www.audacityteam.org/wp-content/uploads/2021/08/Audacity-3.0.png']
     },
     {
-      id: 'sketch',
-      name: 'Sketch',
-      developer: 'Sketch B.V.',
-      description: 'Sketch is the ultimate tool for digital design for Mac.',
-      category: 'Design',
+      id: 'krita',
+      name: 'Krita',
+      developer: 'KDE',
+      description: 'Krita is a free and open-source raster graphics editor designed primarily for digital painting and animation.',
+      category: 'Graphics',
       rating: 4.7,
-      price: '$9.99/month',
-      icon: 'https://upload.wikimedia.org/wikipedia/commons/5/59/Sketch_Logo.svg',
-      screenshots: ['https://www.sketch.com/images/blog/2022-03-18-redefining-design-at-scale/hero.jpg']
+      price: 'Free',
+      icon: 'https://upload.wikimedia.org/wikipedia/commons/7/73/Calligrakrita-base.svg',
+      screenshots: ['https://krita.org/wp-content/uploads/2019/04/krita-ui.jpg']
     },
     {
-      id: 'slack',
-      name: 'Slack',
-      developer: 'Slack Technologies, Inc.',
-      description: "Slack is where work happens. It's a digital workspace that powers your organization.",
-      category: 'Business',
+      id: 'obs',
+      name: 'OBS Studio',
+      developer: 'OBS Project',
+      description: "OBS Studio is a free and open-source software for video recording and live streaming.",
+      category: 'Video',
       rating: 4.5,
       price: 'Free',
-      icon: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/Slack_icon_2019.svg/2048px-Slack_icon_2019.svg.png',
-      screenshots: ['https://a.slack-edge.com/ce67d/marketing/img/features/desktop/calls-mac-en-US@2x.png']
+      icon: 'https://obsproject.com/assets/images/obs_logo.svg',
+      screenshots: ['https://obsproject.com/assets/images/OBSWebsiteBlackTheme.jpg']
     },
     {
-      id: 'procreate',
-      name: 'Procreate',
-      developer: 'Savage Interactive Pty Ltd',
-      description: 'Procreate is the most powerful and intuitive digital illustration app available for iPad.',
-      category: 'Graphics & Design',
+      id: 'vlc',
+      name: 'VLC',
+      developer: 'VideoLAN',
+      description: 'VLC is a free and open-source portable multimedia player, encoder, and streamer.',
+      category: 'Multimedia',
       rating: 4.9,
-      price: '$9.99',
-      icon: 'https://is1-ssl.mzstatic.com/image/thumb/Purple126/v4/27/f8/94/27f8946b-9ea2-c711-d2bb-a9d2c52c8838/AppIcon-0-0-1x_U007emarketing-0-0-0-7-0-0-sRGB-0-0-0-GLES2_U002c0-512MB-85-220-0-0.png/1200x630wa.png',
-      screenshots: ['https://cdn.dribbble.com/users/27547/screenshots/2223910/media/70ad67a6ee1c4e80bd2cdf47a5571b50.jpg?resize=400x300&vertical=center']
+      price: 'Free',
+      icon: 'https://www.videolan.org/images/vlc-logo.svg',
+      screenshots: ['https://www.videolan.org/images/vlc-features/interface.jpg']
     }
   ];
   
@@ -147,8 +144,8 @@ export default function AppStoreApp() {
   ];
   
   const categories = [
-    'Design', 'Developer Tools', 'Productivity', 'Photo & Video', 
-    'Music', 'Business', 'Graphics & Design'
+    'Graphics', 'Video', '3D Graphics', 'Audio', 'Multimedia', 
+    'Development', 'Productivity', 'Games'
   ];
   
   const renderStars = (rating: number) => {
@@ -170,8 +167,8 @@ export default function AppStoreApp() {
           </button>
           
           <div className="flex items-center">
-            <AppStoreLogo size={20} />
-            <span className="ml-2 font-medium text-primary">App Store</span>
+            <SoftwareCenterLogo size={20} />
+            <span className="ml-2 font-medium text-primary">Software Center</span>
           </div>
         </div>
         
@@ -187,7 +184,7 @@ export default function AppStoreApp() {
                 style={{ objectFit: 'cover' }}
               />
               <div className="absolute -bottom-2 -right-2 bg-white p-1 rounded-full shadow-md">
-                <AppStoreLogo size={16} />
+                <SoftwareCenterLogo size={16} />
               </div>
             </div>
             <div>
@@ -199,7 +196,7 @@ export default function AppStoreApp() {
               </div>
               <div className="flex items-center gap-2">
                 <button className="bg-primary text-primary-foreground rounded-full px-5 py-1.5 text-sm font-medium">
-                  {app.price === 'Free' ? 'Get' : app.price}
+                  {app.price === 'Free' ? 'Install' : app.price}
                 </button>
                 <button className="text-xs text-primary">Share</button>
               </div>
@@ -264,7 +261,7 @@ export default function AppStoreApp() {
           />
           {isFeatured && (
             <div className="absolute -bottom-1 -right-1 bg-white p-0.5 rounded-full shadow-sm">
-              <AppStoreLogo size={12} />
+              <SoftwareCenterLogo size={12} />
             </div>
           )}
         </div>
@@ -286,19 +283,19 @@ export default function AppStoreApp() {
 
   const renderDiscoverSection = () => (
     <div className="p-6">
-      <h2 className="text-xl font-semibold mb-4">Featured Apps</h2>
+      <h2 className="text-xl font-semibold mb-4">Featured Software</h2>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
         {featuredApps.map(app => renderAppCard(app, true))}
       </div>
       
-      <h2 className="text-xl font-semibold mb-4">Design Tools</h2>
+      <h2 className="text-xl font-semibold mb-4">Graphics & Design</h2>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-        {getAppsByCategory('Design').map(app => renderAppCard(app))}
+        {getAppsByCategory('Graphics').map(app => renderAppCard(app))}
       </div>
       
-      <h2 className="text-xl font-semibold mb-4">Productivity Apps</h2>
+      <h2 className="text-xl font-semibold mb-4">Audio & Video</h2>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        {getAppsByCategory('Productivity').map(app => renderAppCard(app))}
+        {[...getAppsByCategory('Audio'), ...getAppsByCategory('Video')].map(app => renderAppCard(app))}
       </div>
     </div>
   );
@@ -310,7 +307,7 @@ export default function AppStoreApp() {
         {categories.map(category => (
           <div key={category} className="bg-card hover:bg-accent/20 rounded-xl p-4 cursor-pointer transition-colors group relative overflow-hidden">
             <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
-              <AppStoreLogo size={16} />
+              <SoftwareCenterLogo size={16} />
             </div>
             <h3 className="font-medium">{category}</h3>
             <p className="text-sm text-muted-foreground">
@@ -328,8 +325,8 @@ export default function AppStoreApp() {
       <div className="border-b bg-muted/30 backdrop-blur-sm">
         <div className="flex items-center px-6 h-12">
           <div className="flex items-center mr-4">
-            <AppStoreLogo size={24} />
-            <span className="ml-2 font-semibold text-primary">App Store</span>
+            <SoftwareCenterLogo size={24} />
+            <span className="ml-2 font-semibold text-primary">Software Center</span>
           </div>
           <nav className="flex space-x-6">
             {navItems.map(item => (
@@ -350,7 +347,7 @@ export default function AppStoreApp() {
           <div className="ml-auto relative w-64">
             <input
               type="text"
-              placeholder="Search apps"
+              placeholder="Search software"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full bg-muted py-1.5 px-8 rounded-full text-sm focus:outline-none"
