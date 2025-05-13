@@ -25,76 +25,102 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 import { DESKTOP_APPS } from '@/lib/constants';
 import { useWindowManager } from './window-context';
 
-// macOS Dock App Icons using Lucide components
+// Modern Dock App Icons with enhanced designs
 const FilesIcon = () => (
-  <div className="flex items-center justify-center w-full h-full rounded-xl bg-gradient-to-br from-blue-300 to-blue-600">
-    <FolderSearch className="w-8 h-8 text-white" />
+  <div className="flex items-center justify-center w-full h-full rounded-xl bg-gradient-to-br from-blue-400 via-blue-500 to-indigo-600 shadow-lg shadow-blue-500/30">
+    <div className="relative w-8 h-8">
+      <FolderSearch className="w-8 h-8 text-white/90 absolute transform -rotate-3" />
+      <FolderSearch className="w-8 h-8 text-white absolute transform rotate-3" />
+    </div>
   </div>
 );
 
 const ChromeIcon = () => (
-  <div className="flex items-center justify-center w-full h-full rounded-xl bg-gradient-to-br from-sky-300 to-blue-500">
-    <Compass className="w-8 h-8 text-white" />
+  <div className="flex items-center justify-center w-full h-full rounded-xl bg-gradient-to-br from-sky-400 via-blue-500 to-indigo-500 shadow-lg shadow-sky-500/30 relative overflow-hidden">
+    <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_120%,rgba(255,255,255,0.2),transparent)]" />
+    <Compass className="w-8 h-8 text-white transform hover:rotate-180 transition-transform duration-500" />
   </div>
 );
 
 const MailIcon = () => (
-  <div className="flex items-center justify-center w-full h-full rounded-xl bg-gradient-to-br from-blue-400 to-blue-600">
-    <Mail className="w-8 h-8 text-white" />
+  <div className="flex items-center justify-center w-full h-full rounded-xl bg-gradient-to-br from-blue-500 via-blue-600 to-indigo-700 shadow-lg shadow-blue-600/30 relative">
+    <div className="absolute inset-0 bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,0.1)_50%,transparent_75%)]" />
+    <Mail className="w-8 h-8 text-white transform -rotate-6" />
   </div>
 );
 
 const MusicIcon = () => (
-  <div className="flex items-center justify-center w-full h-full rounded-xl bg-gradient-to-br from-red-400 to-red-600">
-    <Music className="w-8 h-8 text-white" />
+  <div className="flex items-center justify-center w-full h-full rounded-xl relative group">
+    <div className="absolute inset-0 bg-gradient-to-br from-rose-500 via-red-500 to-orange-500 rounded-xl shadow-lg shadow-rose-500/30" />
+    <div className="absolute inset-0 bg-gradient-to-br from-purple-500 via-pink-500 to-rose-500 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+    <Music className="w-8 h-8 text-white relative z-10 transform group-hover:scale-110 transition-transform duration-300" />
   </div>
 );
 
 const PhotosIcon = () => (
-  <div className="flex items-center justify-center w-full h-full rounded-xl bg-gradient-to-br from-orange-300 to-pink-500">
-    <Image className="w-8 h-8 text-white" />
+  <div className="flex items-center justify-center w-full h-full rounded-xl relative overflow-hidden">
+    <div className="absolute inset-0 bg-gradient-to-br from-orange-400 via-pink-500 to-purple-600 shadow-lg shadow-pink-500/30" />
+    <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_-20%,rgba(255,255,255,0.2),transparent)]" />
+    <Image className="w-8 h-8 text-white relative z-10 transform hover:scale-110 transition-transform duration-300" />
   </div>
 );
 
 const MessagesIcon = () => (
-  <div className="flex items-center justify-center w-full h-full rounded-xl bg-gradient-to-br from-green-400 to-green-600">
-    <MessageCircle className="w-8 h-8 text-white" />
+  <div className="flex items-center justify-center w-full h-full rounded-xl relative overflow-hidden">
+    <div className="absolute inset-0 bg-gradient-to-br from-[#2AABEE] via-[#2AABEE] to-[#229ED9] shadow-lg shadow-[#2AABEE]/30" />
+    <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_-10%,rgba(255,255,255,0.2),transparent)]" />
+    <svg viewBox="0 0 100 100" className="w-8 h-8 text-white relative z-10">
+      <circle cx="50" cy="50" r="45" fill="none" stroke="currentColor" strokeWidth="4" />
+      <path d="M20,50 C20,50 45,38 55,34 C65,30 75,25 75,25 C75,25 80,23 80,27 C80,31 75,70 75,70 C75,70 73,75 68,73 C63,71 48,61 48,61 C48,61 45,59 48,56 C51,53 65,40 65,40 C65,40 67,38 65,37 C63,36 45,48 35,55 C25,62 20,60 20,58 C20,56 20,50 20,50 Z" fill="currentColor" />
+    </svg>
   </div>
 );
 
 const MapsIcon = () => (
-  <div className="flex items-center justify-center w-full h-full rounded-xl bg-gradient-to-br from-green-300 to-blue-400">
-    <MapPin className="w-8 h-8 text-white" />
+  <div className="flex items-center justify-center w-full h-full rounded-xl relative group overflow-hidden">
+    <div className="absolute inset-0 bg-gradient-to-br from-emerald-400 via-teal-500 to-cyan-600 shadow-lg shadow-emerald-500/30" />
+    <div className="absolute inset-0 bg-[linear-gradient(120deg,transparent,rgba(255,255,255,0.2),transparent)] group-hover:translate-x-full transition-transform duration-700" />
+    <MapPin className="w-8 h-8 text-white relative z-10 transform group-hover:-translate-y-1 transition-transform duration-300" />
   </div>
 );
 
 const TerminalIcon = () => (
-  <div className="flex items-center justify-center w-full h-full rounded-xl bg-gradient-to-br from-zinc-800 to-zinc-950">
-    <Terminal className="w-8 h-8 text-white" />
+  <div className="flex items-center justify-center w-full h-full rounded-xl relative overflow-hidden group">
+    <div className="absolute inset-0 bg-gradient-to-br from-zinc-800 via-zinc-900 to-black shadow-lg shadow-zinc-900/50" />
+    <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(255,255,255,0.1),transparent)]" />
+    <Terminal className="w-8 h-8 text-green-400 relative z-10 group-hover:text-green-300 transition-colors duration-300" />
   </div>
 );
 
 const SettingsIcon = () => (
-  <div className="flex items-center justify-center w-full h-full rounded-xl bg-gradient-to-br from-gray-400 to-gray-600">
-    <Settings className="w-8 h-8 text-white" />
+  <div className="flex items-center justify-center w-full h-full rounded-xl relative group overflow-hidden">
+    <div className="absolute inset-0 bg-gradient-to-br from-gray-500 via-gray-600 to-gray-700 shadow-lg shadow-gray-600/30" />
+    <div className="absolute inset-0 bg-[conic-gradient(from_0deg,transparent,rgba(255,255,255,0.1),transparent)] animate-spin-slow" />
+    <Settings className="w-8 h-8 text-white relative z-10 transform group-hover:rotate-90 transition-transform duration-500" />
   </div>
 );
 
 const AppStoreIcon = () => (
-  <div className="flex items-center justify-center w-full h-full rounded-xl bg-gradient-to-br from-blue-400 to-blue-600">
-    <Store className="w-8 h-8 text-white" />
+  <div className="flex items-center justify-center w-full h-full rounded-xl relative group overflow-hidden">
+    <div className="absolute inset-0 bg-gradient-to-br from-blue-500 via-indigo-500 to-violet-600 shadow-lg shadow-blue-500/30" />
+    <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.2),transparent)] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+    <Store className="w-8 h-8 text-white relative z-10 transform group-hover:scale-110 transition-transform duration-300" />
   </div>
 );
 
 const NotesIcon = () => (
-  <div className="flex items-center justify-center w-full h-full rounded-xl bg-gradient-to-br from-yellow-100 to-yellow-300">
-    <StickyNote className="w-8 h-8 text-yellow-800" />
+  <div className="flex items-center justify-center w-full h-full rounded-xl relative group overflow-hidden">
+    <div className="absolute inset-0 bg-gradient-to-br from-amber-200 via-yellow-300 to-orange-300 shadow-lg shadow-amber-200/30" />
+    <div className="absolute inset-0 bg-[linear-gradient(45deg,transparent,rgba(255,255,255,0.3),transparent)] group-hover:translate-x-full transition-transform duration-500" />
+    <StickyNote className="w-8 h-8 text-amber-800 relative z-10 transform -rotate-6 group-hover:rotate-0 transition-transform duration-300" />
   </div>
 );
 
 const CalendarIcon = () => (
-  <div className="flex items-center justify-center w-full h-full rounded-xl bg-gradient-to-br from-red-100 to-red-200">
-    <Calendar className="w-8 h-8 text-red-600" />
+  <div className="flex items-center justify-center w-full h-full rounded-xl relative group overflow-hidden">
+    <div className="absolute inset-0 bg-gradient-to-br from-red-400 via-red-500 to-rose-600 shadow-lg shadow-red-500/30" />
+    <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_-20%,rgba(255,255,255,0.2),transparent)]" />
+    <Calendar className="w-8 h-8 text-white relative z-10 transform group-hover:-translate-y-1 transition-transform duration-300" />
   </div>
 );
 
