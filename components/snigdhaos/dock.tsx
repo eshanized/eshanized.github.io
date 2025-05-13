@@ -317,225 +317,335 @@ export function Dock({ openWindows, activeWindow, minimizedWindows, onAppClick }
   };
 
   return (
-    <motion.div 
-      initial={{ y: 100, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ delay: 0.2, duration: 0.5 }}
-      className="fixed bottom-4 inset-x-0 flex justify-center z-50 mx-auto"
-      ref={dockRef}
-    >
-      <div className="dock-container glass-effect rounded-2xl p-1.5 shadow-2xl border border-white/10 backdrop-blur-xl bg-black/20 dark:bg-white/10">
-        <div className="flex items-end h-16 px-1 gap-1 justify-center">
-          <AnimatePresence>
-            {/* System apps (Finder) */}
-            {systemApps.map((app, index) => {
-              const AppIcon = app.icon;
-              return (
-                <TooltipProvider key={app.id}>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <ContextMenu>
-                        <ContextMenuTrigger asChild>
-                          <motion.div
-                            className="relative group"
-                            animate={{ scale: getScale(index) }}
-                            transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                            onHoverStart={() => setHovered(app.id)}
-                            onHoverEnd={() => setHovered(null)}
-                            layout
-                          >
-                            <motion.div
-                              className={`relative p-1.5 rounded-xl cursor-pointer transition-all duration-200
-                                ${isActive(app.id) ? 'bg-accent/60' : 'hover:bg-accent/30'} 
-                                group-hover:translate-y-[-10px]`}
-                              onClick={() => onAppClick(app.id)}
-                              whileTap={{ scale: 0.95 }}
-                            >
-                              <div className="w-12 h-12 relative">
-                                <div className="absolute inset-0 flex items-center justify-center">
-                                  <AppIcon />
-                                </div>
-                                
-                                {/* Icon reflection */}
-                                <div className="absolute inset-0 bg-gradient-to-b from-white/20 to-transparent opacity-0 group-hover:opacity-100 rounded-xl transition-opacity duration-200" />
-                              </div>
-                              
-                              {/* Running indicator */}
-                              {isOpen(app.id) && (
-                                <motion.div 
-                                  className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 flex gap-1"
-                                  initial={{ scale: 0 }}
-                                  animate={{ scale: 1 }}
-                                >
-                                  <div className={`w-1.5 h-1.5 rounded-full ${
-                                    isActive(app.id) && !isMinimized(app.id)
-                                      ? 'bg-primary shadow-glow'
-                                      : 'bg-white/70'
-                                  }`} />
-                                </motion.div>
-                              )}
-                              
-                              {/* App bounce animation */}
-                              {isActive(app.id) && (
-                                <motion.div
-                                  className="absolute -bottom-2 left-0 right-0 h-1 bg-primary/20 rounded-full shadow-glow"
-                                  layoutId={`bounce-${app.id}`}
-                                  transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                                />
-                              )}
-                            </motion.div>
-                          </motion.div>
-                        </ContextMenuTrigger>
-                        <ContextMenuContent className="w-64">
-                          {getAppContextMenu(app.id)}
-                          
-                          {isOpen(app.id) && (
-                            <>
-                              <ContextMenuSeparator />
-                              <ContextMenuItem onClick={() => onAppClick(app.id)}>
-                                {isMinimized(app.id) ? "Show" : "Hide"}
-                                <ContextMenuShortcut>⌘H</ContextMenuShortcut>
-                              </ContextMenuItem>
-                              <ContextMenuSeparator />
-                              <ContextMenuSub>
-                                <ContextMenuSubTrigger>Options</ContextMenuSubTrigger>
-                                <ContextMenuSubContent className="w-48">
-                                  <ContextMenuItem>
-                                    Keep in Dock
-                                  </ContextMenuItem>
-                                  <ContextMenuItem>
-                                    Show in Finder
-                                  </ContextMenuItem>
-                                </ContextMenuSubContent>
-                              </ContextMenuSub>
-                              <ContextMenuItem className="text-destructive" onClick={() => windowManager.closeWindow(app.id)}>
-                                Quit
-                                <ContextMenuShortcut>⌘Q</ContextMenuShortcut>
-                              </ContextMenuItem>
-                            </>
-                          )}
-                        </ContextMenuContent>
-                      </ContextMenu>
-                    </TooltipTrigger>
-                    <TooltipContent 
-                      side="top" 
-                      className="mb-2 glass-effect"
-                      sideOffset={5}
-                    >
-                      <p>{app.title}</p>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
-              );
-            })}
-            
-            {/* Separator */}
-            <div className="mx-1 h-8 w-px self-end mb-4 bg-background/30" />
-            
-            {/* Other apps */}
-            {otherApps.map((app, index) => {
-              const AppIcon = app.icon;
-              return (
-                <TooltipProvider key={app.id}>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <ContextMenu>
-                        <ContextMenuTrigger asChild>
-                          <motion.div
-                            className="relative group"
-                            animate={{ scale: getScale(index + systemApps.length + 1) }}
-                            transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                            onHoverStart={() => setHovered(app.id)}
-                            onHoverEnd={() => setHovered(null)}
-                            layout
-                          >
-                            <motion.div
-                              className={`relative p-1.5 rounded-xl cursor-pointer transition-all duration-200
-                                ${isActive(app.id) ? 'bg-accent/60' : 'hover:bg-accent/30'} 
-                                group-hover:translate-y-[-10px]`}
-                              onClick={() => onAppClick(app.id)}
-                              whileTap={{ scale: 0.95 }}
-                            >
-                              <div className="w-12 h-12 relative">
-                                <div className="absolute inset-0 flex items-center justify-center">
-                                  <AppIcon />
-                                </div>
-                                
-                                {/* Icon reflection */}
-                                <div className="absolute inset-0 bg-gradient-to-b from-white/20 to-transparent opacity-0 group-hover:opacity-100 rounded-xl transition-opacity duration-200" />
-                              </div>
-                              
-                              {/* Running indicator */}
-                              {isOpen(app.id) && (
-                                <motion.div 
-                                  className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 flex gap-1"
-                                  initial={{ scale: 0 }}
-                                  animate={{ scale: 1 }}
-                                >
-                                  <div className={`w-1.5 h-1.5 rounded-full ${
-                                    isActive(app.id) && !isMinimized(app.id)
-                                      ? 'bg-primary shadow-glow'
-                                      : 'bg-white/70'
-                                  }`} />
-                                </motion.div>
-                              )}
-                              
-                              {/* App bounce animation */}
-                              {isActive(app.id) && (
-                                <motion.div
-                                  className="absolute -bottom-2 left-0 right-0 h-1 bg-primary/20 rounded-full shadow-glow"
-                                  layoutId={`bounce-${app.id}`}
-                                  transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                                />
-                              )}
-                            </motion.div>
-                          </motion.div>
-                        </ContextMenuTrigger>
-                        <ContextMenuContent className="w-64">
-                          {getAppContextMenu(app.id)}
-                          
-                          {isOpen(app.id) && (
-                            <>
-                              <ContextMenuSeparator />
-                              <ContextMenuItem onClick={() => onAppClick(app.id)}>
-                                {isMinimized(app.id) ? "Show" : "Hide"}
-                                <ContextMenuShortcut>⌘H</ContextMenuShortcut>
-                              </ContextMenuItem>
-                              <ContextMenuSeparator />
-                              <ContextMenuSub>
-                                <ContextMenuSubTrigger>Options</ContextMenuSubTrigger>
-                                <ContextMenuSubContent className="w-48">
-                                  <ContextMenuItem>
-                                    Keep in Dock
-                                  </ContextMenuItem>
-                                  <ContextMenuItem>
-                                    Show in Finder
-                                  </ContextMenuItem>
-                                </ContextMenuSubContent>
-                              </ContextMenuSub>
-                              <ContextMenuItem className="text-destructive" onClick={() => windowManager.closeWindow(app.id)}>
-                                Quit
-                                <ContextMenuShortcut>⌘Q</ContextMenuShortcut>
-                              </ContextMenuItem>
-                            </>
-                          )}
-                        </ContextMenuContent>
-                      </ContextMenu>
-                    </TooltipTrigger>
-                    <TooltipContent 
-                      side="top" 
-                      className="mb-2 glass-effect"
-                      sideOffset={5}
-                    >
-                      <p>{app.title}</p>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
-              );
-            })}
-          </AnimatePresence>
+    <>
+      {/* Add global styling for enhanced dock effects */}
+      <style jsx global>{`
+        .neo-dock {
+          background: linear-gradient(
+            to bottom,
+            rgba(255, 255, 255, 0.1) 0%,
+            rgba(255, 255, 255, 0.05) 100%
+          );
+          box-shadow: 
+            0 8px 32px rgba(0, 0, 0, 0.2),
+            inset 0 1px 1px rgba(255, 255, 255, 0.15),
+            inset 0 -1px 1px rgba(0, 0, 0, 0.15);
+        }
+
+        .dock-item {
+          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .dock-item:hover {
+          transform: translateY(-12px) scale(1.1);
+        }
+
+        .dock-item-active {
+          position: relative;
+        }
+
+        .dock-item-active::after {
+          content: '';
+          position: absolute;
+          bottom: -8px;
+          left: 50%;
+          transform: translateX(-50%);
+          width: 4px;
+          height: 4px;
+          background: currentColor;
+          border-radius: 50%;
+          box-shadow: 0 0 8px currentColor;
+        }
+
+        .dock-glow {
+          position: absolute;
+          inset: 0;
+          border-radius: inherit;
+          opacity: 0;
+          transition: opacity 0.3s ease;
+        }
+
+        .dock-item:hover .dock-glow {
+          opacity: 1;
+          background: radial-gradient(
+            circle at center,
+            rgba(255, 255, 255, 0.15) 0%,
+            transparent 70%
+          );
+        }
+
+        .dock-reflection {
+          position: absolute;
+          bottom: -20px;
+          left: 0;
+          right: 0;
+          height: 20px;
+          background: linear-gradient(
+            to bottom,
+            rgba(255, 255, 255, 0.1),
+            transparent
+          );
+          filter: blur(4px);
+          opacity: 0;
+          transition: opacity 0.3s ease;
+        }
+
+        .dock-item:hover .dock-reflection {
+          opacity: 0.5;
+        }
+
+        .dock-separator {
+          position: relative;
+          width: 2px;
+          background: rgba(255, 255, 255, 0.1);
+          margin: 0 4px;
+          overflow: hidden;
+        }
+
+        .dock-separator::after {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: linear-gradient(
+            to bottom,
+            transparent,
+            rgba(255, 255, 255, 0.2),
+            transparent
+          );
+          animation: separator-glow 2s ease-in-out infinite;
+        }
+
+        @keyframes separator-glow {
+          0%, 100% { transform: translateY(-100%); }
+          50% { transform: translateY(100%); }
+        }
+      `}</style>
+
+      <motion.div 
+        initial={{ y: 100, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ 
+          type: "spring",
+          stiffness: 200,
+          damping: 20,
+          delay: 0.2 
+        }}
+        className="fixed bottom-6 inset-x-0 flex justify-center z-50 mx-auto px-4"
+        ref={dockRef}
+      >
+        <div className="neo-dock rounded-2xl p-2 backdrop-blur-2xl border border-white/20">
+          <div className="flex items-end h-16 px-2 gap-2">
+            <AnimatePresence mode="popLayout">
+              {/* System apps (Finder) */}
+              <div className="flex items-end gap-2">
+                {systemApps.map((app, index) => (
+                  <DockItem
+                    key={app.id}
+                    app={app}
+                    index={index}
+                    isOpen={isOpen(app.id)}
+                    isActive={isActive(app.id)}
+                    isMinimized={isMinimized(app.id)}
+                    onAppClick={onAppClick}
+                    getScale={getScale}
+                    getAppContextMenu={getAppContextMenu}
+                    windowManager={windowManager}
+                  />
+                ))}
+              </div>
+
+              {/* Creative separator with glow effect */}
+              <div className="dock-separator self-stretch my-2" />
+
+              {/* Other apps with enhanced layout */}
+              <div className="flex items-end gap-2">
+                {otherApps.map((app, index) => (
+                  <DockItem
+                    key={app.id}
+                    app={app}
+                    index={index + systemApps.length + 1}
+                    isOpen={isOpen(app.id)}
+                    isActive={isActive(app.id)}
+                    isMinimized={isMinimized(app.id)}
+                    onAppClick={onAppClick}
+                    getScale={getScale}
+                    getAppContextMenu={getAppContextMenu}
+                    windowManager={windowManager}
+                  />
+                ))}
+              </div>
+            </AnimatePresence>
+          </div>
         </div>
-      </div>
-    </motion.div>
+
+        {/* Dock reflection effect */}
+        <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 w-[80%] h-12 bg-gradient-to-b from-white/5 to-transparent blur-xl rounded-full" />
+      </motion.div>
+    </>
+  );
+}
+
+// New DockItem component for better organization
+function DockItem({ 
+  app, 
+  index, 
+  isOpen, 
+  isActive, 
+  isMinimized,
+  onAppClick,
+  getScale,
+  getAppContextMenu,
+  windowManager
+}: {
+  app: { id: string; title: string; icon: any };
+  index: number;
+  isOpen: boolean;
+  isActive: boolean;
+  isMinimized: boolean;
+  onAppClick: (id: string) => void;
+  getScale: (index: number) => number;
+  getAppContextMenu: (id: string) => React.ReactNode;
+  windowManager: any;
+}) {
+  const AppIcon = app.icon;
+
+  return (
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <ContextMenu>
+            <ContextMenuTrigger asChild>
+              <motion.div
+                className="dock-item relative group"
+                animate={{ 
+                  scale: getScale(index),
+                  y: isActive ? -4 : 0
+                }}
+                transition={{ 
+                  type: "spring",
+                  stiffness: 400,
+                  damping: 25
+                }}
+                layout
+              >
+                <motion.div
+                  className={`
+                    relative p-2 rounded-xl cursor-pointer
+                    ${isActive ? 'bg-accent/40' : 'hover:bg-accent/20'} 
+                    transition-all duration-300 ease-out
+                  `}
+                  onClick={() => onAppClick(app.id)}
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <div className="w-12 h-12 relative">
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <AppIcon />
+                    </div>
+                    
+                    {/* Enhanced glow effect */}
+                    <div className="dock-glow" />
+                    
+                    {/* Enhanced reflection */}
+                    <div className="dock-reflection" />
+                  </div>
+                  
+                  {/* Running indicator with pulse animation */}
+                  {isOpen && (
+                    <motion.div 
+                      className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 flex gap-1"
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                    >
+                      <motion.div 
+                        className={`w-1.5 h-1.5 rounded-full ${
+                          isActive && !isMinimized
+                            ? 'bg-primary shadow-glow'
+                            : 'bg-white/70'
+                        }`}
+                        animate={isActive ? {
+                          scale: [1, 1.2, 1],
+                          opacity: [1, 0.8, 1]
+                        } : {}}
+                        transition={{
+                          duration: 2,
+                          repeat: Infinity,
+                          ease: "easeInOut"
+                        }}
+                      />
+                    </motion.div>
+                  )}
+                  
+                  {/* Enhanced bounce animation */}
+                  {isActive && (
+                    <motion.div
+                      className="absolute -bottom-2 left-0 right-0 h-1"
+                      layoutId={`bounce-${app.id}`}
+                      initial={{ opacity: 0, scale: 0 }}
+                      animate={{ 
+                        opacity: 1, 
+                        scale: 1,
+                        background: [
+                          "rgba(var(--primary), 0.4)",
+                          "rgba(var(--primary), 0.6)",
+                          "rgba(var(--primary), 0.4)"
+                        ]
+                      }}
+                      transition={{
+                        duration: 2,
+                        repeat: Infinity,
+                        ease: "easeInOut"
+                      }}
+                    />
+                  )}
+                </motion.div>
+              </motion.div>
+            </ContextMenuTrigger>
+            <ContextMenuContent className="w-64 backdrop-blur-xl bg-black/40 border-white/20">
+              {getAppContextMenu(app.id)}
+              
+              {isOpen && (
+                <>
+                  <ContextMenuSeparator />
+                  <ContextMenuItem onClick={() => onAppClick(app.id)}>
+                    {isMinimized ? "Show" : "Hide"}
+                    <ContextMenuShortcut>⌘H</ContextMenuShortcut>
+                  </ContextMenuItem>
+                  <ContextMenuSeparator />
+                  <ContextMenuSub>
+                    <ContextMenuSubTrigger>Options</ContextMenuSubTrigger>
+                    <ContextMenuSubContent className="w-48">
+                      <ContextMenuItem>
+                        Keep in Dock
+                      </ContextMenuItem>
+                      <ContextMenuItem>
+                        Show in Finder
+                      </ContextMenuItem>
+                    </ContextMenuSubContent>
+                  </ContextMenuSub>
+                  <ContextMenuItem 
+                    className="text-red-400 hover:text-red-300" 
+                    onClick={() => windowManager.closeWindow(app.id)}
+                  >
+                    Quit
+                    <ContextMenuShortcut>⌘Q</ContextMenuShortcut>
+                  </ContextMenuItem>
+                </>
+              )}
+            </ContextMenuContent>
+          </ContextMenu>
+        </TooltipTrigger>
+        <TooltipContent 
+          side="top" 
+          className="mb-2 backdrop-blur-xl bg-black/40 border-white/20"
+          sideOffset={5}
+        >
+          <p>{app.title}</p>
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
   );
 }
