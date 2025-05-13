@@ -787,7 +787,7 @@ export const MenuBar = memo(function MenuBar({
           transition={{ duration: 0.2 }}
         >
           {activeApp?.icon && <activeApp.icon size={14} />}
-          <span className="font-medium">{activeApp?.title || "Finder"}</span>
+          <span className="font-medium">{activeApp?.title || "Snigdha OS - Eshanized Edition"}</span>
         </motion.div>
 
         {/* Right section: Status icons */}
