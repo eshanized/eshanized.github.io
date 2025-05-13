@@ -17,7 +17,6 @@ import ContactApp from './apps/contact-app';
 import SettingsApp from './apps/settings-app';
 import SoftwareCenterApp from './apps/software-center';
 import CalendarApp from './apps/calendar-app';
-import MessagesApp from './apps/messages-app';
 import NotesApp from './apps/notes-app';
 import ChromeApp from './apps/chrome-app';
 import MailApp from './apps/mail-app';
@@ -36,6 +35,7 @@ import RomanticWelcome from './romantic-welcome';
 import { DesktopContextMenu } from './desktop-context-menu';
 import WelcomeWindow from './welcome-window';
 import Files from './apps/files';
+import TelegramApp from './apps/telegram-app';
 
 // Enhanced animated background component
 const AnimatedBackground = () => {
@@ -274,7 +274,7 @@ export function SnigdhaOSDesktop() {
       case 'calendar':
         return <CalendarApp />;
       case 'messages':
-        return <MessagesApp specialUser={specialUser} />;
+        return <TelegramApp />;
       case 'notes':
         return <NotesApp />;
       case 'safari':

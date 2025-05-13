@@ -228,9 +228,9 @@ export const DESKTOP_APPS = [
   },
   {
     id: "messages",
-    title: "Messages",
+    title: "Telegram",
     icon: MessagesSquare,
-    defaultSize: { width: 750, height: 550 },
+    defaultSize: { width: 1100, height: 700 },
     defaultPosition: { x: 220, y: 150 },
   },
   {
