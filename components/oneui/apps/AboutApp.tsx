@@ -11,7 +11,7 @@ export default function AboutApp() {
   const { colors } = useOneUITheme();
 
   return (
-    <BaseOneUIApp title="About" rightAction="share">
+    <BaseOneUIApp title="About" rightAction="share" showHeader={false}>
       <div className={`${colors.primary} min-h-full`}>
         {/* Profile image and basic info */}
         <div className={`${colors.cardBg} p-4 flex flex-col items-center border-b ${colors.divider}`}>

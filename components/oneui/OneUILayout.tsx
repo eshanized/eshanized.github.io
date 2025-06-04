@@ -29,7 +29,9 @@ import {
   Twitter,
   Facebook,
   Instagram,
-  FileCode2
+  FileCode2,
+  ArrowLeft,
+  X
 } from 'lucide-react';
 import { PERSONAL_INFO } from '@/lib/constants';
 import { shouldSkipLockscreen } from '@/lib/lockscreen';
@@ -279,6 +281,7 @@ function OneUILayoutContent({ children }: { children?: React.ReactNode }) {
     const correctPasscode = '5456'; // In a real app, this should be stored securely
     const [error, setError] = useState('');
     const [attempts, setAttempts] = useState(0);
+    const [swipeProgress, setSwipeProgress] = useState(0);
 
     const handlePasscodeInput = (digit: string) => {
       if (passcode.length < 4) {
@@ -303,7 +306,7 @@ function OneUILayoutContent({ children }: { children?: React.ReactNode }) {
       setError('');
     };
 
-    // Format time for Pixel-style display
+    // Format time for Samsung One UI style display
     const getFormattedTime = () => {
       const now = new Date();
       const hours = now.getHours();
@@ -317,7 +320,7 @@ function OneUILayoutContent({ children }: { children?: React.ReactNode }) {
       <motion.div 
         className="fixed inset-0 z-50 flex flex-col text-white"
         style={{
-          backgroundImage: 'url(/images/wallpaper.jpg)',
+          backgroundImage: 'linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.4)), url(/images/wallpaper.jpg)',
           backgroundSize: 'cover',
           backgroundPosition: 'center'
         }}
@@ -325,27 +328,27 @@ function OneUILayoutContent({ children }: { children?: React.ReactNode }) {
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
       >
-        {/* Status bar */}
-        <div className="w-full px-4 py-2 flex justify-between items-center text-sm">
-          <div className="flex items-center gap-1">
-            <div className="flex gap-[2px]">
-              <div className="h-3 w-[3px] bg-white rounded-sm"></div>
-              <div className="h-3 w-[3px] bg-white rounded-sm"></div>
-              <div className="h-3 w-[3px] bg-white rounded-sm"></div>
-              <div className="h-3 w-[3px] bg-white rounded-sm"></div>
+        {/* Status bar - Samsung One UI 7.0 style */}
+        <div className="w-full px-6 py-4 flex justify-between items-center text-sm">
+          <div className="flex items-center gap-2">
+            <div className="flex gap-[3px]">
+              <div className="h-3 w-[3px] bg-white rounded-full"></div>
+              <div className="h-3 w-[3px] bg-white rounded-full"></div>
+              <div className="h-3 w-[3px] bg-white rounded-full"></div>
+              <div className="h-3 w-[3px] bg-white rounded-full"></div>
             </div>
-            <Wifi className="w-4 h-4" />
+            <Wifi className="w-5 h-5" />
           </div>
-          <div className="flex items-center gap-1">
-            <Battery className="w-4 h-4" />
-            <span className="text-xs">{batteryLevel}%</span>
+          <div className="flex items-center gap-2">
+            <Battery className="w-5 h-5" />
+            <span className="text-sm font-medium">{batteryLevel}%</span>
           </div>
         </div>
 
         {/* Main content */}
         <div className="flex-1 flex flex-col">
-          {/* Centered clock */}
-          <div className="flex-1 flex flex-col items-center justify-center -mt-16">
+          {/* Centered clock - Samsung One UI 7.0 style */}
+          <div className="flex-1 flex flex-col items-center justify-center">
             {!showPasscode ? (
               <motion.div
                 className="text-center"
@@ -353,27 +356,62 @@ function OneUILayoutContent({ children }: { children?: React.ReactNode }) {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 }}
               >
-                <div className="flex items-baseline justify-center mb-2">
-                  <span className="text-[96px] font-light tracking-tight leading-none">{hours}</span>
-                  <span className="text-[96px] font-light tracking-tight leading-none">:</span>
-                  <span className="text-[96px] font-light tracking-tight leading-none">{minutes}</span>
+                <div className="flex items-baseline justify-center mb-3">
+                  <span className="text-[120px] font-extralight tracking-tight leading-none text-shadow-lg">{hours}</span>
+                  <span className="text-[120px] font-extralight tracking-tight leading-none mx-2 text-shadow-lg">:</span>
+                  <span className="text-[120px] font-extralight tracking-tight leading-none text-shadow-lg">{minutes}</span>
                 </div>
-                <div className="text-xl font-normal tracking-wide mb-8">{currentDate}</div>
+                <div className="text-2xl font-normal tracking-wide mb-10 text-shadow-md">{currentDate}</div>
                 
-                {/* Press to unlock text */}
+                {/* Weather info - Samsung style */}
                 <motion.div
-                  className="mt-8 flex flex-col items-center"
+                  className="mb-8 flex flex-col items-center bg-black/20 backdrop-blur-md px-8 py-4 rounded-[1.5rem]"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.3 }}
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="text-4xl font-light">23°</div>
+                    <div className="text-left">
+                      <div className="text-lg font-medium">Sunny</div>
+                      <div className="text-sm opacity-80">Seoul, South Korea</div>
+                    </div>
+                  </div>
+                </motion.div>
+                
+                {/* Swipe to unlock - Samsung One UI 7.0 style */}
+                <motion.div
+                  className="mt-12 flex flex-col items-center"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.5 }}
                 >
-                  <Lock className="w-5 h-5 mb-2 opacity-80" />
-                  <button 
-                    className="text-sm tracking-wide opacity-80"
+                  <motion.div 
+                    className="w-16 h-16 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center mb-4"
+                    whileHover={{ scale: 1.05, backgroundColor: 'rgba(255,255,255,0.3)' }}
+                    whileTap={{ scale: 0.95 }}
                     onClick={() => setShowPasscode(true)}
                   >
-                    Press to unlock
-                  </button>
+                    <Lock className="w-7 h-7" />
+                  </motion.div>
+                  
+                  <motion.div 
+                    className="relative w-48 h-10 flex items-center justify-center overflow-hidden"
+                    onHoverStart={() => setSwipeProgress(0.5)}
+                    onHoverEnd={() => setSwipeProgress(0)}
+                    onClick={() => setShowPasscode(true)}
+                  >
+                    <div className="absolute inset-0 bg-white/10 rounded-full backdrop-blur-sm" />
+                    <motion.div 
+                      className="absolute left-0 top-0 bottom-0 bg-white/20 rounded-full"
+                      initial={{ width: '0%' }}
+                      animate={{ width: `${swipeProgress * 100}%` }}
+                      transition={{ duration: 0.3 }}
+                    />
+                    <span className="relative z-10 text-base font-medium tracking-wide">
+                      Swipe to unlock
+                    </span>
+                  </motion.div>
                 </motion.div>
               </motion.div>
             ) : (
@@ -382,36 +420,46 @@ function OneUILayoutContent({ children }: { children?: React.ReactNode }) {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
               >
-                <div className="text-center mb-8">
-                  <h2 className="text-xl font-normal mb-2">Enter PIN</h2>
+                <div className="text-center mb-10">
+                  <h2 className="text-3xl font-light mb-2">Enter PIN</h2>
+                  <p className="text-white/70 text-base mb-3">Use your PIN to unlock</p>
                   {error && (
-                    <p className="text-red-400 text-sm">{error}</p>
+                    <motion.p 
+                      className="text-red-400 text-base font-medium mt-2"
+                      initial={{ opacity: 0, scale: 0.95 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                    >
+                      {error}
+                    </motion.p>
                   )}
                 </div>
 
-                {/* PIN dots */}
-                <div className="flex justify-center gap-4 mb-8">
+                {/* PIN dots - Samsung One UI 7.0 style */}
+                <div className="flex justify-center gap-5 mb-12">
                   {[0,1,2,3].map((i) => (
-                    <div 
+                    <motion.div 
                       key={i}
-                      className={`w-3.5 h-3.5 rounded-full border-2 ${
+                      className={`w-5 h-5 rounded-full border-2 ${
                         passcode.length > i 
                           ? 'bg-white border-white' 
                           : 'border-white/60 bg-transparent'
                       }`}
+                      animate={passcode.length === i ? { scale: [1, 1.2, 1] } : {}}
+                      transition={{ duration: 0.3 }}
                     />
                   ))}
                 </div>
 
-                {/* Number pad */}
+                {/* Number pad - Samsung One UI 7.0 style */}
                 <div className="grid grid-cols-3 gap-6 max-w-xs mx-auto">
                   {[1,2,3,4,5,6,7,8,9,'',0,'⌫'].map((num, i) => (
-                    <button
+                    <motion.button
                       key={i}
-                      className={`w-16 h-16 rounded-full ${
+                      className={`w-20 h-20 rounded-[1.5rem] ${
                         num === '' ? 'cursor-default' :
-                        'hover:bg-white/10 active:bg-white/20 transition-colors'
-                      } flex items-center justify-center text-2xl font-light`}
+                        'bg-white/15 backdrop-blur-md hover:bg-white/20 active:bg-white/25 transition-colors'
+                      } flex items-center justify-center text-3xl font-light`}
+                      whileTap={num !== '' ? { scale: 0.95 } : {}}
                       onClick={() => {
                         if (num === '⌫') handleBackspace();
                         else if (num !== '') handlePasscodeInput(num.toString());
@@ -419,36 +467,22 @@ function OneUILayoutContent({ children }: { children?: React.ReactNode }) {
                       disabled={attempts >= 5 || num === ''}
                     >
                       {num}
-                    </button>
+                    </motion.button>
                   ))}
                 </div>
 
-                <div className="text-center mt-8">
-                  <button 
-                    className="text-sm text-white/80 hover:text-white transition-colors"
+                <div className="text-center mt-12">
+                  <motion.button 
+                    className="text-base text-white/90 hover:text-white transition-colors font-medium py-3 px-8 rounded-[1.25rem] bg-white/15 backdrop-blur-md"
+                    whileHover={{ backgroundColor: 'rgba(255,255,255,0.2)' }}
+                    whileTap={{ scale: 0.95 }}
                     onClick={() => setShowPasscode(false)}
                   >
                     Cancel
-                  </button>
+                  </motion.button>
                 </div>
               </motion.div>
             )}
-          </div>
-
-          {/* Bottom shortcuts */}
-          <div className="pb-12 px-6 flex justify-between">
-            <motion.button
-              className="w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center"
-              whileTap={{ scale: 0.95 }}
-            >
-              <Phone className="w-5 h-5" />
-            </motion.button>
-            <motion.button
-              className="w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center"
-              whileTap={{ scale: 0.95 }}
-            >
-              <Camera className="w-5 h-5" />
-            </motion.button>
           </div>
         </div>
       </motion.div>
@@ -458,62 +492,64 @@ function OneUILayoutContent({ children }: { children?: React.ReactNode }) {
   // Control Center with dark mode toggle
   const ControlCenter = () => (
     <motion.div 
-      className="absolute top-0 right-0 w-full max-w-md bg-white/20 dark:bg-black/20 backdrop-blur-xl rounded-bl-3xl p-4 text-black dark:text-white transition-colors duration-300"
+      className="absolute top-0 right-0 w-full max-w-md bg-white/15 dark:bg-black/15 backdrop-blur-xl rounded-b-[2rem] p-5 text-black dark:text-white transition-colors duration-300"
       initial={{ opacity: 0, y: -10 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -10 }}
       transition={{ duration: 0.2 }}
     >
-      <div className="grid grid-cols-2 gap-3">
-        <div className="p-3 bg-white/10 dark:bg-white/5 rounded-xl backdrop-blur-lg transition-colors duration-300">
-          <h3 className="text-sm font-medium mb-2">Networks</h3>
+      <div className="grid grid-cols-2 gap-4">
+        <div className="p-4 bg-white/10 dark:bg-white/5 rounded-[1.5rem] backdrop-blur-lg transition-colors duration-300">
+          <h3 className="text-base font-medium mb-3">Networks</h3>
           <div className="flex items-center justify-between">
             <div className="flex items-center">
-              <Wifi className="w-5 h-5 mr-2" />
-              <span>Wi-Fi</span>
+              <Wifi className="w-6 h-6 mr-3" />
+              <span className="font-medium">Wi-Fi</span>
             </div>
-            <div className="w-10 h-6 bg-green-500 dark:bg-green-600 rounded-full relative px-1 flex items-center transition-colors duration-300">
-              <div className="w-4 h-4 bg-white rounded-full ml-auto"></div>
+            <div 
+              className="w-12 h-7 bg-[#0077FF] rounded-full relative px-1 flex items-center cursor-pointer transition-colors duration-300"
+            >
+              <div className="w-5 h-5 bg-white rounded-full ml-auto shadow-sm"></div>
             </div>
           </div>
         </div>
         
-        <div className="p-3 bg-white/10 dark:bg-white/5 rounded-xl backdrop-blur-lg transition-colors duration-300">
-          <h3 className="text-sm font-medium mb-2">Appearance</h3>
+        <div className="p-4 bg-white/10 dark:bg-white/5 rounded-[1.5rem] backdrop-blur-lg transition-colors duration-300">
+          <h3 className="text-base font-medium mb-3">Appearance</h3>
           <div className="flex items-center justify-between">
             <div className="flex items-center">
               {isDarkMode ? (
-                <Moon className="w-5 h-5 mr-2" />
+                <Moon className="w-6 h-6 mr-3" />
               ) : (
-                <Sun className="w-5 h-5 mr-2" />
+                <Sun className="w-6 h-6 mr-3" />
               )}
-              <span>Dark Mode</span>
+              <span className="font-medium">Dark Mode</span>
             </div>
             <div 
-              className={`w-10 h-6 ${isDarkMode ? 'bg-green-500 dark:bg-green-600' : 'bg-gray-300 dark:bg-gray-600'} rounded-full relative px-1 flex items-center cursor-pointer transition-colors duration-300`}
+              className={`w-12 h-7 ${isDarkMode ? 'bg-[#0077FF]' : 'bg-gray-300 dark:bg-gray-600'} rounded-full relative px-1 flex items-center cursor-pointer transition-colors duration-300`}
               onClick={toggleDarkMode}
             >
-              <div className={`w-4 h-4 bg-white rounded-full transform transition-transform duration-300 ${isDarkMode ? 'translate-x-4' : 'translate-x-0'}`}></div>
+              <div className={`w-5 h-5 bg-white rounded-full shadow-sm transform transition-transform duration-300 ${isDarkMode ? 'translate-x-5' : 'translate-x-0'}`}></div>
             </div>
           </div>
         </div>
       </div>
       
-      <div className="mt-3 grid grid-cols-4 gap-3">
+      <div className="mt-4 grid grid-cols-4 gap-4">
         {['Airplane Mode', 'Bluetooth', 'Rotation Lock', 'Do Not Disturb'].map((name, i) => (
-          <div key={i} className="p-3 bg-white/10 rounded-xl flex flex-col items-center justify-center">
-            <div className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center mb-1">
-              <Grid className="w-5 h-5" />
+          <div key={i} className="p-4 bg-white/10 rounded-[1.25rem] flex flex-col items-center justify-center">
+            <div className="w-12 h-12 rounded-[1rem] bg-white/10 flex items-center justify-center mb-2">
+              <Grid className="w-6 h-6" />
             </div>
-            <span className="text-xs text-center">{name}</span>
+            <span className="text-sm text-center font-medium">{name}</span>
           </div>
         ))}
       </div>
       
-      <div className="mt-3 p-3 bg-white/10 rounded-xl">
-        <h3 className="text-sm font-medium mb-2">Brightness</h3>
-        <div className="h-2 bg-white/20 rounded-full overflow-hidden">
-          <div className="h-full bg-white w-2/3" />
+      <div className="mt-4 p-4 bg-white/10 rounded-[1.5rem]">
+        <h3 className="text-base font-medium mb-3">Brightness</h3>
+        <div className="h-2.5 bg-white/20 rounded-full overflow-hidden">
+          <div className="h-full bg-[#0077FF] w-2/3" />
         </div>
       </div>
     </motion.div>
@@ -530,21 +566,21 @@ function OneUILayoutContent({ children }: { children?: React.ReactNode }) {
         <div className="relative h-full w-full flex flex-col">
           {/* Status Bar */}
           <div className="relative z-30">
-            <div className="flex justify-between items-center px-4 py-1 text-sm font-medium bg-transparent">
+            <div className="flex justify-between items-center px-5 py-3 text-sm font-medium bg-transparent">
               <div className="text-white flex items-center space-x-1">
-                <span>{currentTime}</span>
+                <span className="text-base font-medium">{currentTime}</span>
               </div>
               <div className="flex items-center gap-2 text-white">
-                <div className="flex gap-1">
-                  <div className="h-3 w-[3px] bg-white rounded-sm"></div>
-                  <div className="h-3 w-[3px] bg-white rounded-sm"></div>
-                  <div className="h-3 w-[3px] bg-white rounded-sm"></div>
-                  <div className="h-3 w-[3px] bg-white rounded-sm"></div>
+                <div className="flex gap-[3px]">
+                  <div className="h-3 w-[3px] bg-white rounded-full"></div>
+                  <div className="h-3 w-[3px] bg-white rounded-full"></div>
+                  <div className="h-3 w-[3px] bg-white rounded-full"></div>
+                  <div className="h-3 w-[3px] bg-white rounded-full"></div>
                 </div>
-                <Wifi className="w-4 h-4" />
-                <div className="flex items-center space-x-1">
-                  <Battery className="w-4 h-4" />
-                  <span className="text-xs">{batteryLevel}%</span>
+                <Wifi className="w-5 h-5" />
+                <div className="flex items-center gap-1">
+                  <Battery className="w-5 h-5" />
+                  <span className="text-sm font-medium">{batteryLevel}%</span>
                 </div>
               </div>
             </div>
@@ -562,14 +598,10 @@ function OneUILayoutContent({ children }: { children?: React.ReactNode }) {
                   backgroundPosition: 'center'
                 }}
               >
-                {/* Weather widget */}
-                <div className="text-center mt-3 text-white">
-                  <div className="text-5xl font-light mb-1">{currentTime}</div>
-                  <div className="text-lg font-normal">{currentDate}</div>
-                </div>
+                {/* Removed weather widget and clock */}
                 
                 {/* App Grid */}
-                <div className="p-6 pt-8 grid grid-cols-4 gap-y-8 gap-x-4">
+                <div className="p-6 pt-16 grid grid-cols-4 gap-y-8 gap-x-4">
                   {/* Render home screen apps */}
                   {homeScreenApps.map((app) => (
                     <motion.button
@@ -643,7 +675,33 @@ function OneUILayoutContent({ children }: { children?: React.ReactNode }) {
                   exit={{ opacity: 0, y: 20 }}
                   transition={{ type: 'spring', stiffness: 300, damping: 30 }}
                 >
-                  {renderAppComponent(openApp)}
+                  {/* App header with back button */}
+                  <div className="relative z-10 w-full px-4 py-3 flex justify-between items-center bg-white/5 dark:bg-black/5 backdrop-blur-md border-b border-gray-200/10 dark:border-gray-800/20">
+                    <motion.button 
+                      className="w-10 h-10 rounded-full bg-white/10 dark:bg-white/5 flex items-center justify-center"
+                      whileHover={{ scale: 1.05, backgroundColor: 'rgba(255,255,255,0.15)' }}
+                      whileTap={{ scale: 0.95 }}
+                      onClick={handleGoHome}
+                    >
+                      <ArrowLeft className="w-5 h-5 text-gray-800 dark:text-white" />
+                    </motion.button>
+                    <div className="text-base font-medium text-gray-800 dark:text-white">
+                      {getAppById(openApp)?.name}
+                    </div>
+                    <motion.button 
+                      className="w-10 h-10 rounded-full bg-white/10 dark:bg-white/5 flex items-center justify-center"
+                      whileHover={{ scale: 1.05, backgroundColor: 'rgba(255,255,255,0.15)' }}
+                      whileTap={{ scale: 0.95 }}
+                      onClick={handleGoHome}
+                    >
+                      <X className="w-5 h-5 text-gray-800 dark:text-white" />
+                    </motion.button>
+                  </div>
+                  
+                  {/* App content */}
+                  <div className="h-[calc(100%-56px)] overflow-auto">
+                    {renderAppComponent(openApp)}
+                  </div>
                 </motion.div>
               )}
             </AnimatePresence>
@@ -659,13 +717,13 @@ function OneUILayoutContent({ children }: { children?: React.ReactNode }) {
                   onClick={handleGoHome}
                 >
                   <motion.div
-                    className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[320px] bg-white/20 backdrop-blur-xl rounded-[32px] p-6"
+                    className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[340px] bg-white/15 backdrop-blur-xl rounded-[2rem] p-6"
                     initial={{ scale: 0.9, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
                     exit={{ scale: 0.9, opacity: 0 }}
                     onClick={(e) => e.stopPropagation()}
                   >
-                    <h3 className="text-center text-white text-lg font-medium mb-6">{folders.find(f => f.id === openFolder)?.name}</h3>
+                    <h3 className="text-center text-white text-xl font-medium mb-6">{folders.find(f => f.id === openFolder)?.name}</h3>
                     <div className="grid grid-cols-3 gap-6">
                       {folders.find(f => f.id === openFolder)?.apps.map((app) => (
                         <motion.button
@@ -681,6 +739,12 @@ function OneUILayoutContent({ children }: { children?: React.ReactNode }) {
                         </motion.button>
                       ))}
                     </div>
+                    <button 
+                      className="mt-6 mx-auto block bg-white/15 hover:bg-white/20 text-white py-3 px-6 rounded-[1.25rem] font-medium text-base"
+                      onClick={handleGoHome}
+                    >
+                      Close
+                    </button>
                   </motion.div>
                 </motion.div>
               )}
@@ -700,9 +764,6 @@ function OneUILayoutContent({ children }: { children?: React.ReactNode }) {
               )}
             </AnimatePresence>
           </div>
-          
-          {/* Home Indicator */}
-          <div className="h-1.5 w-32 mx-auto bg-white/30 rounded-full my-2" onClick={handleGoHome} />
         </div>
       )}
     </div>

@@ -11,7 +11,7 @@ export default function SkillsApp() {
   const { colors } = useOneUITheme();
   
   return (
-    <BaseOneUIApp title="Skills">
+    <BaseOneUIApp title="Skills" showHeader={false}>
       <div className={`p-4 ${colors.primary} min-h-full`}>
         {/* Tabs */}
         <div className="flex overflow-x-auto pb-2 mb-4 gap-2">

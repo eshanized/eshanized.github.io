@@ -15,6 +15,7 @@ interface BaseOneUIAppProps {
   hasSearch?: boolean;
   rightAction?: 'more' | 'share' | ReactNode;
   onRightActionClick?: () => void;
+  showHeader?: boolean;
 }
 
 export default function BaseOneUIApp({
@@ -25,7 +26,8 @@ export default function BaseOneUIApp({
   headerTextColor,
   hasSearch = false,
   rightAction,
-  onRightActionClick
+  onRightActionClick,
+  showHeader = false
 }: BaseOneUIAppProps) {
   const { colors, isDarkMode } = useOneUITheme();
   const router = useRouter();
@@ -104,63 +106,65 @@ export default function BaseOneUIApp({
       exit={{ opacity: 0 }}
       transition={{ duration: 0.2 }}
     >
-      {/* OneUI style header */}
-      <header 
-        className={`${headerColor || colors.secondary} py-4 px-5 flex items-center justify-between transition-colors duration-300`}
-        style={{ minHeight: '64px' }}
-      >
-        <div className="flex items-center flex-1">
-          {onBack && (
-            <motion.button 
-              className={`${colors.textPrimary} p-1.5 -ml-2 rounded-full hover:${colors.ripple}`}
-              onClick={onBack}
-              whileTap={{ scale: 0.95 }}
-              transition={{ duration: 0.1 }}
+      {/* OneUI style header - only show if showHeader is true */}
+      {showHeader && (
+        <header 
+          className={`${headerColor || colors.secondary} py-4 px-5 flex items-center justify-between transition-colors duration-300`}
+          style={{ minHeight: '64px' }}
+        >
+          <div className="flex items-center flex-1">
+            {onBack && (
+              <motion.button 
+                className={`${colors.textPrimary} p-1.5 -ml-2 rounded-full hover:${colors.ripple}`}
+                onClick={onBack}
+                whileTap={{ scale: 0.95 }}
+                transition={{ duration: 0.1 }}
+              >
+                <ArrowLeft className="w-6 h-6" />
+              </motion.button>
+            )}
+            
+            <motion.h1 
+              className={`${headerTextColor || colors.textPrimary} text-xl font-medium ml-2 transition-colors duration-300`}
+              initial={{ y: -5, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.1 }}
             >
-              <ArrowLeft className="w-6 h-6" />
-            </motion.button>
-          )}
+              {title}
+            </motion.h1>
+          </div>
           
-          <motion.h1 
-            className={`${headerTextColor || colors.textPrimary} text-xl font-medium ml-2 transition-colors duration-300`}
-            initial={{ y: -5, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.1 }}
-          >
-            {title}
-          </motion.h1>
-        </div>
-        
-        <div className="flex items-center gap-3">
-          {rightAction === 'more' && (
-            <motion.button 
-              className={`p-2.5 ${colors.textPrimary} hover:${colors.ripple} rounded-full`}
-              onClick={onRightActionClick}
-              whileTap={{ scale: 0.95 }}
-              transition={{ duration: 0.1 }}
-            >
-              <MoreVertical className="w-5 h-5" />
-            </motion.button>
-          )}
-          
-          {rightAction === 'share' && (
-            <motion.button 
-              className={`p-2.5 ${colors.textPrimary} hover:${colors.ripple} rounded-full`}
-              onClick={onRightActionClick}
-              whileTap={{ scale: 0.95 }}
-              transition={{ duration: 0.1 }}
-            >
-              <Share className="w-5 h-5" />
-            </motion.button>
-          )}
-          
-          {rightAction && typeof rightAction !== 'string' && (
-            <div className={colors.textPrimary}>
-              {rightAction}
-            </div>
-          )}
-        </div>
-      </header>
+          <div className="flex items-center gap-3">
+            {rightAction === 'more' && (
+              <motion.button 
+                className={`p-2.5 ${colors.textPrimary} hover:${colors.ripple} rounded-full`}
+                onClick={onRightActionClick}
+                whileTap={{ scale: 0.95 }}
+                transition={{ duration: 0.1 }}
+              >
+                <MoreVertical className="w-5 h-5" />
+              </motion.button>
+            )}
+            
+            {rightAction === 'share' && (
+              <motion.button 
+                className={`p-2.5 ${colors.textPrimary} hover:${colors.ripple} rounded-full`}
+                onClick={onRightActionClick}
+                whileTap={{ scale: 0.95 }}
+                transition={{ duration: 0.1 }}
+              >
+                <Share className="w-5 h-5" />
+              </motion.button>
+            )}
+            
+            {rightAction && typeof rightAction !== 'string' && (
+              <div className={colors.textPrimary}>
+                {rightAction}
+              </div>
+            )}
+          </div>
+        </header>
+      )}
       
       {/* App content with OneUI-style animations */}
       <AnimatePresence mode="wait">
@@ -183,36 +187,6 @@ export default function BaseOneUIApp({
           {children}
         </motion.div>
       </AnimatePresence>
-
-      {/* OneUI Navigation Bar */}
-      <div className={`h-[56px] ${colors.navBar} backdrop-blur-lg flex items-center justify-around px-6 border-t ${colors.divider}`}>
-        <motion.button
-          className={`w-7 h-7 ${isDarkMode ? 'text-white/70 hover:text-white' : 'text-black/70 hover:text-black'}`}
-          onClick={handleBackClick}
-          whileTap={{ scale: 0.9 }}
-        >
-          <Circle className="w-6 h-6" strokeWidth={1.5} />
-        </motion.button>
-
-        <motion.button
-          className={`w-7 h-7 ${isDarkMode ? 'text-white/70 hover:text-white' : 'text-black/70 hover:text-black'}`}
-          onClick={handleHomeClick}
-          whileTap={{ scale: 0.9 }}
-        >
-          <Home className="w-6 h-6" strokeWidth={1.5} />
-        </motion.button>
-
-        <motion.button
-          className={`w-7 h-7 ${isRecentOpen 
-            ? (isDarkMode ? 'text-white' : 'text-black') 
-            : (isDarkMode ? 'text-white/70 hover:text-white' : 'text-black/70 hover:text-black')
-          }`}
-          onClick={handleRecentClick}
-          whileTap={{ scale: 0.9 }}
-        >
-          <Square className="w-6 h-6" strokeWidth={1.5} />
-        </motion.button>
-      </div>
     </motion.div>
   );
 } 

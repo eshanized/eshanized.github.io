@@ -92,7 +92,7 @@ export default function ProjectsApp() {
   }, []);
 
   return (
-    <BaseOneUIApp title="Projects" rightAction="more">
+    <BaseOneUIApp title="Projects" rightAction="more" showHeader={false}>
       <div className={`p-4 ${colors.primary} min-h-full`}>
         <h1 className={`text-xl font-medium mb-4 ${colors.textPrimary}`}>My Projects</h1>
         
