@@ -1,7 +1,7 @@
 "use client";
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import MIUINotification from './MIUINotification';
+import OneUINotification from './OneUINotification';
 
 interface NotificationContextType {
   showNotification: (title: string, message: string, appIcon?: string) => void;
@@ -52,7 +52,7 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
     <NotificationContext.Provider value={{ showNotification }}>
       {children}
       {notification && (
-        <MIUINotification
+        <OneUINotification
           {...notification}
           onClose={() => setNotification(null)}
         />

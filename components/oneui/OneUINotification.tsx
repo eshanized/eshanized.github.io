@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { X } from 'lucide-react';
 
-interface MIUINotificationProps {
+interface OneUINotificationProps {
   title: string;
   message: string;
   appIcon?: string;
@@ -13,14 +13,14 @@ interface MIUINotificationProps {
   autoCloseTime?: number;
 }
 
-export default function MIUINotification({
+export default function OneUINotification({
   title,
   message,
   appIcon = 'https://github.com/eshanized.png',
   onClose,
   autoClose = true,
   autoCloseTime = 5000
-}: MIUINotificationProps) {
+}: OneUINotificationProps) {
   const [isVisible, setIsVisible] = useState(true);
   const [isExiting, setIsExiting] = useState(false);
 

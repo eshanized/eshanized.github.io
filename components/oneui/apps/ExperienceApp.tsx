@@ -1,16 +1,16 @@
 "use client";
 
 import React from 'react';
-import BaseMIUIApp from './BaseMIUIApp';
+import BaseOneUIApp from './BaseOneUIApp';
 import { EXPERIENCE } from '@/lib/constants';
 import { Briefcase, Calendar } from 'lucide-react';
-import { useMIUITheme } from '../MIUIThemeContext';
+import { useOneUITheme } from '../OneUIThemeContext';
 
 export default function ExperienceApp() {
-  const { colors } = useMIUITheme();
+  const { colors } = useOneUITheme();
   
   return (
-    <BaseMIUIApp title="Experience">
+    <BaseOneUIApp title="Experience">
       <div className={`p-4 ${colors.primary} min-h-full`}>
         <h1 className={`text-xl font-medium mb-4 ${colors.textPrimary}`}>Work Experience</h1>
         
@@ -49,6 +49,6 @@ export default function ExperienceApp() {
           </div>
         )}
       </div>
-    </BaseMIUIApp>
+    </BaseOneUIApp>
   );
 } 

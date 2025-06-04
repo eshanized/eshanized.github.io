@@ -22,15 +22,23 @@
 
 @layer base {
   :root {
-    /* MIUI Light Mode Colors - using Catppuccin Frappe */
-    --miui-background: 239 241 245; /* Base #EFF1F5 */
-    --miui-text: 76 79 105;       /* Text #4C4F69 */
-    --miui-secondary-text: 108 111 133; /* Subtext0 #6C6F85 */
-    --miui-tertiary-text: 108 111 133; /* Subtext0 #6C6F85 */
-    --miui-system-fill: 172 176 190; /* Surface2 #ACB0BE */
-    --miui-separator: 140 143 161; /* Overlay0 #8C8FA1 */
-    --miui-grouped-background: 239 241 245; /* Base #EFF1F5 */
-    --miui-system-background: 204 208 218; /* Surface0 #CCD0DA */
+    /* OneUI 7.0 Light Mode Colors */
+    --oneui-background: 246 246 246; /* #F6F6F6 - Samsung One UI 7.0 background */
+    --oneui-text: 0 0 0;             /* #000000 - Samsung One UI 7.0 text */
+    --oneui-secondary-text: 85 85 85; /* #555555 - Samsung One UI 7.0 secondary text */
+    --oneui-tertiary-text: 130 130 130; /* #828282 - Samsung One UI 7.0 tertiary text */
+    --oneui-system-fill: 220 220 220; /* #DCDCDC - Samsung One UI 7.0 system fill */
+    --oneui-separator: 230 230 230; /* #E6E6E6 - Samsung One UI 7.0 separator */
+    --oneui-grouped-background: 246 246 246; /* #F6F6F6 - Samsung One UI 7.0 grouped background */
+    --oneui-system-background: 255 255 255; /* #FFFFFF - Samsung One UI 7.0 system background */
+    --oneui-accent: 0 119 255; /* #0077FF - Samsung One UI 7.0 accent blue */
+    --oneui-card-bg: 255 255 255; /* #FFFFFF - Samsung One UI 7.0 card background */
+    --oneui-status-bar: 255 255 255; /* #FFFFFF - Samsung One UI 7.0 status bar */
+    --oneui-nav-bar: 255 255 255; /* #FFFFFF - Samsung One UI 7.0 navigation bar */
+    --oneui-ripple: 0 0 0 / 0.08; /* Samsung One UI 7.0 ripple effect */
+    --oneui-button-bg: 240 240 240; /* #F0F0F0 - Samsung One UI 7.0 button background */
+    --oneui-toggle-active: 0 119 255; /* #0077FF - Samsung One UI 7.0 toggle active */
+    --oneui-toggle-inactive: 220 220 220; /* #DCDCDC - Samsung One UI 7.0 toggle inactive */
 
     /* Light theme colors - Catppuccin Frappe */
     --background: 229 23% 88%;          /* Base #EFF1F5 */
@@ -73,15 +81,23 @@
   }
   
   .dark {
-    /* MIUI Dark Mode Colors - using Catppuccin Mocha */
-    --miui-background: 30 30 46;      /* Base #1E1E2E */
-    --miui-text: 205 214 244;        /* Text #CDD6F4 */
-    --miui-secondary-text: 166 173 200;  /* Subtext0 #A6ADC8 */
-    --miui-tertiary-text: 166 173 200;  /* Subtext0 #A6ADC8 */
-    --miui-system-fill: 88 91 112;    /* Surface2 #585B70 */
-    --miui-separator: 127 132 156;    /* Overlay0 #7F849C */
-    --miui-grouped-background: 30 30 46;  /* Base #1E1E2E */
-    --miui-system-background: 49 50 68;    /* Surface0 #313244 */
+    /* OneUI 7.0 Dark Mode Colors */
+    --oneui-background: 0 0 0; /* #000000 - Samsung One UI 7.0 dark background */
+    --oneui-text: 255 255 255; /* #FFFFFF - Samsung One UI 7.0 dark text */
+    --oneui-secondary-text: 180 180 180; /* #B4B4B4 - Samsung One UI 7.0 dark secondary text */
+    --oneui-tertiary-text: 140 140 140; /* #8C8C8C - Samsung One UI 7.0 dark tertiary text */
+    --oneui-system-fill: 40 40 40; /* #282828 - Samsung One UI 7.0 dark system fill */
+    --oneui-separator: 50 50 50; /* #323232 - Samsung One UI 7.0 dark separator */
+    --oneui-grouped-background: 0 0 0; /* #000000 - Samsung One UI 7.0 dark grouped background */
+    --oneui-system-background: 20 20 20; /* #141414 - Samsung One UI 7.0 dark system background */
+    --oneui-accent: 0 119 255; /* #0077FF - Samsung One UI 7.0 accent blue (same in dark mode) */
+    --oneui-card-bg: 20 20 20; /* #141414 - Samsung One UI 7.0 dark card background */
+    --oneui-status-bar: 0 0 0; /* #000000 - Samsung One UI 7.0 dark status bar */
+    --oneui-nav-bar: 20 20 20; /* #141414 - Samsung One UI 7.0 dark navigation bar */
+    --oneui-ripple: 255 255 255 / 0.08; /* Samsung One UI 7.0 dark ripple effect */
+    --oneui-button-bg: 40 40 40; /* #282828 - Samsung One UI 7.0 dark button background */
+    --oneui-toggle-active: 0 119 255; /* #0077FF - Samsung One UI 7.0 toggle active */
+    --oneui-toggle-inactive: 60 60 60; /* #3C3C3C - Samsung One UI 7.0 toggle inactive */
 
     /* Dark theme colors - Catppuccin Mocha */
     --background: 240 21% 15%;          /* Base #1E1E2E */
@@ -761,26 +777,72 @@ input.font-sf-pro::placeholder {
   animation: mac-shake 0.4s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
 }
 
-/* Add MIUI-specific utility styles */
+/* Add OneUI-specific utility styles */
 
 @layer utilities {
-  /* Text shadow for MIUI app names */
-  .text-shadow {
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  /* Text shadow for OneUI app names */
+  .app-name-text-shadow {
+    text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.2);
   }
   
-  /* MIUI-specific backdrop blur for folders and dock */
-  .miui-blur {
-    backdrop-filter: blur(20px) saturate(180%);
+  /* OneUI-specific backdrop blur for folders and dock */
+  .oneui-blur {
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
   }
   
-  /* MIUI app icon sizes */
-  .w-15 {
-    width: 3.75rem;
+  /* OneUI app icon sizes */
+  .oneui-app-icon {
+    width: 64px;
+    height: 64px;
   }
   
-  .h-15 {
-    height: 3.75rem;
+  /* OneUI 7.0 specific styles */
+  .oneui-rounded-lg {
+    border-radius: 1.5rem;
+  }
+  
+  .oneui-rounded-md {
+    border-radius: 1rem;
+  }
+  
+  .oneui-rounded-sm {
+    border-radius: 0.75rem;
+  }
+  
+  /* OneUI 7.0 card styles */
+  .oneui-card {
+    border-radius: 1.5rem;
+    padding: 1.25rem;
+    background-color: rgb(var(--oneui-card-bg));
+    border: 1px solid rgb(var(--oneui-separator));
+  }
+  
+  /* OneUI 7.0 button styles */
+  .oneui-button {
+    border-radius: 1.5rem;
+    padding: 0.75rem 1.5rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    background-color: rgb(var(--oneui-button-bg));
+  }
+  
+  .oneui-button-primary {
+    background-color: rgb(var(--oneui-accent));
+    color: white;
+  }
+  
+  /* OneUI 7.0 shadow styles */
+  .oneui-shadow-sm {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  }
+  
+  .oneui-shadow {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  }
+  
+  .oneui-shadow-lg {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
   }
   
   /* Notch area styling */

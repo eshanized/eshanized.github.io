@@ -1,16 +1,16 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import BaseMIUIApp from './BaseMIUIApp';
+import BaseOneUIApp from './BaseOneUIApp';
 import { User, Wifi, Bell, Battery, Moon, Lock, Smartphone, Info, Globe, ArrowRight } from 'lucide-react';
 import Image from 'next/image';
 import { PERSONAL_INFO } from '@/lib/constants';
 import { shouldSkipLockscreen, setSkipLockscreen } from '@/lib/lockscreen';
-import { useMIUITheme } from '../MIUIThemeContext';
+import { useOneUITheme } from '../OneUIThemeContext';
 
 export default function SettingsApp() {
   const [skipLockscreen, setSkipLockscreenState] = useState(false);
-  const { colors, isDarkMode, toggleDarkMode } = useMIUITheme();
+  const { colors, isDarkMode, toggleDarkMode } = useOneUITheme();
 
   // Load skipLockscreen preference on mount
   useEffect(() => {
@@ -31,7 +31,7 @@ export default function SettingsApp() {
         {
           icon: User,
           title: PERSONAL_INFO.name,
-          subtitle: "MIUI Account, Cloud Storage, App Store",
+          subtitle: "OneUI Account, Cloud Storage, App Store",
           color: "bg-gradient-to-r from-blue-500 to-blue-600"
         }
       ]
@@ -117,7 +117,7 @@ export default function SettingsApp() {
         {
           icon: Smartphone,
           title: "About Phone",
-          subtitle: "MIUI 14, Updates",
+          subtitle: "OneUI 7.0, Updates",
           color: "bg-gray-500"
         }
       ]
@@ -125,7 +125,7 @@ export default function SettingsApp() {
   ];
 
   return (
-    <BaseMIUIApp title="Settings">
+    <BaseOneUIApp title="Settings">
       <div className={`min-h-full ${colors.primary}`}>
         {/* Profile Section */}
         <div className={`${colors.cardBg} p-4 mb-3`}>
@@ -140,7 +140,7 @@ export default function SettingsApp() {
             </div>
             <div className="ml-4 flex-1">
               <h2 className={`text-lg font-medium ${colors.textPrimary}`}>{PERSONAL_INFO.name}</h2>
-              <p className={`text-sm ${colors.textSecondary}`}>MIUI Account, Cloud Storage, App Store</p>
+              <p className={`text-sm ${colors.textSecondary}`}>OneUI Account, Cloud Storage, App Store</p>
             </div>
             <ArrowRight className={`w-5 h-5 ${colors.textSecondary}`} />
           </div>
@@ -180,10 +180,10 @@ export default function SettingsApp() {
 
         {/* Version Info */}
         <div className="px-4 py-6 text-center">
-          <p className={`text-sm ${colors.textSecondary}`}>MIUI 14</p>
-          <p className={`text-xs ${colors.textTertiary} mt-1`}>Version 14.0.5.0 (TMXMIXM)</p>
+          <p className={`text-sm ${colors.textSecondary}`}>OneUI 7.0</p>
+          <p className={`text-xs ${colors.textTertiary} mt-1`}>Version 7.0.0.0 (SM-S928B)</p>
         </div>
       </div>
-    </BaseMIUIApp>
+    </BaseOneUIApp>
   );
 } 

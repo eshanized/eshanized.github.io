@@ -1,21 +1,22 @@
 "use client";
 
 import React from 'react';
-import { ThemeProvider } from '@/components/providers/theme-provider';
-import { NotificationProvider } from '@/components/miui/NotificationProvider';
-import { MobileCheck } from '@/components/mobile-check';
-import { MIUIThemeProvider } from "@/components/miui/MIUIThemeContext";
+import { ThemeProvider as NextThemesProvider } from "next-themes";
+import { NotificationProvider } from '@/components/oneui/NotificationProvider';
+import { MobileCheck } from './mobile-check';
+import { OneUIThemeProvider } from "@/components/oneui/OneUIThemeContext";
+import { TooltipProvider } from "./ui/tooltip";
 
 export default function ClientLayout({ children }: { children: React.ReactNode }) {
   return (
-    <ThemeProvider>
-      <NotificationProvider>
-        <MobileCheck>
-          <MIUIThemeProvider>
-            {children}
-          </MIUIThemeProvider>
-        </MobileCheck>
-      </NotificationProvider>
-    </ThemeProvider>
+    <NextThemesProvider attribute="class" defaultTheme="system" enableSystem>
+      <TooltipProvider>
+        <OneUIThemeProvider>
+          <NotificationProvider>
+            <MobileCheck>{children}</MobileCheck>
+          </NotificationProvider>
+        </OneUIThemeProvider>
+      </TooltipProvider>
+    </NextThemesProvider>
   );
 } 

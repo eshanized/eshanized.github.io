@@ -3,10 +3,10 @@
 import React, { ReactNode, useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, MoreVertical, Share, Home, Square, Circle } from 'lucide-react';
-import { useMIUITheme } from '../MIUIThemeContext';
+import { useOneUITheme } from '../OneUIThemeContext';
 import { useRouter } from 'next/navigation';
 
-interface BaseMIUIAppProps {
+interface BaseOneUIAppProps {
   title: string;
   children: ReactNode;
   onBack?: () => void;
@@ -17,7 +17,7 @@ interface BaseMIUIAppProps {
   onRightActionClick?: () => void;
 }
 
-export default function BaseMIUIApp({
+export default function BaseOneUIApp({
   title,
   children,
   onBack,
@@ -26,8 +26,8 @@ export default function BaseMIUIApp({
   hasSearch = false,
   rightAction,
   onRightActionClick
-}: BaseMIUIAppProps) {
-  const { colors, isDarkMode } = useMIUITheme();
+}: BaseOneUIAppProps) {
+  const { colors, isDarkMode } = useOneUITheme();
   const router = useRouter();
   const [recentApps, setRecentApps] = useState<string[]>([]);
   const [isRecentOpen, setIsRecentOpen] = useState(false);
@@ -51,12 +51,12 @@ export default function BaseMIUIApp({
     recentAppsOverlay.className = 'fixed inset-0 bg-black/80 z-50 flex items-center justify-center';
     
     const recentAppsContent = document.createElement('div');
-    recentAppsContent.className = 'w-full max-w-md p-4 space-y-2';
+    recentAppsContent.className = 'w-full max-w-md p-5 space-y-3';
     
     // Add recent apps buttons
     recentApps.reverse().forEach(path => {
       const appButton = document.createElement('button');
-      appButton.className = 'w-full p-4 bg-white/10 rounded-lg text-white text-left hover:bg-white/20 transition-colors';
+      appButton.className = 'w-full p-4 bg-white/10 rounded-[1.25rem] text-white text-left hover:bg-white/20 transition-colors';
       appButton.textContent = path === '/' ? 'Home' : path.slice(1).charAt(0).toUpperCase() + path.slice(2);
       appButton.onclick = () => {
         router.push(path);
@@ -68,7 +68,7 @@ export default function BaseMIUIApp({
     
     // Add close button
     const closeButton = document.createElement('button');
-    closeButton.className = 'absolute top-4 right-4 p-2 text-white/70 hover:text-white rounded-full';
+    closeButton.className = 'absolute top-5 right-5 p-2 text-white/70 hover:text-white rounded-full';
     closeButton.innerHTML = '×';
     closeButton.onclick = () => {
       document.body.removeChild(recentAppsOverlay);
@@ -104,15 +104,15 @@ export default function BaseMIUIApp({
       exit={{ opacity: 0 }}
       transition={{ duration: 0.2 }}
     >
-      {/* MIUI style header */}
+      {/* OneUI style header */}
       <header 
-        className={`${headerColor || colors.secondary} py-3 px-4 flex items-center justify-between transition-colors duration-300`}
-        style={{ minHeight: '56px' }}
+        className={`${headerColor || colors.secondary} py-4 px-5 flex items-center justify-between transition-colors duration-300`}
+        style={{ minHeight: '64px' }}
       >
         <div className="flex items-center flex-1">
           {onBack && (
             <motion.button 
-              className={`${colors.textPrimary} p-1 -ml-2 rounded-full hover:${colors.ripple}`}
+              className={`${colors.textPrimary} p-1.5 -ml-2 rounded-full hover:${colors.ripple}`}
               onClick={onBack}
               whileTap={{ scale: 0.95 }}
               transition={{ duration: 0.1 }}
@@ -122,7 +122,7 @@ export default function BaseMIUIApp({
           )}
           
           <motion.h1 
-            className={`${headerTextColor || colors.textPrimary} text-lg font-medium ml-2 transition-colors duration-300`}
+            className={`${headerTextColor || colors.textPrimary} text-xl font-medium ml-2 transition-colors duration-300`}
             initial={{ y: -5, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.1 }}
@@ -131,10 +131,10 @@ export default function BaseMIUIApp({
           </motion.h1>
         </div>
         
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3">
           {rightAction === 'more' && (
             <motion.button 
-              className={`p-2 ${colors.textPrimary} hover:${colors.ripple} rounded-full`}
+              className={`p-2.5 ${colors.textPrimary} hover:${colors.ripple} rounded-full`}
               onClick={onRightActionClick}
               whileTap={{ scale: 0.95 }}
               transition={{ duration: 0.1 }}
@@ -145,7 +145,7 @@ export default function BaseMIUIApp({
           
           {rightAction === 'share' && (
             <motion.button 
-              className={`p-2 ${colors.textPrimary} hover:${colors.ripple} rounded-full`}
+              className={`p-2.5 ${colors.textPrimary} hover:${colors.ripple} rounded-full`}
               onClick={onRightActionClick}
               whileTap={{ scale: 0.95 }}
               transition={{ duration: 0.1 }}
@@ -162,7 +162,7 @@ export default function BaseMIUIApp({
         </div>
       </header>
       
-      {/* App content with MIUI-style animations */}
+      {/* App content with OneUI-style animations */}
       <AnimatePresence mode="wait">
         <motion.div 
           key={title}
@@ -184,30 +184,33 @@ export default function BaseMIUIApp({
         </motion.div>
       </AnimatePresence>
 
-      {/* MIUI Navigation Bar */}
-      <div className={`h-[48px] ${colors.navBar} backdrop-blur-lg flex items-center justify-around px-6 border-t ${colors.divider}`}>
+      {/* OneUI Navigation Bar */}
+      <div className={`h-[56px] ${colors.navBar} backdrop-blur-lg flex items-center justify-around px-6 border-t ${colors.divider}`}>
         <motion.button
-          className="w-6 h-6 text-white/70 hover:text-white"
+          className={`w-7 h-7 ${isDarkMode ? 'text-white/70 hover:text-white' : 'text-black/70 hover:text-black'}`}
           onClick={handleBackClick}
           whileTap={{ scale: 0.9 }}
         >
-          <Circle className="w-5 h-5" strokeWidth={1.5} />
+          <Circle className="w-6 h-6" strokeWidth={1.5} />
         </motion.button>
 
         <motion.button
-          className="w-6 h-6 text-white/70 hover:text-white"
+          className={`w-7 h-7 ${isDarkMode ? 'text-white/70 hover:text-white' : 'text-black/70 hover:text-black'}`}
           onClick={handleHomeClick}
           whileTap={{ scale: 0.9 }}
         >
-          <Home className="w-5 h-5" strokeWidth={1.5} />
+          <Home className="w-6 h-6" strokeWidth={1.5} />
         </motion.button>
 
         <motion.button
-          className={`w-6 h-6 ${isRecentOpen ? 'text-white' : 'text-white/70 hover:text-white'}`}
+          className={`w-7 h-7 ${isRecentOpen 
+            ? (isDarkMode ? 'text-white' : 'text-black') 
+            : (isDarkMode ? 'text-white/70 hover:text-white' : 'text-black/70 hover:text-black')
+          }`}
           onClick={handleRecentClick}
           whileTap={{ scale: 0.9 }}
         >
-          <Square className="w-5 h-5" strokeWidth={1.5} />
+          <Square className="w-6 h-6" strokeWidth={1.5} />
         </motion.button>
       </div>
     </motion.div>

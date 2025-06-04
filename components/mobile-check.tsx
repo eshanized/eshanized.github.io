@@ -1,36 +1,38 @@
 "use client";
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useMobileDetector } from '@/hooks/use-mobile-detector';
 import dynamic from 'next/dynamic';
 import { TabletLayout } from './tablet-layout';
-import { MIUIThemeProvider } from '@/components/miui/MIUIThemeContext';
+import { OneUIThemeProvider } from '@/components/oneui/OneUIThemeContext';
 
-// Dynamically import the MIUILayout to avoid SSR issues
-const MIUILayout = dynamic(() => import('@/components/miui/MIUILayout'), { ssr: false });
+// Dynamically import the OneUILayout to avoid SSR issues
+const OneUILayout = dynamic(() => import('@/components/oneui/OneUILayout'), { ssr: false });
 
 export const MobileCheck: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { isMobile, isTablet, isClient } = useMobileDetector();
+  const [hasMounted, setHasMounted] = useState(false);
+  const [isMobileDevice, setIsMobileDevice] = useState(false);
+
+  // Always call hooks at the top level
+  useEffect(() => {
+    setHasMounted(true);
+    setIsMobileDevice(isMobile);
+  }, [isMobile]);
 
   // Only show the warning after client-side hydration
   if (!isClient) {
     return <>{children}</>;
   }
 
-  // On small mobile devices, show the MIUI interface
-  if (isMobile && !isTablet) {
-    return (
-      <MIUIThemeProvider>
-        <MIUILayout />
-      </MIUIThemeProvider>
-    );
+  if (!hasMounted || !isMobileDevice) {
+    return <>{children}</>; // Render children directly on desktop or before mount
   }
 
-  // On tablet devices, use the tablet-optimized layout
-  if (isTablet) {
-    return <TabletLayout>{children}</TabletLayout>;
-  }
-
-  // On desktop, render the normal content
-  return <>{children}</>;
+  // On small mobile devices, show the OneUI interface
+  return (
+    <OneUIThemeProvider>
+      <OneUILayout />
+    </OneUIThemeProvider>
+  );
 }; 

@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
-import { ThemeProvider as MIUIThemeProvider } from "./miui/ThemeContext";
+import { OneUIThemeProvider } from "./oneui/OneUIThemeContext";
 
 export function ThemeProvider({ children, ...props }: { children: React.ReactNode }) {
   return (
@@ -13,9 +13,9 @@ export function ThemeProvider({ children, ...props }: { children: React.ReactNod
       disableTransitionOnChange
       {...props}
     >
-      <MIUIThemeProvider>
+      <OneUIThemeProvider>
         {children}
-      </MIUIThemeProvider>
+      </OneUIThemeProvider>
     </NextThemesProvider>
   );
 }

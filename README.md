@@ -7,11 +7,11 @@
 [![GitHub Pages](https://img.shields.io/badge/GitHub_Pages-Deployed-success?style=for-the-badge&logo=github)](https://eshanized.github.io/)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
 
-> An elegant and interactive portfolio website featuring miui-style design, built with modern web technologies.
+> An elegant and interactive portfolio website featuring OneUI-style design, built with modern web technologies.
 
 ## 🌟 Features
 
-- 📱 MIUI-inspired design and interactions
+- 📱 OneUI-inspired design and interactions
 - 🌓 Dark/Light mode with system preference sync
 - 📊 Interactive app-like components
 - 🎨 Beautiful animations and transitions
@@ -83,7 +83,9 @@ eshanized_web/
 │   ├── layout.tsx        # Root layout
 │   └── page.tsx          # Home page
 ├── components/           # React components
-│   ├── miui/            # MIUI-style components
+│   ├── oneui/            # OneUI-style components
+│   │   ├── apps/         # Individual app components (Settings, Camera, etc.)
+│   │   └── OneUILayout.tsx # Main layout for OneUI
 │   ├── macos/           # macOS-style components
 │   ├── ui/              # Shared UI components
 │   └── providers/       # Context providers
@@ -95,17 +97,17 @@ eshanized_web/
 
 ## 🎨 Design System
 
-### MIUI Design Implementation
-- Custom MIUI-style components
+### OneUI Design Implementation
+- Custom OneUI-style components
 - System-native animations
-- Authentic MIUI interactions
+- Authentic OneUI interactions
 - Dark mode support
 - Blur effects
-- MIUI typography
+- OneUI typography
 
 ### Component Categories
 1. **Navigation Components**
-   - MIUI-style headers
+   - OneUI-style headers
    - Tab bars
    - Navigation bars
 

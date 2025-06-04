@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
-import BaseMIUIApp from './BaseMIUIApp';
+import BaseOneUIApp from './BaseOneUIApp';
 import { Search, MoreVertical, Send, Image as ImageIcon, Smile, Paperclip, User } from 'lucide-react';
 import Image from 'next/image';
 
@@ -101,7 +101,7 @@ export default function MessagesApp() {
   );
 
   return (
-    <BaseMIUIApp 
+    <BaseOneUIApp 
       title={activeConversation ? conversations.find(c => c.id === activeConversation)?.name || 'Messages' : 'Messages'}
       headerColor="bg-gray-50 dark:bg-gray-900"
       onBack={activeConversation ? () => setActiveConversation(null) : undefined}
@@ -256,6 +256,6 @@ export default function MessagesApp() {
           </div>
         )}
       </div>
-    </BaseMIUIApp>
+    </BaseOneUIApp>
   );
 } 

@@ -35,32 +35,32 @@ import { PERSONAL_INFO } from '@/lib/constants';
 import { shouldSkipLockscreen } from '@/lib/lockscreen';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
-import { useMIUITheme, MIUIThemeProvider } from './MIUIThemeContext';
+import { useOneUITheme, OneUIThemeProvider } from './OneUIThemeContext';
 
 // Dynamically import app components with SSR disabled
-const AboutApp = dynamic(() => import('@/components/miui/apps/AboutApp'), { ssr: false });
-const ProjectsApp = dynamic(() => import('@/components/miui/apps/ProjectsApp'), { ssr: false });
-const SkillsApp = dynamic(() => import('@/components/miui/apps/SkillsApp'), { ssr: false });
-const ExperienceApp = dynamic(() => import('@/components/miui/apps/ExperienceApp'), { ssr: false });
-const EducationApp = dynamic(() => import('@/components/miui/apps/EducationApp'), { ssr: false });
-const ContactApp = dynamic(() => import('@/components/miui/apps/ContactApp'), { ssr: false });
-const SettingsApp = dynamic(() => import('@/components/miui/apps/SettingsApp'), { ssr: false });
-const SafariApp = dynamic(() => import('@/components/miui/apps/SafariApp'), { ssr: false });
-const MusicApp = dynamic(() => import('@/components/miui/apps/MusicApp'), { ssr: false });
-const PhotosApp = dynamic(() => import('@/components/miui/apps/PhotosApp'), { ssr: false });
-const CameraApp = dynamic(() => import('@/components/miui/apps/CameraApp'), { ssr: false });
-const CalendarApp = dynamic(() => import('@/components/miui/apps/CalendarApp'), { ssr: false });
-const ClockApp = dynamic(() => import('@/components/miui/apps/ClockApp'), { ssr: false });
-const MessagesApp = dynamic(() => import('@/components/miui/apps/MessagesApp'), { ssr: false });
-const PlayStore = dynamic(() => import('@/components/miui/apps/PlayStore'), { ssr: false });
-const PhoneApp = dynamic(() => import('@/components/miui/apps/PhoneApp'), { ssr: false });
-const TwitterApp = dynamic(() => import('@/components/miui/apps/TwitterApp'), { ssr: false });
-const FacebookApp = dynamic(() => import('@/components/miui/apps/FacebookApp'), { ssr: false });
-const InstagramApp = dynamic(() => import('@/components/miui/apps/InstagramApp'), { ssr: false });
-const DevToApp = dynamic(() => import('@/components/miui/apps/DevToApp'), { ssr: false });
+const AboutApp = dynamic(() => import('@/components/oneui/apps/AboutApp'), { ssr: false });
+const ProjectsApp = dynamic(() => import('@/components/oneui/apps/ProjectsApp'), { ssr: false });
+const SkillsApp = dynamic(() => import('@/components/oneui/apps/SkillsApp'), { ssr: false });
+const ExperienceApp = dynamic(() => import('@/components/oneui/apps/ExperienceApp'), { ssr: false });
+const EducationApp = dynamic(() => import('@/components/oneui/apps/EducationApp'), { ssr: false });
+const ContactApp = dynamic(() => import('@/components/oneui/apps/ContactApp'), { ssr: false });
+const SettingsApp = dynamic(() => import('@/components/oneui/apps/SettingsApp'), { ssr: false });
+const SafariApp = dynamic(() => import('@/components/oneui/apps/SafariApp'), { ssr: false });
+const MusicApp = dynamic(() => import('@/components/oneui/apps/MusicApp'), { ssr: false });
+const PhotosApp = dynamic(() => import('@/components/oneui/apps/PhotosApp'), { ssr: false });
+const CameraApp = dynamic(() => import('@/components/oneui/apps/CameraApp'), { ssr: false });
+const CalendarApp = dynamic(() => import('@/components/oneui/apps/CalendarApp'), { ssr: false });
+const ClockApp = dynamic(() => import('@/components/oneui/apps/ClockApp'), { ssr: false });
+const MessagesApp = dynamic(() => import('@/components/oneui/apps/MessagesApp'), { ssr: false });
+const PlayStore = dynamic(() => import('@/components/oneui/apps/PlayStore'), { ssr: false });
+const PhoneApp = dynamic(() => import('@/components/oneui/apps/PhoneApp'), { ssr: false });
+const TwitterApp = dynamic(() => import('@/components/oneui/apps/TwitterApp'), { ssr: false });
+const FacebookApp = dynamic(() => import('@/components/oneui/apps/FacebookApp'), { ssr: false });
+const InstagramApp = dynamic(() => import('@/components/oneui/apps/InstagramApp'), { ssr: false });
+const DevToApp = dynamic(() => import('@/components/oneui/apps/DevToApp'), { ssr: false });
 
 // Type definitions
-interface MIUIApp {
+interface OneUIApp {
   id: string;
   name: string;
   icon: React.FC<any>;
@@ -72,18 +72,19 @@ interface MIUIApp {
 interface AppFolder {
   id: string;
   name: string;
-  apps: MIUIApp[];
+  apps: OneUIApp[];
 }
 
-// MIUI Layout Component
-export default function MIUILayout({ children }: { children?: React.ReactNode }) {
+// OneUI Layout Component
+export default function OneUILayout({ children }: { children?: React.ReactNode }) {
+  const [showLockscreen, setShowLockscreen] = useState(!shouldSkipLockscreen());
   return (
-    <MIUILayoutContent>{children}</MIUILayoutContent>
+    <OneUILayoutContent>{children}</OneUILayoutContent>
   );
 }
 
-function MIUILayoutContent({ children }: { children?: React.ReactNode }) {
-  const { isDarkMode, toggleDarkMode } = useMIUITheme();
+function OneUILayoutContent({ children }: { children?: React.ReactNode }) {
+  const { isDarkMode, toggleDarkMode, colors: themeColors } = useOneUITheme();
   // State hooks
   const [currentTime, setCurrentTime] = useState<string>('');
   const [currentDate, setCurrentDate] = useState<string>('');
@@ -175,7 +176,7 @@ function MIUILayoutContent({ children }: { children?: React.ReactNode }) {
   };
   
   // Define color palette for app icons with dark mode support
-  const colors = {
+  const appIconColors = {
     blue: 'bg-blue-600 dark:bg-blue-500',
     green: 'bg-green-600 dark:bg-green-500',
     red: 'bg-red-600 dark:bg-red-500',
@@ -196,32 +197,32 @@ function MIUILayoutContent({ children }: { children?: React.ReactNode }) {
     instagramGradient: 'bg-gradient-to-tr from-[#FF7A00] via-[#FE0697] to-[#7638FA]',
     devtoBlack: 'bg-black dark:bg-white dark:bg-opacity-90',
   };
-
+  
   // Portfolio apps
-  const portfolioApps: MIUIApp[] = [
-    { id: 'about', name: 'About', icon: User, color: colors.blue, component: AboutApp },
-    { id: 'projects', name: 'Projects', icon: Briefcase, color: colors.indigo, component: ProjectsApp },
-    { id: 'skills', name: 'Skills', icon: Code, color: colors.green, component: SkillsApp },
-    { id: 'experience', name: 'Experience', icon: FileText, color: colors.orange, component: ExperienceApp },
-    { id: 'education', name: 'Education', icon: GraduationCap, color: colors.yellow, component: EducationApp },
-    { id: 'contact', name: 'Contact', icon: Mail, color: colors.red, component: ContactApp },
+  const portfolioApps: OneUIApp[] = [
+    { id: 'about', name: 'About', icon: User, color: appIconColors.blue, component: AboutApp },
+    { id: 'projects', name: 'Projects', icon: Briefcase, color: appIconColors.indigo, component: ProjectsApp },
+    { id: 'skills', name: 'Skills', icon: Code, color: appIconColors.green, component: SkillsApp },
+    { id: 'experience', name: 'Experience', icon: FileText, color: appIconColors.orange, component: ExperienceApp },
+    { id: 'education', name: 'Education', icon: GraduationCap, color: appIconColors.yellow, component: EducationApp },
+    { id: 'contact', name: 'Contact', icon: Mail, color: appIconColors.red, component: ContactApp },
   ];
 
   // System apps
-  const systemApps: MIUIApp[] = [
-    { id: 'twitter', name: 'Twitter', icon: Twitter, color: colors.twitterBlue, component: TwitterApp },
-    { id: 'facebook', name: 'Facebook', icon: Facebook, color: colors.facebookBlue, component: FacebookApp },
-    { id: 'instagram', name: 'Instagram', icon: Instagram, color: colors.instagramGradient, component: InstagramApp },
-    { id: 'devto', name: 'DEV', icon: FileCode2, color: colors.devtoBlack, component: DevToApp },
-    { id: 'safari', name: 'Safari', icon: Globe, color: colors.gradient2, component: SafariApp },
-    { id: 'photos', name: 'Photos', icon: ImageIcon, color: colors.gradient1, component: PhotosApp },
-    { id: 'camera', name: 'Camera', icon: Camera, color: colors.gray, component: CameraApp },
-    { id: 'music', name: 'Music', icon: Music, color: colors.gradient3, component: MusicApp },
-    { id: 'calendar', name: 'Calendar', icon: Calendar, color: colors.red, component: CalendarApp },
-    { id: 'clock', name: 'Clock', icon: Clock, color: colors.gray, component: ClockApp },
-    { id: 'messages', name: 'Messages', icon: MessageSquare, color: colors.green, badgeCount: 2, component: MessagesApp },
-    { id: 'playstore', name: 'Play Store', icon: AppWindow, color: colors.green, component: PlayStore },
-    { id: 'settings', name: 'Settings', icon: Settings, color: colors.gray, component: SettingsApp },
+  const systemApps: OneUIApp[] = [
+    { id: 'twitter', name: 'Twitter', icon: Twitter, color: appIconColors.twitterBlue, component: TwitterApp },
+    { id: 'facebook', name: 'Facebook', icon: Facebook, color: appIconColors.facebookBlue, component: FacebookApp },
+    { id: 'instagram', name: 'Instagram', icon: Instagram, color: appIconColors.instagramGradient, component: InstagramApp },
+    { id: 'devto', name: 'DEV', icon: FileCode2, color: appIconColors.devtoBlack, component: DevToApp },
+    { id: 'safari', name: 'Safari', icon: Globe, color: appIconColors.gradient2, component: SafariApp },
+    { id: 'photos', name: 'Photos', icon: ImageIcon, color: appIconColors.gradient1, component: PhotosApp },
+    { id: 'camera', name: 'Camera', icon: Camera, color: appIconColors.gray, component: CameraApp },
+    { id: 'music', name: 'Music', icon: Music, color: appIconColors.gradient3, component: MusicApp },
+    { id: 'calendar', name: 'Calendar', icon: Calendar, color: appIconColors.red, component: CalendarApp },
+    { id: 'clock', name: 'Clock', icon: Clock, color: appIconColors.gray, component: ClockApp },
+    { id: 'messages', name: 'Messages', icon: MessageSquare, color: appIconColors.green, badgeCount: 2, component: MessagesApp },
+    { id: 'playstore', name: 'Play Store', icon: AppWindow, color: appIconColors.green, component: PlayStore },
+    { id: 'settings', name: 'Settings', icon: Settings, color: appIconColors.gray, component: SettingsApp },
   ];
 
   // App folders
@@ -234,11 +235,11 @@ function MIUILayoutContent({ children }: { children?: React.ReactNode }) {
   ];
 
   // Dock apps (4 most important)
-  const dockApps: MIUIApp[] = [
-    { id: 'phone', name: 'Phone', icon: Phone, color: colors.green, component: PhoneApp },
-    { id: 'safari', name: 'Safari', icon: Globe, color: colors.blue, component: SafariApp },
-    { id: 'messages', name: 'Messages', icon: MessageSquare, color: colors.green, badgeCount: 2, component: MessagesApp },
-    { id: 'about', name: 'About', icon: User, color: colors.blue, component: AboutApp },
+  const dockApps: OneUIApp[] = [
+    { id: 'phone', name: 'Phone', icon: Phone, color: appIconColors.green, component: PhoneApp },
+    { id: 'safari', name: 'Safari', icon: Globe, color: appIconColors.blue, component: SafariApp },
+    { id: 'messages', name: 'Messages', icon: MessageSquare, color: appIconColors.green, badgeCount: 2, component: MessagesApp },
+    { id: 'about', name: 'About', icon: User, color: appIconColors.blue, component: AboutApp },
   ];
 
   // All apps for home screen and search
@@ -248,7 +249,7 @@ function MIUILayoutContent({ children }: { children?: React.ReactNode }) {
   const homeScreenApps = [...systemApps];
 
   // Get app by ID
-  const getAppById = (id: string): MIUIApp | undefined => {
+  const getAppById = (id: string): OneUIApp | undefined => {
     return allApps.find(app => app.id === id);
   };
 
@@ -518,7 +519,7 @@ function MIUILayoutContent({ children }: { children?: React.ReactNode }) {
     </motion.div>
   );
 
-  // Main MIUI Container with dark mode support
+  // Main OneUI Container with dark mode support
   return (
     <div className="fixed inset-0 bg-black overflow-hidden">
       <AnimatePresence>
@@ -577,10 +578,10 @@ function MIUILayoutContent({ children }: { children?: React.ReactNode }) {
                       whileTap={{ scale: 0.9 }}
                       onClick={() => handleOpenApp(app.id)}
                     >
-                      <div className={`w-16 h-16 ${app.color} rounded-[22px] flex items-center justify-center relative shadow-lg`}>
+                      <div className={`w-16 h-16 ${app.color} rounded-[24px] flex items-center justify-center relative shadow-lg`}>
                         <app.icon className="w-8 h-8 text-white" strokeWidth={1.5} />
                         {app.badgeCount && (
-                          <span className="absolute -top-1 -right-1 min-w-[20px] h-5 bg-red-500 text-white rounded-full flex items-center justify-center text-xs font-medium px-1">
+                          <span className="absolute -top-1 -right-1 min-w-[22px] h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs font-medium px-1.5">
                             {app.badgeCount}
                           </span>
                         )}
@@ -597,9 +598,9 @@ function MIUILayoutContent({ children }: { children?: React.ReactNode }) {
                       whileTap={{ scale: 0.9 }}
                       onClick={() => handleOpenFolder(folder.id)}
                     >
-                      <div className="w-16 h-16 bg-white/20 backdrop-blur-xl rounded-[22px] p-1.5 grid grid-cols-2 gap-1 shadow-lg">
+                      <div className="w-18 h-18 bg-white/20 backdrop-blur-xl rounded-[28px] p-2 grid grid-cols-2 gap-1.5 shadow-lg">
                         {folder.apps.slice(0, 4).map((app, index) => (
-                          <div key={index} className={`rounded-[14px] ${app.color} flex items-center justify-center`}>
+                          <div key={index} className={`rounded-[18px] ${app.color} flex items-center justify-center`}>
                             <app.icon className="w-5 h-5 text-white" strokeWidth={1.5} />
                           </div>
                         ))}
@@ -610,7 +611,7 @@ function MIUILayoutContent({ children }: { children?: React.ReactNode }) {
                 </div>
                 
                 {/* Dock */}
-                <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 w-[85%] h-[76px] rounded-[28px] bg-white/15 backdrop-blur-xl flex items-center justify-around px-3 border border-white/20">
+                <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 w-[85%] h-[80px] rounded-[32px] bg-white/15 backdrop-blur-xl flex items-center justify-around px-4 border border-white/20">
                   {dockApps.map((app) => (
                     <motion.button
                       key={app.id}
@@ -618,11 +619,11 @@ function MIUILayoutContent({ children }: { children?: React.ReactNode }) {
                       whileTap={{ scale: 0.9 }}
                       onClick={() => handleOpenApp(app.id)}
                     >
-                      <div className={`w-14 h-14 ${app.color} rounded-[20px] flex items-center justify-center shadow-lg`}>
-                        <app.icon className="w-7 h-7 text-white" strokeWidth={1.5} />
+                      <div className={`w-16 h-16 ${app.color} rounded-[24px] flex items-center justify-center shadow-lg`}>
+                        <app.icon className="w-8 h-8 text-white" strokeWidth={1.5} />
                       </div>
                       {app.badgeCount && (
-                        <span className="absolute -top-1 -right-1 min-w-[20px] h-5 bg-red-500 text-white rounded-full flex items-center justify-center text-xs font-medium px-1">
+                        <span className="absolute -top-1 -right-1 min-w-[22px] h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs font-medium px-1.5">
                           {app.badgeCount}
                         </span>
                       )}
@@ -673,7 +674,7 @@ function MIUILayoutContent({ children }: { children?: React.ReactNode }) {
                           whileTap={{ scale: 0.9 }}
                           onClick={() => handleOpenApp(app.id)}
                         >
-                          <div className={`w-16 h-16 ${app.color} rounded-[22px] flex items-center justify-center shadow-lg`}>
+                          <div className={`w-16 h-16 ${app.color} rounded-[24px] flex items-center justify-center shadow-lg`}>
                             <app.icon className="w-8 h-8 text-white" strokeWidth={1.5} />
                           </div>
                           <span className="mt-2 text-sm text-white font-medium">{app.name}</span>

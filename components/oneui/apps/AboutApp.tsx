@@ -1,17 +1,17 @@
 "use client";
 
 import React from 'react';
-import BaseMIUIApp from './BaseMIUIApp';
+import BaseOneUIApp from './BaseOneUIApp';
 import Image from 'next/image';
 import { Mail, Github, Linkedin, Twitter, ExternalLink } from 'lucide-react';
 import { PERSONAL_INFO } from '@/lib/constants';
-import { useMIUITheme } from '../MIUIThemeContext';
+import { useOneUITheme } from '../OneUIThemeContext';
 
 export default function AboutApp() {
-  const { colors } = useMIUITheme();
+  const { colors } = useOneUITheme();
 
   return (
-    <BaseMIUIApp title="About" rightAction="share">
+    <BaseOneUIApp title="About" rightAction="share">
       <div className={`${colors.primary} min-h-full`}>
         {/* Profile image and basic info */}
         <div className={`${colors.cardBg} p-4 flex flex-col items-center border-b ${colors.divider}`}>
@@ -106,6 +106,6 @@ export default function AboutApp() {
           Version 1.0.0
         </div>
       </div>
-    </BaseMIUIApp>
+    </BaseOneUIApp>
   );
 } 

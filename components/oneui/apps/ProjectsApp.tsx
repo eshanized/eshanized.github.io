@@ -1,10 +1,10 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import BaseMIUIApp from './BaseMIUIApp';
+import BaseOneUIApp from './BaseOneUIApp';
 import { ExternalLink, Github, GitBranch, Star, GitFork, Loader2 } from 'lucide-react';
 import Image from 'next/image';
-import { useMIUITheme } from '../MIUIThemeContext';
+import { useOneUITheme } from '../OneUIThemeContext';
 
 // Define project type
 interface Project {
@@ -24,7 +24,7 @@ export default function ProjectsApp() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const { colors } = useMIUITheme();
+  const { colors } = useOneUITheme();
 
   // Fetch projects from GitHub and GitLab
   useEffect(() => {
@@ -92,7 +92,7 @@ export default function ProjectsApp() {
   }, []);
 
   return (
-    <BaseMIUIApp title="Projects" rightAction="more">
+    <BaseOneUIApp title="Projects" rightAction="more">
       <div className={`p-4 ${colors.primary} min-h-full`}>
         <h1 className={`text-xl font-medium mb-4 ${colors.textPrimary}`}>My Projects</h1>
         
@@ -198,6 +198,6 @@ export default function ProjectsApp() {
           ))}
         </div>
       </div>
-    </BaseMIUIApp>
+    </BaseOneUIApp>
   );
 } 

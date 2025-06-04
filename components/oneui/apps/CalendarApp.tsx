@@ -1,15 +1,15 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import BaseMIUIApp from './BaseMIUIApp';
+import BaseOneUIApp from './BaseOneUIApp';
 import { Calendar as CalendarIcon, ChevronLeft, ChevronRight, Plus } from 'lucide-react';
-import { useMIUITheme } from '../MIUIThemeContext';
+import { useOneUITheme } from '../OneUIThemeContext';
 
 export default function CalendarApp() {
   const [currentMonth, setCurrentMonth] = useState<Date>(new Date());
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [view, setView] = useState<string>("month"); // month, week, day
-  const { colors } = useMIUITheme();
+  const { colors } = useOneUITheme();
   
   // Sample calendar events
   const events = [
@@ -147,7 +147,7 @@ export default function CalendarApp() {
   const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
   
   return (
-    <BaseMIUIApp title="Calendar" rightAction={<Plus className="w-5 h-5" />}>
+    <BaseOneUIApp title="Calendar" rightAction={<Plus className="w-5 h-5" />}>
       <div className={`h-full flex flex-col ${colors.primary}`}>
         {/* Calendar navigation */}
         <div className={`p-4 flex items-center justify-between border-b ${colors.divider} ${colors.cardBg}`}>
@@ -269,6 +269,6 @@ export default function CalendarApp() {
           </button>
         </div>
       </div>
-    </BaseMIUIApp>
+    </BaseOneUIApp>
   );
 } 

@@ -1,10 +1,10 @@
 "use client";
 
 import React, { useState } from 'react';
-import BaseMIUIApp from './BaseMIUIApp';
+import BaseOneUIApp from './BaseOneUIApp';
 import { Phone, Star, Clock, User, Search, X, Video, Mic, Volume2 } from 'lucide-react';
 import Image from 'next/image';
-import { useMIUITheme } from '../MIUIThemeContext';
+import { useOneUITheme } from '../OneUIThemeContext';
 
 interface Contact {
   id: string;
@@ -22,7 +22,7 @@ export default function PhoneApp() {
   const [isCallActive, setIsCallActive] = useState(false);
   const [callDuration, setCallDuration] = useState(0);
   const [searchQuery, setSearchQuery] = useState('');
-  const { colors } = useMIUITheme();
+  const { colors } = useOneUITheme();
 
   const contacts: Contact[] = [
     {
@@ -83,7 +83,7 @@ export default function PhoneApp() {
   );
 
   return (
-    <BaseMIUIApp 
+    <BaseOneUIApp 
       title={isCallActive ? "Call in progress" : "Phone"}
     >
       <div className={`h-full ${colors.primary}`}>
@@ -274,6 +274,6 @@ export default function PhoneApp() {
           </>
         )}
       </div>
-    </BaseMIUIApp>
+    </BaseOneUIApp>
   );
 }

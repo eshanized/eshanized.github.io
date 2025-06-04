@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import BaseMIUIApp from './BaseMIUIApp';
+import BaseOneUIApp from './BaseOneUIApp';
 import Image from 'next/image';
 import { Heart, MessageCircle, Bookmark, Tag } from 'lucide-react';
 import axios from 'axios';
@@ -50,18 +50,18 @@ export default function DevToApp() {
 
   if (isLoading) {
     return (
-      <BaseMIUIApp title="DEV Community" rightAction="new">
+      <BaseOneUIApp title="DEV Community" rightAction="new">
         <div className="flex flex-col items-center justify-center h-full">
           <div className="animate-spin rounded-full h-8 w-8 border-2 border-gray-300 border-t-blue-500" />
           <p className="mt-4 text-gray-500 dark:text-gray-400">Loading articles...</p>
         </div>
-      </BaseMIUIApp>
+      </BaseOneUIApp>
     );
   }
 
   if (error) {
     return (
-      <BaseMIUIApp title="DEV Community" rightAction="new">
+      <BaseOneUIApp title="DEV Community" rightAction="new">
         <div className="flex flex-col items-center justify-center h-full">
           <p className="text-red-500 dark:text-red-400">{error}</p>
           <button 
@@ -71,12 +71,12 @@ export default function DevToApp() {
             Retry
           </button>
         </div>
-      </BaseMIUIApp>
+      </BaseOneUIApp>
     );
   }
 
   return (
-    <BaseMIUIApp title="DEV Community" rightAction="new">
+    <BaseOneUIApp title="DEV Community" rightAction="new">
       <div className="flex flex-col divide-y divide-gray-200 dark:divide-gray-700/60">
         {/* Profile Header */}
         <div className="p-4 bg-white dark:bg-black sticky top-0 z-10 backdrop-blur-xl bg-opacity-70 dark:bg-opacity-70">
@@ -172,6 +172,6 @@ export default function DevToApp() {
           </article>
         ))}
       </div>
-    </BaseMIUIApp>
+    </BaseOneUIApp>
   );
 } 

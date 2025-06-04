@@ -1,10 +1,10 @@
 "use client";
 
 import React, { useState } from 'react';
-import BaseMIUIApp from './BaseMIUIApp';
+import BaseOneUIApp from './BaseOneUIApp';
 import { PERSONAL_INFO, SOCIAL_LINKS } from '@/lib/constants';
 import { Send, Mail, Phone, MapPin, ExternalLink } from 'lucide-react';
-import { useMIUITheme } from '../MIUIThemeContext';
+import { useOneUITheme } from '../OneUIThemeContext';
 
 export default function ContactApp() {
   const [formData, setFormData] = useState({
@@ -16,7 +16,7 @@ export default function ContactApp() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
-  const { colors } = useMIUITheme();
+  const { colors } = useOneUITheme();
   
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -48,7 +48,7 @@ export default function ContactApp() {
   };
   
   return (
-    <BaseMIUIApp title="Contact">
+    <BaseOneUIApp title="Contact">
       <div className={`p-4 ${colors.primary} min-h-full`}>
         <h1 className={`text-xl font-medium mb-4 ${colors.textPrimary}`}>Get in Touch</h1>
         
@@ -193,6 +193,6 @@ export default function ContactApp() {
           )}
         </div>
       </div>
-    </BaseMIUIApp>
+    </BaseOneUIApp>
   );
 } 

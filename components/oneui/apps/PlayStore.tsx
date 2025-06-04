@@ -1,10 +1,10 @@
 "use client";
 
 import React, { useState } from 'react';
-import BaseMIUIApp from './BaseMIUIApp';
+import BaseOneUIApp from './BaseOneUIApp';
 import { Search, Star, Download, Grid, Play, Clock, User, GamepadIcon, Smartphone, Film, Book } from 'lucide-react';
 import Image from 'next/image';
-import { useMIUITheme } from '../MIUIThemeContext';
+import { useOneUITheme } from '../OneUIThemeContext';
 
 interface App {
   id: number;
@@ -23,14 +23,14 @@ interface App {
 export default function PlayStore() {
   const [activeTab, setActiveTab] = useState<string>("games");
   const [searchQuery, setSearchQuery] = useState<string>("");
-  const { colors } = useMIUITheme();
+  const { colors } = useOneUITheme();
   
-  // Sample apps data with MIUI-specific apps
+  // Sample apps data with OneUI-specific apps
   const apps: App[] = [
     {
       id: 1,
-      name: "MIUI Themes",
-      developer: "Xiaomi Inc.",
+      name: "OneUI Themes",
+      developer: "Samsung Inc.",
       icon: "https://play-lh.googleusercontent.com/TT36Nsjyt0Yn8eyPAXuNK0bJsXmryP9ovsp7qdognzL6uLLyuKJIqEVf_BnWDkNHzA=w240-h480-rw",
       screenshots: [
         "https://play-lh.googleusercontent.com/TbL8Tq4eLsEA6h8FuLNqpyGGUuuXyWLoTDrlEwY_yCUeEsOz0boZgLBXI9c6-HjH9A=w526-h296-rw",
@@ -40,7 +40,7 @@ export default function PlayStore() {
       rating: 4.5,
       price: "Free",
       downloads: "100M+",
-      description: "Official MIUI Theme store. Customize your device with thousands of themes, wallpapers, and icons.",
+      description: "Official OneUI Theme store. Customize your device with thousands of themes, wallpapers, and icons.",
       featured: true
     },
     {
@@ -61,8 +61,8 @@ export default function PlayStore() {
     },
     {
       id: 3,
-      name: "Mi Remote",
-      developer: "Xiaomi Inc.",
+      name: "SmartThings",
+      developer: "Samsung Inc.",
       icon: "https://play-lh.googleusercontent.com/sHcbMrh5EE_RmlIk9D2wY7-KEjB9vqHTYjw9Tp9-ZdIL1_JxsDxc69GHF2wUGSOyP_E=w240-h480-rw",
       screenshots: [
         "https://play-lh.googleusercontent.com/j5ZxAlHeB9K1hkRqWioQxVKtXXTEmX4oZ1hCf1F-4vI_-f9-8nO_R0y0Z8Qx_A9RKAA=w526-h296-rw",
@@ -72,12 +72,12 @@ export default function PlayStore() {
       rating: 4.4,
       price: "Free",
       downloads: "100M+",
-      description: "Control your TV, AC, and other IR devices with your MIUI phone."
+      description: "Control your TV, AC, and other smart devices with your OneUI phone using SmartThings."
     },
     {
       id: 4,
-      name: "Mi Security",
-      developer: "Xiaomi Inc.",
+      name: "Device Care",
+      developer: "Samsung Inc.",
       icon: "https://play-lh.googleusercontent.com/2Jw_mZ8kUHPWaZvkgO_Q4qzqx0PGBYFGgEVXGid_kEO_OgXqQEvxm_zQGb5jF_xm8w=w240-h480-rw",
       screenshots: [
         "https://play-lh.googleusercontent.com/2Jw_mZ8kUHPWaZvkgO_Q4qzqx0PGBYFGgEVXGid_kEO_OgXqQEvxm_zQGb5jF_xm8w=w240-h480-rw",
@@ -87,7 +87,7 @@ export default function PlayStore() {
       rating: 4.6,
       price: "Free",
       downloads: "50M+",
-      description: "Protect your device with Mi Security. Features include virus scanning, cleaner, and battery optimization."
+      description: "Protect your device with Device Care. Features include virus scanning, cleaner, and battery optimization."
     },
     {
       id: 5,
@@ -119,7 +119,7 @@ export default function PlayStore() {
   ];
   
   return (
-    <BaseMIUIApp title="Play Store">
+    <BaseOneUIApp title="Play Store">
       <div className={`h-full flex flex-col ${colors.primary}`}>
         {/* Search bar */}
         <div className={`p-4 sticky top-0 ${colors.cardBg} z-10`}>
@@ -269,6 +269,6 @@ export default function PlayStore() {
           ))}
         </div>
       </div>
-    </BaseMIUIApp>
+    </BaseOneUIApp>
   );
 } 

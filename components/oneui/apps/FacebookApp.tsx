@@ -1,20 +1,22 @@
 "use client";
 
 import React from 'react';
-import BaseMIUIApp from './BaseMIUIApp';
+import BaseOneUIApp from './BaseOneUIApp';
 import Image from 'next/image';
-import { Heart, MessageCircle, Share2, ThumbsUp } from 'lucide-react';
-import { useMIUITheme } from '../MIUIThemeContext';
+import { Heart, MessageCircle, Share2, ThumbsUp, MoreHorizontal, Search, Home, Users, Video, Bell } from 'lucide-react';
+import { useOneUITheme } from '../OneUIThemeContext';
+import { PERSONAL_INFO } from '@/lib/constants';
 
 const posts = [
   {
     id: 1,
-    content: "Excited to share my latest project - a fully responsive MIUI-themed portfolio website built with Next.js and TailwindCSS! 🚀",
-    timestamp: "2 hours ago",
-    likes: 156,
+    avatar: PERSONAL_INFO.avatar,
+    time: "2h ago",
+    text: "Excited to share my latest project - a fully responsive OneUI-themed portfolio website built with Next.js and TailwindCSS! 🚀",
+    image: "/screenshots/portfolio-project.png",
+    likes: 120,
     comments: 23,
-    shares: 12,
-    image: "/images/portfolio-preview.jpg"
+    shares: 12
   },
   {
     id: 2,
@@ -36,10 +38,10 @@ const posts = [
 ];
 
 export default function FacebookApp() {
-  const { colors } = useMIUITheme();
+  const { colors } = useOneUITheme();
   
   return (
-    <BaseMIUIApp title="Facebook" rightAction="new">
+    <BaseOneUIApp title="Facebook" rightAction="new">
       <div className={`flex flex-col ${colors.primary}`}>
         {/* Story Section */}
         <div className={`p-4 ${colors.cardBg} overflow-x-auto`}>
@@ -101,7 +103,7 @@ export default function FacebookApp() {
                 </div>
               </div>
               
-              <p className={`mt-3 ${colors.textPrimary}`}>{post.content}</p>
+              <p className={`mt-3 ${colors.textPrimary}`}>{post.text}</p>
               
               {post.image && (
                 <div className="mt-3 relative h-48 rounded-md overflow-hidden">
@@ -146,6 +148,6 @@ export default function FacebookApp() {
           </article>
         ))}
       </div>
-    </BaseMIUIApp>
+    </BaseOneUIApp>
   );
 } 

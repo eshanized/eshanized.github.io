@@ -1,15 +1,15 @@
 "use client";
 
 import React, { useState } from 'react';
-import BaseMIUIApp from './BaseMIUIApp';
+import BaseOneUIApp from './BaseOneUIApp';
 import { Camera, Zap, ArrowLeft, ArrowRight, Image as ImageIcon, Settings } from 'lucide-react';
-import { useMIUITheme } from '../MIUIThemeContext';
+import { useOneUITheme } from '../OneUIThemeContext';
 
 export default function CameraApp() {
   const [cameraMode, setCameraMode] = useState<string>("photo");
   const [flashMode, setFlashMode] = useState<string>("off");
   const [isFlipped, setIsFlipped] = useState<boolean>(false);
-  const { colors, isDarkMode } = useMIUITheme();
+  const { colors, isDarkMode } = useOneUITheme();
   
   // Camera modes
   const modes = [
@@ -47,7 +47,7 @@ export default function CameraApp() {
   };
   
   return (
-    <BaseMIUIApp title="Camera" headerColor="bg-black" headerTextColor="text-white">
+    <BaseOneUIApp title="Camera" headerColor="bg-black" headerTextColor="text-white">
       <div className="h-full flex flex-col bg-black text-white">
         {/* Camera viewfinder (simulated) */}
         <div className="flex-1 flex items-center justify-center relative">
@@ -151,6 +151,6 @@ export default function CameraApp() {
           </div>
         </div>
       </div>
-    </BaseMIUIApp>
+    </BaseOneUIApp>
   );
 } 

@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
 
-interface MIUIThemeContextType {
+interface OneUIThemeContextType {
   isDarkMode: boolean;
   toggleDarkMode: () => void;
   colors: {
@@ -31,14 +31,14 @@ interface MIUIThemeContextType {
   };
 }
 
-const MIUIThemeContext = createContext<MIUIThemeContextType | undefined>(undefined);
+const OneUIThemeContext = createContext<OneUIThemeContextType | undefined>(undefined);
 
-export function MIUIThemeProvider({ children }: { children: React.ReactNode }) {
+export function OneUIThemeProvider({ children }: { children: React.ReactNode }) {
   const [isDarkMode, setIsDarkMode] = useState(false);
 
   useEffect(() => {
     // Check system preference and saved preference
-    const savedTheme = localStorage.getItem('miui-theme');
+    const savedTheme = localStorage.getItem('oneui-theme');
     const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
     
     setIsDarkMode(savedTheme === 'dark' || (!savedTheme && systemPrefersDark));
@@ -47,7 +47,7 @@ export function MIUIThemeProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     // Apply theme to document
     document.documentElement.classList.toggle('dark', isDarkMode);
-    localStorage.setItem('miui-theme', isDarkMode ? 'dark' : 'light');
+    localStorage.setItem('oneui-theme', isDarkMode ? 'dark' : 'light');
   }, [isDarkMode]);
 
   const toggleDarkMode = () => {
@@ -57,59 +57,59 @@ export function MIUIThemeProvider({ children }: { children: React.ReactNode }) {
   const colors = {
     // Light mode colors
     ...(isDarkMode ? {
-      // MIUI Dark Mode Colors
+      // Samsung One UI 7.0 Dark Mode Colors
       primary: 'bg-black',
-      secondary: 'bg-[#1C1C1E]',
-      tertiary: 'bg-[#2C2C2E]',
+      secondary: 'bg-[#141414]',
+      tertiary: 'bg-[#282828]',
       
       textPrimary: 'text-white',
-      textSecondary: 'text-[#98989F]',
-      textTertiary: 'text-[#68686A]',
+      textSecondary: 'text-[#B4B4B4]',
+      textTertiary: 'text-[#8C8C8C]',
       
-      accent: 'text-[#0A84FF]',
-      divider: 'border-[#38383A]',
-      cardBg: 'bg-[#1C1C1E]',
+      accent: 'text-[#0077FF]',
+      divider: 'border-[#323232]',
+      cardBg: 'bg-[#141414]',
       statusBar: 'bg-black',
-      navBar: 'bg-black',
+      navBar: 'bg-[#141414]',
       
-      ripple: 'bg-white/10',
-      buttonBg: 'bg-[#3A3A3C]',
-      toggleActive: 'bg-[#0A84FF]',
-      toggleInactive: 'bg-[#3A3A3C]'
+      ripple: 'bg-white/8',
+      buttonBg: 'bg-[#282828]',
+      toggleActive: 'bg-[#0077FF]',
+      toggleInactive: 'bg-[#3C3C3C]'
     } : {
-      // MIUI Light Mode Colors
-      primary: 'bg-[#F2F2F7]',
+      // Samsung One UI 7.0 Light Mode Colors
+      primary: 'bg-[#F6F6F6]',
       secondary: 'bg-white',
-      tertiary: 'bg-[#F9F9F9]',
+      tertiary: 'bg-[#F0F0F0]',
       
       textPrimary: 'text-black',
-      textSecondary: 'text-[#6D6D72]',
-      textTertiary: 'text-[#8E8E93]',
+      textSecondary: 'text-[#555555]',
+      textTertiary: 'text-[#828282]',
       
-      accent: 'text-[#007AFF]',
-      divider: 'border-[#C6C6C8]',
+      accent: 'text-[#0077FF]',
+      divider: 'border-[#E6E6E6]',
       cardBg: 'bg-white',
-      statusBar: 'bg-[#F2F2F7]',
-      navBar: 'bg-[#F2F2F7]',
+      statusBar: 'bg-[#F6F6F6]',
+      navBar: 'bg-white',
       
-      ripple: 'bg-black/5',
-      buttonBg: 'bg-white',
-      toggleActive: 'bg-[#007AFF]',
-      toggleInactive: 'bg-[#E9E9EA]'
+      ripple: 'bg-black/8',
+      buttonBg: 'bg-[#F0F0F0]',
+      toggleActive: 'bg-[#0077FF]',
+      toggleInactive: 'bg-[#DCDCDC]'
     })
   };
 
   return (
-    <MIUIThemeContext.Provider value={{ isDarkMode, toggleDarkMode, colors }}>
+    <OneUIThemeContext.Provider value={{ isDarkMode, toggleDarkMode, colors }}>
       {children}
-    </MIUIThemeContext.Provider>
+    </OneUIThemeContext.Provider>
   );
 }
 
-export function useMIUITheme() {
-  const context = useContext(MIUIThemeContext);
+export const useOneUITheme = () => {
+  const context = useContext(OneUIThemeContext);
   if (context === undefined) {
-    throw new Error('useMIUITheme must be used within a MIUIThemeProvider');
+    throw new Error('useOneUITheme must be used within a OneUIThemeProvider');
   }
   return context;
 } 

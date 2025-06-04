@@ -3,25 +3,35 @@ import './snigdha-theme.css';
 import type { Metadata, Viewport } from 'next';
 import { Dosis } from "next/font/google";
 import ClientLayout from '@/components/ClientLayout';
+import { PERSONAL_INFO } from '@/lib/constants';
 
 const dosis = Dosis({ 
   subsets: ["latin"],
   weight: ["200", "300", "400", "500", "600", "700", "800"]
 });
 
+const metadataBase = process.env.NODE_ENV === 'production' 
+  ? new URL(PERSONAL_INFO.website)
+  : new URL(`http://localhost:${process.env.PORT || 3000}`);
+
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
   maximumScale: 1,
   userScalable: false,
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: 'white' },
+    { media: '(prefers-color-scheme: dark)', color: 'black' },
+  ],
 };
 
 export const metadata: Metadata = {
+  metadataBase,
   title: {
-    default: 'Eshan Roy | Full Stack Developer',
-    template: '%s | Eshan Roy'
+    default: `${PERSONAL_INFO.name} | ${PERSONAL_INFO.title}`,
+    template: `%s | ${PERSONAL_INFO.name}`,
   },
-  description: 'Full Stack Developer specializing in Next.js, React, and modern web technologies. Explore my portfolio featuring MIUI-style web applications and innovative projects.',
+  description: 'Full Stack Developer specializing in Next.js, React, and modern web technologies. Explore my portfolio featuring OneUI-style web applications and innovative projects.',
   keywords: [
     'Eshan Roy',
     'Full Stack Developer',
@@ -43,7 +53,6 @@ export const metadata: Metadata = {
     address: false,
     telephone: false,
   },
-  metadataBase: new URL('https://eshanized.is-a.dev'),
   alternates: {
     canonical: '/',
     languages: {
@@ -52,7 +61,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: 'Eshan Roy | Full Stack Developer',
-    description: 'Full Stack Developer specializing in Next.js, React, and modern web technologies. Explore my portfolio featuring MIUI-style web applications and innovative projects.',
+    description: 'Full Stack Developer specializing in Next.js, React, and modern web technologies. Explore my portfolio featuring OneUI-style web applications and innovative projects.',
     url: 'https://eshanized.is-a.dev',
     siteName: 'Eshan Roy Portfolio',
     images: [

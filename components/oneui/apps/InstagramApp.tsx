@@ -1,10 +1,10 @@
 "use client";
 
 import React from 'react';
-import BaseMIUIApp from './BaseMIUIApp';
+import BaseOneUIApp from './BaseOneUIApp';
 import Image from 'next/image';
 import { Heart, MessageCircle, Bookmark, Share2, MoreHorizontal } from 'lucide-react';
-import { useMIUITheme } from '../MIUIThemeContext';
+import { useOneUITheme } from '../OneUIThemeContext';
 
 const posts = [
   {
@@ -42,10 +42,10 @@ const stories = [
 ];
 
 export default function InstagramApp() {
-  const { colors } = useMIUITheme();
+  const { colors } = useOneUITheme();
   
   return (
-    <BaseMIUIApp title="Instagram" rightAction="new">
+    <BaseOneUIApp title="Instagram" rightAction="new">
       <div className={`flex flex-col ${colors.primary}`}>
         {/* Stories */}
         <div className={`p-4 ${colors.cardBg} overflow-x-auto border-b ${colors.divider}`}>
@@ -152,6 +152,6 @@ export default function InstagramApp() {
           </article>
         ))}
       </div>
-    </BaseMIUIApp>
+    </BaseOneUIApp>
   );
 } 

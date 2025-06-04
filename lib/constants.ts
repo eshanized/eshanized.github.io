@@ -25,6 +25,7 @@ import {
 // Personal information
 export const PERSONAL_INFO = {
   name: "Eshan Roy",
+  username: "eshanized",
   title: "Full Stack Developer",
   email: "m.eshanized@gmail.com",
   github: "https://github.com/eshanized",

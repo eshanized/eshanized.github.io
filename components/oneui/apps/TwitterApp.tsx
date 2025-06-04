@@ -1,59 +1,74 @@
 "use client";
 
-import React from 'react';
-import BaseMIUIApp from './BaseMIUIApp';
+import React, { useState } from 'react';
+import BaseOneUIApp from './BaseOneUIApp';
+import { Twitter, Search, Home, Bell, Mail, User, MoreHorizontal, Image as ImageIcon, Send, Repeat, Heart, MessageCircle } from 'lucide-react';
 import Image from 'next/image';
-import { Heart, MessageCircle, Repeat2, Share } from 'lucide-react';
-import { useMIUITheme } from '../MIUIThemeContext';
+import { useOneUITheme } from '../OneUIThemeContext';
+import { PERSONAL_INFO } from '@/lib/constants';
 
 // Simulated tweets data
 const tweets = [
   {
     id: 1,
-    content: "Just pushed some updates to my portfolio site! Check out the new MIUI-inspired design 🚀 #webdev #portfolio",
-    timestamp: "2h",
+    name: PERSONAL_INFO.name,
+    username: "@eshanized",
+    avatar: PERSONAL_INFO.avatar,
+    time: "2h",
+    content: "Just pushed some updates to my portfolio site! Check out the new OneUI-inspired design 🚀 #webdev #portfolio",
+    image: "/screenshots/portfolio-tweet.png", // Placeholder for a screenshot of the portfolio
+    replies: 12,
     likes: 42,
-    retweets: 12,
-    replies: 5
+    retweets: 12
   },
   {
     id: 2,
+    name: PERSONAL_INFO.name,
+    username: "@eshanized",
+    avatar: PERSONAL_INFO.avatar,
+    time: "5h",
     content: "Working on some exciting Linux projects! Stay tuned for updates 🐧 #Linux #OpenSource",
-    timestamp: "5h",
+    replies: 3,
     likes: 38,
-    retweets: 8,
-    replies: 3
+    retweets: 8
   },
   {
     id: 3,
+    name: PERSONAL_INFO.name,
+    username: "@eshanized",
+    avatar: PERSONAL_INFO.avatar,
+    time: "1d",
     content: "Just discovered an amazing new way to optimize system performance. Blog post coming soon! 💻 #tech #optimization",
-    timestamp: "1d",
+    replies: 7,
     likes: 56,
-    retweets: 15,
-    replies: 7
+    retweets: 15
   },
   {
     id: 4,
+    name: PERSONAL_INFO.name,
+    username: "@eshanized",
+    avatar: PERSONAL_INFO.avatar,
+    time: "2d",
     content: "Loving the developer community! Thanks for all the support and feedback on my recent projects 🙏 #developers #community",
-    timestamp: "2d",
+    replies: 12,
     likes: 89,
-    retweets: 24,
-    replies: 12
+    retweets: 24
   }
 ];
 
 export default function TwitterApp() {
-  const { colors } = useMIUITheme();
+  const [newTweet, setNewTweet] = useState("");
+  const { colors } = useOneUITheme();
   
   return (
-    <BaseMIUIApp title="Twitter" rightAction="new">
-      <div className={`flex flex-col ${colors.primary}`}>
+    <BaseOneUIApp title="Twitter" rightAction="new">
+      <div className={`h-full flex flex-col ${colors.primary}`}>
         {/* Profile Header */}
         <div className={`p-4 ${colors.cardBg} sticky top-0 z-10 border-b ${colors.divider}`}>
           <div className="flex items-center">
             <div className="w-12 h-12 rounded-full overflow-hidden relative">
               <Image
-                src="https://github.com/eshanized.png"
+                src={PERSONAL_INFO.avatar}
                 alt="Profile"
                 fill
                 className="object-cover"
@@ -61,8 +76,8 @@ export default function TwitterApp() {
               />
             </div>
             <div className="ml-3">
-              <h2 className={`font-medium ${colors.textPrimary}`}>Eshan Roy</h2>
-              <p className={`${colors.textSecondary} text-sm`}>@eshanized</p>
+              <h2 className={`font-medium ${colors.textPrimary}`}>{PERSONAL_INFO.name}</h2>
+              <p className={`${colors.textSecondary} text-sm`}>@{PERSONAL_INFO.username}</p>
             </div>
           </div>
         </div>
@@ -74,7 +89,7 @@ export default function TwitterApp() {
               <div className="flex-shrink-0">
                 <div className="w-10 h-10 rounded-full overflow-hidden relative">
                   <Image
-                    src="https://github.com/eshanized.png"
+                    src={tweet.avatar}
                     alt="Profile"
                     fill
                     className="object-cover"
@@ -84,10 +99,10 @@ export default function TwitterApp() {
               </div>
               <div className="flex-1 min-w-0">
                 <div className="flex items-center text-sm">
-                  <span className={`font-medium ${colors.textPrimary}`}>Eshan Roy</span>
-                  <span className={`ml-2 ${colors.textSecondary}`}>@eshanized</span>
+                  <span className={`font-medium ${colors.textPrimary}`}>{tweet.name}</span>
+                  <span className={`ml-2 ${colors.textSecondary}`}>@{tweet.username}</span>
                   <span className={`ml-2 ${colors.textSecondary}`}>·</span>
-                  <span className={`ml-2 ${colors.textSecondary}`}>{tweet.timestamp}</span>
+                  <span className={`ml-2 ${colors.textSecondary}`}>{tweet.time}</span>
                 </div>
                 <p className={`mt-1 ${colors.textPrimary}`}>{tweet.content}</p>
                 
@@ -98,7 +113,7 @@ export default function TwitterApp() {
                     <span className="ml-2 text-sm">{tweet.replies}</span>
                   </button>
                   <button className={`flex items-center ${colors.textSecondary}`}>
-                    <Repeat2 className="w-5 h-5" />
+                    <Repeat className="w-5 h-5" />
                     <span className="ml-2 text-sm">{tweet.retweets}</span>
                   </button>
                   <button className={`flex items-center ${colors.textSecondary}`}>
@@ -106,14 +121,23 @@ export default function TwitterApp() {
                     <span className="ml-2 text-sm">{tweet.likes}</span>
                   </button>
                   <button className={`flex items-center ${colors.textSecondary}`}>
-                    <Share className="w-5 h-5" />
+                    <ImageIcon className="w-5 h-5" />
                   </button>
                 </div>
               </div>
             </div>
           </article>
         ))}
+
+        {/* Bottom Navigation */}
+        <div className={`flex justify-around items-center p-2 border-t ${colors.divider} ${colors.navBar}`}>
+          {[Home, Search, Bell, Mail].map((Icon, index) => (
+            <button key={index} className={`${colors.textSecondary} p-2 rounded-full hover:bg-blue-500/10 hover:text-blue-500`}>
+              <Icon className="w-6 h-6" />
+            </button>
+          ))}
+        </div>
       </div>
-    </BaseMIUIApp>
+    </BaseOneUIApp>
   );
 } 

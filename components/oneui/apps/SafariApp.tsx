@@ -1,16 +1,16 @@
 "use client";
 
 import React, { useState } from 'react';
-import BaseMIUIApp from './BaseMIUIApp';
+import BaseOneUIApp from './BaseOneUIApp';
 import { Search, ArrowLeft, ArrowRight, Share, BookOpen, Plus, GridIcon } from 'lucide-react';
 import { PERSONAL_INFO } from '@/lib/constants';
-import { useMIUITheme } from '../MIUIThemeContext';
+import { useOneUITheme } from '../OneUIThemeContext';
 
 export default function SafariApp() {
   const [url, setUrl] = useState<string>("https://eshanized.is-a.dev");
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [activeTab, setActiveTab] = useState<string>("homepage");
-  const { colors } = useMIUITheme();
+  const { colors } = useOneUITheme();
   
   // Sample bookmarks
   const bookmarks = [
@@ -40,7 +40,7 @@ export default function SafariApp() {
   };
   
   return (
-    <BaseMIUIApp title="Browser" onBack={undefined}>
+    <BaseOneUIApp title="Browser" onBack={undefined}>
       <div className={`h-full flex flex-col ${colors.primary}`}>
         {/* URL/Search bar */}
         <div className={`px-4 py-2 ${colors.cardBg} border-b ${colors.divider}`}>
@@ -158,6 +158,6 @@ export default function SafariApp() {
           </button>
         </div>
       </div>
-    </BaseMIUIApp>
+    </BaseOneUIApp>
   );
 } 

@@ -1,14 +1,14 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import BaseMIUIApp from './BaseMIUIApp';
+import BaseOneUIApp from './BaseOneUIApp';
 import { Clock, AlarmClock, Timer, Watch, Globe, ChevronRight, Plus, Trash2, Play, Pause } from 'lucide-react';
-import { useMIUITheme } from '../MIUIThemeContext';
+import { useOneUITheme } from '../OneUIThemeContext';
 
 export default function ClockApp() {
   const [activeTab, setActiveTab] = useState<string>("worldclock");
   const [currentTime, setCurrentTime] = useState<Date>(new Date());
-  const { colors } = useMIUITheme();
+  const { colors } = useOneUITheme();
   
   // Stopwatch state
   const [stopwatchTime, setStopwatchTime] = useState<number>(0);
@@ -158,7 +158,7 @@ export default function ClockApp() {
   };
   
   return (
-    <BaseMIUIApp title="Clock" rightAction={activeTab === "worldclock" || activeTab === "alarm" ? <Plus className="w-5 h-5" /> : undefined}>
+    <BaseOneUIApp title="Clock" rightAction={activeTab === "worldclock" || activeTab === "alarm" ? <Plus className="w-5 h-5" /> : undefined}>
       <div className={`h-full flex flex-col ${colors.primary}`}>
         {/* World Clock Tab */}
         {activeTab === "worldclock" && (
@@ -398,6 +398,6 @@ export default function ClockApp() {
           ))}
         </div>
       </div>
-    </BaseMIUIApp>
+    </BaseOneUIApp>
   );
 } 

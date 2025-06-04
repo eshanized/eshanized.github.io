@@ -1,14 +1,14 @@
 "use client";
 
 import React, { useState } from 'react';
-import BaseMIUIApp from './BaseMIUIApp';
+import BaseOneUIApp from './BaseOneUIApp';
 import { Grid, Image as ImageIcon, Search, Share, Heart, User, BookOpen } from 'lucide-react';
 import Image from 'next/image';
-import { useMIUITheme } from '../MIUIThemeContext';
+import { useOneUITheme } from '../OneUIThemeContext';
 
 export default function PhotosApp() {
   const [activeTab, setActiveTab] = useState<string>("library");
-  const { colors } = useMIUITheme();
+  const { colors } = useOneUITheme();
   
   // Sample photos for the gallery
   const photos = [
@@ -103,7 +103,7 @@ export default function PhotosApp() {
   ];
   
   return (
-    <BaseMIUIApp title="Gallery" rightAction="more">
+    <BaseOneUIApp title="Gallery" rightAction="more">
       <div className={`h-full flex flex-col ${colors.primary}`}>
         {/* Photos view (Library tab) */}
         {activeTab === "library" && (
@@ -208,6 +208,6 @@ export default function PhotosApp() {
           ))}
         </div>
       </div>
-    </BaseMIUIApp>
+    </BaseOneUIApp>
   );
 }

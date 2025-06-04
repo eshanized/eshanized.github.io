@@ -1,17 +1,17 @@
 "use client";
 
 import React, { useState } from 'react';
-import BaseMIUIApp from './BaseMIUIApp';
+import BaseOneUIApp from './BaseOneUIApp';
 import { SKILLS } from '@/lib/constants';
 import { motion } from 'framer-motion';
-import { useMIUITheme } from '../MIUIThemeContext';
+import { useOneUITheme } from '../OneUIThemeContext';
 
 export default function SkillsApp() {
   const [activeTab, setActiveTab] = useState<string>(Object.keys(SKILLS)[0]);
-  const { colors } = useMIUITheme();
+  const { colors } = useOneUITheme();
   
   return (
-    <BaseMIUIApp title="Skills">
+    <BaseOneUIApp title="Skills">
       <div className={`p-4 ${colors.primary} min-h-full`}>
         {/* Tabs */}
         <div className="flex overflow-x-auto pb-2 mb-4 gap-2">
@@ -53,6 +53,6 @@ export default function SkillsApp() {
           ))}
         </div>
       </div>
-    </BaseMIUIApp>
+    </BaseOneUIApp>
   );
 } 

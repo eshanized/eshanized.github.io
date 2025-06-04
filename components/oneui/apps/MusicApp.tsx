@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import BaseMIUIApp from './BaseMIUIApp';
+import BaseOneUIApp from './BaseOneUIApp';
 import { 
   Play, 
   Pause, 
@@ -23,6 +23,7 @@ import {
   Loader2
 } from 'lucide-react';
 import Image from 'next/image';
+import { useOneUITheme } from '../OneUIThemeContext';
 
 // Extend Window interface to include YouTube API
 declare global {
@@ -78,6 +79,7 @@ export default function MusicApp() {
   const [isMuted, setIsMuted] = useState(false);
   const [repeatMode, setRepeatMode] = useState<'off' | 'all' | 'one'>('off');
   const [isShuffleOn, setIsShuffleOn] = useState(false);
+  const { colors } = useOneUITheme();
   
   const playerRef = useRef<any>(null);
   const handleNextSongRef = useRef(() => {});
@@ -452,327 +454,325 @@ export default function MusicApp() {
     { id: "library", label: "Library", icon: Library },
   ];
 
-  // If no songs available, show a message
-  if (songs.length === 0) {
+  const currentSong = songs[currentSongIndex];
+
+  if (isLoading) {
     return (
-      <BaseMIUIApp title="Music" headerColor="bg-white dark:bg-black">
-        <div className="h-full flex flex-col items-center justify-center bg-white dark:bg-black text-black dark:text-white">
-          <Youtube className="w-16 h-16 text-red-500 mb-4" />
-          <h2 className="text-xl font-bold mb-2">No Songs Available</h2>
-          <p className="text-gray-600 dark:text-gray-400 mb-6">Add YouTube Music songs to start listening</p>
-          <button 
-            className="px-4 py-2 bg-red-500 text-white rounded-full"
-            onClick={() => setShowAddSongModal(true)}
-          >
-            Add YouTube Music Songs
-          </button>
+      <BaseOneUIApp title="Music" headerColor="bg-white dark:bg-black">
+        <div className="h-full flex items-center justify-center">
+          <Loader2 className={`w-8 h-8 animate-spin ${colors.accent}`} />
         </div>
-      </BaseMIUIApp>
+      </BaseOneUIApp>
     );
   }
 
   return (
-    <BaseMIUIApp title="Music" headerColor="bg-white dark:bg-black">
-      <div 
-        className="h-full flex flex-col bg-white dark:bg-black text-black dark:text-white" 
-        onClick={handleUserInteraction}
-      >
-        {/* Hidden YouTube Player */}
-        <div id="youtube-player" className="hidden"></div>
-
-        {/* Top Bar */}
-        <div className="px-4 py-2 flex justify-between items-center">
-          <button
-            className={`p-2 rounded-full transition-colors ${
-              isPlaying ? 'text-red-500 bg-red-500/10' : 'hover:bg-gray-100 dark:hover:bg-gray-800'
-            }`}
+    <BaseOneUIApp title="Music" headerColor="bg-white dark:bg-black">
+      <div className="h-full flex flex-col bg-gray-900 text-white">
+        {/* Player View (only when a song is selected) */}
+        {currentSong && (
+          <div 
+            className="h-full flex flex-col bg-gray-900 text-white" 
             onClick={handleUserInteraction}
           >
-            <Youtube className="w-5 h-5" />
-          </button>
-          <button
-            className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800"
-            onClick={() => setShowAddSongModal(true)}
-          >
-            <Plus className="w-5 h-5" />
-          </button>
-        </div>
+            {/* Hidden YouTube Player */}
+            <div id="youtube-player" className="hidden"></div>
 
-        {/* Now Playing */}
-        <div className="p-6 flex flex-col items-center">
-          {/* Album artwork */}
-          <div className="w-56 h-56 rounded-xl overflow-hidden shadow-lg mb-6 relative">
-            {songs[currentSongIndex].youtubeId && (
-              <div className="absolute top-2 right-2 bg-red-500 rounded-full p-1.5">
-                <Youtube className="w-4 h-4 text-white" />
-              </div>
-            )}
-            <Image
-              src={songs[currentSongIndex].coverArt}
-              alt={`${songs[currentSongIndex].album} cover`}
-              layout="fill"
-              objectFit="cover"
-              className="hover:scale-105 transition-transform duration-300"
-            />
-          </div>
-          
-          {/* Song info */}
-          <div className="w-full text-center mb-6">
-            <h2 className="text-xl font-bold">{songs[currentSongIndex].title}</h2>
-            <p className="text-gray-600 dark:text-gray-400">{songs[currentSongIndex].artist}</p>
-            <p className="text-gray-500 dark:text-gray-500 text-sm">{songs[currentSongIndex].album}</p>
-          </div>
-          
-          {/* Progress bar */}
-          <div className="w-full mb-4">
-            <div className="w-full h-1 bg-gray-200 dark:bg-gray-800 rounded-full overflow-hidden">
-              <div 
-                className="h-full bg-red-500" 
-                style={{ width: `${currentTime}%` }}
-              ></div>
-            </div>
-            <div className="flex justify-between mt-1 text-xs text-gray-500">
-              <span>
-                {playerRef.current && typeof playerRef.current.getCurrentTime === 'function' 
-                  ? formatTime(playerRef.current.getCurrentTime()) 
-                  : "0:00"}
-              </span>
-              <span>
-                {playerRef.current && typeof playerRef.current.getDuration === 'function'
-                  ? formatTime(playerRef.current.getDuration())
-                  : songs[currentSongIndex].duration}
-              </span>
-            </div>
-          </div>
-          
-          {/* Player controls */}
-          <div className="flex items-center justify-between w-full mb-6">
-            <button 
-              className="p-2 text-gray-600 dark:text-gray-400"
-              onClick={() => setLiked(!liked)}
-            >
-              <Heart className={`w-6 h-6 ${liked ? 'text-red-500 fill-red-500' : ''}`} />
-            </button>
-            
-            <div className="flex items-center space-x-4">
-              <button 
-                className="p-2 text-black dark:text-white"
-                onClick={handlePrevSong}
-              >
-                <SkipBack className="w-8 h-8" />
-              </button>
-              
-              <button 
-                className="w-14 h-14 rounded-full bg-red-500 flex items-center justify-center"
-                onClick={handlePlayPause}
-              >
-                {isPlaying ? (
-                  <Pause className="w-8 h-8 text-white" />
-                ) : (
-                  <Play className="w-8 h-8 text-white" />
-                )}
-              </button>
-              
-              <button 
-                className="p-2 text-black dark:text-white"
-                onClick={handleNextSong}
-              >
-                <SkipForward className="w-8 h-8" />
-              </button>
-            </div>
-            
-            <button className="p-2 text-gray-600 dark:text-gray-400">
-              <ListMusic className="w-6 h-6" />
-            </button>
-          </div>
-          
-          {/* Volume and additional controls */}
-          <div className="flex w-full justify-between px-4">
-            <button 
-              className={`p-2 text-gray-500 dark:text-gray-400 ${isShuffleOn ? 'text-red-500' : ''}`}
-              onClick={() => setIsShuffleOn(!isShuffleOn)}
-            >
-              <Shuffle className="w-5 h-5" />
-            </button>
-            
-            <div className="flex items-center">
+            {/* Top Bar */}
+            <div className="px-4 py-2 flex justify-between items-center">
               <button
-                className="p-2 text-gray-500 dark:text-gray-400"
-                onClick={() => setIsMuted(!isMuted)}
+                className={`p-2 rounded-full transition-colors ${
+                  isPlaying ? 'text-red-500 bg-red-500/10' : 'hover:bg-gray-100 dark:hover:bg-gray-800'
+                }`}
+                onClick={handleUserInteraction}
               >
-                {isMuted ? (
-                  <VolumeX className="w-5 h-5" />
-                ) : volume < 50 ? (
-                  <Volume1 className="w-5 h-5" />
-                ) : (
-                  <Volume2 className="w-5 h-5" />
-                )}
+                <Youtube className="w-5 h-5" />
               </button>
-              <div className="w-24 h-1 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
-                <div 
-                  className="h-full bg-gray-600 dark:bg-gray-400" 
-                  style={{ width: `${isMuted ? 0 : volume}%` }}
-                ></div>
-              </div>
-            </div>
-            
-            <button 
-              className={`p-2 text-gray-500 dark:text-gray-400 ${repeatMode !== 'off' ? 'text-red-500' : ''}`}
-              onClick={() => {
-                if (repeatMode === 'off') setRepeatMode('all');
-                else if (repeatMode === 'all') setRepeatMode('one');
-                else setRepeatMode('off');
-              }}
-            >
-              <Repeat className="w-5 h-5" />
-            </button>
-          </div>
-        </div>
-        
-        {/* Up Next section */}
-        <div className="mt-auto border-t border-gray-200 dark:border-gray-800">
-          <div className="px-6 py-3 flex justify-between items-center">
-            <h3 className="font-semibold">Up Next</h3>
-            <button 
-              className="text-sm text-red-500"
-              onClick={() => setShowAddSongModal(true)}
-            >
-              Add More
-            </button>
-          </div>
-          
-          <div className="px-4">
-            {songs.filter((_, i) => i !== currentSongIndex).slice(0, 2).map((song) => (
-              <div 
-                key={song.id}
-                className="flex items-center p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-900"
-                onClick={() => {
-                  setCurrentSongIndex(songs.findIndex(s => s.id === song.id));
-                  setCurrentTime(0);
-                  setIsPlaying(true);
-                  handleUserInteraction();
-                }}
+              <button
+                className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800"
+                onClick={() => setShowAddSongModal(true)}
               >
-                <div className="w-10 h-10 rounded-md overflow-hidden mr-3 relative">
-                  <Image
-                    src={song.coverArt}
-                    alt={`${song.album} cover`}
-                    layout="fill"
-                    objectFit="cover"
-                  />
-                  <div className="absolute top-0.5 right-0.5 bg-red-500 rounded-full p-0.5">
-                    <Youtube className="w-2.5 h-2.5 text-white" />
+                <Plus className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Now Playing */}
+            <div className="p-6 flex flex-col items-center">
+              {/* Album artwork */}
+              <div className="w-56 h-56 rounded-xl overflow-hidden shadow-lg mb-6 relative">
+                {currentSong.youtubeId && (
+                  <div className="absolute top-2 right-2 bg-red-500 rounded-full p-1.5">
+                    <Youtube className="w-4 h-4 text-white" />
                   </div>
-                </div>
-                <div className="flex-1">
-                  <h4 className="font-medium text-sm">{song.title}</h4>
-                  <p className="text-xs text-gray-500">{song.artist}</p>
-                </div>
-                <span className="text-xs text-gray-500">{song.duration}</span>
+                )}
+                <Image
+                  src={currentSong.coverArt}
+                  alt={`${currentSong.album} cover`}
+                  layout="fill"
+                  objectFit="cover"
+                  className="hover:scale-105 transition-transform duration-300"
+                />
               </div>
-            ))}
-          </div>
-        </div>
-        
-        {/* Bottom tabs */}
-        <div className="mt-auto border-t border-gray-200 dark:border-gray-800 flex justify-around p-2">
-          {tabs.map((tab) => (
-            <button 
-              key={tab.id}
-              className={`flex flex-col items-center py-1 px-3 ${
-                activeTab === tab.id 
-                  ? 'text-red-500' 
-                  : 'text-gray-500 dark:text-gray-400'
-              }`}
-              onClick={() => setActiveTab(tab.id)}
-            >
-              <tab.icon className="w-6 h-6" />
-              <span className="text-xs mt-1">{tab.label}</span>
-            </button>
-          ))}
-        </div>
-        
-        {/* Add Song Modal */}
-        {showAddSongModal && (
-          <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50" onClick={() => setShowAddSongModal(false)}>
-            <div className="bg-white dark:bg-gray-900 w-full max-w-md rounded-2xl p-6" onClick={(e) => e.stopPropagation()}>
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="text-xl font-semibold flex items-center">
-                  <Youtube className="w-5 h-5 text-red-500 mr-2" />
-                  Add YouTube Song
-                </h2>
-                <button
-                  className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800"
-                  onClick={() => setShowAddSongModal(false)}
+              
+              {/* Song info */}
+              <div className="w-full text-center mb-6">
+                <h2 className="text-xl font-bold">{currentSong.title}</h2>
+                <p className="text-gray-600 dark:text-gray-400">{currentSong.artist}</p>
+                <p className="text-gray-500 dark:text-gray-500 text-sm">{currentSong.album}</p>
+              </div>
+              
+              {/* Progress bar */}
+              <div className="w-full mb-4">
+                <div className="w-full h-1 bg-gray-200 dark:bg-gray-800 rounded-full overflow-hidden">
+                  <div 
+                    className="h-full bg-red-500" 
+                    style={{ width: `${currentTime}%` }}
+                  ></div>
+                </div>
+                <div className="flex justify-between mt-1 text-xs text-gray-500">
+                  <span>
+                    {playerRef.current && typeof playerRef.current.getCurrentTime === 'function' 
+                      ? formatTime(playerRef.current.getCurrentTime()) 
+                      : "0:00"}
+                  </span>
+                  <span>
+                    {playerRef.current && typeof playerRef.current.getDuration === 'function'
+                      ? formatTime(playerRef.current.getDuration())
+                      : currentSong.duration}
+                  </span>
+                </div>
+              </div>
+              
+              {/* Player controls */}
+              <div className="flex items-center justify-between w-full mb-6">
+                <button 
+                  className="p-2 text-gray-600 dark:text-gray-400"
+                  onClick={() => setLiked(!liked)}
                 >
-                  <X className="w-5 h-5" />
+                  <Heart className={`w-6 h-6 ${liked ? 'text-red-500 fill-red-500' : ''}`} />
+                </button>
+                
+                <div className="flex items-center space-x-4">
+                  <button 
+                    className="p-2 text-black dark:text-white"
+                    onClick={handlePrevSong}
+                  >
+                    <SkipBack className="w-8 h-8" />
+                  </button>
+                  
+                  <button 
+                    className="w-14 h-14 rounded-full bg-red-500 flex items-center justify-center"
+                    onClick={handlePlayPause}
+                  >
+                    {isPlaying ? (
+                      <Pause className="w-8 h-8 text-white" />
+                    ) : (
+                      <Play className="w-8 h-8 text-white" />
+                    )}
+                  </button>
+                  
+                  <button 
+                    className="p-2 text-black dark:text-white"
+                    onClick={handleNextSong}
+                  >
+                    <SkipForward className="w-8 h-8" />
+                  </button>
+                </div>
+                
+                <button className="p-2 text-gray-600 dark:text-gray-400">
+                  <ListMusic className="w-6 h-6" />
                 </button>
               </div>
-
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium mb-1">YouTube URL</label>
-                  <input
-                    type="text"
-                    value={newSongUrl}
-                    onChange={(e) => setNewSongUrl(e.target.value)}
-                    placeholder="https://music.youtube.com/watch?v=..."
-                    className="w-full px-4 py-3 rounded-xl border bg-gray-50 dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-red-500"
-                    autoFocus
-                  />
-                  <p className="text-xs text-gray-500 mt-1">Paste a YouTube or YouTube Music URL</p>
-                </div>
-
-                {/* Preview if URL is entered */}
-                {newSongUrl && extractYouTubeId(newSongUrl) && (
-                  <div className="mt-4 p-4 bg-gray-50 dark:bg-gray-800 rounded-xl flex items-center gap-3">
-                    <div className="w-16 h-16 rounded-lg overflow-hidden">
-                      <Image
-                        src={`https://img.youtube.com/vi/${extractYouTubeId(newSongUrl)}/hqdefault.jpg`}
-                        alt="Song preview"
-                        width={64}
-                        height={64}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                    <div>
-                      <p className="font-medium text-sm">YouTube Music Song</p>
-                      <p className="text-xs text-gray-500">Song details will load after adding</p>
-                      <div className="flex items-center gap-1 mt-1">
-                        <Youtube className="w-3 h-3 text-red-500" />
-                        <span className="text-xs text-gray-500">YouTube Music</span>
-                      </div>
-                    </div>
-                  </div>
-                )}
-
-                <div className="flex justify-end gap-3 mt-6">
+              
+              {/* Volume and additional controls */}
+              <div className="flex w-full justify-between px-4">
+                <button 
+                  className={`p-2 text-gray-500 dark:text-gray-400 ${isShuffleOn ? 'text-red-500' : ''}`}
+                  onClick={() => setIsShuffleOn(!isShuffleOn)}
+                >
+                  <Shuffle className="w-5 h-5" />
+                </button>
+                
+                <div className="flex items-center">
                   <button
-                    className="px-4 py-2 rounded-xl bg-gray-100 dark:bg-gray-800 font-medium"
-                    onClick={() => setShowAddSongModal(false)}
+                    className="p-2 text-gray-500 dark:text-gray-400"
+                    onClick={() => setIsMuted(!isMuted)}
                   >
-                    Cancel
-                  </button>
-                  <button
-                    className={`px-4 py-2 rounded-xl bg-red-500 text-white font-medium flex items-center gap-2 ${
-                      !newSongUrl || isLoading ? 'opacity-50 cursor-not-allowed' : ''
-                    }`}
-                    onClick={addYouTubeSong}
-                    disabled={!newSongUrl || isLoading}
-                  >
-                    {isLoading ? (
-                      <Loader2 className="w-4 h-4 animate-spin" />
+                    {isMuted ? (
+                      <VolumeX className="w-5 h-5" />
+                    ) : volume < 50 ? (
+                      <Volume1 className="w-5 h-5" />
                     ) : (
-                      <Plus className="w-4 h-4" />
+                      <Volume2 className="w-5 h-5" />
                     )}
-                    Add Song
                   </button>
+                  <div className="w-24 h-1 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                    <div 
+                      className="h-full bg-gray-600 dark:bg-gray-400" 
+                      style={{ width: `${isMuted ? 0 : volume}%` }}
+                    ></div>
+                  </div>
                 </div>
+                
+                <button 
+                  className={`p-2 text-gray-500 dark:text-gray-400 ${repeatMode !== 'off' ? 'text-red-500' : ''}`}
+                  onClick={() => {
+                    if (repeatMode === 'off') setRepeatMode('all');
+                    else if (repeatMode === 'all') setRepeatMode('one');
+                    else setRepeatMode('off');
+                  }}
+                >
+                  <Repeat className="w-5 h-5" />
+                </button>
               </div>
             </div>
+            
+            {/* Up Next section */}
+            <div className="mt-auto border-t border-gray-200 dark:border-gray-800">
+              <div className="px-6 py-3 flex justify-between items-center">
+                <h3 className="font-semibold">Up Next</h3>
+                <button 
+                  className="text-sm text-red-500"
+                  onClick={() => setShowAddSongModal(true)}
+                >
+                  Add More
+                </button>
+              </div>
+              
+              <div className="px-4">
+                {songs.filter((_, i) => i !== currentSongIndex).slice(0, 2).map((song) => (
+                  <div 
+                    key={song.id}
+                    className="flex items-center p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-900"
+                    onClick={() => {
+                      setCurrentSongIndex(songs.findIndex(s => s.id === song.id));
+                      setCurrentTime(0);
+                      setIsPlaying(true);
+                      handleUserInteraction();
+                    }}
+                  >
+                    <div className="w-10 h-10 rounded-md overflow-hidden mr-3 relative">
+                      <Image
+                        src={song.coverArt}
+                        alt={`${song.album} cover`}
+                        layout="fill"
+                        objectFit="cover"
+                      />
+                      <div className="absolute top-0.5 right-0.5 bg-red-500 rounded-full p-0.5">
+                        <Youtube className="w-2.5 h-2.5 text-white" />
+                      </div>
+                    </div>
+                    <div className="flex-1">
+                      <h4 className="font-medium text-sm">{song.title}</h4>
+                      <p className="text-xs text-gray-500">{song.artist}</p>
+                    </div>
+                    <span className="text-xs text-gray-500">{song.duration}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+            
+            {/* Bottom tabs */}
+            <div className="mt-auto border-t border-gray-200 dark:border-gray-800 flex justify-around p-2">
+              {tabs.map((tab) => (
+                <button 
+                  key={tab.id}
+                  className={`flex flex-col items-center py-1 px-3 ${
+                    activeTab === tab.id 
+                      ? 'text-red-500' 
+                      : 'text-gray-500 dark:text-gray-400'
+                  }`}
+                  onClick={() => setActiveTab(tab.id)}
+                >
+                  <tab.icon className="w-6 h-6" />
+                  <span className="text-xs mt-1">{tab.label}</span>
+                </button>
+              ))}
+            </div>
+            
+            {/* Add Song Modal */}
+            {showAddSongModal && (
+              <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50" onClick={() => setShowAddSongModal(false)}>
+                <div className="bg-white dark:bg-gray-900 w-full max-w-md rounded-2xl p-6" onClick={(e) => e.stopPropagation()}>
+                  <div className="flex items-center justify-between mb-6">
+                    <h2 className="text-xl font-semibold flex items-center">
+                      <Youtube className="w-5 h-5 text-red-500 mr-2" />
+                      Add YouTube Song
+                    </h2>
+                    <button
+                      className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800"
+                      onClick={() => setShowAddSongModal(false)}
+                    >
+                      <X className="w-5 h-5" />
+                    </button>
+                  </div>
+
+                  <div className="space-y-4">
+                    <div>
+                      <label className="block text-sm font-medium mb-1">YouTube URL</label>
+                      <input
+                        type="text"
+                        value={newSongUrl}
+                        onChange={(e) => setNewSongUrl(e.target.value)}
+                        placeholder="https://music.youtube.com/watch?v=..."
+                        className="w-full px-4 py-3 rounded-xl border bg-gray-50 dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-red-500"
+                        autoFocus
+                      />
+                      <p className="text-xs text-gray-500 mt-1">Paste a YouTube or YouTube Music URL</p>
+                    </div>
+
+                    {/* Preview if URL is entered */}
+                    {newSongUrl && extractYouTubeId(newSongUrl) && (
+                      <div className="mt-4 p-4 bg-gray-50 dark:bg-gray-800 rounded-xl flex items-center gap-3">
+                        <div className="w-16 h-16 rounded-lg overflow-hidden">
+                          <Image
+                            src={`https://img.youtube.com/vi/${extractYouTubeId(newSongUrl)}/hqdefault.jpg`}
+                            alt="Song preview"
+                            width={64}
+                            height={64}
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                        <div>
+                          <p className="font-medium text-sm">YouTube Music Song</p>
+                          <p className="text-xs text-gray-500">Song details will load after adding</p>
+                          <div className="flex items-center gap-1 mt-1">
+                            <Youtube className="w-3 h-3 text-red-500" />
+                            <span className="text-xs text-gray-500">YouTube Music</span>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    <div className="flex justify-end gap-3 mt-6">
+                      <button
+                        className="px-4 py-2 rounded-xl bg-gray-100 dark:bg-gray-800 font-medium"
+                        onClick={() => setShowAddSongModal(false)}
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        className={`px-4 py-2 rounded-xl bg-red-500 text-white font-medium flex items-center gap-2 ${
+                          !newSongUrl || isLoading ? 'opacity-50 cursor-not-allowed' : ''
+                        }`}
+                        onClick={addYouTubeSong}
+                        disabled={!newSongUrl || isLoading}
+                      >
+                        {isLoading ? (
+                          <Loader2 className="w-4 h-4 animate-spin" />
+                        ) : (
+                          <Plus className="w-4 h-4" />
+                        )}
+                        Add Song
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         )}
       </div>
-    </BaseMIUIApp>
+    </BaseOneUIApp>
   );
 } 

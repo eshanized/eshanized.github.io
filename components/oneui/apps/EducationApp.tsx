@@ -1,16 +1,16 @@
 "use client";
 
 import React from 'react';
-import BaseMIUIApp from './BaseMIUIApp';
+import BaseOneUIApp from './BaseOneUIApp';
 import { EDUCATION } from '@/lib/constants';
 import { Calendar, GraduationCap } from 'lucide-react';
-import { useMIUITheme } from '../MIUIThemeContext';
+import { useOneUITheme } from '../OneUIThemeContext';
 
 export default function EducationApp() {
-  const { colors } = useMIUITheme();
+  const { colors } = useOneUITheme();
   
   return (
-    <BaseMIUIApp title="Education">
+    <BaseOneUIApp title="Education">
       <div className={`p-4 ${colors.primary} min-h-full`}>
         <h1 className={`text-xl font-medium mb-4 ${colors.textPrimary}`}>Education</h1>
         
@@ -49,6 +49,6 @@ export default function EducationApp() {
           </div>
         )}
       </div>
-    </BaseMIUIApp>
+    </BaseOneUIApp>
   );
 } 
