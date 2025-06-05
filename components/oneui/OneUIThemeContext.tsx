@@ -28,6 +28,23 @@ interface OneUIThemeContextType {
     buttonBg: string;
     toggleActive: string;
     toggleInactive: string;
+    
+    // One UI 7.0 specific
+    notification: string;
+    quickPanel: string;
+    tooltip: string;
+    shadow: string;
+  };
+  borderRadius: {
+    sm: string;
+    md: string;
+    lg: string;
+    xl: string;
+  };
+  animation: {
+    default: string;
+    fast: string;
+    slow: string;
   };
 }
 
@@ -75,10 +92,16 @@ export function OneUIThemeProvider({ children }: { children: React.ReactNode }) 
       ripple: 'bg-white/8',
       buttonBg: 'bg-[#282828]',
       toggleActive: 'bg-[#0077FF]',
-      toggleInactive: 'bg-[#3C3C3C]'
+      toggleInactive: 'bg-[#3C3C3C]',
+      
+      // One UI 7.0 specific
+      notification: 'bg-[#1E1E1E]',
+      quickPanel: 'bg-[#0A0A0A]',
+      tooltip: 'bg-[#3C3C3C]',
+      shadow: 'shadow-[0_4px_12px_rgba(0,0,0,0.4)]'
     } : {
       // Samsung One UI 7.0 Light Mode Colors
-      primary: 'bg-[#F6F6F6]',
+      primary: 'bg-[#F8F8F8]',
       secondary: 'bg-white',
       tertiary: 'bg-[#F0F0F0]',
       
@@ -89,18 +112,43 @@ export function OneUIThemeProvider({ children }: { children: React.ReactNode }) 
       accent: 'text-[#0077FF]',
       divider: 'border-[#E6E6E6]',
       cardBg: 'bg-white',
-      statusBar: 'bg-[#F6F6F6]',
+      statusBar: 'bg-[#F8F8F8]',
       navBar: 'bg-white',
       
       ripple: 'bg-black/8',
       buttonBg: 'bg-[#F0F0F0]',
       toggleActive: 'bg-[#0077FF]',
-      toggleInactive: 'bg-[#DCDCDC]'
+      toggleInactive: 'bg-[#DCDCDC]',
+      
+      // One UI 7.0 specific
+      notification: 'bg-[#F2F2F2]',
+      quickPanel: 'bg-[#FFFFFF]',
+      tooltip: 'bg-[#E0E0E0]',
+      shadow: 'shadow-[0_2px_8px_rgba(0,0,0,0.1)]'
     })
+  };
+  
+  const borderRadius = {
+    sm: 'rounded-lg',
+    md: 'rounded-xl',
+    lg: 'rounded-2xl',
+    xl: 'rounded-[1.5rem]'
+  };
+  
+  const animation = {
+    default: 'transition-all duration-300 ease-in-out',
+    fast: 'transition-all duration-150 ease-in-out',
+    slow: 'transition-all duration-500 ease-in-out'
   };
 
   return (
-    <OneUIThemeContext.Provider value={{ isDarkMode, toggleDarkMode, colors }}>
+    <OneUIThemeContext.Provider value={{ 
+      isDarkMode, 
+      toggleDarkMode, 
+      colors,
+      borderRadius,
+      animation
+    }}>
       {children}
     </OneUIThemeContext.Provider>
   );

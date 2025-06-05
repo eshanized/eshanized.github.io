@@ -38,6 +38,7 @@ import { shouldSkipLockscreen } from '@/lib/lockscreen';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import { useOneUITheme, OneUIThemeProvider } from './OneUIThemeContext';
+import { OneUIStatusBar } from './utils';
 
 // Dynamically import app components with SSR disabled
 const AboutApp = dynamic(() => import('@/components/oneui/apps/AboutApp'), { ssr: false });
@@ -86,7 +87,7 @@ export default function OneUILayout({ children }: { children?: React.ReactNode }
 }
 
 function OneUILayoutContent({ children }: { children?: React.ReactNode }) {
-  const { isDarkMode, toggleDarkMode, colors: themeColors } = useOneUITheme();
+  const { isDarkMode, toggleDarkMode, colors: themeColors, borderRadius, animation } = useOneUITheme();
   // State hooks
   const [currentTime, setCurrentTime] = useState<string>('');
   const [currentDate, setCurrentDate] = useState<string>('');
@@ -248,7 +249,9 @@ function OneUILayoutContent({ children }: { children?: React.ReactNode }) {
   const allApps = [...portfolioApps, ...systemApps, ...dockApps];
 
   // Get home screen apps (excluding ones in folders)
-  const homeScreenApps = [...systemApps];
+  const homeScreenApps = systemApps.filter(app => 
+    !folders.some(folder => folder.apps.some(folderApp => folderApp.id === app.id))
+  );
 
   // Get app by ID
   const getAppById = (id: string): OneUIApp | undefined => {
@@ -267,224 +270,211 @@ function OneUILayoutContent({ children }: { children?: React.ReactNode }) {
     return <AppComponent />;
   };
 
-  // Lock screen component
+  // LockScreen component with OneUI 7.0 styling
   const LockScreen = () => {
-    // If skipLockscreen is enabled, automatically unlock and don't show the lockscreen
-    useEffect(() => {
-      if (shouldSkipLockscreen()) {
-        handleLockToggle();
-      }
-    }, []);
+    const [passcode, setPasscode] = useState<string>('');
+    const [isIncorrect, setIsIncorrect] = useState<boolean>(false);
+    const [showPasscodeInput, setShowPasscodeInput] = useState<boolean>(false);
+    const { colors, borderRadius, animation } = useOneUITheme();
     
-    const [showPasscode, setShowPasscode] = useState(false);
-    const [passcode, setPasscode] = useState('');
-    const correctPasscode = '5456'; // In a real app, this should be stored securely
-    const [error, setError] = useState('');
-    const [attempts, setAttempts] = useState(0);
-    const [swipeProgress, setSwipeProgress] = useState(0);
+    useEffect(() => {
+      // Reset incorrect state after 1 second
+      if (isIncorrect) {
+        const timer = setTimeout(() => setIsIncorrect(false), 1000);
+        return () => clearTimeout(timer);
+      }
+    }, [isIncorrect]);
+
+    const handleUnlock = () => {
+      // Simple passcode check (1234 is the default)
+      if (passcode === '1234') {
+        setIsLocked(false);
+        setPasscode('');
+      } else {
+        setIsIncorrect(true);
+        setPasscode('');
+      }
+    };
 
     const handlePasscodeInput = (digit: string) => {
       if (passcode.length < 4) {
         const newPasscode = passcode + digit;
         setPasscode(newPasscode);
         
+        // Auto-check when 4 digits entered
         if (newPasscode.length === 4) {
-          if (newPasscode === correctPasscode) {
-            setError('');
-            handleLockToggle();
-          } else {
-            setError('Wrong PIN. Try again.');
-            setAttempts(prev => prev + 1);
-            setPasscode('');
-          }
+          setTimeout(() => {
+            handleUnlock();
+          }, 300);
         }
       }
     };
 
     const handleBackspace = () => {
       setPasscode(prev => prev.slice(0, -1));
-      setError('');
     };
 
-    // Format time for Samsung One UI style display
     const getFormattedTime = () => {
-      const now = new Date();
-      const hours = now.getHours();
-      const minutes = now.getMinutes().toString().padStart(2, '0');
-      return { hours, minutes };
+      return currentTime;
     };
 
-    const { hours, minutes } = getFormattedTime();
+    const handleLockScreenClick = () => {
+      if (!showPasscodeInput) {
+        setShowPasscodeInput(true);
+      }
+    };
 
     return (
       <motion.div 
-        className="fixed inset-0 z-50 flex flex-col text-white"
-        style={{
-          backgroundImage: 'linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.4)), url(/images/wallpaper.jpg)',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center'
-        }}
+        className={`fixed inset-0 z-50 flex flex-col bg-gradient-to-b from-gray-900 to-black overflow-hidden`}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
+        onClick={handleLockScreenClick}
       >
-        {/* Status bar - Samsung One UI 7.0 style */}
-        <div className="w-full px-6 py-4 flex justify-between items-center text-sm">
-          <div className="flex items-center gap-2">
-            <div className="flex gap-[3px]">
-              <div className="h-3 w-[3px] bg-white rounded-full"></div>
-              <div className="h-3 w-[3px] bg-white rounded-full"></div>
-              <div className="h-3 w-[3px] bg-white rounded-full"></div>
-              <div className="h-3 w-[3px] bg-white rounded-full"></div>
+        {/* Status bar */}
+        <OneUIStatusBar 
+          time={getFormattedTime()} 
+          showWifi={true} 
+          showBattery={true}
+          batteryLevel={batteryLevel}
+        />
+        
+        {/* Lock screen content */}
+        <div className="flex-1 flex flex-col justify-between items-center p-6">
+          {/* Clock */}
+          <div className="mt-12 flex flex-col items-center">
+            <motion.h1 
+              className="text-white text-6xl font-light"
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.2 }}
+            >
+              {getFormattedTime()}
+            </motion.h1>
+            <motion.p 
+              className="text-white/80 text-lg mt-2"
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.3 }}
+            >
+              {currentDate}
+            </motion.p>
+          </div>
+          
+          {/* Notifications area */}
+          <motion.div 
+            className="w-full max-w-sm"
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.4 }}
+          >
+            <div className={`${borderRadius.xl} bg-white/10 backdrop-blur-md p-4 mb-4`}>
+              <h3 className="text-white font-medium mb-2">Welcome</h3>
+              <p className="text-white/80 text-sm">
+                This is {PERSONAL_INFO.name}'s portfolio. Swipe up to unlock.
+              </p>
             </div>
-            <Wifi className="w-5 h-5" />
-          </div>
-          <div className="flex items-center gap-2">
-            <Battery className="w-5 h-5" />
-            <span className="text-sm font-medium">{batteryLevel}%</span>
-          </div>
+          </motion.div>
+          
+          {/* Unlock hint */}
+          <motion.div
+            className="mb-8 flex flex-col items-center"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.5 }}
+          >
+            <Lock className="text-white/70 w-6 h-6 mb-2" />
+            <p className="text-white/70 text-sm">
+              {showPasscodeInput ? "Enter passcode (1234)" : "Swipe up to unlock"}
+            </p>
+          </motion.div>
         </div>
-
-        {/* Main content */}
-        <div className="flex-1 flex flex-col">
-          {/* Centered clock - Samsung One UI 7.0 style */}
-          <div className="flex-1 flex flex-col items-center justify-center">
-            {!showPasscode ? (
-              <motion.div
-                className="text-center"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 }}
-              >
-                <div className="flex items-baseline justify-center mb-3">
-                  <span className="text-[120px] font-extralight tracking-tight leading-none text-shadow-lg">{hours}</span>
-                  <span className="text-[120px] font-extralight tracking-tight leading-none mx-2 text-shadow-lg">:</span>
-                  <span className="text-[120px] font-extralight tracking-tight leading-none text-shadow-lg">{minutes}</span>
+        
+        {/* Passcode input overlay */}
+        <AnimatePresence>
+          {showPasscodeInput && (
+            <motion.div 
+              className="absolute inset-0 bg-black/80 backdrop-blur-md flex flex-col justify-end z-10"
+              initial={{ opacity: 0, y: 100 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 100 }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Passcode dots */}
+              <div className="flex justify-center my-8">
+                <div className="flex space-x-4">
+                  {[0, 1, 2, 3].map((i) => (
+                    <div 
+                      key={i} 
+                      className={`w-4 h-4 rounded-full ${
+                        i < passcode.length 
+                          ? 'bg-white' 
+                          : 'bg-white/30'
+                      } ${
+                        isIncorrect && 'animate-shake bg-red-500'
+                      }`}
+                    />
+                  ))}
                 </div>
-                <div className="text-2xl font-normal tracking-wide mb-10 text-shadow-md">{currentDate}</div>
-                
-                {/* Weather info - Samsung style */}
-                <motion.div
-                  className="mb-8 flex flex-col items-center bg-black/20 backdrop-blur-md px-8 py-4 rounded-[1.5rem]"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.3 }}
-                >
-                  <div className="flex items-center gap-3">
-                    <div className="text-4xl font-light">23°</div>
-                    <div className="text-left">
-                      <div className="text-lg font-medium">Sunny</div>
-                      <div className="text-sm opacity-80">Seoul, South Korea</div>
-                    </div>
-                  </div>
-                </motion.div>
-                
-                {/* Swipe to unlock - Samsung One UI 7.0 style */}
-                <motion.div
-                  className="mt-12 flex flex-col items-center"
+              </div>
+              
+              {/* Passcode error message */}
+              {isIncorrect && (
+                <motion.p 
+                  className="text-red-500 text-center mb-4"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  transition={{ delay: 0.5 }}
+                  exit={{ opacity: 0 }}
                 >
-                  <motion.div 
-                    className="w-16 h-16 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center mb-4"
-                    whileHover={{ scale: 1.05, backgroundColor: 'rgba(255,255,255,0.3)' }}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={() => setShowPasscode(true)}
+                  Incorrect passcode. Try again.
+                </motion.p>
+              )}
+              
+              {/* Numpad */}
+              <div className="grid grid-cols-3 gap-4 px-6 pb-12">
+                {[1, 2, 3, 4, 5, 6, 7, 8, 9, '', 0, 'del'].map((num, i) => (
+                  <motion.button
+                    key={i}
+                    className={`${
+                      num === '' ? 'invisible' : ''
+                    } h-16 w-16 rounded-full flex items-center justify-center mx-auto
+                    ${num === 'del' ? 'bg-transparent' : 'bg-white/10'} 
+                    text-white text-2xl font-light`}
+                    whileTap={{ scale: 0.9 }}
+                    onClick={() => {
+                      if (num === 'del') {
+                        handleBackspace();
+                      } else if (typeof num === 'number') {
+                        handlePasscodeInput(num.toString());
+                      }
+                    }}
                   >
-                    <Lock className="w-7 h-7" />
-                  </motion.div>
-                  
-                  <motion.div 
-                    className="relative w-48 h-10 flex items-center justify-center overflow-hidden"
-                    onHoverStart={() => setSwipeProgress(0.5)}
-                    onHoverEnd={() => setSwipeProgress(0)}
-                    onClick={() => setShowPasscode(true)}
-                  >
-                    <div className="absolute inset-0 bg-white/10 rounded-full backdrop-blur-sm" />
-                    <motion.div 
-                      className="absolute left-0 top-0 bottom-0 bg-white/20 rounded-full"
-                      initial={{ width: '0%' }}
-                      animate={{ width: `${swipeProgress * 100}%` }}
-                      transition={{ duration: 0.3 }}
-                    />
-                    <span className="relative z-10 text-base font-medium tracking-wide">
-                      Swipe to unlock
-                    </span>
-                  </motion.div>
-                </motion.div>
-              </motion.div>
-            ) : (
-              <motion.div 
-                className="w-full px-6"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-              >
-                <div className="text-center mb-10">
-                  <h2 className="text-3xl font-light mb-2">Enter PIN</h2>
-                  <p className="text-white/70 text-base mb-3">Use your PIN to unlock</p>
-                  {error && (
-                    <motion.p 
-                      className="text-red-400 text-base font-medium mt-2"
-                      initial={{ opacity: 0, scale: 0.95 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                    >
-                      {error}
-                    </motion.p>
-                  )}
-                </div>
-
-                {/* PIN dots - Samsung One UI 7.0 style */}
-                <div className="flex justify-center gap-5 mb-12">
-                  {[0,1,2,3].map((i) => (
-                    <motion.div 
-                      key={i}
-                      className={`w-5 h-5 rounded-full border-2 ${
-                        passcode.length > i 
-                          ? 'bg-white border-white' 
-                          : 'border-white/60 bg-transparent'
-                      }`}
-                      animate={passcode.length === i ? { scale: [1, 1.2, 1] } : {}}
-                      transition={{ duration: 0.3 }}
-                    />
-                  ))}
-                </div>
-
-                {/* Number pad - Samsung One UI 7.0 style */}
-                <div className="grid grid-cols-3 gap-6 max-w-xs mx-auto">
-                  {[1,2,3,4,5,6,7,8,9,'',0,'⌫'].map((num, i) => (
-                    <motion.button
-                      key={i}
-                      className={`w-20 h-20 rounded-[1.5rem] ${
-                        num === '' ? 'cursor-default' :
-                        'bg-white/15 backdrop-blur-md hover:bg-white/20 active:bg-white/25 transition-colors'
-                      } flex items-center justify-center text-3xl font-light`}
-                      whileTap={num !== '' ? { scale: 0.95 } : {}}
-                      onClick={() => {
-                        if (num === '⌫') handleBackspace();
-                        else if (num !== '') handlePasscodeInput(num.toString());
-                      }}
-                      disabled={attempts >= 5 || num === ''}
-                    >
-                      {num}
-                    </motion.button>
-                  ))}
-                </div>
-
-                <div className="text-center mt-12">
-                  <motion.button 
-                    className="text-base text-white/90 hover:text-white transition-colors font-medium py-3 px-8 rounded-[1.25rem] bg-white/15 backdrop-blur-md"
-                    whileHover={{ backgroundColor: 'rgba(255,255,255,0.2)' }}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={() => setShowPasscode(false)}
-                  >
-                    Cancel
+                    {num === 'del' ? (
+                      <ArrowLeft className="w-6 h-6" />
+                    ) : num}
                   </motion.button>
-                </div>
-              </motion.div>
-            )}
-          </div>
-        </div>
+                ))}
+              </div>
+              
+              {/* Emergency call button */}
+              <div className="flex justify-center mb-8">
+                <button className="text-blue-400 font-medium">
+                  Emergency call
+                </button>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+        
+        {/* Bottom swipe indicator */}
+        <motion.div 
+          className="absolute bottom-6 left-0 right-0 flex justify-center"
+          animate={{ y: [0, 5, 0] }}
+          transition={{ repeat: Infinity, duration: 1.5 }}
+        >
+          <div className="w-10 h-1 bg-white/30 rounded-full" />
+        </motion.div>
       </motion.div>
     );
   };
