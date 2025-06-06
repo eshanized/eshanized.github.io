@@ -1,32 +1,32 @@
-/* Snigdha SnigdhaOS theme using Catppuccin colors */
+/* Snigdha SnigdhaOS theme using Aurora Borealis inspired colors */
 .snigdha-theme {
-  /* Catppuccin Frappe color palette */
-  --background: 229 23% 88%;          /* Base #EFF1F5 */
-  --foreground: 240 10% 16%;          /* Text #4C4F69 */
-  --card: 231 18% 91%;                /* Surface0 #CCD0DA */
-  --card-foreground: 240 10% 16%;     /* Text #4C4F69 */
-  --popover: 231 18% 91%;             /* Surface0 #CCD0DA */
-  --popover-foreground: 240 10% 16%;  /* Text #4C4F69 */
-  --primary: 320 70% 75%;             /* Mauve #8839EF */
-  --primary-foreground: 229 23% 88%;  /* Base #EFF1F5 */
-  --secondary: 227 35% 80%;           /* Surface1 #BCC0CC */
-  --secondary-foreground: 240 10% 16%; /* Text #4C4F69 */
-  --muted: 227 35% 80%;               /* Surface1 #BCC0CC */
-  --muted-foreground: 249 12% 47%;    /* Subtext0 #6C6F85 */
-  --accent: 340 82% 85%;              /* Pink #F4B8E4 */
-  --accent-foreground: 240 10% 16%;   /* Text #4C4F69 */
-  --destructive: 0 78% 63%;           /* Red #D20F39 */
-  --destructive-foreground: 229 23% 88%; /* Base #EFF1F5 */
-  --border: 233 25% 65%;              /* Surface2 #ACB0BE */
-  --input: 233 25% 65%;               /* Surface2 #ACB0BE */
-  --ring: 320 70% 75%;                /* Mauve #8839EF */
+  /* Aurora Light color palette */
+  --background: 220 60% 98%;          /* Arctic Ice #F5FAFF */
+  --foreground: 230 40% 18%;          /* Deep Navy #1A2233 */
+  --card: 220 60% 96%;                /* Polar Mist #E6F0FA */
+  --card-foreground: 230 40% 18%;     /* Deep Navy #1A2233 */
+  --popover: 220 60% 96%;             /* Polar Mist #E6F0FA */
+  --popover-foreground: 230 40% 18%;  /* Deep Navy #1A2233 */
+  --primary: 200 90% 60%;             /* Aurora Teal #1DE9B6 */
+  --primary-foreground: 220 60% 98%;  /* Arctic Ice #F5FAFF */
+  --secondary: 260 80% 90%;           /* Aurora Purple #E0D7FF */
+  --secondary-foreground: 230 40% 18%; /* Deep Navy #1A2233 */
+  --muted: 210 40% 90%;               /* Misty Blue #D6E6F2 */
+  --muted-foreground: 260 30% 50%;    /* Soft Purple #7C6FAD */
+  --accent: 320 90% 85%;              /* Aurora Magenta #F48FB1 */
+  --accent-foreground: 230 40% 18%;   /* Deep Navy #1A2233 */
+  --destructive: 0 80% 70%;           /* Aurora Red #FF5E6C */
+  --destructive-foreground: 220 60% 98%; /* Arctic Ice #F5FAFF */
+  --border: 220 30% 80%;              /* Polar Border #B3C7E6 */
+  --input: 220 30% 80%;               /* Polar Border #B3C7E6 */
+  --ring: 200 90% 60%;                /* Aurora Teal #1DE9B6 */
   
-  /* Catppuccin Frappe chart colors */
-  --chart-1: 320 70% 75%;             /* Mauve #8839EF */
-  --chart-2: 182 43% 76%;             /* Teal #81C8BE */
-  --chart-3: 209 66% 74%;             /* Blue #8CAAEE */
-  --chart-4: 268 56% 70%;             /* Lavender #BABBF1 */
-  --chart-5: 30 100% 65%;             /* Peach #EF9F76 */
+  /* Aurora chart colors */
+  --chart-1: 200 90% 60%;             /* Aurora Teal #1DE9B6 */
+  --chart-2: 260 80% 70%;             /* Aurora Purple #A18AFF */
+  --chart-3: 320 90% 85%;             /* Aurora Magenta #F48FB1 */
+  --chart-4: 140 80% 70%;             /* Aurora Green #7FFFD4 */
+  --chart-5: 220 100% 80%;            /* Aurora Blue #AEEFFF */
   
   /* Adding font family settings */
   --font-family: 'Dosis', sans-serif;
@@ -34,33 +34,33 @@
 }
 
 .snigdha-theme.dark {
-  /* Catppuccin Mocha color palette */
-  --background: 240 21% 15%;          /* Base #1E1E2E */
-  --foreground: 226 64% 88%;          /* Text #CDD6F4 */
-  --card: 240 23% 9%;                 /* Surface0 #313244 */
-  --card-foreground: 226 64% 88%;     /* Text #CDD6F4 */
-  --popover: 240 23% 9%;              /* Surface0 #313244 */
-  --popover-foreground: 226 64% 88%;  /* Text #CDD6F4 */
-  --primary: 267 84% 81%;             /* Mauve #CBA6F7 */
-  --primary-foreground: 240 21% 15%;  /* Base #1E1E2E */
-  --secondary: 240 24% 30%;           /* Surface1 #45475A */
-  --secondary-foreground: 226 64% 88%; /* Text #CDD6F4 */
-  --muted: 240 24% 30%;               /* Surface1 #45475A */
-  --muted-foreground: 228 39% 75%;    /* Subtext0 #A6ADC8 */
-  --accent: 316 72% 86%;              /* Pink #F5C2E7 */
-  --accent-foreground: 240 21% 15%;   /* Base #1E1E2E */
-  --destructive: 347 87% 69%;         /* Red #F38BA8 */
-  --destructive-foreground: 240 21% 15%; /* Base #1E1E2E */
-  --border: 240 21% 38%;              /* Surface2 #585B70 */
-  --input: 240 21% 38%;               /* Surface2 #585B70 */
-  --ring: 267 84% 81%;                /* Mauve #CBA6F7 */
+  /* Aurora Dark color palette */
+  --background: 230 40% 12%;          /* Deep Space #151A28 */
+  --foreground: 200 90% 90%;          /* Aurora Teal #A7FFF3 */
+  --card: 230 40% 16%;                /* Night Sky #1A2233 */
+  --card-foreground: 200 90% 90%;     /* Aurora Teal #A7FFF3 */
+  --popover: 230 40% 16%;             /* Night Sky #1A2233 */
+  --popover-foreground: 200 90% 90%;  /* Aurora Teal #A7FFF3 */
+  --primary: 200 90% 60%;             /* Aurora Teal #1DE9B6 */
+  --primary-foreground: 230 40% 12%;  /* Deep Space #151A28 */
+  --secondary: 260 80% 30%;           /* Aurora Purple #3B2C5E */
+  --secondary-foreground: 200 90% 90%; /* Aurora Teal #A7FFF3 */
+  --muted: 230 40% 20%;               /* Night Mist #232B3B */
+  --muted-foreground: 260 30% 60%;    /* Soft Purple #A89CC8 */
+  --accent: 320 90% 70%;              /* Aurora Magenta #D16BA5 */
+  --accent-foreground: 230 40% 12%;   /* Deep Space #151A28 */
+  --destructive: 0 80% 60%;           /* Aurora Red #D72660 */
+  --destructive-foreground: 230 40% 12%; /* Deep Space #151A28 */
+  --border: 230 30% 30%;              /* Night Border #3B4252 */
+  --input: 230 30% 30%;               /* Night Border #3B4252 */
+  --ring: 200 90% 60%;                /* Aurora Teal #1DE9B6 */
   
-  /* Catppuccin Mocha chart colors */
-  --chart-1: 267 84% 81%;             /* Mauve #CBA6F7 */
-  --chart-2: 180 55% 76%;             /* Teal #94E2D5 */
-  --chart-3: 203 92% 75%;             /* Blue #89B4FA */
-  --chart-4: 233 75% 85%;             /* Lavender #B4BEFE */
-  --chart-5: 16 93% 79%;              /* Peach #FAB387 */
+  /* Aurora chart colors */
+  --chart-1: 200 90% 60%;             /* Aurora Teal #1DE9B6 */
+  --chart-2: 260 80% 60%;             /* Aurora Purple #7C6FAD */
+  --chart-3: 320 90% 70%;             /* Aurora Magenta #D16BA5 */
+  --chart-4: 140 80% 60%;             /* Aurora Green #4DE1B0 */
+  --chart-5: 220 100% 60%;            /* Aurora Blue #4FC3F7 */
 }
 
 /* Catppuccin scrollbar styles */

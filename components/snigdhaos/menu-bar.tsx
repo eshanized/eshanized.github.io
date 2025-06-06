@@ -519,7 +519,6 @@ export const MenuBar = memo(function MenuBar({
 
   return (
     <>
-      {/* Add global styling for this component */}
       <style jsx global>{`
         .menu-bar, .menu-bar * {
           font-family: 'Dosis', sans-serif;
@@ -527,106 +526,99 @@ export const MenuBar = memo(function MenuBar({
           -moz-osx-font-smoothing: grayscale;
           letter-spacing: 0.02em;
         }
-
         .glass-effect {
-          backdrop-filter: blur(10px);
-          -webkit-backdrop-filter: blur(10px);
+          backdrop-filter: blur(14px);
+          -webkit-backdrop-filter: blur(14px);
+          background: rgba(255,255,255,0.10);
+          box-shadow: 0 8px 32px rgba(0,0,0,0.10);
+          border: 1px solid rgba(255,255,255,0.10);
         }
-
         .menu-pill {
-          transition: all 0.3s ease;
+          transition: all 0.3s cubic-bezier(.4,2,.6,1);
           transform-origin: center;
+          border-radius: 9999px;
+          position: relative;
+          overflow: hidden;
         }
-
-        .menu-pill:hover {
-          transform: translateY(-1px);
+        .menu-pill::after {
+          content: '';
+          position: absolute;
+          inset: 0;
+          border-radius: 9999px;
+          pointer-events: none;
+          box-shadow: 0 0 8px 2px #cba6f7, 0 0 0 0 #89b4fa;
+          opacity: 0;
+          transition: opacity 0.3s;
         }
-
-        .status-icon {
-          transition: all 0.2s ease;
+        .menu-pill:hover::after {
+          opacity: 0.5;
         }
-
-        .status-icon:hover {
-          transform: scale(1.1);
+        .menu-item-animated {
+          transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+          border-radius: 12px;
+          position: relative;
+          overflow: hidden;
         }
-
+        .menu-item-animated:active {
+          box-shadow: 0 0 0 2px #cba6f7;
+        }
         .menu-separator {
           width: 1px;
           height: 16px;
           background: ${theme === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'};
           margin: 0 8px;
         }
-
-        .neo-dropdown {
-          backdrop-filter: blur(20px);
-          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-          border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .menu-item-hover {
-          position: relative;
-          transition: all 0.3s ease;
-        }
-
-        .menu-item-hover::before {
-          content: '';
+        .quick-panel {
           position: absolute;
-          inset: 0;
-          border-radius: 12px;
-          padding: 1px;
-          background: linear-gradient(45deg, #cba6f7, #89b4fa);
-          -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-          mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-          -webkit-mask-composite: xor;
-          mask-composite: exclude;
-          opacity: 0;
-          transition: opacity 0.3s ease;
+          top: 48px;
+          right: 24px;
+          min-width: 320px;
+          background: rgba(40,40,60,0.95);
+          border-radius: 18px;
+          box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+          z-index: 100;
+          padding: 24px 20px 20px 20px;
+          display: none;
         }
-
-        .menu-item-hover:hover::before {
-          opacity: 1;
+        .quick-panel.open {
+          display: block;
+          animation: slideDown 0.4s cubic-bezier(.4,2,.6,1);
         }
-
-        .glass-card {
-          background: rgba(255, 255, 255, 0.05);
-          backdrop-filter: blur(10px);
-          border-radius: 16px;
-          border: 1px solid rgba(255, 255, 255, 0.1);
-          transition: all 0.3s ease;
+        @keyframes slideDown {
+          0% { opacity: 0; transform: translateY(-30px); }
+          100% { opacity: 1; transform: translateY(0); }
         }
-
-        .glass-card:hover {
-          background: rgba(255, 255, 255, 0.1);
-          transform: translateY(-2px);
+        .user-avatar {
+          width: 32px;
+          height: 32px;
+          border-radius: 50%;
+          background: linear-gradient(135deg, #cba6f7 0%, #89b4fa 100%);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: #fff;
+          font-weight: bold;
+          font-size: 1rem;
+          box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+          cursor: pointer;
+          transition: box-shadow 0.2s;
+        }
+        .user-avatar:hover {
+          box-shadow: 0 4px 16px #cba6f7;
         }
       `}</style>
-      
-      <motion.div 
+      <motion.div
+        className={`menu-bar w-full h-12 flex items-center justify-between px-6 z-50 glass-effect border-b ${theme === 'dark' ? 'border-[#3A3A3C]/30' : 'border-[#E5E5E7]/50'}`}
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ type: "spring", stiffness: 300, damping: 30 }}
-        className={`
-          menu-bar w-full h-10 flex items-center justify-between px-4 z-50 
-          ${theme === 'dark' 
-            ? 'bg-gradient-to-r from-[#1D1D1F]/90 via-[#2C2C2E]/90 to-[#1D1D1F]/90 text-white' 
-            : 'bg-gradient-to-r from-[#F5F5F7]/90 via-[#FFFFFF]/90 to-[#F5F5F7]/90 text-black'
-          } 
-          glass-effect border-b ${theme === 'dark' ? 'border-[#3A3A3C]/30' : 'border-[#E5E5E7]/50'}
-        `}
+        transition={{ type: 'spring', stiffness: 300, damping: 30 }}
       >
-        {/* Left section: Apple logo and menu items */}
+        {/* Left: Logo & Menus */}
         <div className="flex items-center space-x-2 h-full">
           <motion.div
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className={`
-              menu-pill px-3 py-1.5 rounded-full flex items-center
-              ${theme === 'dark' 
-                ? 'bg-[#2C2C2E] hover:bg-[#3A3A3C]' 
-                : 'bg-white hover:bg-[#F5F5F7] shadow-sm'
-              }
-              transition-all duration-200
-            `}
+            className="menu-pill px-3 py-1.5 flex items-center bg-white/10 dark:bg-[#2C2C2E]/60"
           >
             <DropdownMenu>
               <DropdownMenuTrigger className="outline-none">
@@ -753,262 +745,76 @@ export const MenuBar = memo(function MenuBar({
               </DropdownMenuContent>
             </DropdownMenu>
           </motion.div>
-
           <div className="h-full flex items-center space-x-1">
-            {allMenus.map((item) => (
-              <SnigdhaOSMenuItem 
-                key={item.label} 
-                label={item.label} 
-                items={item.items}
-                className={`
-                  menu-pill px-3 py-1.5 rounded-full text-sm
-                  ${theme === 'dark' 
-                    ? 'hover:bg-[#3A3A3C]/50' 
-                    : 'hover:bg-[#E5E5E7]/50'
-                  }
-                `}
-              />
+            {allMenus.map((item, idx) => (
+              <motion.div
+                key={item.label}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: idx * 0.05 }}
+                className="menu-item-animated"
+              >
+                <SnigdhaOSMenuItem
+                  label={item.label}
+                  items={item.items}
+                  className="menu-pill px-3 py-1.5 text-sm bg-white/0 dark:bg-[#2C2C2E]/0 hover:bg-gradient-to-r hover:from-[#cba6f7]/20 hover:to-[#89b4fa]/20"
+                />
+              </motion.div>
             ))}
           </div>
         </div>
-
-        {/* Center section: Active app title with icon */}
-        <motion.div 
-          className={`
-            absolute left-1/2 -translate-x-1/2 
-            menu-pill px-4 py-1.5 rounded-full flex items-center gap-2
-            ${theme === 'dark' 
-              ? 'bg-[#2C2C2E]/80 text-white' 
-              : 'bg-white/80 text-black shadow-sm'
-            }
-          `}
+        {/* Center: Active App */}
+        <motion.div
+          className="absolute left-1/2 -translate-x-1/2 menu-pill px-5 py-2 flex items-center gap-2 bg-white/30 dark:bg-[#2C2C2E]/60 shadow-lg"
           initial={false}
           animate={{ scale: [0.95, 1], opacity: [0.5, 1] }}
           transition={{ duration: 0.2 }}
         >
-          {activeApp?.icon && <activeApp.icon size={14} />}
-          <span className="font-medium">{activeApp?.title || "Snigdha OS - Eshanized Edition"}</span>
+          {activeApp?.icon && <activeApp.icon size={18} />}
+          <span className="font-semibold text-base tracking-wide">
+            {activeApp?.title || "Snigdha OS - Eshanized Edition"}
+          </span>
         </motion.div>
-
-        {/* Right section: Status icons */}
-        <div className="flex items-center space-x-2">
+        {/* Right: Status, Quick Actions, User */}
+        <div className="flex items-center space-x-2 relative">
           {/* Theme Toggle */}
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={handleThemeToggle}
-            className={`
-              status-icon p-2 rounded-full
-              ${theme === 'dark' 
-                ? 'bg-[#2C2C2E] hover:bg-[#3A3A3C]' 
-                : 'bg-white hover:bg-[#F5F5F7] shadow-sm'
-              }
-            `}
+            className="status-icon p-2 rounded-full bg-white/20 dark:bg-[#2C2C2E]/60"
           >
-            {theme === 'dark' ? 
-              <Moon size={14} className="text-[#F5F5F7]" /> : 
-              <Sun size={14} className="text-[#1D1D1F]" />
-            }
+            {theme === 'dark' ? <Moon size={16} /> : <Sun size={16} />}
           </motion.button>
-
           <div className="menu-separator" />
-
-          {/* Battery Status */}
-          <motion.div 
-            whileHover={{ scale: 1.05 }}
-            className={`
-              status-icon p-2 rounded-full relative
-              ${theme === 'dark' 
-                ? 'bg-[#2C2C2E] hover:bg-[#3A3A3C]' 
-                : 'bg-white hover:bg-[#F5F5F7] shadow-sm'
-              }
-            `}
-          >
-            <Battery size={14} className={isCharging ? "animate-pulse" : ""} />
-            {batteryLevel < 20 && (
-              <span className="absolute right-1 bottom-1 w-1.5 h-1.5 bg-[#FF2D55] rounded-full" />
-            )}
-            {isCharging && (
-              <span className="absolute right-1 bottom-1 w-1.5 h-1.5 bg-[#30D158] rounded-full" />
-            )}
+          {/* Battery */}
+          <motion.div className="status-icon p-2 rounded-full bg-white/20 dark:bg-[#2C2C2E]/60 relative">
+            <Battery size={16} className={isCharging ? "animate-pulse" : ""} />
+            {batteryLevel < 20 && <span className="absolute right-1 bottom-1 w-1.5 h-1.5 bg-[#FF2D55] rounded-full" />}
+            {isCharging && <span className="absolute right-1 bottom-1 w-1.5 h-1.5 bg-[#30D158] rounded-full" />}
           </motion.div>
-
-          {/* WiFi Status */}
-          <motion.div 
-            whileHover={{ scale: 1.05 }}
-            className={`
-              status-icon p-2 rounded-full
-              ${theme === 'dark' 
-                ? 'bg-[#2C2C2E] hover:bg-[#3A3A3C]' 
-                : 'bg-white hover:bg-[#F5F5F7] shadow-sm'
-              }
-            `}
-          >
-            <Wifi size={14} />
+          {/* WiFi */}
+          <motion.div className="status-icon p-2 rounded-full bg-white/20 dark:bg-[#2C2C2E]/60">
+            <Wifi size={16} />
           </motion.div>
-
           <div className="menu-separator" />
-
           {/* Time */}
-          <motion.div 
-            whileHover={{ scale: 1.05 }}
-            className={`
-              status-icon px-3 py-1.5 rounded-full font-medium text-sm
-              ${theme === 'dark' 
-                ? 'bg-[#2C2C2E] hover:bg-[#3A3A3C]' 
-                : 'bg-white hover:bg-[#F5F5F7] shadow-sm'
-              }
-            `}
-          >
+          <motion.div className="status-icon px-3 py-1.5 rounded-full font-medium text-sm bg-white/20 dark:bg-[#2C2C2E]/60">
             {currentTime}
           </motion.div>
-
-          {/* Search and Control Center */}
-          <div className="flex items-center space-x-1">
-            <motion.div 
-              whileHover={{ scale: 1.05 }}
-              className={`
-                status-icon p-2 rounded-full
-                ${theme === 'dark' 
-                  ? 'bg-[#2C2C2E] hover:bg-[#3A3A3C]' 
-                  : 'bg-white hover:bg-[#F5F5F7] shadow-sm'
-                }
-              `}
-            >
-              <Search size={14} />
-            </motion.div>
-
-            <DropdownMenu>
-              <DropdownMenuTrigger>
-                <motion.div 
-                  whileHover={{ scale: 1.05 }}
-                  className={`
-                    status-icon p-2 rounded-full
-                    ${theme === 'dark' 
-                      ? 'bg-[#2C2C2E] hover:bg-[#3A3A3C]' 
-                      : 'bg-white hover:bg-[#F5F5F7] shadow-sm'
-                    }
-                  `}
-                >
-                  <Command size={14} />
-                </motion.div>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent 
-                align="end" 
-                className={`
-                  absolute z-50 right-0 top-full mt-1 w-80 rounded-lg shadow-lg 
-                  ${theme === 'dark' ? 'bg-[#1E1E1E]/90 text-white' : 'bg-white/90 text-black'} 
-                  backdrop-blur-md border 
-                  ${theme === 'dark' ? 'border-[#3A3A3C]/50' : 'border-[#E5E5E7]/70'}
-                  font-sans
-                `}
-              >
-                <div className={`p-3 grid grid-cols-2 gap-2 w-[320px]`}>
-                  <motion.div 
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    className={`
-                      flex flex-col items-center justify-center rounded-xl p-3
-                      ${theme === 'dark'
-                        ? 'bg-[#3A3A3C]/50 hover:bg-[#3A3A3C]/70'
-                        : 'bg-white/80 hover:bg-white shadow-sm'
-                      }
-                      transition-all duration-200 cursor-pointer
-                    `}
-                  >
-                    <Wifi size={22} className="mb-2" />
-                    <span className="text-xs font-medium">Wi-Fi</span>
-                  </motion.div>
-                  <motion.div 
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    className={`
-                      flex flex-col items-center justify-center rounded-xl p-3
-                      ${theme === 'dark'
-                        ? 'bg-[#3A3A3C]/50 hover:bg-[#3A3A3C]/70'
-                        : 'bg-white/80 hover:bg-white shadow-sm'
-                      }
-                      transition-all duration-200 cursor-pointer
-                    `}
-                  >
-                    <Battery size={22} className="mb-2" />
-                    <span className="text-xs font-medium">Battery</span>
-                  </motion.div>
-                  <motion.div 
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    onClick={handleThemeToggle}
-                    className={`
-                      flex flex-col items-center justify-center rounded-xl p-3
-                      ${theme === 'dark'
-                        ? 'bg-[#3A3A3C]/50 hover:bg-[#3A3A3C]/70'
-                        : 'bg-white/80 hover:bg-white shadow-sm'
-                      }
-                      transition-all duration-200 cursor-pointer
-                    `}
-                  >
-                    {theme === 'dark' ? 
-                      <Moon size={22} className="mb-2" /> : 
-                      <Sun size={22} className="mb-2" />
-                    }
-                    <span className="text-xs font-medium">
-                      {theme === 'dark' ? 'Dark Mode' : 'Light Mode'}
-                    </span>
-                  </motion.div>
-                  <motion.div 
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    className={`
-                      flex flex-col items-center justify-center rounded-xl p-3
-                      ${theme === 'dark'
-                        ? 'bg-[#3A3A3C]/50 hover:bg-[#3A3A3C]/70'
-                        : 'bg-white/80 hover:bg-white shadow-sm'
-                      }
-                      transition-all duration-200 cursor-pointer
-                    `}
-                  >
-                    <Command size={22} className="mb-2" />
-                    <span className="text-xs font-medium">Keyboard</span>
-                  </motion.div>
-                </div>
-                <div className="p-3 space-y-4">
-                  <div className="space-y-2">
-                    <div className="flex items-center justify-between">
-                      <h4 className="text-xs font-medium text-muted-foreground">Display</h4>
-                      <span className="text-xs font-medium">100%</span>
-                    </div>
-                    <div className={`
-                      h-1.5 w-full rounded-full overflow-hidden
-                      ${theme === 'dark' ? 'bg-[#3A3A3C]/50' : 'bg-[#E5E5E7]/70'}
-                    `}>
-                      <motion.div 
-                        initial={{ width: '0%' }}
-                        animate={{ width: '100%' }}
-                        transition={{ duration: 0.5 }}
-                        className={`h-full rounded-full ${theme === 'dark' ? 'bg-[#0A84FF]' : 'bg-[#0066FF]'}`}
-                      />
-                    </div>
-                  </div>
-                  <div className="space-y-2">
-                    <div className="flex items-center justify-between">
-                      <h4 className="text-xs font-medium text-muted-foreground">Sound</h4>
-                      <span className="text-xs font-medium">85%</span>
-                    </div>
-                    <div className={`
-                      h-1.5 w-full rounded-full overflow-hidden
-                      ${theme === 'dark' ? 'bg-[#3A3A3C]/50' : 'bg-[#E5E5E7]/70'}
-                    `}>
-                      <motion.div 
-                        initial={{ width: '0%' }}
-                        animate={{ width: '85%' }}
-                        transition={{ duration: 0.5 }}
-                        className={`h-full rounded-full ${theme === 'dark' ? 'bg-[#0A84FF]' : 'bg-[#0066FF]'}`}
-                      />
-                    </div>
-                  </div>
-                </div>
-              </DropdownMenuContent>
-            </DropdownMenu>
+          {/* Quick Access Button */}
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="status-icon p-2 rounded-full bg-gradient-to-tr from-[#cba6f7] to-[#89b4fa] shadow-md"
+            // onClick={toggleQuickPanel} // To be implemented
+          >
+            <Command size={16} />
+          </motion.button>
+          {/* User Avatar */}
+          <div className="user-avatar ml-2">
+            {/* {userInitials} */}
+            U
           </div>
         </div>
       </motion.div>

@@ -208,7 +208,7 @@ export function Window({
             </div>
             
             {/* Window content */}
-            <div className="flex-1 overflow-hidden bg-white/80 dark:bg-gray-800/90">
+            <div className="flex-1 overflow-auto bg-white/80 dark:bg-gray-800/90">
               {children}
             </div>
 
