@@ -26,16 +26,7 @@ const catppuccinColors = {
   },
 };
 
-const bootMessages = [
-    { text: "SNIGDHAOS v24.04 INITIALIZING...", delay: 0 },
-    { text: "KERNEL BOOT SEQUENCE INITIATED...", delay: 0.5 },
-    { text: "LOADING PARTICLE MATRIX...", delay: 1.2 },
-    { text: "CALIBRATING RENDERER...", delay: 1.8 },
-    { text: "AWAITING USER AUTHENTICATION...", delay: 2.5 },
-];
-
 export function LoginScreen({ onLogin }: { onLogin: (specialUser?: string) => void }) {
-  const [isBooting, setIsBooting] = useState(true);
   const [currentTime, setCurrentTime] = useState("");
   const [currentDate, setCurrentDate] = useState("");
   const [password, setPassword] = useState("");
@@ -48,14 +39,6 @@ export function LoginScreen({ onLogin }: { onLogin: (specialUser?: string) => vo
 
   // Always use dark theme
   const theme = 'dark';
-
-  // Boot sequence
-  useEffect(() => {
-    const bootTimer = setTimeout(() => {
-      setIsBooting(false);
-    }, 4000); // 4 second boot time
-    return () => clearTimeout(bootTimer);
-  }, []);
 
   // Animated background effect
   useEffect(() => {
@@ -224,221 +207,184 @@ export function LoginScreen({ onLogin }: { onLogin: (specialUser?: string) => vo
       <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" />
       
       <AnimatePresence>
-        {!isBooting && (
-            <motion.div 
-                className="absolute inset-0 pointer-events-none"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 1 }}
-            >
-                <motion.div
-                    className="absolute top-[-20%] left-[-20%] w-[80vmin] h-[80vmin] rounded-full blur-3xl"
-                    style={{ backgroundColor: 'rgba(198, 160, 246, 0.1)' /* Mauve */ }}
-                    animate={{ x: [0, 50, 0], y: [0, -50, 0] }}
-                    transition={{ duration: 40, repeat: Infinity, ease: 'easeInOut', repeatType: 'mirror' }}
-                />
-                <motion.div
-                    className="absolute bottom-[-20%] right-[-20%] w-[70vmin] h-[70vmin] rounded-full blur-3xl"
-                    style={{ backgroundColor: 'rgba(137, 180, 250, 0.1)' /* Blue */ }}
-                    animate={{ x: [0, -50, 0], y: [0, 50, 0] }}
-                    transition={{ duration: 50, repeat: Infinity, ease: 'easeInOut', repeatType: 'mirror' }}
-                />
-            </motion.div>
-        )}
+          <motion.div 
+              className="absolute inset-0 pointer-events-none"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 1 }}
+          >
+              <motion.div
+                  className="absolute top-[-20%] left-[-20%] w-[80vmin] h-[80vmin] rounded-full blur-3xl"
+                  style={{ backgroundColor: 'rgba(198, 160, 246, 0.1)' /* Mauve */ }}
+                  animate={{ x: [0, 50, 0], y: [0, -50, 0] }}
+                  transition={{ duration: 40, repeat: Infinity, ease: 'easeInOut', repeatType: 'mirror' }}
+              />
+              <motion.div
+                  className="absolute bottom-[-20%] right-[-20%] w-[70vmin] h-[70vmin] rounded-full blur-3xl"
+                  style={{ backgroundColor: 'rgba(137, 180, 250, 0.1)' /* Blue */ }}
+                  animate={{ x: [0, -50, 0], y: [0, 50, 0] }}
+                  transition={{ duration: 50, repeat: Infinity, ease: 'easeInOut', repeatType: 'mirror' }}
+              />
+          </motion.div>
       </AnimatePresence>
 
       <div className="absolute inset-0 bg-[url(https://grainy-gradients.vercel.app/noise.svg)] opacity-[0.08] pointer-events-none mix-blend-soft-light"/>
       
-      <AnimatePresence>
-        {isBooting ? (
-          <motion.div
-            key="boot-screen"
-            className="absolute inset-0 flex items-center justify-center"
-            exit={{ opacity: 0, transition: { duration: 0.5 } }}
-          >
-            <div className="font-mono text-green-400/80 text-lg p-8 space-y-2">
-              <div className="flex items-center gap-4 mb-4">
-                <Terminal className="w-8 h-8"/>
-                <h1 className="text-2xl font-bold">SnigdhaOS Bootloader</h1>
-              </div>
-              {bootMessages.map((msg, index) => (
-                <motion.p
-                  key={index}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: msg.delay }}
-                  className="flex items-center gap-2"
-                >
-                  <span className="text-green-400/50">{`[${(msg.delay * 1000).toString().padStart(4, '0')}]`}</span>
-                  <span>{msg.text}</span>
-                  <motion.span
-                    className="w-2 h-4 bg-green-400"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: [0, 1, 0] }}
-                    transition={{ delay: msg.delay, repeat: Infinity, duration: 1 }}
-                  />
-                </motion.p>
-              ))}
+      <motion.div 
+        key="login-ui"
+        className="absolute inset-0 flex flex-col items-center justify-center p-4"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+      >
+        <motion.div
+            className="absolute top-0 left-0 right-0 h-16 flex items-center justify-between px-8 text-sm"
+            style={{ color: catppuccinColors.dark.text }}
+            initial={{ y: -50, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+        >
+            <div className="flex items-center gap-3 font-medium">
+                <SnigdhaOSLogo className="w-6 h-6" />
+                <span>SnigdhaOS</span>
             </div>
-          </motion.div>
-        ) : (
-          <motion.div 
-            key="login-ui"
-            className="absolute inset-0 flex flex-col items-center justify-center p-4"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-          >
-            <motion.div
-                className="absolute top-0 left-0 right-0 h-16 flex items-center justify-between px-8 text-sm"
-                style={{ color: catppuccinColors.dark.text }}
-                initial={{ y: -50, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ duration: 0.5, delay: 0.2 }}
-            >
-                <div className="flex items-center gap-3 font-medium">
-                    <SnigdhaOSLogo className="w-6 h-6" />
-                    <span>SnigdhaOS</span>
+            <div className="flex items-center gap-6" style={{ color: 'rgba(205, 214, 244, 0.8)' }}>
+                <span>{currentDate}</span>
+                <div className="flex items-center gap-4">
+                    <span>{currentTime}</span>
+                    <Wifi size={18} />
+                    <Battery size={18} />
                 </div>
-                <div className="flex items-center gap-6" style={{ color: 'rgba(205, 214, 244, 0.8)' }}>
-                    <span>{currentDate}</span>
-                    <div className="flex items-center gap-4">
-                        <span>{currentTime}</span>
-                        <Wifi size={18} />
-                        <Battery size={18} />
-                    </div>
-                </div>
-            </motion.div>
+            </div>
+        </motion.div>
 
-            <motion.div
-              className="w-full max-w-sm"
+        <motion.div
+          className="w-full max-w-sm"
+          style={{
+            transformStyle: "preserve-3d",
+            transform: `rotateY(${cardRotation.rotateY}deg) rotateX(${cardRotation.rotateX}deg)`,
+          }}
+          onMouseMove={handleCardMouseMove}
+          onMouseLeave={() => setCardRotation({ rotateX: 0, rotateY: 0 })}
+        >
+          <div
+            className="w-full relative p-8 space-y-6 rounded-3xl"
+            style={{ 
+              background: 'rgba(30, 30, 46, 0.75)',
+              backdropFilter: 'blur(20px) saturate(180%)',
+              border: '1px solid rgba(205, 214, 244, 0.2)',
+              boxShadow: '0 0 80px rgba(0,0,0,0.4)',
+            }}
+          >
+            <div 
+              className="absolute -inset-px rounded-3xl pointer-events-none"
               style={{
-                transformStyle: "preserve-3d",
-                transform: `rotateY(${cardRotation.rotateY}deg) rotateX(${cardRotation.rotateX}deg)`,
+                border: '1px solid transparent',
+                backgroundImage: `radial-gradient(circle at ${cardRotation.rotateY * 5 + 50}% ${-cardRotation.rotateX * 5 + 50}%, rgba(203, 166, 247, 0.3), transparent 50%)`
               }}
-              onMouseMove={handleCardMouseMove}
-              onMouseLeave={() => setCardRotation({ rotateX: 0, rotateY: 0 })}
-            >
-              <div
-                className="w-full relative p-8 space-y-6 rounded-3xl"
-                style={{ 
-                  background: 'rgba(30, 30, 46, 0.75)',
-                  backdropFilter: 'blur(20px) saturate(180%)',
-                  border: '1px solid rgba(205, 214, 244, 0.2)',
-                  boxShadow: '0 0 80px rgba(0,0,0,0.4)',
-                }}
+            />
+            
+            <div className="text-center space-y-2" style={{ transform: 'translateZ(20px)' }}>
+              <motion.div 
+                className="flex justify-center"
+                initial={{ opacity: 0, scale: 0.5 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.2, type: 'spring' }}
               >
-                <div 
-                  className="absolute -inset-px rounded-3xl pointer-events-none"
+                <Image src={PERSONAL_INFO.avatar} alt="Avatar" width={80} height={80} className="rounded-full border-2 border-white/20 shadow-lg"/>
+              </motion.div>
+              <h1 className="text-2xl font-bold" style={{color: catppuccinColors.dark.text}}>
+                {PERSONAL_INFO.name}
+              </h1>
+              <p className="text-sm" style={{color: 'rgba(205, 214, 244, 0.7)'}}>
+                Enter password to unlock
+              </p>
+            </div>
+
+            <motion.form 
+              onSubmit={handleSubmit}
+              animate={{ x: isShaking ? [-8, 8, -8, 8, 0] : 0 }}
+              transition={{ duration: 0.4 }}
+              className="space-y-4"
+              style={{ transform: 'translateZ(40px)' }}
+            >
+              <div className="relative">
+                <motion.input
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  onFocus={() => setIsPasswordFocused(true)}
+                  onBlur={() => setIsPasswordFocused(false)}
+                  placeholder="Password"
+                  className="w-full h-12 rounded-lg px-12 text-center bg-transparent outline-none transition-all duration-300"
                   style={{
-                    border: '1px solid transparent',
-                    backgroundImage: `radial-gradient(circle at ${cardRotation.rotateY * 5 + 50}% ${-cardRotation.rotateX * 5 + 50}%, rgba(203, 166, 247, 0.3), transparent 50%)`
+                    color: catppuccinColors.dark.text,
+                    border: `1px solid ${isPasswordFocused ? catppuccinColors.dark.accent : 'rgba(205, 214, 244, 0.2)'}`,
+                    boxShadow: isPasswordFocused ? `0 0 0 3px rgba(203, 166, 247, 0.2)` : 'none',
                   }}
                 />
-                
-                <div className="text-center space-y-2" style={{ transform: 'translateZ(20px)' }}>
-                  <motion.div 
-                    className="flex justify-center"
-                    initial={{ opacity: 0, scale: 0.5 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: 0.2, type: 'spring' }}
-                  >
-                    <Image src={PERSONAL_INFO.avatar} alt="Avatar" width={80} height={80} className="rounded-full border-2 border-white/20 shadow-lg"/>
-                  </motion.div>
-                  <h1 className="text-2xl font-bold" style={{color: catppuccinColors.dark.text}}>
-                    {PERSONAL_INFO.name}
-                  </h1>
-                  <p className="text-sm" style={{color: 'rgba(205, 214, 244, 0.7)'}}>
-                    Enter password to unlock
-                  </p>
-                </div>
-
-                <motion.form 
-                  onSubmit={handleSubmit}
-                  animate={{ x: isShaking ? [-8, 8, -8, 8, 0] : 0 }}
-                  transition={{ duration: 0.4 }}
-                  className="space-y-4"
-                  style={{ transform: 'translateZ(40px)' }}
-                >
-                  <div className="relative">
-                    <motion.input
-                      type="password"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      onFocus={() => setIsPasswordFocused(true)}
-                      onBlur={() => setIsPasswordFocused(false)}
-                      placeholder="Password"
-                      className="w-full h-12 rounded-lg px-12 text-center bg-transparent outline-none transition-all duration-300"
-                      style={{
-                        color: catppuccinColors.dark.text,
-                        border: `1px solid ${isPasswordFocused ? catppuccinColors.dark.accent : 'rgba(205, 214, 244, 0.2)'}`,
-                        boxShadow: isPasswordFocused ? `0 0 0 3px rgba(203, 166, 247, 0.2)` : 'none',
-                      }}
-                    />
-                    <Lock className={`absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 transition-colors duration-300 ${isPasswordFocused ? 'text-[#cba6f7]' : 'opacity-40'}`} />
-                  </div>
-
-                  <motion.button
-                    type="submit"
-                    className="w-full h-12 rounded-lg relative overflow-hidden font-semibold text-lg"
-                    style={{ background: `linear-gradient(135deg, ${catppuccinColors.dark.base[0]}, ${catppuccinColors.dark.base[4]})` }}
-                    whileHover={{ scale: 1.05, transition: { type: 'spring', stiffness: 300 } }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    <span className="relative z-10 text-black/80">Authenticate</span>
-                  </motion.button>
-                </motion.form>
-
-                <div className="flex items-center justify-between text-sm" style={{ transform: 'translateZ(20px)' }}>
-                  <button 
-                    onClick={() => onLogin()}
-                    className="px-4 py-2 rounded-lg transition-colors"
-                    style={{ color: 'rgba(205, 214, 244, 0.6)' }}
-                    onMouseEnter={e => e.currentTarget.style.backgroundColor = 'rgba(205, 214, 244, 0.1)'}
-                    onMouseLeave={e => e.currentTarget.style.backgroundColor = 'transparent'}
-                  >
-                    Guest Access
-                  </button>
-                  <button 
-                    onClick={() => setShowPasswordHint(!showPasswordHint)}
-                    className="px-4 py-2 rounded-lg transition-colors flex items-center gap-1.5"
-                    style={{ color: 'rgba(205, 214, 244, 0.6)' }}
-                    onMouseEnter={e => e.currentTarget.style.backgroundColor = 'rgba(205, 214, 244, 0.1)'}
-                    onMouseLeave={e => e.currentTarget.style.backgroundColor = 'transparent'}
-                  >
-                    <Info size={14}/> Hint
-                  </button>
-                </div>
-                
-                <AnimatePresence>
-                  {showPasswordHint && (
-                    <motion.div 
-                      initial={{ opacity: 0, y: 10, height: 0 }}
-                      animate={{ opacity: 1, y: 0, height: 'auto' }}
-                      exit={{ opacity: 0, y: 10, height: 0 }}
-                      className="text-center text-sm"
-                      style={{ color: catppuccinColors.dark.text, transform: 'translateZ(20px)'}}
-                    >
-                      <p className="p-2 bg-black/20 rounded-lg">Hint: Try the name that brings love ♥</p>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
+                <Lock className={`absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 transition-colors duration-300 ${isPasswordFocused ? 'text-[#cba6f7]' : 'opacity-40'}`} />
               </div>
-            </motion.div>
 
-            <motion.div 
-              className="mt-8 text-center"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 1 }}
-            >
-              <p className="text-sm" style={{ color: 'rgba(205, 214, 244, 0.5)' }}>
-                SnigdhaOS • Elegance in Simplicity
-              </p>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+              <motion.button
+                type="submit"
+                className="w-full h-12 rounded-lg relative overflow-hidden font-semibold text-lg"
+                style={{ background: `linear-gradient(135deg, ${catppuccinColors.dark.base[0]}, ${catppuccinColors.dark.base[4]})` }}
+                whileHover={{ scale: 1.05, transition: { type: 'spring', stiffness: 300 } }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <span className="relative z-10 text-black/80">Authenticate</span>
+              </motion.button>
+            </motion.form>
+
+            <div className="flex items-center justify-between text-sm" style={{ transform: 'translateZ(20px)' }}>
+              <button 
+                onClick={() => onLogin()}
+                className="px-4 py-2 rounded-lg transition-colors"
+                style={{ color: 'rgba(205, 214, 244, 0.6)' }}
+                onMouseEnter={e => e.currentTarget.style.backgroundColor = 'rgba(205, 214, 244, 0.1)'}
+                onMouseLeave={e => e.currentTarget.style.backgroundColor = 'transparent'}
+              >
+                Guest Access
+              </button>
+              <button 
+                onClick={() => setShowPasswordHint(!showPasswordHint)}
+                className="px-4 py-2 rounded-lg transition-colors flex items-center gap-1.5"
+                style={{ color: 'rgba(205, 214, 244, 0.6)' }}
+                onMouseEnter={e => e.currentTarget.style.backgroundColor = 'rgba(205, 214, 244, 0.1)'}
+                onMouseLeave={e => e.currentTarget.style.backgroundColor = 'transparent'}
+              >
+                <Info size={14}/> Hint
+              </button>
+            </div>
+            
+            <AnimatePresence>
+              {showPasswordHint && (
+                <motion.div 
+                  initial={{ opacity: 0, y: 10, height: 0 }}
+                  animate={{ opacity: 1, y: 0, height: 'auto' }}
+                  exit={{ opacity: 0, y: 10, height: 0 }}
+                  className="text-center text-sm"
+                  style={{ color: catppuccinColors.dark.text, transform: 'translateZ(20px)'}}
+                >
+                  <p className="p-2 bg-black/20 rounded-lg">Hint: Try the name that brings love ♥</p>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        </motion.div>
+
+        <motion.div 
+          className="mt-8 text-center"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1 }}
+        >
+          <p className="text-sm" style={{ color: 'rgba(205, 214, 244, 0.5)' }}>
+            SnigdhaOS • Elegance in Simplicity
+          </p>
+        </motion.div>
+      </motion.div>
     </div>
   );
 }

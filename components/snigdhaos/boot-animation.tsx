@@ -1,337 +1,134 @@
 "use client";
 
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { SnigdhaOSLogo } from './snigdhaos-logo';
+import { CheckCircle, Loader } from 'lucide-react';
+
+const bootSequence = [
+  { text: "SNIGDHA-OS BIOS v2.1.8", duration: 500 },
+  { text: "Initializing mainboard...", duration: 300 },
+  { text: "Checking memory presence...", duration: 400 },
+  { text: "Calibrating CPU clock...", status: "OK", duration: 500 },
+  { text: "Loading kernel module 'snigdha_core.ko'", duration: 700 },
+  { text: "Mounting virtual filesystem...", duration: 400 },
+  { text: "Starting UI server...", status: "OK", duration: 600 },
+  { text: "Launching Window Manager...", duration: 500 },
+  { text: "System ready.", status: "DONE", duration: 1000 },
+];
 
 export function BootAnimation({ onComplete }: { onComplete: () => void }) {
-  const [progress, setProgress] = useState(0);
-  const [isComplete, setIsComplete] = useState(false);
-  
-  useEffect(() => {
-    // Simulate loading progress with variable speed
-    const interval = setInterval(() => {
-      setProgress(prev => {
-        // Slower at start, faster in middle, slow at end for natural feel
-        const speed = prev < 30 ? 2 : prev > 80 ? 1 : 5;
-        const newProgress = prev + (Math.random() * speed);
-        return newProgress >= 100 ? 100 : newProgress;
-      });
-    }, 120);
-    
-    return () => clearInterval(interval);
-  }, []);
-  
-  // Trigger completion when progress reaches 100%
-  useEffect(() => {
-    if (progress === 100) {
-      const timer = setTimeout(() => {
-        setIsComplete(true);
-        
-        // Wait for fadeout animation before calling onComplete
-        setTimeout(() => {
-          onComplete();
-        }, 1000);
-      }, 800);
-      
-      return () => clearTimeout(timer);
-    }
-  }, [progress, onComplete]);
+  const [step, setStep] = useState(0);
+  const [completed, setCompleted] = useState(false);
 
-  // Generate particles for background effect
-  const particles = useMemo(() => {
-    return Array.from({ length: 30 }).map((_, i) => ({
-      id: i,
-      x: Math.random() * 100,
-      y: Math.random() * 100,
-      size: Math.random() * 3 + 1,
-      duration: Math.random() * 15 + 5,
-      delay: Math.random() * 5,
-    }));
-  }, []);
+  useEffect(() => {
+    if (step < bootSequence.length) {
+      const timer = setTimeout(() => {
+        setStep(step + 1);
+      }, bootSequence[step].duration);
+      return () => clearTimeout(timer);
+    } else {
+      const completionTimer = setTimeout(() => {
+        setCompleted(true);
+        onComplete();
+      }, 500); // Wait a bit after the final message
+      return () => clearTimeout(completionTimer);
+    }
+  }, [step, onComplete]);
+
+  const currentProgress = (step / (bootSequence.length -1)) * 100;
 
   return (
     <AnimatePresence>
-      {!isComplete ? (
+      {!completed && (
         <motion.div
-          className="fixed inset-0 bg-gradient-to-b from-black via-zinc-900 to-black flex flex-col items-center justify-center z-50 overflow-hidden"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 1 }}
           key="boot-screen"
+          className="fixed inset-0 bg-[#0D0D0D] flex flex-col items-center justify-center z-50 overflow-hidden"
+          exit={{ opacity: 0, transition: { duration: 0.5, ease: 'easeInOut' } }}
         >
-          {/* Particle background */}
-          {particles.map((particle) => (
-            <motion.div
-              key={particle.id}
-              className="absolute rounded-full bg-white"
-              style={{
-                left: `${particle.x}%`,
-                top: `${particle.y}%`,
-                width: `${particle.size}px`,
-                height: `${particle.size}px`,
-              }}
-              initial={{ opacity: 0 }}
-              animate={{ 
-                opacity: [0, 0.8, 0],
-                scale: [0, 1, 0],
-              }}
-              transition={{
-                duration: particle.duration,
-                repeat: Infinity,
-                delay: particle.delay,
-                ease: "easeInOut"
-              }}
-            />
-          ))}
-          
-          {/* Animated gradient background */}
+          {/* Background Grid */}
+          <div className="absolute inset-0 w-full h-full bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:3rem_3rem] opacity-20" />
+          <div className="absolute inset-0 w-full h-full bg-[radial-gradient(circle_at_center,rgba(137,180,250,0.15),transparent_40%)]" />
+
+          {/* Center Logo and Progress */}
           <motion.div 
-            className="absolute inset-0 opacity-20"
-            initial={{ backgroundPosition: "0% 0%" }}
-            animate={{ backgroundPosition: "100% 100%" }}
-            transition={{ duration: 20, repeat: Infinity, repeatType: "reverse" }}
-            style={{
-              background: "radial-gradient(circle at center, rgba(99, 102, 241, 0.3) 0%, transparent 70%)",
-              filter: "blur(60px)",
-            }}
-          />
-          
-          <div className="relative z-10 flex flex-col items-center">
-            {/* Logo with glow effect */}
-            <motion.div
-              className="relative"
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ 
-                opacity: 1, 
-                scale: progress > 95 ? [1, 1.1, 1] : 1,
-                y: progress > 95 ? [0, -10, 0] : 0,
-              }}
-              transition={{
-                duration: 1.5,
-                ease: "easeOut",
-                scale: progress > 95 ? { repeat: 1, duration: 0.8 } : {},
-                y: progress > 95 ? { repeat: 1, duration: 0.8 } : {}
-              }}
+            className="relative flex items-center justify-center mb-8"
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+          >
+            <motion.svg
+              className="absolute w-48 h-48"
+              viewBox="0 0 100 100"
+              initial={{ rotate: -90 }}
             >
-              {/* Glow behind logo */}
-              <motion.div 
-                className="absolute inset-0 rounded-full bg-primary/30"
-                initial={{ opacity: 0 }}
-                animate={{ 
-                  opacity: [0.4, 0.8, 0.4],
-                  scale: [1, 1.3, 1],
-                }}
-                transition={{
-                  duration: 3,
-                  repeat: Infinity,
-                  repeatType: "reverse",
-                }}
-                style={{ filter: "blur(20px)" }}
+              <motion.circle
+                cx="50" cy="50" r="45"
+                stroke="rgba(205, 214, 244, 0.1)"
+                strokeWidth="3"
+                fill="transparent"
               />
-              
-              {/* Apple Logo with 3D rotation */}
-              <motion.div
-                animate={{ 
-                  rotateY: progress > 80 ? [0, 360] : [0, 5, 0, -5, 0],
-                  z: progress > 80 ? [0, 30, 0] : 0,
-                }}
-                transition={{
-                  rotateY: progress > 80 ? { duration: 1.5, ease: "easeInOut" } : { repeat: Infinity, duration: 5 },
-                  z: progress > 80 ? { duration: 1.5, ease: "easeInOut" } : {}
-                }}
-                style={{ perspective: "1000px", transformStyle: "preserve-3d" }}
-              >
-                <SnigdhaOSLogo className="w-24 h-24 text-white drop-shadow-[0_0_15px_rgba(255,255,255,0.5)]" />
-              </motion.div>
-            </motion.div>
-            
-            {/* Animated progress track */}
-            <motion.div 
-              className="w-64 h-1 bg-white/10 rounded-full overflow-hidden mt-10 relative"
-              initial={{ opacity: 0, width: 0 }}
-              animate={{ opacity: 1, width: "16rem" }}
-              transition={{ delay: 0.5, duration: 0.8 }}
-            >
-              {/* Animated pulse along track */}
-              <motion.div
-                className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent"
-                animate={{ x: [-100, 300] }}
-                transition={{ 
-                  repeat: Infinity,
-                  duration: 1.5,
-                  ease: "linear"
-                }}
-              />
-              
-              {/* Actual progress bar */}
-              <motion.div 
-                className="h-full bg-gradient-to-r from-blue-500 via-primary to-purple-500 rounded-full"
-                initial={{ width: '0%' }}
-                animate={{ width: `${progress}%` }}
+              <motion.circle
+                cx="50" cy="50" r="45"
+                stroke="rgba(137, 180, 250, 1)" // Blue
+                strokeWidth="3"
+                fill="transparent"
+                strokeLinecap="round"
+                initial={{ pathLength: 0 }}
+                animate={{ pathLength: currentProgress / 100 }}
                 transition={{ duration: 0.3 }}
-                style={{ 
-                  boxShadow: "0 0 10px rgba(99, 102, 241, 0.7)"
-                }}
               />
-            </motion.div>
-            
-            {/* Percentage counter */}
-            <motion.p
-              className="mt-4 text-white/80 text-sm font-light tracking-wider"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.8 }}
-            >
-              {Math.round(progress)}%
-            </motion.p>
-            
-            {/* Animated text that changes */}
-            <motion.div
-              className="h-6 mt-4 flex items-center justify-center overflow-hidden"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 1 }}
-            >
-              <AnimatePresence mode="wait">
-                {progress < 30 && (
-                  <motion.p
-                    key="initializing"
-                    initial={{ y: 20, opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    exit={{ y: -20, opacity: 0 }}
-                    className="text-white/60 text-sm font-light"
-                  >
-                    Initializing system...
-                  </motion.p>
-                )}
-                {progress >= 30 && progress < 60 && (
-                  <motion.p
-                    key="loading"
-                    initial={{ y: 20, opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    exit={{ y: -20, opacity: 0 }}
-                    className="text-white/60 text-sm font-light"
-                  >
-                    Loading components...
-                  </motion.p>
-                )}
-                {progress >= 60 && progress < 85 && (
-                  <motion.p
-                    key="preparing"
-                    initial={{ y: 20, opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    exit={{ y: -20, opacity: 0 }}
-                    className="text-white/60 text-sm font-light"
-                  >
-                    Preparing workspace...
-                  </motion.p>
-                )}
-                {progress >= 85 && (
-                  <motion.p
-                    key="finishing"
-                    initial={{ y: 20, opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    exit={{ y: -20, opacity: 0 }}
-                    className="text-white/60 text-sm font-light"
-                  >
-                    Almost there...
-                  </motion.p>
-                )}
-              </AnimatePresence>
-            </motion.div>
+            </motion.svg>
+            <SnigdhaOSLogo className="w-24 h-24 text-white" />
+          </motion.div>
+
+          {/* Boot Log */}
+          <div className="w-full max-w-lg h-48 font-mono text-sm text-gray-400 p-4 overflow-hidden">
+            <AnimatePresence>
+              {bootSequence.slice(0, step).map((item, index) => (
+                <motion.div
+                  key={index}
+                  className="flex items-center justify-between"
+                  initial={{ opacity: 0, y: 15 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3, ease: 'easeOut' }}
+                >
+                  <p>
+                    <span className="text-gray-600 mr-2">{`[${(item.duration / 1000).toFixed(2)}]`}</span>
+                    {item.text}
+                  </p>
+                  {item.status && (
+                     <p className={`font-bold ${item.status === "DONE" ? 'text-green-400' : 'text-blue-400'}`}>
+                       {item.status === "DONE" ? <CheckCircle size={16} /> : `[ ${item.status} ]`}
+                     </p>
+                  )}
+                </motion.div>
+              ))}
+            </AnimatePresence>
+            {step < bootSequence.length && (
+              <motion.div 
+                className="flex items-center"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.1 }}
+              >
+                  <Loader className="animate-spin text-gray-500 mr-2" size={14}/>
+                  <span>{bootSequence[step].text}</span>
+              </motion.div>
+            )}
           </div>
           
-          {/* Credits and Version Info at bottom with reveal animation */}
-          <motion.div 
-            className="absolute bottom-8 flex flex-col items-center"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1, duration: 0.8 }}
-          >
-            <div className="flex flex-col items-center gap-1.5">
-              <p className="text-white/80 text-sm font-medium bg-gradient-to-r from-primary/80 to-purple-400/80 bg-clip-text text-transparent">
-                Snigdha OS
-              </p>
-              <div className="flex items-center gap-2">
-                <p className="text-white/60 text-xs">
-                  Created by
-                </p>
-                <a 
-                  href="https://github.com/Snigdha-OS" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="text-primary/80 hover:text-primary transition-colors text-xs font-medium"
-                >
-                  Snigdha
-                </a>
-                <span className="text-white/40">×</span>
-                <a 
-                  href="https://github.com/eshanized" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="text-purple-400/80 hover:text-purple-400 transition-colors text-xs font-medium"
-                >
-                  Eshan Roy
-                </a>
-              </div>
-            </div>
-            <motion.div
-              className="flex items-center gap-2 mt-2"
-              initial={{ scale: 0.8 }}
-              animate={{ scale: 1 }}
-              transition={{ delay: 1.2, duration: 0.5 }}
-            >
-              <div className="h-1.5 w-1.5 rounded-full bg-green-500 animate-pulse"></div>
-              <p className="text-white/40 text-xs font-light">
-                Version 2.0.0
-              </p>
-            </motion.div>
-          </motion.div>
-          
-          {/* Language & Region Indicator (top right) */}
           <motion.div
-            className="absolute top-6 right-6"
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 0.8, x: 0 }}
-            transition={{ delay: 0.5, duration: 0.5 }}
+            className="absolute bottom-8 text-center"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1, duration: 1 }}
           >
-            <div className="flex items-center gap-2 backdrop-blur-md bg-white/5 px-3 py-1.5 rounded-full">
-              <svg 
-                className="w-4 h-4 text-white/60"
-                xmlns="http://www.w3.org/2000/svg" 
-                viewBox="0 0 24 24" 
-                fill="none" 
-                stroke="currentColor" 
-                strokeWidth="1.5" 
-                strokeLinecap="round" 
-                strokeLinejoin="round"
-              >
-                <path d="M12 12c-3-2.5-6-3.5-9-3l.5 14.5.5.5H12m0-12c3-2.5 6-3.5 9-3l-.5 14.5-.5.5H12"></path>
-              </svg>
-              <span className="text-white/60 text-xs">English</span>
-            </div>
+            <p className="text-gray-500 text-xs">SnigdhaOS v2.0.0 "Aurora"</p>
           </motion.div>
-          
-          {/* System Stats (bottom left) */}
-          <motion.div 
-            className="absolute bottom-6 left-6 flex flex-col backdrop-blur-md bg-white/5 px-3 py-2 rounded-lg"
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 0.9, x: 0 }}
-            transition={{ delay: 0.7 }}
-          >
-            <div className="flex items-center space-x-2">
-              <div className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse"></div>
-              <span className="text-white/60 text-xs">CPU: 42°C</span>
-            </div>
-            <div className="flex items-center space-x-2 mt-0.5">
-              <div className="h-1.5 w-1.5 rounded-full bg-green-500 animate-pulse"></div>
-              <span className="text-white/60 text-xs">Memory: 8GB</span>
-            </div>
-          </motion.div>
+
         </motion.div>
-      ) : null}
+      )}
     </AnimatePresence>
   );
 }
