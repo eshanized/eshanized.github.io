@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import { motion, AnimatePresence, useAnimation } from 'framer-motion';
 import { PERSONAL_INFO } from '@/lib/constants';
-import { User, Wifi, Battery, ChevronDown, Lock, ArrowRight, Info, Globe, Moon, Sun } from 'lucide-react';
+import { Wifi, Battery, Lock, Info, Terminal } from 'lucide-react';
 import { SnigdhaOSLogo } from './snigdhaos-logo';
 
 // Catppuccin color palette
@@ -22,250 +22,178 @@ const catppuccinColors = {
     overlay: 'rgba(17, 17, 27, 0.75)',  // Base
     accent: 'rgba(203, 166, 247, 1)',   // Lavender
     text: 'rgba(205, 214, 244, 1)',     // Text
+    green: 'rgba(166, 227, 161, 1)', // Green
   },
-  light: {
-    base: [
-      'rgba(168, 130, 216, 0.6)',  // Mauve
-      'rgba(215, 139, 97, 0.6)',   // Peach
-      'rgba(136, 197, 131, 0.6)',  // Green
-      'rgba(118, 196, 183, 0.6)',  // Teal
-      'rgba(107, 150, 220, 0.6)',  // Blue
-      'rgba(173, 136, 217, 0.6)',  // Lavender
-    ],
-    surface: 'rgba(239, 241, 245, 0.85)', // Surface0
-    overlay: 'rgba(220, 224, 232, 0.75)', // Base
-    accent: 'rgba(173, 136, 217, 1)',     // Lavender
-    text: 'rgba(76, 79, 105, 1)',         // Text
-  }
 };
 
+const bootMessages = [
+    { text: "SNIGDHAOS v24.04 INITIALIZING...", delay: 0 },
+    { text: "KERNEL BOOT SEQUENCE INITIATED...", delay: 0.5 },
+    { text: "LOADING PARTICLE MATRIX...", delay: 1.2 },
+    { text: "CALIBRATING RENDERER...", delay: 1.8 },
+    { text: "AWAITING USER AUTHENTICATION...", delay: 2.5 },
+];
+
 export function LoginScreen({ onLogin }: { onLogin: (specialUser?: string) => void }) {
+  const [isBooting, setIsBooting] = useState(true);
   const [currentTime, setCurrentTime] = useState("");
   const [currentDate, setCurrentDate] = useState("");
   const [password, setPassword] = useState("");
   const [isPasswordFocused, setIsPasswordFocused] = useState(false);
   const [isShaking, setIsShaking] = useState(false);
   const [showPasswordHint, setShowPasswordHint] = useState(false);
-  const [bgPosition, setBgPosition] = useState({ x: 0, y: 0 });
+  const [cardRotation, setCardRotation] = useState({ rotateX: 0, rotateY: 0 });
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const controls = useAnimation();
 
-  // Remove theme state and always use dark theme
+  // Always use dark theme
   const theme = 'dark';
 
-  // Enhanced animated background effect
+  // Boot sequence
+  useEffect(() => {
+    const bootTimer = setTimeout(() => {
+      setIsBooting(false);
+    }, 4000); // 4 second boot time
+    return () => clearTimeout(bootTimer);
+  }, []);
+
+  // Animated background effect
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
     const resizeCanvas = () => {
-      if (!canvas || !ctx) return;
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+        if (!canvas || !ctx) return;
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
     };
-
     resizeCanvas();
 
     const particles: Array<{
-      x: number;
-      y: number;
-      size: number;
-      speedX: number;
-      speedY: number;
-      opacity: number;
-      color: string;
-      pulse: number;
-      orbitRadius: number;
-      orbitSpeed: number;
-      orbitAngle: number;
+      x: number; y: number; size: number; speedX: number; speedY: number;
+      opacity: number; color: string; pulse: number;
     }> = [];
 
-    // Use Catppuccin colors
-    const colors = theme === 'dark' 
-      ? catppuccinColors.dark.base
-      : catppuccinColors.light.base;
+    const colors = catppuccinColors.dark.base;
 
-    // Create particles with enhanced properties
-      for (let i = 0; i < 80; i++) {
+    for (let i = 0; i < 80; i++) {
         particles.push({
-          x: Math.random() * canvas.width,
-          y: Math.random() * canvas.height,
-        size: Math.random() * 4 + 1,
-        speedX: (Math.random() - 0.5) * 1.2,
-        speedY: (Math.random() - 0.5) * 1.2,
-        opacity: Math.random() * 0.5 + 0.3,
-          color: colors[Math.floor(Math.random() * colors.length)],
-        pulse: Math.random() * Math.PI,
-        orbitRadius: Math.random() * 100 + 50,
-        orbitSpeed: (Math.random() - 0.5) * 0.02,
-        orbitAngle: Math.random() * Math.PI * 2
-      });
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            size: Math.random() * 2 + 1,
+            speedX: (Math.random() - 0.5) * 0.3,
+            speedY: (Math.random() - 0.5) * 0.3,
+            opacity: Math.random() * 0.4 + 0.1,
+            color: colors[Math.floor(Math.random() * colors.length)],
+            pulse: Math.random() * Math.PI,
+        });
     }
 
     let mouseX = 0;
     let mouseY = 0;
-    let isMouseMoving = false;
-    let mouseTimeout: NodeJS.Timeout;
 
-    canvas.addEventListener('mousemove', (e) => {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-      isMouseMoving = true;
-      clearTimeout(mouseTimeout);
-      mouseTimeout = setTimeout(() => {
-        isMouseMoving = false;
-      }, 100);
-    });
+    const handleMouseMove = (e: MouseEvent) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+    };
+    window.addEventListener('mousemove', handleMouseMove);
 
     function drawParticles() {
-      if (!canvas || !ctx) return;
-      
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      
-      // Create dynamic gradient background with Catppuccin colors
-      const time = Date.now() * 0.0002;
-      const gradient = ctx.createLinearGradient(
-        Math.sin(time) * canvas.width,
-        0,
-        Math.cos(time) * canvas.width,
-        canvas.height
-      );
-      
-      if (theme === 'dark') {
-        gradient.addColorStop(0, '#1e1e2e');  // Catppuccin Mocha base
-        gradient.addColorStop(0.5, '#181825'); // Catppuccin Mocha mantle
-        gradient.addColorStop(1, '#11111b');   // Catppuccin Mocha crust
-      } else {
-        gradient.addColorStop(0, '#eff1f5');   // Catppuccin Latte base
-        gradient.addColorStop(0.5, '#e6e9ef'); // Catppuccin Latte mantle
-        gradient.addColorStop(1, '#dce0e8');   // Catppuccin Latte crust
-      }
-      
-      ctx.fillStyle = gradient;
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      // Draw particles with enhanced effects
-      particles.forEach((particle, i) => {
-        // Update particle position with orbital motion
-        if (isMouseMoving) {
-          // Calculate distance to mouse
-          const dx = mouseX - particle.x;
-          const dy = mouseY - particle.y;
-          const distance = Math.sqrt(dx * dx + dy * dy);
-          
-          // Apply attraction/repulsion based on mouse position
-          if (distance < 200) {
-            const force = (200 - distance) / 200;
-            particle.speedX += (dx / distance) * force * 0.2;
-            particle.speedY += (dy / distance) * force * 0.2;
-          }
-        }
-
-        // Update orbital motion
-        particle.orbitAngle += particle.orbitSpeed;
-        const orbitX = Math.cos(particle.orbitAngle) * particle.orbitRadius;
-        const orbitY = Math.sin(particle.orbitAngle) * particle.orbitRadius;
-
-        // Blend linear and orbital motion
-        particle.x += particle.speedX + orbitX * 0.01;
-        particle.y += particle.speedY + orbitY * 0.01;
-        particle.pulse += 0.02;
-
-        // Apply velocity dampening
-        particle.speedX *= 0.99;
-        particle.speedY *= 0.99;
-
-        // Dynamic size pulsing
-        const pulsedSize = particle.size * (1 + Math.sin(particle.pulse) * 0.3);
-
-        // Boundary check with smooth transition
-        if (particle.x < 0) particle.x = canvas.width;
-        if (particle.x > canvas.width) particle.x = 0;
-        if (particle.y < 0) particle.y = canvas.height;
-        if (particle.y > canvas.height) particle.y = 0;
-
-        // Draw enhanced particle with glow effect
-        ctx.beginPath();
-        ctx.arc(particle.x, particle.y, pulsedSize, 0, Math.PI * 2);
+        if (!canvas || !ctx) return;
         
-        // Create radial gradient for glow effect
-        const gradient = ctx.createRadialGradient(
-          particle.x, particle.y, 0,
-          particle.x, particle.y, pulsedSize * 2
-        );
-        gradient.addColorStop(0, particle.color);
-        gradient.addColorStop(1, 'rgba(0,0,0,0)');
-        
-        ctx.fillStyle = gradient;
-        ctx.globalAlpha = particle.opacity * (0.8 + Math.sin(particle.pulse) * 0.2);
-        ctx.fill();
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = '#11111b'; // Catppuccin Mocha crust
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        // Draw connecting lines with dynamic opacity and gradient
-        particles.slice(i + 1).forEach(otherParticle => {
-          const dx = particle.x - otherParticle.x;
-          const dy = particle.y - otherParticle.y;
-          const distance = Math.sqrt(dx * dx + dy * dy);
+        particles.forEach((p, i) => {
+            const dx = p.x - mouseX;
+            const dy = p.y - mouseY;
+            const dist = Math.sqrt(dx * dx + dy * dy);
 
-          if (distance < 150) {
+            // Repel from mouse
+            if (dist < 150) {
+                const force = (150 - dist) / 150;
+                p.x += (dx / dist) * force * 0.5;
+                p.y += (dy / dist) * force * 0.5;
+            }
+
+            p.x += p.speedX;
+            p.y += p.speedY;
+
+            if (p.x < 0) p.x = canvas.width;
+            if (p.x > canvas.width) p.x = 0;
+            if (p.y < 0) p.y = canvas.height;
+            if (p.y > canvas.height) p.y = 0;
+
+            p.pulse += 0.02;
+            const pulsedSize = p.size * (1 + Math.sin(p.pulse) * 0.3);
+
             ctx.beginPath();
-            ctx.moveTo(particle.x, particle.y);
-            ctx.lineTo(otherParticle.x, otherParticle.y);
-            
-            // Create gradient line with dynamic color
-            const lineGradient = ctx.createLinearGradient(
-              particle.x, particle.y,
-              otherParticle.x, otherParticle.y
-            );
-            lineGradient.addColorStop(0, particle.color);
-            lineGradient.addColorStop(1, otherParticle.color);
-            
-            ctx.strokeStyle = lineGradient;
-            ctx.globalAlpha = (1 - distance / 150) * 0.5 * 
-              (0.5 + Math.sin(particle.pulse + otherParticle.pulse) * 0.5);
-            ctx.lineWidth = Math.min(2, (1 - distance / 150) * 2);
-            ctx.stroke();
-          }
-        });
-      });
+            const gradient = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, pulsedSize);
+            gradient.addColorStop(0, p.color);
+            gradient.addColorStop(1, 'transparent');
+            ctx.fillStyle = gradient;
+            ctx.globalAlpha = p.opacity;
+            ctx.arc(p.x, p.y, pulsedSize, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.globalAlpha = 1;
 
-      requestAnimationFrame(drawParticles);
+            // Draw connecting lines
+            for (let j = i + 1; j < particles.length; j++) {
+                const p2 = particles[j];
+                const dxLine = p.x - p2.x;
+                const dyLine = p.y - p2.y;
+                const distance = Math.sqrt(dxLine * dxLine + dyLine * dyLine);
+                if (distance < 120) {
+                    ctx.beginPath();
+                    ctx.moveTo(p.x, p.y);
+                    ctx.lineTo(p2.x, p2.y);
+                    const lineGradient = ctx.createLinearGradient(p.x, p.y, p2.x, p2.y);
+                    lineGradient.addColorStop(0, p.color);
+                    lineGradient.addColorStop(1, p2.color);
+                    ctx.strokeStyle = lineGradient;
+                    ctx.lineWidth = 0.3;
+                    ctx.globalAlpha = (1 - distance / 120) * p.opacity * 0.8;
+                    ctx.stroke();
+                }
+            }
+            ctx.globalAlpha = 1;
+        });
+
+        requestAnimationFrame(drawParticles);
     }
 
     drawParticles();
     window.addEventListener('resize', resizeCanvas);
     return () => {
       window.removeEventListener('resize', resizeCanvas);
-      clearTimeout(mouseTimeout);
+      window.removeEventListener('mousemove', handleMouseMove);
     };
-  }, [theme]);
+  }, []);
 
   // Clock and date update
   useEffect(() => {
     const updateDateTime = () => {
       const now = new Date();
-      setCurrentTime(now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
-      setCurrentDate(now.toLocaleDateString([], { weekday: 'long', month: 'long', day: 'numeric' }));
+      setCurrentTime(now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true }));
+      setCurrentDate(now.toLocaleDateString([], { weekday: 'short', month: 'long', day: 'numeric' }));
     };
-    
     updateDateTime();
     const interval = setInterval(updateDateTime, 1000);
     return () => clearInterval(interval);
   }, []);
 
-  // Handle mouse movement for subtle parallax effect
-  const handleMouseMove = (e: React.MouseEvent) => {
-    const { clientX, clientY } = e;
-    const windowWidth = window.innerWidth;
-    const windowHeight = window.innerHeight;
+  const handleCardMouseMove = (e: React.MouseEvent) => {
+    const card = e.currentTarget.getBoundingClientRect();
+    const x = e.clientX - card.left - card.width / 2;
+    const y = e.clientY - card.top - card.height / 2;
     
-    // Calculate percentage movement (-15 to 15) - more subtle than before
-    const xPercent = (clientX / windowWidth - 0.5) * 30;
-    const yPercent = (clientY / windowHeight - 0.5) * 30;
-    
-    setBgPosition({ x: xPercent, y: yPercent });
+    const rotateX = (-y / card.height) * 10;
+    const rotateY = (x / card.width) * 10;
+
+    setCardRotation({ rotateX, rotateY });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -292,449 +220,225 @@ export function LoginScreen({ onLogin }: { onLogin: (specialUser?: string) => vo
   };
 
   return (
-    <div className="fixed inset-0 overflow-hidden select-none" onMouseMove={handleMouseMove}>
-      {/* Canvas background */}
-      <canvas
-        ref={canvasRef}
-        className="absolute inset-0 w-full h-full"
-      />
+    <div className="fixed inset-0 overflow-hidden select-none bg-black">
+      <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" />
       
-      {/* Enhanced background effects */}
-      <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-black/10 pointer-events-none"/>
-      <div 
-        className="absolute inset-0 mix-blend-overlay pointer-events-none"
-        style={{
-          backgroundImage: theme === 'dark'
-            ? `radial-gradient(circle at 50% 50%, ${catppuccinColors.dark.base[0]}, transparent 70%),
-               radial-gradient(circle at 100% 0%, ${catppuccinColors.dark.base[5]}, transparent 50%)`
-            : `radial-gradient(circle at 50% 50%, ${catppuccinColors.light.base[0]}, transparent 70%),
-               radial-gradient(circle at 100% 0%, ${catppuccinColors.light.base[5]}, transparent 50%)`
-        }}
-      />
-      <div className="absolute inset-0 bg-[url(https://grainy-gradients.vercel.app/noise.svg)] opacity-[0.15] pointer-events-none mix-blend-overlay"/>
-      
-      {/* Main content with split layout */}
-      <div className="absolute inset-0 flex">
-        {/* Left panel - Decorative */}
-        <motion.div 
-          className="hidden lg:flex w-1/2 relative overflow-hidden items-center justify-center"
-          initial={{ opacity: 0, x: -50 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-        >
-          {/* Brand text overlay */}
-          <div className="absolute inset-0 flex flex-col items-center justify-between p-12 z-10">
-      <motion.div 
-              initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 1, duration: 0.8 }}
-              className="text-center"
+      <AnimatePresence>
+        {!isBooting && (
+            <motion.div 
+                className="absolute inset-0 pointer-events-none"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 1 }}
             >
-              <h2 
-                className="text-6xl font-bold mb-2"
-                style={{
-                  background: `linear-gradient(135deg, ${catppuccinColors.dark.base[0]}, ${catppuccinColors.dark.base[5]})`,
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                  textShadow: '0 0 30px rgba(203, 166, 247, 0.3)',
-                }}
-              >
-            SnigdhaOS
-              </h2>
-              <p 
-                className="text-xl"
+                <motion.div
+                    className="absolute top-[-20%] left-[-20%] w-[80vmin] h-[80vmin] rounded-full blur-3xl"
+                    style={{ backgroundColor: 'rgba(198, 160, 246, 0.1)' /* Mauve */ }}
+                    animate={{ x: [0, 50, 0], y: [0, -50, 0] }}
+                    transition={{ duration: 40, repeat: Infinity, ease: 'easeInOut', repeatType: 'mirror' }}
+                />
+                <motion.div
+                    className="absolute bottom-[-20%] right-[-20%] w-[70vmin] h-[70vmin] rounded-full blur-3xl"
+                    style={{ backgroundColor: 'rgba(137, 180, 250, 0.1)' /* Blue */ }}
+                    animate={{ x: [0, -50, 0], y: [0, 50, 0] }}
+                    transition={{ duration: 50, repeat: Infinity, ease: 'easeInOut', repeatType: 'mirror' }}
+                />
+            </motion.div>
+        )}
+      </AnimatePresence>
+
+      <div className="absolute inset-0 bg-[url(https://grainy-gradients.vercel.app/noise.svg)] opacity-[0.08] pointer-events-none mix-blend-soft-light"/>
+      
+      <AnimatePresence>
+        {isBooting ? (
+          <motion.div
+            key="boot-screen"
+            className="absolute inset-0 flex items-center justify-center"
+            exit={{ opacity: 0, transition: { duration: 0.5 } }}
+          >
+            <div className="font-mono text-green-400/80 text-lg p-8 space-y-2">
+              <div className="flex items-center gap-4 mb-4">
+                <Terminal className="w-8 h-8"/>
+                <h1 className="text-2xl font-bold">SnigdhaOS Bootloader</h1>
+              </div>
+              {bootMessages.map((msg, index) => (
+                <motion.p
+                  key={index}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: msg.delay }}
+                  className="flex items-center gap-2"
+                >
+                  <span className="text-green-400/50">{`[${(msg.delay * 1000).toString().padStart(4, '0')}]`}</span>
+                  <span>{msg.text}</span>
+                  <motion.span
+                    className="w-2 h-4 bg-green-400"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: [0, 1, 0] }}
+                    transition={{ delay: msg.delay, repeat: Infinity, duration: 1 }}
+                  />
+                </motion.p>
+              ))}
+            </div>
+          </motion.div>
+        ) : (
+          <motion.div 
+            key="login-ui"
+            className="absolute inset-0 flex flex-col items-center justify-center p-4"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+          >
+            <motion.div
+                className="absolute top-0 left-0 right-0 h-16 flex items-center justify-between px-8 text-sm"
                 style={{ color: catppuccinColors.dark.text }}
-              >
-                Elegance in Simplicity
-              </p>
+                initial={{ y: -50, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+            >
+                <div className="flex items-center gap-3 font-medium">
+                    <SnigdhaOSLogo className="w-6 h-6" />
+                    <span>SnigdhaOS</span>
+                </div>
+                <div className="flex items-center gap-6" style={{ color: 'rgba(205, 214, 244, 0.8)' }}>
+                    <span>{currentDate}</span>
+                    <div className="flex items-center gap-4">
+                        <span>{currentTime}</span>
+                        <Wifi size={18} />
+                        <Battery size={18} />
+                    </div>
+                </div>
             </motion.div>
 
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 1.2, duration: 0.8 }}
-              className="text-center"
-            >
-              <p 
-                className="text-sm uppercase tracking-wider mb-2"
-                style={{ color: 'rgba(205, 214, 244, 0.6)' }}
-              >
-                Powered by
-              </p>
-              <p 
-                className="text-2xl font-bold"
-                style={{
-                  background: `linear-gradient(135deg, ${catppuccinColors.dark.base[2]}, ${catppuccinColors.dark.base[3]})`,
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                }}
-              >
-                Eshanized
-              </p>
-            </motion.div>
-          </div>
-
-          {/* Animated circles background */}
-          <div className="absolute inset-0 flex items-center justify-center">
-            {[...Array(3)].map((_, i) => (
-              <motion.div
-                key={i}
-                className="absolute rounded-full"
-                style={{
-                  width: `${400 + i * 100}px`,
-                  height: `${400 + i * 100}px`,
-                  border: `2px solid ${theme === 'dark' 
-                    ? catppuccinColors.dark.base[i] 
-                    : catppuccinColors.light.base[i]}`,
-                  opacity: 0.2 - i * 0.05
-                }}
-                animate={{
-                  rotate: [0, 360],
-                  scale: [1, 1.1, 1]
-                }}
-                transition={{
-                  duration: 20 + i * 5,
-                  repeat: Infinity,
-                  ease: "linear"
-                }}
-              />
-            ))}
-          </div>
-
-          {/* Large decorative logo */}
-          <motion.div
-            className="relative z-10 transform"
-            animate={{
-              scale: [1, 1.05, 1],
-              rotate: [0, 5, 0]
-            }}
-            transition={{
-              duration: 8,
-              repeat: Infinity,
-              ease: "easeInOut"
-            }}
-          >
-            <div className="relative w-64 h-64">
-              <motion.div 
-                className="absolute inset-0 rounded-full"
-                style={{
-                  background: `conic-gradient(from 0deg, ${
-                    theme === 'dark'
-                      ? catppuccinColors.dark.base.join(', ')
-                      : catppuccinColors.light.base.join(', ')
-                  })`
-                }}
-                animate={{
-                  rotate: [0, 360]
-                }}
-                transition={{
-                  duration: 20,
-                  repeat: Infinity,
-                  ease: "linear"
-                }}
-              />
-              <motion.div 
-                className="absolute inset-0"
-                style={{
-                  background: `radial-gradient(circle at 30% 30%, ${
-                    theme === 'dark' 
-                      ? catppuccinColors.dark.base[0]
-                      : catppuccinColors.light.base[0]
-                  }, transparent)`,
-                  filter: 'blur(30px)',
-                }}
-                animate={{
-                  scale: [1, 1.2, 1],
-                  opacity: [0.5, 0.8, 0.5]
-                }}
-                transition={{
-                  duration: 4,
-                  repeat: Infinity,
-                  ease: "easeInOut"
-                }}
-              />
-              <div className="absolute inset-0 rounded-full flex items-center justify-center backdrop-blur-lg">
-                <SnigdhaOSLogo 
-                  className={`w-40 h-40 ${
-                    theme === 'dark' ? 'text-white' : 'text-[#4169E1]'
-                  }`}
-                />
-          </div>
-        </div>
-      </motion.div>
-      
-          {/* Floating elements */}
-          {[...Array(6)].map((_, i) => (
-        <motion.div 
-              key={i}
-              className="absolute rounded-full"
+              className="w-full max-w-sm"
               style={{
-                width: '8px',
-                height: '8px',
-                background: theme === 'dark'
-                  ? catppuccinColors.dark.base[i]
-                  : catppuccinColors.light.base[i],
-                top: `${Math.random() * 100}%`,
-                left: `${Math.random() * 100}%`,
+                transformStyle: "preserve-3d",
+                transform: `rotateY(${cardRotation.rotateY}deg) rotateX(${cardRotation.rotateX}deg)`,
               }}
-              animate={{
-                y: [0, -30, 0],
-                opacity: [0.8, 0.3, 0.8],
-              }}
-              transition={{
-                duration: 3 + i,
-                repeat: Infinity,
-                ease: "easeInOut",
-                delay: i * 0.5,
-              }}
-            />
-          ))}
-        </motion.div>
-        
-        {/* Right panel - Login form */}
-        <motion.div 
-          className="w-full lg:w-1/2 flex flex-col items-center justify-center p-8"
-          initial={{ opacity: 0, x: 50 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-        >
-          {/* Welcome text with enhanced branding */}
-          <motion.div 
-            className="text-center mb-12"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-          >
-            <motion.div className="mb-6">
-          <motion.div
-                className="flex items-center justify-center mb-4"
-                whileHover={{ scale: 1.05 }}
-                transition={{ type: "spring", stiffness: 400 }}
-              >
-                <SnigdhaOSLogo className="w-16 h-16" />
-              </motion.div>
-              <h1 
-                className="text-5xl font-bold mb-2"
+              onMouseMove={handleCardMouseMove}
+              onMouseLeave={() => setCardRotation({ rotateX: 0, rotateY: 0 })}
+            >
+              <div
+                className="w-full relative p-8 space-y-6 rounded-3xl"
                 style={{ 
-                  background: `linear-gradient(135deg, ${catppuccinColors.dark.base[0]}, ${catppuccinColors.dark.base[5]})`,
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
+                  background: 'rgba(30, 30, 46, 0.75)',
+                  backdropFilter: 'blur(20px) saturate(180%)',
+                  border: '1px solid rgba(205, 214, 244, 0.2)',
+                  boxShadow: '0 0 80px rgba(0,0,0,0.4)',
                 }}
               >
-                Welcome Back
-              </h1>
-              <p 
-                className="text-lg"
-                style={{ color: 'rgba(205, 214, 244, 0.8)' }}
-              >
-                to your digital sanctuary
-              </p>
-            </motion.div>
-            <motion.p 
-              className="text-xl"
-              style={{ color: catppuccinColors.dark.text }}
-            >
-              {currentDate}
-            </motion.p>
-          </motion.div>
-          
-          {/* Login form container */}
-          <motion.div 
-            className="w-full max-w-md relative"
-            style={{ 
-              background: catppuccinColors.dark.surface,
-              borderRadius: '24px',
-              padding: '32px',
-              backdropFilter: 'blur(20px)',
-              boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3), inset 0 0 0 1px rgba(255, 255, 255, 0.1)',
-            }}
-            initial={{ scale: 0.95 }}
-            animate={{ scale: 1 }}
-            transition={{ delay: 0.5 }}
-          >
-            {/* Decorative corner accents */}
-            <div className="absolute top-0 left-0 w-16 h-16 pointer-events-none">
-              <div className="absolute top-0 left-0 w-[2px] h-8" style={{ background: catppuccinColors.dark.base[0] }} />
-              <div className="absolute top-0 left-0 w-8 h-[2px]" style={{ background: catppuccinColors.dark.base[0] }} />
-            </div>
-            <div className="absolute top-0 right-0 w-16 h-16 pointer-events-none">
-              <div className="absolute top-0 right-0 w-[2px] h-8" style={{ background: catppuccinColors.dark.base[5] }} />
-              <div className="absolute top-0 right-0 w-8 h-[2px]" style={{ background: catppuccinColors.dark.base[5] }} />
-            </div>
-            <div className="absolute bottom-0 left-0 w-16 h-16 pointer-events-none">
-              <div className="absolute bottom-0 left-0 w-[2px] h-8" style={{ background: catppuccinColors.dark.base[2] }} />
-              <div className="absolute bottom-0 left-0 w-8 h-[2px]" style={{ background: catppuccinColors.dark.base[2] }} />
-            </div>
-            <div className="absolute bottom-0 right-0 w-16 h-16 pointer-events-none">
-              <div className="absolute bottom-0 right-0 w-[2px] h-8" style={{ background: catppuccinColors.dark.base[3] }} />
-              <div className="absolute bottom-0 right-0 w-8 h-[2px]" style={{ background: catppuccinColors.dark.base[3] }} />
-            </div>
+                <div 
+                  className="absolute -inset-px rounded-3xl pointer-events-none"
+                  style={{
+                    border: '1px solid transparent',
+                    backgroundImage: `radial-gradient(circle at ${cardRotation.rotateY * 5 + 50}% ${-cardRotation.rotateX * 5 + 50}%, rgba(203, 166, 247, 0.3), transparent 50%)`
+                  }}
+                />
+                
+                <div className="text-center space-y-2" style={{ transform: 'translateZ(20px)' }}>
+                  <motion.div 
+                    className="flex justify-center"
+                    initial={{ opacity: 0, scale: 0.5 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 0.2, type: 'spring' }}
+                  >
+                    <Image src={PERSONAL_INFO.avatar} alt="Avatar" width={80} height={80} className="rounded-full border-2 border-white/20 shadow-lg"/>
+                  </motion.div>
+                  <h1 className="text-2xl font-bold" style={{color: catppuccinColors.dark.text}}>
+                    {PERSONAL_INFO.name}
+                  </h1>
+                  <p className="text-sm" style={{color: 'rgba(205, 214, 244, 0.7)'}}>
+                    Enter password to unlock
+                  </p>
+                </div>
 
-            {/* Time display */}
+                <motion.form 
+                  onSubmit={handleSubmit}
+                  animate={{ x: isShaking ? [-8, 8, -8, 8, 0] : 0 }}
+                  transition={{ duration: 0.4 }}
+                  className="space-y-4"
+                  style={{ transform: 'translateZ(40px)' }}
+                >
+                  <div className="relative">
+                    <motion.input
+                      type="password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      onFocus={() => setIsPasswordFocused(true)}
+                      onBlur={() => setIsPasswordFocused(false)}
+                      placeholder="Password"
+                      className="w-full h-12 rounded-lg px-12 text-center bg-transparent outline-none transition-all duration-300"
+                      style={{
+                        color: catppuccinColors.dark.text,
+                        border: `1px solid ${isPasswordFocused ? catppuccinColors.dark.accent : 'rgba(205, 214, 244, 0.2)'}`,
+                        boxShadow: isPasswordFocused ? `0 0 0 3px rgba(203, 166, 247, 0.2)` : 'none',
+                      }}
+                    />
+                    <Lock className={`absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 transition-colors duration-300 ${isPasswordFocused ? 'text-[#cba6f7]' : 'opacity-40'}`} />
+                  </div>
+
+                  <motion.button
+                    type="submit"
+                    className="w-full h-12 rounded-lg relative overflow-hidden font-semibold text-lg"
+                    style={{ background: `linear-gradient(135deg, ${catppuccinColors.dark.base[0]}, ${catppuccinColors.dark.base[4]})` }}
+                    whileHover={{ scale: 1.05, transition: { type: 'spring', stiffness: 300 } }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    <span className="relative z-10 text-black/80">Authenticate</span>
+                  </motion.button>
+                </motion.form>
+
+                <div className="flex items-center justify-between text-sm" style={{ transform: 'translateZ(20px)' }}>
+                  <button 
+                    onClick={() => onLogin()}
+                    className="px-4 py-2 rounded-lg transition-colors"
+                    style={{ color: 'rgba(205, 214, 244, 0.6)' }}
+                    onMouseEnter={e => e.currentTarget.style.backgroundColor = 'rgba(205, 214, 244, 0.1)'}
+                    onMouseLeave={e => e.currentTarget.style.backgroundColor = 'transparent'}
+                  >
+                    Guest Access
+                  </button>
+                  <button 
+                    onClick={() => setShowPasswordHint(!showPasswordHint)}
+                    className="px-4 py-2 rounded-lg transition-colors flex items-center gap-1.5"
+                    style={{ color: 'rgba(205, 214, 244, 0.6)' }}
+                    onMouseEnter={e => e.currentTarget.style.backgroundColor = 'rgba(205, 214, 244, 0.1)'}
+                    onMouseLeave={e => e.currentTarget.style.backgroundColor = 'transparent'}
+                  >
+                    <Info size={14}/> Hint
+                  </button>
+                </div>
+                
+                <AnimatePresence>
+                  {showPasswordHint && (
+                    <motion.div 
+                      initial={{ opacity: 0, y: 10, height: 0 }}
+                      animate={{ opacity: 1, y: 0, height: 'auto' }}
+                      exit={{ opacity: 0, y: 10, height: 0 }}
+                      className="text-center text-sm"
+                      style={{ color: catppuccinColors.dark.text, transform: 'translateZ(20px)'}}
+                    >
+                      <p className="p-2 bg-black/20 rounded-lg">Hint: Try the name that brings love ♥</p>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            </motion.div>
+
             <motion.div 
-              className="text-center mb-8"
+              className="mt-8 text-center"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ delay: 0.7 }}
+              transition={{ delay: 1 }}
             >
-              <h2 
-                className="text-6xl font-light"
-                style={{ color: catppuccinColors.dark.text }}
-              >
-                {currentTime}
-              </h2>
-              </motion.div>
-          
-            {/* Password input */}
-          <motion.form 
-            onSubmit={handleSubmit}
-              animate={{ x: isShaking ? [-10, 10, -10, 10, 0] : 0 }}
-              transition={{ duration: 0.4 }}
-              className="space-y-6"
-            >
-              <div className="relative">
-                <motion.input
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  onFocus={() => setIsPasswordFocused(true)}
-                  onBlur={() => setIsPasswordFocused(false)}
-                  placeholder="Enter password"
-                  className="w-full h-14 rounded-xl px-12 outline-none transition-all duration-300"
-                  style={{
-                    backgroundColor: theme === 'dark' 
-                      ? 'rgba(255, 255, 255, 0.08)' 
-                      : 'rgba(65, 105, 225, 0.08)',
-                    color: theme === 'dark' 
-                      ? catppuccinColors.dark.text 
-                      : catppuccinColors.light.text,
-                    border: `1px solid ${isPasswordFocused 
-                      ? theme === 'dark' 
-                        ? catppuccinColors.dark.accent 
-                        : catppuccinColors.light.accent
-                      : theme === 'dark' 
-                        ? 'rgba(255, 255, 255, 0.1)' 
-                        : 'rgba(65, 105, 225, 0.2)'}`,
-                    boxShadow: isPasswordFocused 
-                      ? `0 0 0 4px ${theme === 'dark' 
-                        ? 'rgba(203, 166, 247, 0.2)' 
-                        : 'rgba(173, 136, 217, 0.15)'}`
-                      : 'none',
-                  }}
-                />
-                <Lock className={`absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 transition-colors duration-300 ${
-                  isPasswordFocused 
-                    ? theme === 'dark' 
-                      ? 'text-[#cba6f7]' 
-                      : 'text-[#ad88d9]' 
-                    : 'opacity-50'
-                }`} />
-              </div>
-
-              {/* Login button */}
-                <motion.button
-                  type="submit"
-                className="w-full h-14 rounded-xl relative overflow-hidden"
-                  style={{
-                  background: theme === 'dark'
-                    ? `linear-gradient(135deg, ${catppuccinColors.dark.base[0]}, ${catppuccinColors.dark.base[5]})`
-                    : `linear-gradient(135deg, ${catppuccinColors.light.base[0]}, ${catppuccinColors.light.base[5]})`,
-                }}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                <motion.div
-                  className="absolute inset-0 bg-white/20"
-                  initial={{ x: '-100%' }}
-                  animate={{ x: '100%' }}
-                  transition={{
-                    repeat: Infinity,
-                    duration: 1.5,
-                    ease: 'linear',
-                  }}
-                />
-                <span className="relative z-10 text-white font-medium">
-                  Login
-                </span>
-                </motion.button>
-            
-              {/* Skip login button */}
-              <motion.button 
-                type="button"
-                onClick={() => onLogin()}
-                className="w-full h-12 rounded-xl text-base font-medium"
-                style={{
-                  background: theme === 'dark'
-                    ? 'rgba(255, 255, 255, 0.1)'
-                    : 'rgba(65, 105, 225, 0.1)',
-                  color: theme === 'dark'
-                    ? catppuccinColors.dark.text
-                    : catppuccinColors.light.text,
-                }}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                Skip Login
-              </motion.button>
-          </motion.form>
-        </motion.div>
-      
-          {/* Bottom branding */}
-      <motion.div 
-            className="mt-8 text-center"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1.4 }}
-          >
-            <p 
-              className="text-sm"
-              style={{ color: 'rgba(205, 214, 244, 0.6)' }}
-            >
-              SnigdhaOS × Eshanized
-            </p>
-      </motion.div>
-      
-          {/* Bottom controls - Only show password hint toggle */}
-      <motion.div 
-            className="flex justify-center w-full max-w-md mt-8"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.9 }}
-          >
-            {/* Password hint toggle */}
-        <motion.button 
-              onClick={() => setShowPasswordHint(!showPasswordHint)}
-              className="p-3 rounded-xl backdrop-blur-md"
-          style={{ 
-                background: 'rgba(255, 255, 255, 0.1)',
-                border: '1px solid rgba(255, 255, 255, 0.1)',
-          }}
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-        >
-              <Info className="w-5 h-5" />
-        </motion.button>
-      </motion.div>
-      
-          {/* Password hint */}
-          <AnimatePresence>
-            {showPasswordHint && (
-      <motion.div 
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                className="mt-4 text-sm text-center p-3 rounded-xl backdrop-blur-md"
-          style={{ 
-                  background: 'rgba(255, 255, 255, 0.1)',
-                  color: catppuccinColors.dark.text,
-                }}
-              >
-                Hint: Try the name that brings love ♥
-              </motion.div>
-            )}
-          </AnimatePresence>
-      </motion.div>
-      </div>
+              <p className="text-sm" style={{ color: 'rgba(205, 214, 244, 0.5)' }}>
+                SnigdhaOS • Elegance in Simplicity
+              </p>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
