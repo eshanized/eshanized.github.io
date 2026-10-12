@@ -1,198 +1,79 @@
 # eshanized — Personal Portfolio
 
-A narrative-driven, scrollytelling portfolio for **Eshan Roy** (`eshanized`), built with Next.js 13 App Router. The site is structured as a single continuous story across nine editorial chapters, from identity through engineering work and philosophy to vision.
+The source for [eshanized.is-a.dev](https://eshanized.is-a.dev), a narrative portfolio for Eshan Roy (`eshanized`). The site presents nine chapters about engineering practice, projects, and future work in one continuous, responsive page.
 
-**Live:** https://eshanized.is-a.dev
+## Overview
 
----
+- Next.js 13 App Router with TypeScript
+- Tailwind CSS and custom global styles
+- Radix UI primitives, Lucide icons, and CSS/Intersection Observer animations
+- Inter, Marcellus, and JetBrains Mono fonts loaded with `next/font`
+- Static HTML export hosted on GitHub Pages
 
-## Design Direction
+## Getting started
 
-The experience is built around a dark editorial foundation with warm neutral text and restrained coral-red accents. Typography pairs:
+### Requirements
 
-- **Inter** — clean UI sans-serif for body text and interface
-- **Marcellus** — expressive editorial display font for major headings
-- **JetBrains Mono** — authentic monospace for code labels, chapter markers, and technical details
+- Node.js 18 or later
+- npm
 
-The nine narrative chapters flow as one uninterrupted scroll with CSS Intersection Observer–based reveals, a top-of-viewport scroll progress indicator, and a chapter-aware sidebar navigation on desktop.
-
----
-
-## Technology Stack
-
-| Layer | Choice |
-|---|---|
-| Framework | Next.js 13 (App Router) |
-| Language | TypeScript (strict) |
-| Styling | Tailwind CSS 3.3 + CSS Modules for custom utilities |
-| Components | shadcn/ui (Radix primitives) |
-| Fonts | Google Fonts via `next/font` — Inter, Marcellus, JetBrains Mono |
-| Icons | Lucide React |
-| Animation | CSS + Intersection Observer (no heavy animation runtime) |
-| Deployment | GitHub Pages (static export via GitHub Actions) |
-
----
-
-## Getting Started
-
-### Prerequisites
-
-- Node.js ≥ 18
-- npm ≥ 9
-
-### Installation
+### Install and run locally
 
 ```bash
-npm install
-```
-
-### Development
-
-```bash
+npm ci
 npm run dev
 ```
 
-Opens at [http://localhost:3000](http://localhost:3000).
+Open [http://localhost:3000](http://localhost:3000).
 
-### Type checking
-
-```bash
-npm run typecheck
-```
-
-### Linting
+### Quality checks
 
 ```bash
 npm run lint
+npm run typecheck
+npm run build
 ```
 
-### Production build
+The production build is exported to `out/`. To preview that static export locally:
 
 ```bash
-npm run build
-npm run start
+python3 -m http.server 8000 --directory out
 ```
 
----
+Then open [http://localhost:8000](http://localhost:8000).
 
-## Project Structure
+## Repository layout
 
-```
-app/
-  layout.tsx          — Root layout: fonts, metadata, JSON-LD structured data
-  page.tsx            — Homepage: nine narrative chapter components in sequence
-  globals.css         — Design tokens, reveal animations, reduced-motion rules
-  robots.ts           — robots.txt policy
-  sitemap.ts          — XML sitemap
-  not-found.tsx       — Custom 404 page
+| Path | Purpose |
+|---|---|
+| `app/` | App Router pages, root layout, global styles, sitemap, and robots metadata |
+| `components/narrative/` | The nine portfolio chapters |
+| `components/navigation/` | Scroll progress, chapter navigation, and back-to-top control |
+| `components/motion/` | Scroll-reveal behavior |
+| `components/projects/` | Project illustrations |
+| `components/ui/` | Reusable interface primitives |
+| `content/` | Typed narrative and project content |
+| `hooks/` | Shared React hooks |
+| `lib/site-config.ts` | Site identity, canonical URL, and external links |
+| `lib/metadata.ts` | Page metadata and JSON-LD helpers |
+| `public/` | Static assets and the GitHub Pages custom-domain file |
 
-components/
-  narrative/          — Nine chapter layout components (01–09)
-  motion/             — Reveal: Intersection Observer–based scroll reveal
-  navigation/         — ScrollProgress, ChapterNav (sidebar), BackToTop
-  projects/           — SVG visual components for project illustrations
-  ui/                 — shadcn/ui primitive components
+The page's chapter sequence is composed in `app/page.tsx`. Edit chapter copy and project details in `content/`; update canonical and social URLs in `lib/site-config.ts`.
 
-content/
-  projects.ts         — Typed project data: flagship + portfolio projects
-  narrative.ts        — Chapter metadata, philosophy principles, pipeline stages, road ahead
+## Deployment
 
-lib/
-  site-config.ts      — Single source of truth for identity, URLs, and links
-  metadata.ts         — Next.js metadata factory + JSON-LD generators (Person, WebSite, ProfilePage)
-  utils.ts            — `cn()` utility
+Every push to `master` runs [the GitHub Pages workflow](.github/workflows/deploy.yml). It installs dependencies with `npm ci`, creates a static export, and publishes `out/` to GitHub Pages. The custom domain is declared in `public/CNAME`.
 
-public/
-  og-image.svg        — Social preview image (1200×630)
-```
+The repository's Pages source must remain set to **GitHub Actions** in the GitHub Pages settings. No runtime server or environment variables are required; features that need server-side rendering or API routes are not compatible with this static hosting setup.
 
----
+## Accessibility and metadata
 
-## Narrative Chapters
+The site includes keyboard-operable navigation, visible focus styles, semantic page landmarks, and reduced-motion support. Page metadata and structured data are generated from the site configuration. The sitemap and robots file are generated from the App Router metadata routes.
 
-| # | ID | Title |
-|---|---|---|
-| 01 | `introduction` | The Introduction — identity, handle, positioning |
-| 02 | `mindset` | The Engineering Mindset — systems thinking, architecture |
-| 03 | `ideas-to-systems` | From Ideas to Systems — the five-stage pipeline |
-| 04 | `m31a` | M31A — autonomous coding-agent runtime |
-| 05 | `snigdha-os` | Snigdha OS — Arch-based Linux distribution |
-| 06 | `portfolio` | The Broader Portfolio — Octate, SLMGen, MCP SuperAssistant |
-| 07 | `philosophy` | Engineering Philosophy — six principles |
-| 08 | `road-ahead` | The Road Ahead — research directions and active work |
-| 09 | `contact` | Closing & Contact — links and footer |
+## Contributing
 
----
-
-## Site Configuration
-
-All identity information, canonical URL, social links, and project URLs are defined in a single file:
-
-```
-lib/site-config.ts
-```
-
-**Canonical URL** — The `url` field in `siteConfig` sets the canonical base used for Open Graph, sitemap, robots.txt, and JSON-LD. Update this when deploying to a custom domain.
-
-**Environment variables** — No environment variables are required for the static portfolio. If you add server-side features in the future, document them here.
-
----
-
-## SEO & Structured Data
-
-- `<title>` — `Eshan Roy (eshanized) — Systems Engineer & Open-Source Builder`
-- Canonical URL, OG/Twitter card metadata
-- JSON-LD: `Person`, `WebSite`, `ProfilePage`
-- XML sitemap at `/sitemap.xml`
-- robots.txt at `/robots.txt` — allows all crawlers, disallows `/api/`
-- Semantic HTML headings (`h1` on intro, `h2` on each chapter)
-- All informative SVG visuals have `aria-label` and `role="img"`
-
----
-
-## Accessibility
-
-- CSS `prefers-reduced-motion` — reveals immediately show content without animation
-- Visible `:focus-visible` outline using the coral accent colour
-- Semantic landmark elements: `<main>`, `<section>`, `<nav>`, `<footer>`, `<article>`
-- All interactive controls have `aria-label` where the visual label is insufficient
-- Keyboard-navigable chapter sidebar, back-to-top button, and all links
-- Sufficient contrast ratio for primary text on the dark background
-
----
-
-## Deployment (GitHub Pages)
-
-Pushes to `master` build the static site and deploy it to GitHub Pages. The custom
-domain is configured in `public/CNAME`, and Next.js writes the static export to
-`out/`.
-
-To deploy manually, run the `Deploy to GitHub Pages` workflow from the Actions tab.
-
-The production canonical URL and metadata are configured in `lib/site-config.ts`.
-
----
-
-## Projects Featured
-
-| Project | Status | Description |
-|---|---|---|
-| M31A | Active | Rust-native autonomous coding-agent runtime |
-| Snigdha OS | Active | Arch-based Linux distribution |
-| Octate | Building | Terminal-native AI code review CLI |
-| SLMGen | Experimental | Small-language-model experimentation infrastructure |
-| MCP SuperAssistant | Building | Developer tooling for the Model Context Protocol |
-
-All project statuses are documented accurately. No invention of metrics, user counts, or unverified capabilities.
-
----
-
-## External Links
-
-All outbound links use `target="_blank" rel="noopener noreferrer"` and point to verified public profiles and repositories owned by Eshan Roy.
-
----
+See [CONTRIBUTING.md](CONTRIBUTING.md) for the local workflow and pull request expectations.
 
 ## License
 
-© 2024 Eshan Roy. All rights reserved.
+© Eshan Roy. All rights reserved. No license is granted to reuse or redistribute this repository's contents.
