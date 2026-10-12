@@ -29,7 +29,7 @@ The nine narrative chapters flow as one uninterrupted scroll with CSS Intersecti
 | Fonts | Google Fonts via `next/font` — Inter, Marcellus, JetBrains Mono |
 | Icons | Lucide React |
 | Animation | CSS + Intersection Observer (no heavy animation runtime) |
-| Deployment | Netlify (via `netlify.toml` + `@netlify/plugin-nextjs`) |
+| Deployment | GitHub Pages (static export via GitHub Actions) |
 
 ---
 
@@ -161,19 +161,15 @@ lib/site-config.ts
 
 ---
 
-## Deployment (Netlify)
+## Deployment (GitHub Pages)
 
-The `netlify.toml` file configures Next.js deployment via `@netlify/plugin-nextjs`.
+Pushes to `master` build the static site and deploy it to GitHub Pages. The custom
+domain is configured in `public/CNAME`, and Next.js writes the static export to
+`out/`.
 
-```bash
-# Deploy to Netlify CLI
-netlify deploy --prod
-```
+To deploy manually, run the `Deploy to GitHub Pages` workflow from the Actions tab.
 
-After deploying:
-1. Set the canonical URL in `lib/site-config.ts` to the production domain.
-2. Submit `https://yourdomain.com/sitemap.xml` to [Google Search Console](https://search.google.com/search-console).
-3. Verify the site with the HTML tag method (add a `<meta>` tag in `app/layout.tsx`).
+The production canonical URL and metadata are configured in `lib/site-config.ts`.
 
 ---
 
