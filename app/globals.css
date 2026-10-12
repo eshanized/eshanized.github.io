@@ -2,900 +2,247 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Import Dosis from Google Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Dosis:wght@200;300;400;500;600;700;800&display=swap');
-
-:root {
-  --foreground-rgb: 76, 79, 105;   /* Catppuccin Frappe Text */
-  --background-start-rgb: 239, 241, 245; /* Catppuccin Frappe Base */
-  --background-end-rgb: 239, 241, 245;   /* Catppuccin Frappe Base */
-  --animation-timing: cubic-bezier(0.19, 1, 0.22, 1);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 205, 214, 244; /* Catppuccin Mocha Text */
-    --background-start-rgb: 30, 30, 46; /* Catppuccin Mocha Base */
-    --background-end-rgb: 30, 30, 46; /* Catppuccin Mocha Base */
-  }
-}
-
 @layer base {
   :root {
-    /* OneUI 7.0 Light Mode Colors */
-    --oneui-background: 246 246 246; /* #F6F6F6 - Samsung One UI 7.0 background */
-    --oneui-text: 0 0 0;             /* #000000 - Samsung One UI 7.0 text */
-    --oneui-secondary-text: 85 85 85; /* #555555 - Samsung One UI 7.0 secondary text */
-    --oneui-tertiary-text: 130 130 130; /* #828282 - Samsung One UI 7.0 tertiary text */
-    --oneui-system-fill: 220 220 220; /* #DCDCDC - Samsung One UI 7.0 system fill */
-    --oneui-separator: 230 230 230; /* #E6E6E6 - Samsung One UI 7.0 separator */
-    --oneui-grouped-background: 246 246 246; /* #F6F6F6 - Samsung One UI 7.0 grouped background */
-    --oneui-system-background: 255 255 255; /* #FFFFFF - Samsung One UI 7.0 system background */
-    --oneui-accent: 0 119 255; /* #0077FF - Samsung One UI 7.0 accent blue */
-    --oneui-card-bg: 255 255 255; /* #FFFFFF - Samsung One UI 7.0 card background */
-    --oneui-status-bar: 255 255 255; /* #FFFFFF - Samsung One UI 7.0 status bar */
-    --oneui-nav-bar: 255 255 255; /* #FFFFFF - Samsung One UI 7.0 navigation bar */
-    --oneui-ripple: 0 0 0 / 0.08; /* Samsung One UI 7.0 ripple effect */
-    --oneui-button-bg: 240 240 240; /* #F0F0F0 - Samsung One UI 7.0 button background */
-    --oneui-toggle-active: 0 119 255; /* #0077FF - Samsung One UI 7.0 toggle active */
-    --oneui-toggle-inactive: 220 220 220; /* #DCDCDC - Samsung One UI 7.0 toggle inactive */
+    /* Dark editorial foundation */
+    --background: 20 14% 4%;
+    --background-elevated: 20 14% 6%;
+    --foreground: 30 20% 88%;
+    --foreground-muted: 30 10% 55%;
+    --foreground-subtle: 30 8% 38%;
 
-    /* Light theme colors - Catppuccin Frappe */
-    --background: 229 23% 88%;          /* Base #EFF1F5 */
-    --foreground: 240 10% 16%;          /* Text #4C4F69 */
-    --card: 231 18% 91%;                /* Surface0 #CCD0DA */
-    --card-foreground: 240 10% 16%;     /* Text #4C4F69 */
-    --popover: 231 18% 91%;             /* Surface0 #CCD0DA */
-    --popover-foreground: 240 10% 16%;  /* Text #4C4F69 */
-    --primary: 320 70% 75%;             /* Mauve #8839EF */
-    --primary-foreground: 229 23% 88%;  /* Base #EFF1F5 */
-    --secondary: 227 35% 80%;           /* Surface1 #BCC0CC */
-    --secondary-foreground: 240 10% 16%; /* Text #4C4F69 */
-    --muted: 227 35% 80%;               /* Surface1 #BCC0CC */
-    --muted-foreground: 249 12% 47%;    /* Subtext0 #6C6F85 */
-    --accent: 340 82% 85%;              /* Pink #F4B8E4 */
-    --accent-foreground: 240 10% 16%;   /* Text #4C4F69 */
-    --destructive: 0 78% 63%;           /* Red #D20F39 */
-    --destructive-foreground: 229 23% 88%; /* Base #EFF1F5 */
-    --border: 233 25% 65%;              /* Surface2 #ACB0BE */
-    --input: 233 25% 65%;               /* Surface2 #ACB0BE */
-    --ring: 320 70% 75%;                /* Mauve #8839EF */
-    
-    /* Catppuccin Frappe chart colors */
-    --chart-1: 320 70% 75%;             /* Mauve #8839EF */
-    --chart-2: 182 43% 76%;             /* Teal #81C8BE */
-    --chart-3: 209 66% 74%;             /* Blue #8CAAEE */
-    --chart-4: 268 56% 70%;             /* Lavender #BABBF1 */
-    --chart-5: 30 100% 65%;             /* Peach #EF9F76 */
-    
-    /* macOS specific variables - with Catppuccin Frappe */
-    --window-shadow: 0 8px 32px rgba(76, 79, 105, 0.12);
-    --window-border: rgba(76, 79, 105, 0.1);
-    --dock-bg: rgba(239, 241, 245, 0.25);
-    --dock-border: rgba(239, 241, 245, 0.3);
-    --glass-opacity: 0.7;
-    --menu-bar-bg: rgba(239, 241, 245, 0.9);
-    --window-blur: 16px;
-    
+    --card: 20 14% 6%;
+    --card-foreground: 30 20% 88%;
+
+    --popover: 20 14% 6%;
+    --popover-foreground: 30 20% 88%;
+
+    --primary: 0 0% 95%;
+    --primary-foreground: 20 14% 4%;
+
+    --secondary: 20 12% 10%;
+    --secondary-foreground: 30 20% 88%;
+
+    --muted: 20 12% 10%;
+    --muted-foreground: 30 10% 55%;
+
+    --accent: 4 80% 56%;
+    --accent-foreground: 0 0% 100%;
+    --accent-subtle: 4 80% 56%;
+
+    --destructive: 0 62% 40%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 20 10% 12%;
+    --border-strong: 20 10% 18%;
+    --input: 20 10% 12%;
+    --ring: 4 80% 56%;
+
     --radius: 0.5rem;
-  }
-  
-  .dark {
-    /* OneUI 7.0 Dark Mode Colors */
-    --oneui-background: 0 0 0; /* #000000 - Samsung One UI 7.0 dark background */
-    --oneui-text: 255 255 255; /* #FFFFFF - Samsung One UI 7.0 dark text */
-    --oneui-secondary-text: 180 180 180; /* #B4B4B4 - Samsung One UI 7.0 dark secondary text */
-    --oneui-tertiary-text: 140 140 140; /* #8C8C8C - Samsung One UI 7.0 dark tertiary text */
-    --oneui-system-fill: 40 40 40; /* #282828 - Samsung One UI 7.0 dark system fill */
-    --oneui-separator: 50 50 50; /* #323232 - Samsung One UI 7.0 dark separator */
-    --oneui-grouped-background: 0 0 0; /* #000000 - Samsung One UI 7.0 dark grouped background */
-    --oneui-system-background: 20 20 20; /* #141414 - Samsung One UI 7.0 dark system background */
-    --oneui-accent: 0 119 255; /* #0077FF - Samsung One UI 7.0 accent blue (same in dark mode) */
-    --oneui-card-bg: 20 20 20; /* #141414 - Samsung One UI 7.0 dark card background */
-    --oneui-status-bar: 0 0 0; /* #000000 - Samsung One UI 7.0 dark status bar */
-    --oneui-nav-bar: 20 20 20; /* #141414 - Samsung One UI 7.0 dark navigation bar */
-    --oneui-ripple: 255 255 255 / 0.08; /* Samsung One UI 7.0 dark ripple effect */
-    --oneui-button-bg: 40 40 40; /* #282828 - Samsung One UI 7.0 dark button background */
-    --oneui-toggle-active: 0 119 255; /* #0077FF - Samsung One UI 7.0 toggle active */
-    --oneui-toggle-inactive: 60 60 60; /* #3C3C3C - Samsung One UI 7.0 toggle inactive */
 
-    /* Dark theme colors - Catppuccin Mocha */
-    --background: 240 21% 15%;          /* Base #1E1E2E */
-    --foreground: 226 64% 88%;          /* Text #CDD6F4 */
-    --card: 240 23% 9%;                 /* Surface0 #313244 */
-    --card-foreground: 226 64% 88%;     /* Text #CDD6F4 */
-    --popover: 240 23% 9%;              /* Surface0 #313244 */
-    --popover-foreground: 226 64% 88%;  /* Text #CDD6F4 */
-    --primary: 267 84% 81%;             /* Mauve #CBA6F7 */
-    --primary-foreground: 240 21% 15%;  /* Base #1E1E2E */
-    --secondary: 240 24% 30%;           /* Surface1 #45475A */
-    --secondary-foreground: 226 64% 88%; /* Text #CDD6F4 */
-    --muted: 240 24% 30%;               /* Surface1 #45475A */
-    --muted-foreground: 228 39% 75%;    /* Subtext0 #A6ADC8 */
-    --accent: 316 72% 86%;              /* Pink #F5C2E7 */
-    --accent-foreground: 240 21% 15%;   /* Base #1E1E2E */
-    --destructive: 347 87% 69%;         /* Red #F38BA8 */
-    --destructive-foreground: 240 21% 15%; /* Base #1E1E2E */
-    --border: 240 21% 38%;              /* Surface2 #585B70 */
-    --input: 240 21% 38%;               /* Surface2 #585B70 */
-    --ring: 267 84% 81%;                /* Mauve #CBA6F7 */
-    
-    /* Catppuccin Mocha chart colors */
-    --chart-1: 267 84% 81%;             /* Mauve #CBA6F7 */
-    --chart-2: 180 55% 76%;             /* Teal #94E2D5 */
-    --chart-3: 203 92% 75%;             /* Blue #89B4FA */
-    --chart-4: 233 75% 85%;             /* Lavender #B4BEFE */
-    --chart-5: 16 93% 79%;              /* Peach #FAB387 */
-    
-    /* macOS specific variables - dark mode with Catppuccin Mocha */
-    --window-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
-    --window-border: rgba(205, 214, 244, 0.08);
-    --dock-bg: rgba(30, 30, 46, 0.7);
-    --dock-border: rgba(205, 214, 244, 0.08);
-    --glass-opacity: 0.6;
-    --menu-bar-bg: rgba(30, 30, 46, 0.8);
-    --window-blur: 20px;
+    /* Proper typographic system */
+    /* Inter: clean, readable UI sans-serif */
+    /* Marcellus: editorial display and headings */
+    /* JetBrains Mono: authentic monospace for code/labels */
+    --font-sans: var(--font-inter), system-ui, -apple-system, sans-serif;
+    --font-display: var(--font-marcellus), Georgia, 'Times New Roman', serif;
+    --font-mono: var(--font-jetbrains), 'Fira Code', 'Courier New', monospace;
+
+    /* Coral accent ramp */
+    --coral-50: 4 80% 96%;
+    --coral-100: 4 80% 88%;
+    --coral-200: 4 78% 76%;
+    --coral-300: 4 76% 66%;
+    --coral-400: 4 80% 60%;
+    --coral-500: 4 82% 56%;
+    --coral-600: 4 84% 50%;
+    --coral-700: 4 86% 44%;
+    --coral-800: 4 88% 38%;
+    --coral-900: 4 90% 30%;
+
+    /* Neutral ramp (warm) */
+    --neutral-50: 30 15% 96%;
+    --neutral-100: 30 12% 90%;
+    --neutral-200: 30 10% 78%;
+    --neutral-300: 30 8% 62%;
+    --neutral-400: 30 6% 46%;
+    --neutral-500: 30 5% 34%;
+    --neutral-600: 28 5% 22%;
+    --neutral-700: 25 6% 14%;
+    --neutral-800: 22 8% 8%;
+    --neutral-900: 20 10% 4%;
   }
 }
 
 @layer base {
   * {
-    @apply border-border;
+    border-color: hsl(var(--border));
   }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
   body {
-    @apply bg-background text-foreground font-sans antialiased selection:bg-primary/20 selection:text-primary;
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+    font-family: var(--font-sans);
+    line-height: 1.6;
+    overflow-x: hidden;
   }
-  
-  /* Modern focus styles */
+
+  ::selection {
+    background-color: hsl(var(--coral-500) / 0.3);
+    color: hsl(var(--foreground));
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    background: hsl(var(--background));
+  }
+  ::-webkit-scrollbar-thumb {
+    background: hsl(var(--border-strong));
+    border-radius: 4px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--coral-600) / 0.5);
+  }
+
+  /* Focus visibility */
   :focus-visible {
-    @apply outline-none ring-2 ring-primary/40 ring-offset-2 ring-offset-background transition-shadow duration-200;
+    outline: 2px solid hsl(var(--coral-500));
+    outline-offset: 3px;
+    border-radius: 2px;
   }
 }
 
-/* Smooth scrolling */
-html {
-  scroll-behavior: smooth;
-}
-
-/* Modern scrollbar styles */
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-::-webkit-scrollbar-thumb {
-  background: hsl(var(--muted-foreground) / 0.4);
-  border-radius: 8px;
-  transition: background 0.2s ease;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: hsl(var(--muted-foreground) / 0.6);
-}
-
-.dark ::-webkit-scrollbar-thumb {
-  background: hsl(var(--muted-foreground) / 0.4);
-}
-
-.dark ::-webkit-scrollbar-thumb:hover {
-  background: hsl(var(--muted-foreground) / 0.6);
-}
-
-/* Enhanced Glass morphism effects */
-.glass-effect {
-  backdrop-filter: blur(var(--window-blur)) saturate(180%);
-  background-color: rgba(255, 255, 255, var(--glass-opacity));
-  border: 1px solid var(--window-border);
-  box-shadow: var(--window-shadow);
-  transition: background-color 0.3s ease, backdrop-filter 0.3s ease, box-shadow 0.3s ease;
-}
-
-.glass-effect:hover {
-  --glass-opacity: 0.75;
-  --window-blur: 18px;
-}
-
-.dark .glass-effect {
-  background-color: rgba(17, 17, 17, var(--glass-opacity));
-  border: 1px solid var(--window-border);
-}
-
-.dark .glass-effect:hover {
-  --glass-opacity: 0.65;
-}
-
-/* Window animations - enhanced */
-.window-enter {
-  opacity: 0;
-  transform: scale(0.95) translateY(10px);
-  filter: blur(2px);
-}
-
-.window-enter-active {
-  opacity: 1;
-  transform: scale(1) translateY(0);
-  filter: blur(0);
-  transition: opacity 250ms var(--animation-timing), 
-              transform 300ms var(--animation-timing),
-              filter 200ms var(--animation-timing);
-}
-
-.window-exit {
-  opacity: 1;
-  transform: scale(1) translateY(0);
-  filter: blur(0);
-}
-
-.window-exit-active {
-  opacity: 0;
-  transform: scale(0.95) translateY(10px);
-  filter: blur(2px);
-  transition: opacity 200ms var(--animation-timing), 
-              transform 250ms var(--animation-timing),
-              filter 150ms var(--animation-timing);
-}
-
-/* Improved Apple Menu Bar Styles */
-.menu-bar {
-  backdrop-filter: blur(12px);
-  background-color: var(--menu-bar-bg);
-  border-bottom: 1px solid var(--window-border);
-  transition: background-color 0.3s ease;
-}
-
-.menu-item {
-  @apply flex items-center space-x-1 px-2 py-1 rounded-md transition-all duration-200;
-  position: relative;
-  overflow: hidden;
-}
-
-.menu-item:hover {
-  @apply bg-accent/10;
-}
-
-.menu-item:active {
-  @apply bg-accent/20;
-  transform: scale(0.98);
-}
-
-.menu-item::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  width: 0;
-  height: 2px;
-  background-color: hsl(var(--primary));
-  transition: width 0.2s ease, left 0.2s ease;
-}
-
-.menu-item:hover::after {
-  width: 80%;
-  left: 10%;
-}
-
-.menu-icon {
-  @apply w-4 h-4 text-primary opacity-80 transition-transform duration-200;
-}
-
-.menu-item:hover .menu-icon {
-  transform: translateY(-1px);
-}
-
-.menu-text {
-  @apply text-sm font-medium transition-colors duration-200;
-}
-
-/* Enhanced SnigdhaOS Dock Styles */
-.dock-container {
-  backdrop-filter: blur(12px);
-  background-color: var(--dock-bg);
-  border: 1px solid var(--dock-border);
-  border-radius: 18px;
-  padding: 6px;
-  transition: transform 0.3s var(--animation-timing), 
-              backdrop-filter 0.3s ease,
-              box-shadow 0.3s ease;
-}
-
-.dock-container:hover {
-  backdrop-filter: blur(16px);
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1),
-              0 8px 10px -6px rgba(0, 0, 0, 0.1);
-  transform: translateY(-2px);
-}
-
-.dock-icon {
-  @apply relative flex items-center justify-center rounded-xl;
-  width: 52px;
-  height: 52px;
-  transition: all 0.3s var(--animation-timing);
-  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1));
-  transform-origin: bottom;
-}
-
-.dock-icon:hover {
-  transform: translateY(-10px) scale(1.1);
-}
-
-.dock-icon:active {
-  transform: translateY(-5px) scale(0.95);
-}
-
-.dark .dock-icon {
-  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
-}
-
-.dock-icon::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  padding: 1px;
-  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.2));
-  -webkit-mask: linear-gradient(#000, #000) content-box, linear-gradient(#000, #000);
-  mask: linear-gradient(#000, #000) content-box, linear-gradient(#000, #000);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  opacity: 0.5;
-  transition: opacity 0.3s ease;
-}
-
-.dock-icon:hover::before {
-  opacity: 1;
-  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.3));
-}
-
-/* Improved icon reflection */
-.dock-icon-reflection {
-  position: absolute;
-  bottom: -14px;
-  left: 10%;
-  right: 10%;
-  height: 14px;
-  border-radius: 50%;
-  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.4), transparent);
-  filter: blur(3px);
-  opacity: 0;
-  transform: scaleY(0.3);
-  transition: opacity 0.3s ease, transform 0.3s ease;
-}
-
-.dock-icon:hover .dock-icon-reflection {
-  opacity: 0.5;
-  transform: scaleY(0.4);
-}
-
-/* Enhanced Shadow glow effect */
-.shadow-glow {
-  box-shadow: 
-    0 0 8px 2px hsl(var(--primary) / 0.3),
-    0 0 2px 0px hsl(var(--primary) / 0.2);
-  animation: pulse-glow 2s infinite alternate;
-}
-
-@keyframes pulse-glow {
-  0% {
-    box-shadow: 0 0 8px 2px hsl(var(--primary) / 0.3),
-                0 0 2px 0px hsl(var(--primary) / 0.2);
+@layer components {
+  .font-display {
+    font-family: var(--font-display);
   }
-  100% {
-    box-shadow: 0 0 12px 4px hsl(var(--primary) / 0.4),
-                0 0 4px 0px hsl(var(--primary) / 0.3);
+  .font-mono {
+    font-family: var(--font-mono);
+  }
+
+  .text-gradient-coral {
+    background: linear-gradient(
+      135deg,
+      hsl(var(--coral-400)),
+      hsl(var(--coral-600))
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .text-gradient-fade {
+    background: linear-gradient(
+      180deg,
+      hsl(var(--foreground)) 0%,
+      hsl(var(--foreground-muted)) 100%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .border-hairline {
+    border-width: 1px;
+    border-color: hsl(var(--border));
+  }
+
+  .bg-grain {
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  }
+
+  .chapter-label {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: hsl(var(--coral-500));
   }
 }
-
-/* Enhanced SnigdhaOS Window Styles */
-.snigdhaos-window {
-  backdrop-filter: blur(var(--window-blur)) saturate(180%);
-  background-color: rgba(var(--card), var(--glass-opacity));
-  border: 1px solid var(--window-border);
-  border-radius: 10px;
-  box-shadow: var(--window-shadow);
-  transition: transform 0.3s var(--animation-timing),
-              box-shadow 0.3s ease,
-              border-color 0.3s ease;
-  will-change: transform, opacity;
-  overflow: hidden;
-}
-
-.snigdhaos-window.active {
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2),
-              0 8px 10px -6px rgba(0, 0, 0, 0.1);
-  border-color: rgba(var(--primary), 0.1);
-}
-
-.window-title-bar {
-  backdrop-filter: blur(8px);
-  background: linear-gradient(to bottom, 
-              rgba(var(--card), 0.9), 
-              rgba(var(--card), 0.8));
-  border-bottom: 1px solid var(--window-border);
-  transition: background 0.3s ease;
-}
-
-.window-traffic-lights {
-  display: flex;
-  gap: 6px;
-}
-
-.traffic-light {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  position: relative;
-  transition: transform 0.2s ease, opacity 0.2s ease;
-}
-
-.traffic-light:hover {
-  transform: scale(1.1);
-}
-
-.traffic-light:active {
-  transform: scale(0.95);
-  opacity: 0.8;
-}
-
-.traffic-light-red {
-  background-color: #ff5f57;
-  border: 1px solid #e0443e;
-}
-
-.traffic-light-yellow {
-  background-color: #febc2e;
-  border: 1px solid #d89d24;
-}
-
-.traffic-light-green {
-  background-color: #28c840;
-  border: 1px solid #24aa36;
-}
-
-/* Window resize handles */
-.resize-handle {
-  position: absolute;
-  background: transparent;
-  transition: background-color 0.2s ease;
-}
-
-.resize-handle:hover {
-  background-color: rgba(var(--primary), 0.1);
-}
-
-.resize-handle-bottom {
-  height: 6px;
-  bottom: -3px;
-  left: 10px;
-  right: 10px;
-  cursor: ns-resize;
-}
-
-.resize-handle-top {
-  height: 6px;
-  top: -3px;
-  left: 10px;
-  right: 10px;
-  cursor: ns-resize;
-}
-
-.resize-handle-left {
-  width: 6px;
-  left: -3px;
-  top: 10px;
-  bottom: 10px;
-  cursor: ew-resize;
-}
-
-.resize-handle-right {
-  width: 6px;
-  right: -3px;
-  top: 10px;
-  bottom: 10px;
-  cursor: ew-resize;
-}
-
-.resize-handle-corner {
-  width: 10px;
-  height: 10px;
-  z-index: 1;
-}
-
-.resize-handle-corner-nw {
-  top: -3px;
-  left: -3px;
-  cursor: nwse-resize;
-}
-
-.resize-handle-corner-ne {
-  top: -3px;
-  right: -3px;
-  cursor: nesw-resize;
-}
-
-.resize-handle-corner-sw {
-  bottom: -3px;
-  left: -3px;
-  cursor: nesw-resize;
-}
-
-.resize-handle-corner-se {
-  bottom: -3px;
-  right: -3px;
-  cursor: nwse-resize;
-}
-
-/* Additional macOS UI elements */
-.snigdhaos-button {
-  background: linear-gradient(to bottom, 
-              rgba(var(--secondary), 1), 
-              rgba(var(--secondary), 0.9));
-  border: 1px solid rgba(var(--border), 0.5);
-  border-radius: 6px;
-  padding: 4px 12px;
-  font-size: 13px;
-  font-weight: 500;
-  transition: all 0.2s ease;
-}
-
-.snigdhaos-button:hover {
-  background: linear-gradient(to bottom, 
-              rgba(var(--secondary), 0.95), 
-              rgba(var(--secondary), 0.85));
-  transform: translateY(-1px);
-  box-shadow: 0 2px 5px -1px rgba(0, 0, 0, 0.1);
-}
-
-.snigdhaos-button:active {
-  background: linear-gradient(to bottom, 
-              rgba(var(--secondary), 0.85), 
-              rgba(var(--secondary), 0.8));
-  transform: translateY(0);
-  box-shadow: none;
-}
-
-.snigdhaos-button-primary {
-  background: linear-gradient(to bottom, 
-              rgba(var(--primary), 1), 
-              rgba(var(--primary), 0.9));
-  color: rgba(var(--primary-foreground), 1);
-  border: 1px solid rgba(var(--primary), 0.6);
-}
-
-.snigdhaos-button-primary:hover {
-  background: linear-gradient(to bottom, 
-              rgba(var(--primary), 0.95), 
-              rgba(var(--primary), 0.85));
-}
-
-.snigdhaos-button-primary:active {
-  background: linear-gradient(to bottom, 
-              rgba(var(--primary), 0.85), 
-              rgba(var(--primary), 0.8));
-}
-
-/* Advanced animations */
-@keyframes float {
-  0% { transform: translateY(0px); }
-  50% { transform: translateY(-10px); }
-  100% { transform: translateY(0px); }
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(5px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.animate-fade-in {
-  animation: fadeIn 0.15s ease-out forwards;
-}
-
-.animate-float {
-  animation: float 6s ease-in-out infinite;
-}
-
-@keyframes pulse {
-  0% { opacity: 0.6; transform: scale(1); }
-  50% { opacity: 1; transform: scale(1.05); }
-  100% { opacity: 0.6; transform: scale(1); }
-}
-
-.animate-pulse-slow {
-  animation: pulse 4s ease-in-out infinite;
-}
-
-@keyframes spin-slow {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
-.animate-spin-slow {
-  animation: spin-slow 12s linear infinite;
-}
-
-/* Text gradients */
-.text-gradient {
-  background-clip: text;
-  -webkit-background-clip: text;
-  color: transparent;
-  background-size: 300% 300%;
-  animation: gradient-shift 8s ease infinite;
-}
-
-.text-gradient-blue {
-  background-image: linear-gradient(90deg, #007aff, #5ac8fa, #007aff);
-}
-
-.text-gradient-purple {
-  background-image: linear-gradient(90deg, #5e5ce6, #bf5af2, #5e5ce6);
-}
-
-.text-gradient-pink {
-  background-image: linear-gradient(90deg, #ff2d55, #ff375f, #ff2d55);
-}
-
-@keyframes gradient-shift {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-
-/* Shimmer effect */
-.shimmer {
-  position: relative;
-  overflow: hidden;
-}
-
-.shimmer::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 50%;
-  height: 100%;
-  background: linear-gradient(
-    90deg,
-    rgba(255, 255, 255, 0) 0%,
-    rgba(255, 255, 255, 0.3) 50%,
-    rgba(255, 255, 255, 0) 100%
-  );
-  animation: shimmer 2s infinite;
-}
-
-@keyframes shimmer {
-  0% { left: -100%; }
-  100% { left: 200%; }
-}
-
-/* 3D Transform perspective */
-.perspective {
-  transform-style: preserve-3d;
-  perspective: 1000px;
-}
-
-.perspective-child {
-  backface-visibility: hidden;
-  transition: transform 0.3s var(--animation-timing);
-}
-
-.perspective:hover .perspective-child {
-  transform: translateZ(20px);
-}
-
-/* snigdha-theme customizations with Catppuccin */
-.snigdha-theme {
-  --primary: 320 70% 75%; /* Catppuccin Frappe Mauve */
-  --accent: 340 82% 85%; /* Catppuccin Frappe Pink */
-  --ring: 320 70% 75%; /* Catppuccin Frappe Mauve */
-  --chart-1: 320 70% 75%; /* Catppuccin Frappe Mauve */
-}
-
-.snigdha-theme.dark {
-  --primary: 267 84% 81%; /* Catppuccin Mocha Mauve */
-  --accent: 316 72% 86%; /* Catppuccin Mocha Pink */
-  --ring: 267 84% 81%; /* Catppuccin Mocha Mauve */
-  --chart-1: 267 84% 81%; /* Catppuccin Mocha Mauve */
-}
-
-.snigdha-theme .text-gradient {
-  background-image: linear-gradient(90deg, #8839EF, #F4B8E4, #8839EF);
-}
-
-.snigdha-theme.dark .text-gradient {
-  background-image: linear-gradient(90deg, #CBA6F7, #F5C2E7, #CBA6F7);
-}
-
-/* macOS Login Screen Enhancements */
-.font-sf-pro {
-  font-family: 'Dosis', sans-serif;
-  letter-spacing: 0.02em;
-}
-
-/* SF Pro specific font weights for better macOS authenticity */
-.font-sf-pro.font-light {
-  font-weight: 400;
-  letter-spacing: 0.02em;
-}
-
-.font-sf-pro.font-normal {
-  font-weight: 400;
-}
-
-.font-sf-pro.font-medium {
-  font-weight: 400;
-  letter-spacing: 0.02em;
-}
-
-.font-sf-pro.font-semibold {
-  font-weight: 400;
-  letter-spacing: 0.02em;
-}
-
-/* macOS style form elements */
-input.font-sf-pro::placeholder {
-  font-weight: 400;
-  opacity: 0.5;
-}
-
-/* macOS refined animations */
-.mac-scale-transition {
-  transition: transform 0.15s cubic-bezier(0.25, 0.1, 0.25, 1),
-              opacity 0.15s cubic-bezier(0.25, 0.1, 0.25, 1);
-}
-
-/* macOS style focus ring animation */
-@keyframes macFocusRing {
-  0% {
-    box-shadow: 0 0 0 0 rgba(0, 102, 255, 0.3);
-  }
-  100% {
-    box-shadow: 0 0 0 4px rgba(0, 102, 255, 0.15);
-  }
-}
-
-.mac-focus-ring:focus {
-  animation: macFocusRing 0.3s ease forwards;
-}
-
-/* macOS style login shake animation */
-@keyframes mac-shake {
-  0% { transform: translateX(0); }
-  10% { transform: translateX(-6px); }
-  20% { transform: translateX(5px); }
-  30% { transform: translateX(-4px); }
-  40% { transform: translateX(3px); }
-  50% { transform: translateX(-2px); }
-  60% { transform: translateX(1px); }
-  70% { transform: translateX(0); }
-  100% { transform: translateX(0); }
-}
-
-.mac-shake {
-  animation: mac-shake 0.4s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
-}
-
-/* Add OneUI-specific utility styles */
 
 @layer utilities {
-  /* Text shadow for OneUI app names */
-  .app-name-text-shadow {
-    text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.2);
+  .text-balance {
+    text-wrap: balance;
   }
-  
-  /* OneUI-specific backdrop blur for folders and dock */
-  .oneui-blur {
-    backdrop-filter: blur(16px) saturate(180%);
-    -webkit-backdrop-filter: blur(16px) saturate(180%);
+  .text-pretty {
+    text-wrap: pretty;
   }
-  
-  /* OneUI app icon sizes */
-  .oneui-app-icon {
-    width: 64px;
-    height: 64px;
-  }
-  
-  /* OneUI 7.0 specific styles */
-  .oneui-rounded-lg {
-    border-radius: 1.5rem;
-  }
-  
-  .oneui-rounded-md {
-    border-radius: 1rem;
-  }
-  
-  .oneui-rounded-sm {
-    border-radius: 0.75rem;
-  }
-  
-  /* OneUI 7.0 card styles */
-  .oneui-card {
-    border-radius: 1.5rem;
-    padding: 1.25rem;
-    background-color: rgb(var(--oneui-card-bg));
-    border: 1px solid rgb(var(--oneui-separator));
-  }
-  
-  /* OneUI 7.0 button styles */
-  .oneui-button {
-    border-radius: 1.5rem;
-    padding: 0.75rem 1.5rem;
-    font-weight: 500;
-    transition: all 0.2s ease;
-    background-color: rgb(var(--oneui-button-bg));
-  }
-  
-  .oneui-button-primary {
-    background-color: rgb(var(--oneui-accent));
-    color: white;
-  }
-  
-  /* OneUI 7.0 shadow styles */
-  .oneui-shadow-sm {
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  }
-  
-  .oneui-shadow {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  }
-  
-  .oneui-shadow-lg {
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-  }
-  
-  /* Notch area styling */
-  .notch-area {
-    background-color: black;
-    width: 40%;
-    height: 28px;
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    border-bottom-left-radius: 18px;
-    border-bottom-right-radius: 18px;
-    z-index: 50;
-  }
-}
 
-/* System Font */
-@font-face {
-  font-family: 'SF Pro Display';
-  src: local('Dosis'),
-       local('system-ui');
-  font-weight: 100 900;
-  font-style: normal;
-  font-display: swap;
-}
-
-@keyframes notification-enter {
-  from {
+  /* Scroll reveal initial states */
+  .reveal-init {
     opacity: 0;
-    transform: translate(-50%, -100%);
+    transform: translateY(28px);
+    transition: opacity 0.75s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.75s cubic-bezier(0.22, 1, 0.36, 1);
   }
-  to {
+  .reveal-visible {
     opacity: 1;
-    transform: translate(-50%, 0);
+    transform: translateY(0);
+  }
+
+  .reveal-init-delay-1 {
+    transition-delay: 0.12s;
+  }
+  .reveal-init-delay-2 {
+    transition-delay: 0.24s;
+  }
+  .reveal-init-delay-3 {
+    transition-delay: 0.36s;
+  }
+  .reveal-init-delay-4 {
+    transition-delay: 0.48s;
+  }
+
+  /* Line-by-line text reveal */
+  .line-reveal {
+    overflow: hidden;
+  }
+  .line-reveal-inner {
+    display: block;
+    transform: translateY(110%);
+    transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .line-reveal-visible .line-reveal-inner {
+    transform: translateY(0);
+  }
+
+  /* Chapter section divider with coral fade */
+  .chapter-divider {
+    border-top: 1px solid hsl(var(--border));
   }
 }
 
-@keyframes notification-exit {
-  from {
-    opacity: 1;
-    transform: translate(-50%, 0);
+/* Reduced motion: disable all custom animations */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
-  to {
-    opacity: 0;
-    transform: translate(-50%, -100%);
+
+  .reveal-init {
+    opacity: 1 !important;
+    transform: none !important;
   }
-}
 
-.animate-notification-enter {
-  animation: notification-enter 0.3s ease-out forwards;
-}
+  .line-reveal-inner {
+    transform: none !important;
+  }
 
-.animate-notification-exit {
-  animation: notification-exit 0.3s ease-in forwards;
+  html {
+    scroll-behavior: auto;
+  }
 }

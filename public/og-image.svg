@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" fill="none">
+  <!-- Background -->
+  <rect width="1200" height="630" fill="#0c0a08"/>
+
+  <!-- Subtle grid lines for texture -->
+  <line x1="0" y1="315" x2="1200" y2="315" stroke="#1a1612" stroke-width="1"/>
+  <line x1="600" y1="0" x2="600" y2="630" stroke="#1a1612" stroke-width="1"/>
+
+  <!-- Abstract system nodes (right side) -->
+  <circle cx="980" cy="315" r="120" fill="none" stroke="#1f1b16" stroke-width="1"/>
+  <circle cx="980" cy="315" r="80" fill="none" stroke="#251f18" stroke-width="1"/>
+  <circle cx="980" cy="315" r="40" fill="none" stroke="#f0453c22" stroke-width="1.5"/>
+
+  <!-- Outer nodes -->
+  <circle cx="980" cy="195" r="10" fill="#171310" stroke="#2a2520" stroke-width="1"/>
+  <circle cx="1080" cy="355" r="7" fill="#171310" stroke="#f0453c44" stroke-width="1"/>
+  <circle cx="880" cy="355" r="7" fill="#171310" stroke="#2a2520" stroke-width="1"/>
+  <circle cx="980" cy="435" r="10" fill="#171310" stroke="#2a2520" stroke-width="1"/>
+  <circle cx="1060" cy="240" r="5" fill="#171310" stroke="#2a2520" stroke-width="1"/>
+  <circle cx="900" cy="240" r="5" fill="#171310" stroke="#2a2520" stroke-width="1"/>
+
+  <!-- Spoke lines -->
+  <line x1="980" y1="195" x2="980" y2="275" stroke="#1f1b16" stroke-width="1" stroke-dasharray="3 6"/>
+  <line x1="1080" y1="355" x2="1020" y2="335" stroke="#f0453c33" stroke-width="1"/>
+  <line x1="880" y1="355" x2="940" y2="335" stroke="#1f1b16" stroke-width="1"/>
+  <line x1="980" y1="435" x2="980" y2="355" stroke="#1f1b16" stroke-width="1" stroke-dasharray="3 6"/>
+  <line x1="1060" y1="240" x2="1020" y2="295" stroke="#1f1b16" stroke-width="1"/>
+  <line x1="900" y1="240" x2="940" y2="295" stroke="#1f1b16" stroke-width="1"/>
+
+  <!-- Center dot -->
+  <circle cx="980" cy="315" r="8" fill="#f0453c"/>
+  <circle cx="980" cy="315" r="16" fill="#f0453c0d" stroke="#f0453c33" stroke-width="1"/>
+
+  <!-- Left border accent -->
+  <rect x="0" y="0" width="3" height="630" fill="#f0453c"/>
+
+  <!-- Top label -->
+  <circle cx="80" cy="72" r="5" fill="#f0453c"/>
+  <text x="96" y="78" font-family="monospace" font-size="14" fill="#6b6056" letter-spacing="4">ESHANIZED</text>
+
+  <!-- Main name -->
+  <text x="80" y="300" font-family="Georgia, serif" font-size="80" font-weight="700" fill="#f2ede5" letter-spacing="-2">Eshan Roy</text>
+
+  <!-- Tagline -->
+  <text x="80" y="348" font-family="Georgia, serif" font-size="26" fill="#a09484">Systems Engineer · Open-Source Builder</text>
+
+  <!-- Separator -->
+  <line x1="80" y1="374" x2="440" y2="374" stroke="#2a2520" stroke-width="1"/>
+
+  <!-- Projects row -->
+  <text x="80" y="406" font-family="monospace" font-size="13" fill="#f0453c" letter-spacing="1">M31A</text>
+  <text x="148" y="406" font-family="monospace" font-size="13" fill="#3d3730" letter-spacing="0.5">·</text>
+  <text x="162" y="406" font-family="monospace" font-size="13" fill="#6b6056" letter-spacing="1">Snigdha OS</text>
+  <text x="292" y="406" font-family="monospace" font-size="13" fill="#3d3730" letter-spacing="0.5">·</text>
+  <text x="306" y="406" font-family="monospace" font-size="13" fill="#6b6056" letter-spacing="1">Tonmoy Infrastructure</text>
+
+  <!-- Bottom positioning -->
+  <text x="80" y="520" font-family="Georgia, serif" font-size="19" fill="#f0453c">I build systems that help software do more.</text>
+
+  <!-- URL -->
+  <text x="1120" y="560" text-anchor="end" font-family="monospace" font-size="13" fill="#3d3730">eshanized.is-a.dev</text>
+
+  <!-- Bottom border -->
+  <rect x="0" y="627" width="1200" height="3" fill="#f0453c22"/>
+</svg>
