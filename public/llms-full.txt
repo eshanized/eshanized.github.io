@@ -1,0 +1,130 @@
+# Eshan Roy (eshanized) — Systems Engineer & Open-Source Builder
+
+> Full portfolio documentation and narrative for LLMs and autonomous agents.
+> Canonical URL: https://eshanized.is-a.dev
+
+---
+
+## Chapter 01: The Introduction
+
+Eshan Roy (handle: `eshanized`) is a systems engineer, open-source builder, and infrastructure architect based in India. He leads Tonmoy Infrastructure & Vision (TIV) and focuses on building developer infrastructure, operating systems, and autonomous software-engineering runtimes.
+
+Tagline: Systems Engineer · Open-Source Builder · Infrastructure Architect
+Positioning Statement: "I build systems that help software do more."
+
+### Contact & Profiles
+- Website: https://eshanized.is-a.dev
+- GitHub: https://github.com/eshanized
+- Dev.to: https://dev.to/eshanized
+- PyPI: https://pypi.org/user/eshanized/
+- ORCID: https://orcid.org/0009-0007-1261-6805
+- Crates.io: https://crates.io/users/eshanized
+- About.me: https://about.me/eshanized
+- Organization: https://tonmoyinfrastructure.org
+
+---
+
+## Chapter 02: The Engineering Mindset
+
+A rigorous five-stage pipeline transforms concepts into dependable systems:
+
+1. **Concept**: Identify a real problem worth solving. Define the boundary between what the system should and should not do.
+2. **Architecture**: Design the structure: module hierarchy, data flow, security boundaries, and failure modes before writing code.
+3. **Implementation**: Build strictly following architecture. Strict module ordering, typed interfaces, and no bypasses of security boundaries.
+4. **Verification**: Prove the system works. Clean compilers, passing test suites, and cryptographic SHA-256 evidence digests.
+5. **Release**: Ship with comprehensive documentation, honest status, and open source.
+
+---
+
+## Chapter 03: From Ideas to Systems
+
+Building resilient software requires moving past superficial demos. Every system is constructed with deterministic boundaries, reproducible environments, and observable failure states.
+
+---
+
+## Chapter 04: Flagship Project — M31A
+
+- **Repository**: https://github.com/eshanized/M31A
+- **Documentation**: https://m31a.tonmoyinfrastructure.org
+- **Technologies**: Rust, TUI, LLMs, Git, Systems, SQLite
+- **Status**: Active
+
+M31A is a Rust-native autonomous software-engineering runtime with non-bypassable policy gates and verifiable execution. The intelligence model proposes actions; the runtime enforces policy.
+
+Key Technical Innovations:
+- **Deterministic 11-Stage Policy Gate**: Sits between the model and every file mutation, command execution, and network request. The model possesses no ambient permissions or direct shell access.
+- **Verifiable Completion**: Completion is proven, not declared. Missions are admitted only when compiler diagnostics are clean, tests pass in a clean sandbox, and a cryptographic SHA-256 evidence digest is produced.
+- **Atomic State Recovery**: Two-phase atomic SQLite WAL commits preserve verified checkpoints while isolating failures.
+
+---
+
+## Chapter 05: Flagship Project — Snigdha OS
+
+- **GitHub**: https://github.com/Snigdha-OS
+- **GitLab**: https://gitlab.com/SnigdhaOS
+- **Technologies**: Linux, Arch, Rust, Shell, Desktop
+- **Status**: Active
+
+Snigdha OS is an Arch-based Linux distribution ecosystem focused on desktop elegance, performance, custom system tooling, package management via PKGBUILDs, and developer utilities.
+
+Key Aspects:
+- Built for modern users seeking speed and control.
+- Maintains custom repositories, an interactive system installer, and system maintenance utilities.
+- Community-driven, fully open-source.
+
+---
+
+## Chapter 06: Broader Portfolio
+
+### Octate
+- **Tagline**: Terminal-native AI code review CLI
+- **Technologies**: Rust, Tree-sitter, WASM, LLMs
+- **Status**: Building
+- **URL**: https://tonmoyinfrastructure.org/projects/octate
+- Combines local Tree-sitter WASM AST parsing, cross-file reference graphs, and static linter discovery with multi-stage LLM review DAGs and a two-stage critic quality gate.
+
+### SLMGen
+- **Tagline**: Small-language-model experimentation infrastructure
+- **Technologies**: Python, ML, SLMs, Fine-tuning
+- **Status**: Experimental
+- **URL**: https://github.com/eshanized
+- Scaffolding for fine-tuning, evaluating, and running small language models with efficient compute budgets.
+
+### MCP SuperAssistant
+- **Tagline**: Developer tooling for the Model Context Protocol
+- **Technologies**: TypeScript, MCP, Developer Tools
+- **Status**: Building
+- **URL**: https://github.com/eshanized
+- Developer tooling designed to simplify building, testing, and composing MCP servers and client tools.
+
+---
+
+## Chapter 07: Engineering Philosophy
+
+1. **Architecture supports maintainability**: Systems should be designed so that future maintainers can reason about them without indirection.
+2. **Reliability is verified, not asserted**: Completion requires empirical evidence: clean compilers, passing tests, and verifiable digests. Claims are rejected until proven.
+3. **Developer experience is system design**: Tool ergonomics, installation, and error messages are architectural decisions made from commit zero.
+4. **Open source should be useful and understandable**: Shipping in the open requires high-integrity documentation, readable structure, and honest status labels.
+5. **Automation needs boundaries and observability**: Autonomous systems must fail closed. Every action passes through non-bypassable gates; states are observable and recoverable.
+6. **Performance improvements require measurement**: Optimization without empirical measurement is guessing.
+
+---
+
+## Chapter 08: The Road Ahead
+
+- **More capable autonomous coding systems**: Long-running, multi-session engineering systems with formal guarantees (Research).
+- **Better developer infrastructure**: Underlying developer tooling, code hosting, and review infrastructure (Building).
+- **Reliable systems tooling**: Storage engines, process confinement, and foundational systems (Ongoing).
+- **Open-source ecosystems**: Maintaining transparent, community-owned open-source platforms (Ongoing).
+
+---
+
+## Chapter 09: Closing & Contact
+
+- Organization: Tonmoy Infrastructure & Vision (https://tonmoyinfrastructure.org)
+- GitHub: https://github.com/eshanized
+- Dev.to: https://dev.to/eshanized
+- PyPI: https://pypi.org/user/eshanized/
+- ORCID: 0009-0007-1261-6805
+- Crates.io: https://crates.io/users/eshanized
+- About.me: https://about.me/eshanized

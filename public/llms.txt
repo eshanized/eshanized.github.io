@@ -1,0 +1,37 @@
+# Eshan Roy (eshanized)
+
+> Systems Engineer, open-source builder, and infrastructure architect. Builds systems software, autonomous engineering runtimes, and developer tooling.
+
+Eshan Roy (known online as eshanized) is an engineer and researcher who builds systems software, developer infrastructure, and open-source products. His work explores the intersection of systems engineering, Linux, and autonomous software engineering.
+
+## Primary Projects
+
+- [M31A](https://m31a.tonmoyinfrastructure.org): A Rust-native autonomous software-engineering runtime with non-bypassable policy gates and verifiable execution. The model proposes actions; the runtime enforces policy. Completed missions produce cryptographic SHA-256 evidence digests.
+- [Snigdha OS](https://github.com/Snigdha-OS): An Arch-based Linux distribution ecosystem focused on a cohesive desktop experience, system tooling, package management, and developer utilities.
+- [Octate](https://tonmoyinfrastructure.org/projects/octate): A terminal-native AI code review CLI combining local Tree-sitter WASM AST parsing, cross-file reference graphs, and static linter discovery with multi-stage LLM review DAGs.
+- [SLMGen](https://github.com/eshanized): Small-language-model experimentation infrastructure for practical ML engineering, fine-tuning, and evaluation.
+- [MCP SuperAssistant](https://github.com/eshanized): Developer tooling built around the Model Context Protocol ecosystem.
+
+## Engineering Philosophy & Principles
+
+- Architecture supports maintainability: Systems should be designed so that future maintainers can reason about them without indirection.
+- Reliability is verified, not asserted: A model declaring success is not proof. Completion requires empirical evidence: clean compilers, passing tests, and verifiable digests.
+- Developer experience is system design: Ergonomics, installation, and error reporting are architectural decisions made from the first commit.
+- Open source should be useful and understandable: High-integrity documentation and honest status labels matter as much as the implementation.
+- Automation needs boundaries and observability: Autonomous systems must fail closed through non-bypassable gates, with observable and recoverable execution states.
+- Performance improvements require measurement: Improvements must be supported by empirical data rather than intuition.
+
+## Organizations & Links
+
+- [Tonmoy Infrastructure & Vision](https://tonmoyinfrastructure.org): Parent infrastructure and open-source initiative.
+- [GitHub Profile](https://github.com/eshanized)
+- [Dev.to Articles](https://dev.to/eshanized)
+- [PyPI Packages](https://pypi.org/user/eshanized/)
+- [ORCID Record](https://orcid.org/0009-0007-1261-6805)
+- [Crates.io Crates](https://crates.io/users/eshanized)
+- [About.me](https://about.me/eshanized)
+
+## Alternate Documentation
+
+- [Full Content Narrative (llms-full.txt)](https://eshanized.is-a.dev/llms-full.txt): Complete markdown text of all nine portfolio chapters.
+- [Clean Markdown Page (index.md)](https://eshanized.is-a.dev/index.md): Single-page markdown representation of the portfolio.

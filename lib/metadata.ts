@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { siteConfig } from './site-config';
 
 export function createMetadata(overrides?: Partial<Metadata>): Metadata {
-  const title = overrides?.title ?? `${siteConfig.name} (${siteConfig.handle}) — Systems Engineer & Open-Source Builder`;
+  const title = overrides?.title ?? `${siteConfig.name} (${siteConfig.handle}) — Systems Engineer`;
   const description = overrides?.description ?? siteConfig.description;
 
   return {
@@ -11,7 +11,22 @@ export function createMetadata(overrides?: Partial<Metadata>): Metadata {
     metadataBase: new URL(siteConfig.url),
     alternates: {
       canonical: '/',
+      types: {
+        'text/markdown': '/index.md',
+      },
     },
+    icons: {
+      icon: [
+        { url: '/favicon.ico', sizes: 'any' },
+        { url: '/favicon-32.png', sizes: '32x32', type: 'image/png' },
+        { url: '/favicon-48.png', sizes: '48x48', type: 'image/png' },
+        { url: '/icon.svg', type: 'image/svg+xml' },
+      ],
+      apple: [
+        { url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
+      ],
+    },
+    manifest: '/site.webmanifest',
     openGraph: {
       type: 'website',
       locale: 'en_US',
@@ -24,7 +39,8 @@ export function createMetadata(overrides?: Partial<Metadata>): Metadata {
           url: siteConfig.ogImage,
           width: 1200,
           height: 630,
-          alt: `${siteConfig.name} — ${siteConfig.handle}`,
+          alt: `${siteConfig.name} (${siteConfig.handle}) — Systems Engineer`,
+          type: 'image/png',
         },
       ],
     },
@@ -32,6 +48,7 @@ export function createMetadata(overrides?: Partial<Metadata>): Metadata {
       card: 'summary_large_image',
       title,
       description,
+      creator: `@${siteConfig.handle}`,
       images: [siteConfig.ogImage],
     },
     robots: {
@@ -55,12 +72,14 @@ export function createPersonJsonLd() {
   return {
     '@context': 'https://schema.org',
     '@type': 'Person',
+    '@id': `${siteConfig.url}/#person`,
     name: siteConfig.name,
     alternateName: siteConfig.handle,
     url: siteConfig.url,
     image: `${siteConfig.url}${siteConfig.ogImage}`,
     jobTitle: 'Systems Engineer',
     description: siteConfig.description,
+    mainEntityOfPage: siteConfig.url,
     sameAs: [
       siteConfig.links.github,
       siteConfig.links.dev,
@@ -89,11 +108,17 @@ export function createWebsiteJsonLd() {
   return {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
+    '@id': `${siteConfig.url}/#website`,
     name: `${siteConfig.name} (${siteConfig.handle})`,
     url: siteConfig.url,
     description: siteConfig.description,
+    inLanguage: 'en-US',
+    publisher: {
+      '@id': `${siteConfig.url}/#person`,
+    },
     author: {
       '@type': 'Person',
+      '@id': `${siteConfig.url}/#person`,
       name: siteConfig.name,
       alternateName: siteConfig.handle,
     },
@@ -104,13 +129,20 @@ export function createProfilePageJsonLd() {
   return {
     '@context': 'https://schema.org',
     '@type': 'ProfilePage',
+    '@id': `${siteConfig.url}/#profilepage`,
+    url: siteConfig.url,
+    name: `${siteConfig.name} (${siteConfig.handle}) — Systems Engineer`,
+    inLanguage: 'en-US',
+    isPartOf: {
+      '@id': `${siteConfig.url}/#website`,
+    },
     mainEntity: {
       '@type': 'Person',
+      '@id': `${siteConfig.url}/#person`,
       name: siteConfig.name,
       alternateName: siteConfig.handle,
       url: siteConfig.url,
       description: siteConfig.description,
     },
-    url: siteConfig.url,
   };
 }

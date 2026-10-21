@@ -6,7 +6,7 @@ export const siteConfig = {
     'Eshan Roy, known as eshanized, builds systems software, developer infrastructure, and open-source products. His work explores the intersection of systems engineering, Linux, and autonomous software engineering.',
   positioning: 'I build systems that help software do more.',
   url: 'https://eshanized.is-a.dev',
-  ogImage: '/og-image.svg',
+  ogImage: '/og-image.png',
   organization: {
     name: 'Tonmoy Infrastructure & Vision',
     url: 'https://tonmoyinfrastructure.org',
