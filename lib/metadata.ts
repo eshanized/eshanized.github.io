@@ -64,6 +64,7 @@ export function createMetadata(overrides?: Partial<Metadata>): Metadata {
     authors: [{ name: siteConfig.name, url: siteConfig.links.github }],
     creator: siteConfig.name,
     publisher: siteConfig.name,
+    themeColor: '#0d0a07',
     ...overrides,
   };
 }
@@ -95,11 +96,13 @@ export function createPersonJsonLd() {
     },
     knowsAbout: [
       'Systems programming',
+      'Rust',
+      'Distributed systems',
       'Linux',
+      'Process confinement',
       'Open source',
       'Autonomous software engineering',
       'Developer infrastructure',
-      'Rust',
     ],
   };
 }

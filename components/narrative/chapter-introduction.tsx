@@ -3,7 +3,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { Reveal } from '@/components/motion/reveal';
 import { siteConfig } from '@/lib/site-config';
-import { ChevronDown } from 'lucide-react';
+import { ChevronDown, Terminal, Cpu, ArrowRight } from 'lucide-react';
+import { InteractiveTerminal } from '@/components/terminal/interactive-terminal';
 
 function HeroSystemsVisual() {
   return (
@@ -88,10 +89,10 @@ function HeroSystemsVisual() {
       <ellipse cx="240" cy="260" rx="110" ry="110" stroke="hsl(20 10% 12%)" strokeWidth="0.5" fill="none" />
 
       {/* Labels */}
-      <text x="240" y="72" textAnchor="middle" fontSize="7" fill="hsl(30 8% 35%)" fontFamily="monospace">infrastructure</text>
-      <text x="404" y="344" textAnchor="middle" fontSize="7" fill="hsl(30 8% 35%)" fontFamily="monospace">systems</text>
-      <text x="76" y="344" textAnchor="middle" fontSize="7" fill="hsl(30 8% 35%)" fontFamily="monospace">open-source</text>
-      <text x="240" y="462" textAnchor="middle" fontSize="7" fill="hsl(4 82% 56% / 0.6)" fontFamily="monospace">M31A</text>
+      <text x="240" y="72" textAnchor="middle" fontSize="7" fill="hsl(30 8% 35%)" fontFamily="monospace">distributed-compute</text>
+      <text x="404" y="344" textAnchor="middle" fontSize="7" fill="hsl(30 8% 35%)" fontFamily="monospace">systems-rust</text>
+      <text x="76" y="344" textAnchor="middle" fontSize="7" fill="hsl(30 8% 35%)" fontFamily="monospace">linux-kernel</text>
+      <text x="240" y="462" textAnchor="middle" fontSize="7" fill="hsl(4 82% 56% / 0.6)" fontFamily="monospace">M31A & POLARIS</text>
     </svg>
   );
 }
@@ -134,10 +135,12 @@ function AnimatedHandle() {
 }
 
 export function ChapterIntroduction() {
+  const [viewMode, setViewMode] = useState<'terminal' | 'diagram'>('terminal');
+
   return (
     <section
       id="introduction"
-      className="relative min-h-screen flex flex-col justify-center overflow-hidden bg-grain"
+      className="relative min-h-screen flex flex-col justify-center overflow-hidden bg-grain pt-20 pb-16"
       aria-labelledby="introduction-heading"
     >
       {/* Large background handle text — purely decorative */}
@@ -157,15 +160,15 @@ export function ChapterIntroduction() {
       </div>
 
       {/* Main two-column layout */}
-      <div className="relative z-10 grid lg:grid-cols-2 gap-12 items-center px-6 md:px-12 lg:px-20 pt-24 pb-16 max-w-7xl mx-auto w-full">
-        {/* Left: Identity */}
-        <div className="max-w-2xl">
+      <div className="relative z-10 grid lg:grid-cols-12 gap-10 items-center px-6 md:px-12 lg:px-20 max-w-7xl mx-auto w-full">
+        {/* Left: Identity (Col 6) */}
+        <div className="lg:col-span-6 max-w-2xl">
           <AnimatedHandle />
 
           <Reveal delay={1}>
             <h1
               id="introduction-heading"
-              className="font-display text-6xl sm:text-7xl md:text-8xl lg:text-7xl xl:text-8xl font-bold leading-[0.92] tracking-tight text-balance"
+              className="font-display text-5xl sm:text-6xl md:text-7xl xl:text-8xl font-bold leading-[0.92] tracking-tight text-balance"
             >
               Eshan
               <br />
@@ -174,37 +177,46 @@ export function ChapterIntroduction() {
           </Reveal>
 
           <Reveal delay={2}>
-            <div className="mt-8 border-l-2 border-coral-500/50 pl-5">
-              <p className="font-display text-xl md:text-2xl text-foreground-muted leading-snug max-w-xl text-balance">
-                Systems Engineer &middot; Open-Source Builder
+            <div className="mt-6 border-l-2 border-coral-500/50 pl-5">
+              <p className="font-display text-lg md:text-xl text-foreground-muted leading-snug max-w-xl text-balance">
+                Systems Engineer &middot; Distributed Infrastructure Architect
                 <br />
-                Infrastructure Architect
+                Open-Source Founder
               </p>
             </div>
           </Reveal>
 
           <Reveal delay={3}>
-            <p className="text-base md:text-lg text-foreground-muted/70 mt-6 max-w-xl leading-relaxed text-pretty">
-              I build systems that help software do more. My work lives at the
-              intersection of Linux engineering, developer infrastructure, and
-              autonomous software — from the kernel outward.
+            <p className="text-sm md:text-base text-foreground-muted/80 mt-5 max-w-xl leading-relaxed text-pretty">
+              I build systems that help software do more. My work spans Rust distributed
+              orchestration (<span className="text-foreground font-mono">Polaris</span>),
+              verifiable autonomous runtimes (<span className="text-foreground font-mono">M31A</span>),
+              and Arch Linux engineering (<span className="text-foreground font-mono">Snigdha OS</span>)
+              — engineered from the kernel outward.
             </p>
           </Reveal>
 
           <Reveal delay={4}>
-            <div className="mt-10 flex flex-wrap items-center gap-6">
+            <div className="mt-8 flex flex-wrap items-center gap-5">
               <a
                 href="#mindset"
                 className="group inline-flex items-center gap-3 text-foreground hover:text-coral-400 transition-colors"
               >
-                <span className="text-sm font-medium">Explore the work</span>
+                <span className="text-sm font-medium">Explore the monograph</span>
                 <span className="w-10 h-px bg-foreground-subtle group-hover:bg-coral-500 group-hover:w-16 transition-all duration-300" />
+              </a>
+              <a
+                href="#m31a"
+                className="inline-flex items-center gap-1.5 text-xs font-mono px-3 py-1.5 rounded border border-border hover:border-coral-500/40 text-foreground-muted hover:text-coral-400 transition-colors"
+              >
+                <span>Policy Simulator</span>
+                <ArrowRight className="w-3 h-3" />
               </a>
               <a
                 href={siteConfig.links.github}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-sm font-mono text-foreground-subtle hover:text-coral-400 transition-colors"
+                className="text-xs font-mono text-foreground-subtle hover:text-coral-400 transition-colors"
               >
                 github.com/eshanized ↗
               </a>
@@ -212,18 +224,60 @@ export function ChapterIntroduction() {
           </Reveal>
         </div>
 
-        {/* Right: Systems visual */}
-        <Reveal delay={2}>
-          <div className="hidden lg:flex items-center justify-center relative">
-            <div className="w-full max-w-[420px] aspect-square">
-              <HeroSystemsVisual />
+        {/* Right: Interactive Console or Systems Visual (Col 6) */}
+        <div className="lg:col-span-6 w-full">
+          <Reveal delay={2}>
+            <div className="space-y-3">
+              {/* Tab Switcher */}
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setViewMode('terminal')}
+                    className={`inline-flex items-center gap-1.5 px-3 py-1 text-xs font-mono rounded-md border transition-all ${
+                      viewMode === 'terminal'
+                        ? 'bg-secondary border-coral-500/50 text-coral-400 font-semibold'
+                        : 'border-transparent text-foreground-subtle hover:text-foreground'
+                    }`}
+                  >
+                    <Terminal className="w-3.5 h-3.5" />
+                    <span>Interactive Console</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setViewMode('diagram')}
+                    className={`inline-flex items-center gap-1.5 px-3 py-1 text-xs font-mono rounded-md border transition-all ${
+                      viewMode === 'diagram'
+                        ? 'bg-secondary border-coral-500/50 text-coral-400 font-semibold'
+                        : 'border-transparent text-foreground-subtle hover:text-foreground'
+                    }`}
+                  >
+                    <Cpu className="w-3.5 h-3.5" />
+                    <span>Systems Topology</span>
+                  </button>
+                </div>
+                <span className="hidden sm:inline font-mono text-[10px] text-foreground-subtle">
+                  LIVE CONSOLE
+                </span>
+              </div>
+
+              {/* View Content */}
+              {viewMode === 'terminal' ? (
+                <InteractiveTerminal />
+              ) : (
+                <div className="border border-border/80 rounded-xl bg-background-elevated p-6 flex items-center justify-center aspect-[4/3]">
+                  <div className="w-full max-w-[340px] aspect-square">
+                    <HeroSystemsVisual />
+                  </div>
+                </div>
+              )}
             </div>
-          </div>
-        </Reveal>
+          </Reveal>
+        </div>
       </div>
 
       {/* Scroll indicator */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-foreground-subtle z-10">
+      <div className="mt-12 flex flex-col items-center gap-1.5 text-foreground-subtle z-10">
         <span className="font-mono text-[9px] tracking-widest uppercase">Scroll</span>
         <ChevronDown className="w-4 h-4 animate-bounce" aria-hidden="true" />
       </div>

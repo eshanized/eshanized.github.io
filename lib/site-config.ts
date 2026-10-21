@@ -1,9 +1,9 @@
 export const siteConfig = {
   name: 'Eshan Roy',
   handle: 'eshanized',
-  tagline: 'Systems Engineer · Open-Source Builder · Infrastructure Architect',
+  tagline: 'Systems Engineer · Distributed Infrastructure Architect · Open-Source Founder',
   description:
-    'Eshan Roy, known as eshanized, builds systems software, developer infrastructure, and open-source products. His work explores the intersection of systems engineering, Linux, and autonomous software engineering.',
+    'Eshan Roy, known as eshanized, builds systems software, distributed runtimes, and autonomous engineering infrastructure. Founder of Tonmoy Infrastructure & Vision (TIV) and lead maintainer of Snigdha OS.',
   positioning: 'I build systems that help software do more.',
   url: 'https://eshanized.is-a.dev',
   ogImage: '/og-image.png',
@@ -30,6 +30,19 @@ export const siteConfig = {
     snigdha: {
       githubOrg: 'https://github.com/Snigdha-OS',
       gitlabOrg: 'https://gitlab.com/SnigdhaOS',
+    },
+    polaris: {
+      crate: 'https://crates.io/crates/eshanized-polaris',
+      repo: 'https://github.com/eshanized/polaris',
+    },
+    veda: {
+      repo: 'https://github.com/TIVerse/veda-rs',
+    },
+    depInsight: {
+      repo: 'https://github.com/TIVerse/dep-insight',
+    },
+    multigit: {
+      repo: 'https://github.com/TIVerse/multigit',
     },
   },
 };

@@ -390,3 +390,179 @@ export function PhilosophyDiagram({ className }: VisualProps) {
     </svg>
   );
 }
+
+/** Distributed compute cluster topology: Polaris */
+export function DistributedCompute({ className }: VisualProps) {
+  return (
+    <svg
+      viewBox="0 0 460 260"
+      className={className}
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-label="Polaris distributed compute cluster topology"
+      role="img"
+    >
+      {/* Coordinator node */}
+      <rect x="180" y="20" width="100" height="48" rx="6" fill="hsl(20 14% 7%)" stroke="hsl(var(--coral-500) / 0.5)" strokeWidth="1.5" />
+      <text x="230" y="42" textAnchor="middle" fontSize="10" fill="hsl(var(--coral-400))" fontFamily="monospace" fontWeight="600">POLARIS</text>
+      <text x="230" y="56" textAnchor="middle" fontSize="8" fill="hsl(30 10% 50%)" fontFamily="monospace">coordinator</text>
+
+      {/* Task dispatch bus */}
+      <line x1="230" y1="68" x2="230" y2="105" stroke="hsl(var(--coral-500) / 0.3)" strokeWidth="1.5" strokeDasharray="3 3" />
+
+      {/* Distribution crossbar */}
+      <line x1="75" y1="105" x2="385" y2="105" stroke="hsl(20 10% 18%)" strokeWidth="1.5" />
+
+      {/* Worker connections */}
+      <line x1="75" y1="105" x2="75" y2="140" stroke="hsl(20 10% 18%)" strokeWidth="1" />
+      <line x1="230" y1="105" x2="230" y2="140" stroke="hsl(20 10% 18%)" strokeWidth="1" />
+      <line x1="385" y1="105" x2="385" y2="140" stroke="hsl(20 10% 18%)" strokeWidth="1" />
+
+      {/* Worker 1 */}
+      <rect x="25" y="140" width="100" height="70" rx="6" fill="hsl(20 14% 5%)" stroke="hsl(20 10% 16%)" strokeWidth="1" />
+      <text x="75" y="162" textAnchor="middle" fontSize="9" fill="hsl(30 20% 80%)" fontFamily="monospace">Worker 01</text>
+      <text x="75" y="178" textAnchor="middle" fontSize="8" fill="hsl(142 70% 50%)" fontFamily="monospace">● heartbeat</text>
+      <text x="75" y="194" textAnchor="middle" fontSize="7" fill="hsl(30 8% 40%)" fontFamily="monospace">latency: 0.3ms</text>
+
+      {/* Worker 2 */}
+      <rect x="180" y="140" width="100" height="70" rx="6" fill="hsl(20 14% 5%)" stroke="hsl(var(--coral-500) / 0.3)" strokeWidth="1" />
+      <text x="230" y="162" textAnchor="middle" fontSize="9" fill="hsl(30 20% 80%)" fontFamily="monospace">Worker 02</text>
+      <text x="230" y="178" textAnchor="middle" fontSize="8" fill="hsl(142 70% 50%)" fontFamily="monospace">● #[task] exec</text>
+      <text x="230" y="194" textAnchor="middle" fontSize="7" fill="hsl(30 8% 40%)" fontFamily="monospace">latency: 0.4ms</text>
+
+      {/* Worker 3 */}
+      <rect x="335" y="140" width="100" height="70" rx="6" fill="hsl(20 14% 5%)" stroke="hsl(20 10% 16%)" strokeWidth="1" />
+      <text x="385" y="162" textAnchor="middle" fontSize="9" fill="hsl(30 20% 80%)" fontFamily="monospace">Worker 03</text>
+      <text x="385" y="178" textAnchor="middle" fontSize="8" fill="hsl(142 70% 50%)" fontFamily="monospace">● heartbeat</text>
+      <text x="385" y="194" textAnchor="middle" fontSize="7" fill="hsl(30 8% 40%)" fontFamily="monospace">latency: 0.5ms</text>
+
+      {/* Protocol footnote */}
+      <text x="230" y="240" textAnchor="middle" fontSize="8" fill="hsl(30 8% 35%)" fontFamily="monospace">consensus: state-machine replication · fail-tolerant</text>
+    </svg>
+  );
+}
+
+/** Parallel runtime with work-stealing deque: Veda */
+export function ParallelRuntime({ className }: VisualProps) {
+  return (
+    <svg
+      viewBox="0 0 440 240"
+      className={className}
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-label="Veda work-stealing parallel runtime architecture"
+      role="img"
+    >
+      {/* Core pool box */}
+      <rect x="20" y="20" width="400" height="200" rx="8" fill="hsl(20 14% 5%)" stroke="hsl(20 10% 14%)" strokeWidth="1" />
+      <text x="40" y="44" fontSize="10" fill="hsl(var(--coral-400))" fontFamily="monospace" fontWeight="600">VEDA RUNTIME</text>
+      <text x="360" y="44" textAnchor="end" fontSize="8" fill="hsl(30 8% 40%)" fontFamily="monospace">adaptive work-stealing</text>
+
+      {/* Core 0 Deque */}
+      <rect x="40" y="65" width="160" height="60" rx="4" fill="hsl(20 14% 7%)" stroke="hsl(20 10% 20%)" strokeWidth="1" />
+      <text x="52" y="84" fontSize="9" fill="hsl(30 20% 80%)" fontFamily="monospace">Thread 0 (NUMA 0)</text>
+      <rect x="52" y="94" width="30" height="20" rx="2" fill="hsl(var(--coral-500) / 0.2)" stroke="hsl(var(--coral-500) / 0.5)" strokeWidth="1" />
+      <text x="67" y="108" textAnchor="middle" fontSize="8" fill="hsl(var(--coral-300))" fontFamily="monospace">T1</text>
+      <rect x="88" y="94" width="30" height="20" rx="2" fill="hsl(20 14% 10%)" stroke="hsl(20 10% 26%)" strokeWidth="1" />
+      <text x="103" y="108" textAnchor="middle" fontSize="8" fill="hsl(30 10% 60%)" fontFamily="monospace">T2</text>
+      <rect x="124" y="94" width="30" height="20" rx="2" fill="hsl(20 14% 10%)" stroke="hsl(20 10% 26%)" strokeWidth="1" />
+      <text x="139" y="108" textAnchor="middle" fontSize="8" fill="hsl(30 10% 60%)" fontFamily="monospace">T3</text>
+
+      {/* Core 1 Deque */}
+      <rect x="240" y="65" width="160" height="60" rx="4" fill="hsl(20 14% 7%)" stroke="hsl(20 10% 20%)" strokeWidth="1" />
+      <text x="252" y="84" fontSize="9" fill="hsl(30 20% 80%)" fontFamily="monospace">Thread 1 (NUMA 1)</text>
+      <rect x="252" y="94" width="30" height="20" rx="2" fill="hsl(20 14% 10%)" stroke="hsl(20 10% 26%)" strokeWidth="1" />
+      <text x="267" y="108" textAnchor="middle" fontSize="8" fill="hsl(30 10% 60%)" fontFamily="monospace">T4</text>
+      <rect x="288" y="94" width="30" height="20" rx="2" fill="hsl(var(--coral-500) / 0.2)" stroke="hsl(var(--coral-500) / 0.5)" strokeWidth="1" />
+      <text x="303" y="108" textAnchor="middle" fontSize="8" fill="hsl(var(--coral-300))" fontFamily="monospace">T5</text>
+
+      {/* Steal arrow */}
+      <path d="M 240 105 Q 220 70 170 105" stroke="hsl(var(--coral-400))" strokeWidth="1.5" strokeDasharray="3 3" fill="none" />
+      <text x="220" y="80" textAnchor="middle" fontSize="8" fill="hsl(var(--coral-400))" fontFamily="monospace">steal</text>
+
+      {/* Lock-free deque stats */}
+      <text x="220" y="165" textAnchor="middle" fontSize="8" fill="hsl(142 70% 50%)" fontFamily="monospace">● lock-free chase-lev deque · zero spinlock contention</text>
+      <text x="220" y="185" textAnchor="middle" fontSize="7" fill="hsl(30 8% 40%)" fontFamily="monospace">microsecond task dispatch · thread-affinity aware</text>
+    </svg>
+  );
+}
+
+/** Dependency tree audit visualizer: dep-insight */
+export function DependencyGraph({ className }: VisualProps) {
+  return (
+    <svg
+      viewBox="0 0 420 230"
+      className={className}
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-label="dep-insight cargo dependency tree visualizer"
+      role="img"
+    >
+      {/* Root crate */}
+      <rect x="150" y="20" width="120" height="34" rx="4" fill="hsl(20 14% 8%)" stroke="hsl(var(--coral-500) / 0.6)" strokeWidth="1" />
+      <text x="210" y="41" textAnchor="middle" fontSize="9" fill="hsl(var(--coral-400))" fontFamily="monospace">workspace_root</text>
+
+      {/* Tree lines */}
+      <line x1="210" y1="54" x2="210" y2="80" stroke="hsl(20 10% 18%)" strokeWidth="1" />
+      <line x1="90" y1="80" x2="330" y2="80" stroke="hsl(20 10% 18%)" strokeWidth="1" />
+
+      <line x1="90" y1="80" x2="90" y2="110" stroke="hsl(20 10% 18%)" strokeWidth="1" />
+      <line x1="210" y1="80" x2="210" y2="110" stroke="hsl(20 10% 18%)" strokeWidth="1" />
+      <line x1="330" y1="80" x2="330" y2="110" stroke="hsl(20 10% 18%)" strokeWidth="1" />
+
+      {/* Sub-deps */}
+      <rect x="40" y="110" width="100" height="32" rx="4" fill="hsl(20 14% 6%)" stroke="hsl(20 10% 18%)" strokeWidth="1" />
+      <text x="90" y="130" textAnchor="middle" fontSize="8" fill="hsl(30 20% 75%)" fontFamily="monospace">tokio v1.38</text>
+
+      <rect x="160" y="110" width="100" height="32" rx="4" fill="hsl(20 14% 6%)" stroke="hsl(20 10% 18%)" strokeWidth="1" />
+      <text x="210" y="130" textAnchor="middle" fontSize="8" fill="hsl(30 20% 75%)" fontFamily="monospace">serde v1.0</text>
+
+      <rect x="280" y="110" width="100" height="32" rx="4" fill="hsl(20 14% 6%)" stroke="hsl(20 10% 18%)" strokeWidth="1" />
+      <text x="330" y="130" textAnchor="middle" fontSize="8" fill="hsl(30 20% 75%)" fontFamily="monospace">tree-sitter</text>
+
+      {/* Audit badge */}
+      <rect x="110" y="170" width="200" height="28" rx="4" fill="hsl(142 70% 10% / 0.4)" stroke="hsl(142 70% 40% / 0.5)" strokeWidth="1" />
+      <text x="210" y="188" textAnchor="middle" fontSize="8" fill="hsl(142 70% 50%)" fontFamily="monospace">0 duplicate crates · 0 vulnerabilities</text>
+    </svg>
+  );
+}
+
+/** MultiGit sync visualizer */
+export function MultiGitSync({ className }: VisualProps) {
+  return (
+    <svg
+      viewBox="0 0 420 220"
+      className={className}
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-label="multigit multi-remote fleet synchronization visualizer"
+      role="img"
+    >
+      {/* Local repo */}
+      <rect x="150" y="20" width="120" height="36" rx="4" fill="hsl(20 14% 8%)" stroke="hsl(var(--coral-500) / 0.6)" strokeWidth="1.5" />
+      <text x="210" y="42" textAnchor="middle" fontSize="9" fill="hsl(var(--coral-400))" fontFamily="monospace">Local Git Index</text>
+
+      {/* Fan out lines */}
+      <line x1="210" y1="56" x2="80" y2="120" stroke="hsl(20 10% 18%)" strokeWidth="1" strokeDasharray="3 3" />
+      <line x1="210" y1="56" x2="210" y2="120" stroke="hsl(20 10% 18%)" strokeWidth="1" strokeDasharray="3 3" />
+      <line x1="210" y1="56" x2="340" y2="120" stroke="hsl(20 10% 18%)" strokeWidth="1" strokeDasharray="3 3" />
+
+      {/* Remote 1: GitHub */}
+      <rect x="30" y="120" width="100" height="46" rx="4" fill="hsl(20 14% 6%)" stroke="hsl(20 10% 18%)" strokeWidth="1" />
+      <text x="80" y="142" textAnchor="middle" fontSize="9" fill="hsl(30 20% 80%)" fontFamily="monospace">GitHub</text>
+      <text x="80" y="156" textAnchor="middle" fontSize="7" fill="hsl(142 70% 50%)" fontFamily="monospace">● synchronized</text>
+
+      {/* Remote 2: GitLab */}
+      <rect x="160" y="120" width="100" height="46" rx="4" fill="hsl(20 14% 6%)" stroke="hsl(20 10% 18%)" strokeWidth="1" />
+      <text x="210" y="142" textAnchor="middle" fontSize="9" fill="hsl(30 20% 80%)" fontFamily="monospace">GitLab</text>
+      <text x="210" y="156" textAnchor="middle" fontSize="7" fill="hsl(142 70% 50%)" fontFamily="monospace">● synchronized</text>
+
+      {/* Remote 3: Self-hosted */}
+      <rect x="290" y="120" width="100" height="46" rx="4" fill="hsl(20 14% 6%)" stroke="hsl(20 10% 18%)" strokeWidth="1" />
+      <text x="340" y="142" textAnchor="middle" fontSize="9" fill="hsl(30 20% 80%)" fontFamily="monospace">Self-Hosted</text>
+      <text x="340" y="156" textAnchor="middle" fontSize="7" fill="hsl(142 70% 50%)" fontFamily="monospace">● synchronized</text>
+
+      <text x="210" y="198" textAnchor="middle" fontSize="8" fill="hsl(30 8% 40%)" fontFamily="monospace">parallel multi-ref dispatch · atomic branch verification</text>
+    </svg>
+  );
+}

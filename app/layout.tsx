@@ -71,9 +71,3 @@ export default function RootLayout({
     </html>
   );
 }
-
-export const viewport = {
-  themeColor: '#0d0a07',
-  width: 'device-width',
-  initialScale: 1,
-};
