@@ -1,18 +1,43 @@
 import type { Metadata } from 'next';
-import { siteConfig } from './site-config';
+import {
+  identity,
+  CANONICAL_ORIGIN,
+  CANONICAL_PERSON_ID,
+  CANONICAL_WEBSITE_ID,
+  CANONICAL_ORGANIZATION_ID,
+  CANONICAL_PROFILE_PAGE_ID,
+  VERIFIED_SAME_AS_URLS,
+  getCanonicalUrl,
+  serializeJsonLd,
+} from './identity';
 
-export function createMetadata(overrides?: Partial<Metadata>): Metadata {
-  const title = overrides?.title ?? `${siteConfig.name} (${siteConfig.handle}) — Systems Engineer`;
-  const description = overrides?.description ?? siteConfig.description;
+export interface PageMetadataOptions {
+  title?: string;
+  description?: string;
+  path?: string;
+  ogImage?: string;
+}
+
+/**
+ * Creates standardized, search-engine-accessible metadata for any page in the application.
+ */
+export function createMetadata(options?: PageMetadataOptions): Metadata {
+  const pagePath = options?.path ?? '/';
+  const canonical = getCanonicalUrl(pagePath);
+  const title = options?.title
+    ? `${options.title} — ${identity.name} (${identity.alternateName})`
+    : `${identity.name} (${identity.alternateName}) — ${identity.jobTitle}`;
+  const description = options?.description ?? identity.shortDescription;
+  const ogImageUrl = options?.ogImage ?? `${CANONICAL_ORIGIN}${identity.images.openGraphCard.url}`;
 
   return {
+    metadataBase: new URL(CANONICAL_ORIGIN),
     title,
     description,
-    metadataBase: new URL(siteConfig.url),
     alternates: {
-      canonical: '/',
+      canonical,
       types: {
-        'text/markdown': '/index.md',
+        'text/markdown': `${CANONICAL_ORIGIN}/index.md`,
       },
     },
     icons: {
@@ -30,16 +55,16 @@ export function createMetadata(overrides?: Partial<Metadata>): Metadata {
     openGraph: {
       type: 'website',
       locale: 'en_US',
-      url: siteConfig.url,
-      siteName: `${siteConfig.name} (${siteConfig.handle})`,
+      url: canonical,
+      siteName: `${identity.name} (${identity.alternateName})`,
       title,
       description,
       images: [
         {
-          url: siteConfig.ogImage,
-          width: 1200,
-          height: 630,
-          alt: `${siteConfig.name} (${siteConfig.handle}) — Systems Engineer`,
+          url: ogImageUrl,
+          width: identity.images.openGraphCard.width,
+          height: identity.images.openGraphCard.height,
+          alt: `${identity.name} (${identity.alternateName}) — ${identity.jobTitle}`,
           type: 'image/png',
         },
       ],
@@ -48,8 +73,8 @@ export function createMetadata(overrides?: Partial<Metadata>): Metadata {
       card: 'summary_large_image',
       title,
       description,
-      creator: `@${siteConfig.handle}`,
-      images: [siteConfig.ogImage],
+      creator: `@${identity.alternateName}`,
+      images: [ogImageUrl],
     },
     robots: {
       index: true,
@@ -61,91 +86,135 @@ export function createMetadata(overrides?: Partial<Metadata>): Metadata {
         'max-snippet': -1,
       },
     },
-    authors: [{ name: siteConfig.name, url: siteConfig.links.github }],
-    creator: siteConfig.name,
-    publisher: siteConfig.name,
+    authors: [{ name: identity.name, url: identity.profiles.github.url }],
+    creator: identity.name,
+    publisher: identity.name,
     themeColor: '#0d0a07',
-    ...overrides,
   };
 }
 
+/**
+ * Creates the canonical Schema.org Person entity.
+ * Identifier: https://eshanized.is-a.dev/#person
+ */
 export function createPersonJsonLd() {
   return {
     '@context': 'https://schema.org',
     '@type': 'Person',
-    '@id': `${siteConfig.url}/#person`,
-    name: siteConfig.name,
-    alternateName: siteConfig.handle,
-    url: siteConfig.url,
-    image: `${siteConfig.url}${siteConfig.ogImage}`,
-    jobTitle: 'Systems Engineer',
-    description: siteConfig.description,
-    mainEntityOfPage: siteConfig.url,
-    sameAs: [
-      siteConfig.links.github,
-      siteConfig.links.dev,
-      siteConfig.links.pypi,
-      siteConfig.links.orcid,
-      siteConfig.links.crates,
-      siteConfig.links.about,
-    ],
+    '@id': CANONICAL_PERSON_ID,
+    name: identity.name,
+    alternateName: identity.alternateName,
+    url: identity.canonicalUrl,
+    image: `${CANONICAL_ORIGIN}${identity.images.portraitSquare.url}`,
+    jobTitle: identity.jobTitle,
+    description: identity.biography,
+    mainEntityOfPage: identity.canonicalUrl,
+    sameAs: [...VERIFIED_SAME_AS_URLS],
     worksFor: {
       '@type': 'Organization',
-      name: siteConfig.organization.name,
-      url: siteConfig.organization.url,
+      '@id': CANONICAL_ORGANIZATION_ID,
+      name: identity.organization.name,
+      url: identity.organization.url,
     },
-    knowsAbout: [
-      'Systems programming',
-      'Rust',
-      'Distributed systems',
-      'Linux',
-      'Process confinement',
-      'Open source',
-      'Autonomous software engineering',
-      'Developer infrastructure',
-    ],
+    knowsAbout: [...identity.knowsAbout],
   };
 }
 
+/**
+ * Creates the Schema.org Organization entity.
+ * Identifier: https://tonmoyinfrastructure.org/#organization
+ */
+export function createOrganizationJsonLd() {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    '@id': CANONICAL_ORGANIZATION_ID,
+    name: identity.organization.name,
+    url: identity.organization.url,
+    founder: {
+      '@type': 'Person',
+      '@id': CANONICAL_PERSON_ID,
+      name: identity.name,
+      alternateName: identity.alternateName,
+      url: identity.canonicalUrl,
+    },
+  };
+}
+
+/**
+ * Creates the Schema.org WebSite entity.
+ * Identifier: https://eshanized.is-a.dev/#website
+ */
 export function createWebsiteJsonLd() {
   return {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
-    '@id': `${siteConfig.url}/#website`,
-    name: `${siteConfig.name} (${siteConfig.handle})`,
-    url: siteConfig.url,
-    description: siteConfig.description,
+    '@id': CANONICAL_WEBSITE_ID,
+    name: `${identity.name} (${identity.alternateName})`,
+    url: identity.canonicalUrl,
+    description: identity.biography,
     inLanguage: 'en-US',
     publisher: {
-      '@id': `${siteConfig.url}/#person`,
+      '@id': CANONICAL_PERSON_ID,
     },
     author: {
       '@type': 'Person',
-      '@id': `${siteConfig.url}/#person`,
-      name: siteConfig.name,
-      alternateName: siteConfig.handle,
+      '@id': CANONICAL_PERSON_ID,
+      name: identity.name,
+      alternateName: identity.alternateName,
     },
   };
 }
 
+/**
+ * Creates the Schema.org ProfilePage entity for the dedicated biography route (/about).
+ * Identifier: https://eshanized.is-a.dev/about#profilepage
+ */
 export function createProfilePageJsonLd() {
+  const profileUrl = getCanonicalUrl('/about');
   return {
     '@context': 'https://schema.org',
     '@type': 'ProfilePage',
-    '@id': `${siteConfig.url}/#profilepage`,
-    url: siteConfig.url,
-    name: `${siteConfig.name} (${siteConfig.handle}) — Systems Engineer`,
+    '@id': CANONICAL_PROFILE_PAGE_ID,
+    url: profileUrl,
+    name: `About ${identity.name} (${identity.alternateName}) — Biography & Leadership`,
+    description: identity.biography,
     inLanguage: 'en-US',
     isPartOf: {
-      '@id': `${siteConfig.url}/#website`,
+      '@id': CANONICAL_WEBSITE_ID,
     },
     mainEntity: {
       '@type': 'Person',
-      '@id': `${siteConfig.url}/#person`,
-      name: siteConfig.name,
-      alternateName: siteConfig.handle,
-      url: siteConfig.url,
-      description: siteConfig.description,
+      '@id': CANONICAL_PERSON_ID,
+      name: identity.name,
+      alternateName: identity.alternateName,
+      url: identity.canonicalUrl,
+      jobTitle: identity.jobTitle,
+      description: identity.biography,
+      image: `${CANONICAL_ORIGIN}${identity.images.portraitSquare.url}`,
+      sameAs: [...VERIFIED_SAME_AS_URLS],
+      worksFor: {
+        '@type': 'Organization',
+        '@id': CANONICAL_ORGANIZATION_ID,
+        name: identity.organization.name,
+        url: identity.organization.url,
+      },
     },
   };
 }
+
+/**
+ * Creates an interconnected Schema.org @graph definition for complete entity-level indexing.
+ */
+export function createCombinedEntityGraphJsonLd() {
+  return {
+    '@context': 'https://schema.org',
+    '@graph': [
+      createPersonJsonLd(),
+      createOrganizationJsonLd(),
+      createWebsiteJsonLd(),
+    ],
+  };
+}
+
+export { serializeJsonLd };

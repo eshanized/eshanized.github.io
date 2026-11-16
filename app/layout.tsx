@@ -1,13 +1,13 @@
 import './globals.css';
 import type { Metadata } from 'next';
 import { Marcellus, Inter, JetBrains_Mono } from 'next/font/google';
-import { createMetadata } from '@/lib/metadata';
 import {
+  createMetadata,
   createPersonJsonLd,
+  createOrganizationJsonLd,
   createWebsiteJsonLd,
-  createProfilePageJsonLd,
+  serializeJsonLd,
 } from '@/lib/metadata';
-import { siteConfig } from '@/lib/site-config';
 
 const marcellus = Marcellus({
   subsets: ['latin'],
@@ -36,8 +36,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   const personJsonLd = createPersonJsonLd();
+  const organizationJsonLd = createOrganizationJsonLd();
   const websiteJsonLd = createWebsiteJsonLd();
-  const profilePageJsonLd = createProfilePageJsonLd();
 
   return (
     <html
@@ -46,26 +46,29 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <head>
+        {/* Authoritative Person Entity */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify(personJsonLd),
+            __html: serializeJsonLd(personJsonLd),
           }}
         />
+        {/* Authoritative Organization Entity */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify(websiteJsonLd),
+            __html: serializeJsonLd(organizationJsonLd),
           }}
         />
+        {/* Authoritative WebSite Entity */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify(profilePageJsonLd),
+            __html: serializeJsonLd(websiteJsonLd),
           }}
         />
       </head>
-      <body className="bg-background text-foreground antialiased">
+      <body className="bg-background text-foreground antialiased min-h-screen flex flex-col selection:bg-coral-500/20 selection:text-coral-300">
         {children}
       </body>
     </html>

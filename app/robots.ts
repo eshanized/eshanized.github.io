@@ -1,16 +1,16 @@
 import type { MetadataRoute } from 'next';
-import { siteConfig } from '@/lib/site-config';
+import { CANONICAL_ORIGIN } from '@/lib/identity';
 
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: [
       {
         userAgent: '*',
-        allow: '/',
+        allow: ['/', '/_next/static/css/', '/_next/static/media/', '/images/'],
         disallow: ['/api/'],
       },
     ],
-    sitemap: `${siteConfig.url}/sitemap.xml`,
-    host: siteConfig.url,
+    sitemap: `${CANONICAL_ORIGIN}/sitemap.xml`,
+    host: CANONICAL_ORIGIN,
   };
 }

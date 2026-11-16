@@ -34,3 +34,5 @@ Thumbs.db
 *.swo
 *~
 .idea/
+.agents/
+skills-lock.json

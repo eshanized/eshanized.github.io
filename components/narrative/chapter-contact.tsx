@@ -1,6 +1,6 @@
 import { Reveal } from '@/components/motion/reveal';
 import { siteConfig } from '@/lib/site-config';
-import { Github, FileText, Package, BookOpen, Globe, ArrowUpRight } from 'lucide-react';
+import { Github, Gitlab, FileText, Package, BookOpen, Globe, User, ArrowUpRight } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 
 interface ContactLink {
@@ -18,34 +18,46 @@ const contactLinks: ContactLink[] = [
     description: 'Source code, repositories, and open-source projects.',
   },
   {
+    label: 'GitLab',
+    url: siteConfig.links.gitlab,
+    icon: Gitlab,
+    description: 'Secondary code repository & pipeline mirrors.',
+  },
+  {
     label: 'DEV Community',
     url: siteConfig.links.dev,
     icon: FileText,
-    description: 'Technical writing and articles on systems engineering.',
-  },
-  {
-    label: 'PyPI',
-    url: siteConfig.links.pypi,
-    icon: Package,
-    description: 'Published Python packages.',
-  },
-  {
-    label: 'ORCID',
-    url: siteConfig.links.orcid,
-    icon: BookOpen,
-    description: 'Research and scholarly identifier.',
+    description: 'Authoritative technical writing on systems & runtimes.',
   },
   {
     label: 'crates.io',
     url: siteConfig.links.crates,
     icon: Package,
-    description: 'Published Rust crates.',
+    description: 'Published Rust crates and libraries.',
   },
   {
-    label: 'TIV',
+    label: 'ORCID',
+    url: siteConfig.links.orcid,
+    icon: BookOpen,
+    description: 'Persistent scholar & research identifier.',
+  },
+  {
+    label: 'TIV Organization',
     url: siteConfig.organization.url,
     icon: Globe,
-    description: 'Tonmoy Infrastructure & Vision — the organization.',
+    description: 'Tonmoy Infrastructure & Vision — corporate home.',
+  },
+  {
+    label: 'PyPI',
+    url: siteConfig.links.pypi,
+    icon: Package,
+    description: 'Published Python developer utilities.',
+  },
+  {
+    label: 'About.me',
+    url: siteConfig.links.about,
+    icon: User,
+    description: 'Public identity profile and biographical verification.',
   },
 ];
 
@@ -124,9 +136,29 @@ export function ChapterContact() {
           })}
         </div>
 
+        {/* Sub-page Navigation */}
+        <Reveal delay={2}>
+          <div className="flex flex-wrap items-center justify-between gap-4 py-6 border-t border-hairline/60 mb-6">
+            <span className="font-mono text-xs text-foreground-subtle uppercase tracking-wider">
+              Identity &amp; Authority Indexes
+            </span>
+            <div className="flex flex-wrap items-center gap-6 text-xs font-mono">
+              <a href="/about" className="text-foreground-muted hover:text-coral-400 transition-colors">
+                /about (Biography)
+              </a>
+              <a href="/projects" className="text-foreground-muted hover:text-coral-400 transition-colors">
+                /projects (Portfolio)
+              </a>
+              <a href="/publications" className="text-foreground-muted hover:text-coral-400 transition-colors">
+                /publications (Articles)
+              </a>
+            </div>
+          </div>
+        </Reveal>
+
         {/* Footer */}
         <Reveal delay={3}>
-          <footer className="pt-8 border-t border-hairline">
+          <footer className="pt-6 border-t border-hairline">
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
               <div className="flex items-center gap-2.5">
                 <span className="w-1.5 h-1.5 rounded-full bg-coral-500" />

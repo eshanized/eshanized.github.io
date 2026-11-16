@@ -1,37 +1,43 @@
 # Eshan Roy (eshanized)
 
-> Systems Engineer, open-source builder, and infrastructure architect. Builds systems software, autonomous engineering runtimes, and developer tooling.
+> Founder & CEO, Systems Engineer. Technology entrepreneur building operating systems, autonomous AI engineering systems, developer infrastructure and open-source software.
 
-Eshan Roy (known online as eshanized) is an engineer and researcher who builds systems software, developer infrastructure, and open-source products. His work explores the intersection of systems engineering, Linux, and autonomous software engineering.
+Eshan Roy, known professionally as eshanized, is a technology entrepreneur, systems engineer, and Founder & CEO of Tonmoy Infrastructure & Vision. His work focuses on building operating systems, autonomous AI engineering systems, developer infrastructure, and open-source software.
 
-## Primary Projects
+## Canonical Identity
+- Legal/Public Name: Eshan Roy
+- Professional Alias: eshanized
+- Primary Title: Founder & CEO, Systems Engineer
+- Organization: Tonmoy Infrastructure & Vision (https://tonmoyinfrastructure.org)
+- Canonical Website: https://eshanized.is-a.dev/
 
-- [M31A](https://m31a.tonmoyinfrastructure.org): A Rust-native autonomous software-engineering runtime with non-bypassable policy gates and verifiable execution. The model proposes actions; the runtime enforces policy. Completed missions produce cryptographic SHA-256 evidence digests.
-- [Snigdha OS](https://github.com/Snigdha-OS): An Arch-based Linux distribution ecosystem focused on a cohesive desktop experience, system tooling, package management, and developer utilities.
-- [Octate](https://tonmoyinfrastructure.org/projects/octate): A terminal-native AI code review CLI combining local Tree-sitter WASM AST parsing, cross-file reference graphs, and static linter discovery with multi-stage LLM review DAGs.
-- [SLMGen](https://github.com/eshanized): Small-language-model experimentation infrastructure for practical ML engineering, fine-tuning, and evaluation.
-- [MCP SuperAssistant](https://github.com/eshanized): Developer tooling built around the Model Context Protocol ecosystem.
+## Core Engineering Focus
+- Operating systems engineering
+- Autonomous AI engineering systems
+- Developer infrastructure
+- Open-source software
+- Distributed systems
 
-## Engineering Philosophy & Principles
+## Major Projects
+- [Snigdha OS](https://github.com/Snigdha-OS): Arch-based Linux distribution ecosystem focused on desktop coherence, system tooling, package management, and developer utilities.
+- [M31A](https://m31a.tonmoyinfrastructure.org): Autonomous coding-agent runtime with deterministic policy gates and verifiable execution.
+- [Polaris](https://crates.io/crates/eshanized-polaris): Rust-native distributed task orchestration engine featuring cluster state consensus and procedural macros.
+- [Veda](https://github.com/TIVerse/veda-rs): High-performance persistent key-value engine in Rust.
+- [Dep Insight](https://github.com/TIVerse/dep-insight): Static dependency vulnerability and license topology analyzer.
+- [MultiGit](https://github.com/TIVerse/multigit): Multi-repository orchestration and synchronizer for polyrepo architectures.
 
-- Architecture supports maintainability: Systems should be designed so that future maintainers can reason about them without indirection.
-- Reliability is verified, not asserted: A model declaring success is not proof. Completion requires empirical evidence: clean compilers, passing tests, and verifiable digests.
-- Developer experience is system design: Ergonomics, installation, and error reporting are architectural decisions made from the first commit.
-- Open source should be useful and understandable: High-integrity documentation and honest status labels matter as much as the implementation.
-- Automation needs boundaries and observability: Autonomous systems must fail closed through non-bypassable gates, with observable and recoverable execution states.
-- Performance improvements require measurement: Improvements must be supported by empirical data rather than intuition.
-
-## Organizations & Links
-
-- [Tonmoy Infrastructure & Vision](https://tonmoyinfrastructure.org): Parent infrastructure and open-source initiative.
+## Verified Profiles & Links
+- [Tonmoy Infrastructure & Vision](https://tonmoyinfrastructure.org)
 - [GitHub Profile](https://github.com/eshanized)
-- [Dev.to Articles](https://dev.to/eshanized)
-- [PyPI Packages](https://pypi.org/user/eshanized/)
-- [ORCID Record](https://orcid.org/0009-0007-1261-6805)
+- [GitLab Profile](https://gitlab.com/eshanized)
+- [DEV Community Articles](https://dev.to/eshanized)
 - [Crates.io Crates](https://crates.io/users/eshanized)
+- [ORCID Record](https://orcid.org/0009-0007-1261-6805)
+- [PyPI Packages](https://pypi.org/user/eshanized/)
 - [About.me](https://about.me/eshanized)
+- [X Profile](https://x.com/eshanized)
 
-## Alternate Documentation
-
-- [Full Content Narrative (llms-full.txt)](https://eshanized.is-a.dev/llms-full.txt): Complete markdown text of all nine portfolio chapters.
-- [Clean Markdown Page (index.md)](https://eshanized.is-a.dev/index.md): Single-page markdown representation of the portfolio.
+## Authoritative Routes
+- [Biography (/about)](https://eshanized.is-a.dev/about): Dedicated authoritative biography and ProfilePage entity.
+- [Projects (/projects)](https://eshanized.is-a.dev/projects): Complete systems portfolio index.
+- [Publications (/publications)](https://eshanized.is-a.dev/publications): Authoritative technical writing index.

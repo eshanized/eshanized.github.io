@@ -178,26 +178,35 @@ export function ChapterIntroduction() {
 
           <Reveal delay={2}>
             <div className="mt-6 border-l-2 border-coral-500/50 pl-5">
-              <p className="font-display text-lg md:text-xl text-foreground-muted leading-snug max-w-xl text-balance">
-                Systems Engineer &middot; Distributed Infrastructure Architect
-                <br />
-                Open-Source Founder
+              <p className="font-display text-lg md:text-xl text-foreground font-medium leading-snug max-w-xl text-balance">
+                Founder &amp; CEO &middot; Systems Engineer
+              </p>
+              <p className="text-xs md:text-sm font-mono text-foreground-subtle mt-1.5">
+                <a
+                  href={siteConfig.organization.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-coral-400 transition-colors inline-flex items-center gap-1.5"
+                >
+                  <span>{siteConfig.organization.name}</span>
+                  <span className="text-[11px] text-coral-500/80">↗</span>
+                </a>
               </p>
             </div>
           </Reveal>
 
           <Reveal delay={3}>
-            <p className="text-sm md:text-base text-foreground-muted/80 mt-5 max-w-xl leading-relaxed text-pretty">
-              I build systems that help software do more. My work spans Rust distributed
-              orchestration (<span className="text-foreground font-mono">Polaris</span>),
-              verifiable autonomous runtimes (<span className="text-foreground font-mono">M31A</span>),
-              and Arch Linux engineering (<span className="text-foreground font-mono">Snigdha OS</span>)
-              — engineered from the kernel outward.
+            <p className="text-sm md:text-base text-foreground-muted mt-5 max-w-xl leading-relaxed text-pretty">
+              A technology entrepreneur building operating systems, autonomous AI engineering systems,
+              developer infrastructure and open-source software. Lead developer of{' '}
+              <span className="text-foreground font-mono">Snigdha OS</span>, author of the{' '}
+              <span className="text-foreground font-mono">M31A</span> verifiable agent runtime, and{' '}
+              <span className="text-foreground font-mono">Polaris</span> distributed orchestration engine.
             </p>
           </Reveal>
 
           <Reveal delay={4}>
-            <div className="mt-8 flex flex-wrap items-center gap-5">
+            <div className="mt-8 flex flex-wrap items-center gap-4">
               <a
                 href="#mindset"
                 className="group inline-flex items-center gap-3 text-foreground hover:text-coral-400 transition-colors"
@@ -206,10 +215,10 @@ export function ChapterIntroduction() {
                 <span className="w-10 h-px bg-foreground-subtle group-hover:bg-coral-500 group-hover:w-16 transition-all duration-300" />
               </a>
               <a
-                href="#m31a"
+                href="/about"
                 className="inline-flex items-center gap-1.5 text-xs font-mono px-3 py-1.5 rounded border border-border hover:border-coral-500/40 text-foreground-muted hover:text-coral-400 transition-colors"
               >
-                <span>Policy Simulator</span>
+                <span>Biography &amp; Entity Profile</span>
                 <ArrowRight className="w-3 h-3" />
               </a>
               <a

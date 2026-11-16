@@ -22,10 +22,16 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 22
           cache: npm
-      - run: npm ci
-      - run: npm run build
+      - name: Install dependencies
+        run: npm ci
+      - name: Type checking
+        run: npm run typecheck
+      - name: Build static export
+        run: npm run build
+      - name: Run automated tests
+        run: npm test
       - uses: actions/upload-pages-artifact@v3
         with:
           path: ./out
